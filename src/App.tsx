@@ -1,8 +1,9 @@
 import { useMemo, useState } from "react";
-import { contentByLanguage, languages, type LanguageCode } from "./content";
+import { contentByLanguage, languages, type LanguageCode, type TimelineItem } from "./content";
 
 export function App() {
   const [language, setLanguage] = useState<LanguageCode>("bg");
+  const [selectedTimeline, setSelectedTimeline] = useState<TimelineItem | null>(null);
   const copy = contentByLanguage[language];
 
   const navItems = useMemo(
@@ -38,7 +39,10 @@ export function App() {
           <span>Language</span>
           <select
             value={language}
-            onChange={(event) => setLanguage(event.target.value as LanguageCode)}
+            onChange={(event) => {
+              setSelectedTimeline(null);
+              setLanguage(event.target.value as LanguageCode);
+            }}
             aria-label="Select language"
           >
             {languages.map((item) => (
@@ -90,13 +94,39 @@ export function App() {
         </div>
         <ol className="timeline">
           {copy.timeline.map((event) => (
-            <li className="reveal" key={event}>
+            <li className="reveal" key={event.title}>
               <span />
-              <p>{event}</p>
+              <button type="button" onClick={() => setSelectedTimeline(event)}>
+                {event.title}
+              </button>
             </li>
           ))}
         </ol>
       </section>
+
+      {selectedTimeline && (
+        <div className="timeline-modal" role="presentation" onClick={() => setSelectedTimeline(null)}>
+          <article
+            className="timeline-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="timeline-dialog-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              className="modal-close"
+              type="button"
+              onClick={() => setSelectedTimeline(null)}
+              aria-label="Close"
+            >
+              ×
+            </button>
+            <p className="eyebrow">{copy.story.eyebrow}</p>
+            <h3 id="timeline-dialog-title">{selectedTimeline.title}</h3>
+            <p>{selectedTimeline.detail}</p>
+          </article>
+        </div>
+      )}
 
       <section id="legends" className="legends">
         <div className="section-shell">

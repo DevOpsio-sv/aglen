@@ -41,6 +41,11 @@ export type MapStop = {
   detail: string;
 };
 
+export type TimelineItem = {
+  title: string;
+  detail: string;
+};
+
 type PageCopy = {
   nav: {
     home: string;
@@ -107,7 +112,7 @@ type PageCopy = {
     cta: string;
   };
   highlights: Highlight[];
-  timeline: string[];
+  timeline: TimelineItem[];
   mysteries: Mystery[];
   placesList: Place[];
   experiencesList: Experience[];
@@ -140,7 +145,7 @@ const prices = ["50 лв.", "80 лв.", "20 лв.", "120 лв.", "40 лв.", "70
 export const contentByLanguage: Record<LanguageCode, PageCopy> = {
   bg: {
     nav: { home: "Начало", story: "История", legends: "Легенди", places: "Места", map: "Маршрути", contact: "Посещение" },
-    brand: { name: "Ъглен", subtitle: "Aglen · река Вит" },
+    brand: { name: "Ъглен", subtitle: "Село до река Вит" },
     hero: {
       meta: "Северна България · река Вит · близо до Луковит",
       title: "ЪГЛЕН",
@@ -195,11 +200,31 @@ export const contentByLanguage: Record<LanguageCode, PageCopy> = {
       { label: "Идентичност", value: "Рядкото име Ъглен", detail: "Познато като единственото българско село, започващо с буквата Ъ." },
     ],
     timeline: [
-      "Палеолитни следи в близки пещери подсказват ранно човешко присъствие в района.",
-      "Римски път и укрепени останки свързват района със стари маршрути и движение.",
-      "Местната легенда за преселници от Чурек пази памет за заселване и убежище.",
-      "Паметта за 1877 г. остава част от историческото уважение и идентичност на селото.",
-      "Днес Ъглен може да расте като тиха дестинация за екотуризъм, занаяти и бавно пътуване.",
+      {
+        title: "Палеолитни следи в близки пещери подсказват ранно човешко присъствие в района.",
+        detail:
+          "Пещерите и варовиковите форми около поречието на Вит са част от по-дълбоката история на района. В туристическия разказ това може да се представи като пласт от време преди селото: земя, която е давала убежище, пътеки и наблюдателни точки много преди съвременните маршрути.",
+      },
+      {
+        title: "Римски път и укрепени останки свързват района със стари маршрути и движение.",
+        detail:
+          "Старите пътища са важни, защото показват, че районът не е бил изолиран. Реката, скалите и високите места са помагали за ориентация, преминаване и защита. Тази точка може да води посетителя към идеята, че Ъглен стои върху пресечна линия между природа, движение и памет.",
+      },
+      {
+        title: "Местната легенда за преселници от Чурек пази памет за заселване и убежище.",
+        detail:
+          "Легендите не трябва да се представят като доказан архив, а като местна памет. Те дават човешко лице на мястото: хора, които търсят безопасност, започват отново и оставят имена, разкази и принадлежност. Това е силна основа за premium tourism storytelling.",
+      },
+      {
+        title: "Паметта за 1877 г. остава част от историческото уважение и идентичност на селото.",
+        detail:
+          "Тази част трябва да бъде разказана спокойно и с уважение. Тя свързва Ъглен с по-широката национална памет, без да превръща сайта в учебник. За посетителя това е напомняне, че тишината на селото носи и историческа тежест.",
+      },
+      {
+        title: "Днес Ъглен може да расте като тиха дестинация за екотуризъм, занаяти и бавно пътуване.",
+        detail:
+          "Бъдещето на Ъглен е най-силно, ако остане автентично. Вместо масов туризъм, този сайт насърчава уикенд посещения, малки групи, фотографски маршрути, местни занаяти, природни разходки и уважение към хората, реката и селската среда.",
+      },
     ],
     mysteries: [
       { title: "Където реката изчезва от поглед", tag: "Скрити пътеки", image: images.hero, description: "Вит не разкрива всичко наведнъж. Завоите, сенките и скалите превръщат разходката в търсене." },
@@ -253,7 +278,13 @@ export const contentByLanguage: Record<LanguageCode, PageCopy> = {
       { label: "Nature", value: "River, limestone, forest", detail: "The landscape is shaped by the Vit River, natural rock forms, canyon views, and cave terrain." },
       { label: "Identity", value: "The rare name Aglen", detail: "Known as the only Bulgarian village beginning with the letter Ъ." },
     ],
-    timeline: ["Paleolithic traces in nearby caves suggest early human presence in the surrounding landscape.", "Roman road evidence and fortified remains connect the area with older movement and trade routes.", "The local migration legend from Churek keeps the story of settlement and refuge alive.", "The memory of 1877 remains part of the village's historical respect and identity.", "Today Aglen can grow as a quiet destination for eco-tourism, crafts, slow travel, and local storytelling."],
+    timeline: [
+      { title: "Paleolithic traces in nearby caves suggest early human presence in the surrounding landscape.", detail: "The cave terrain and limestone forms around the Vit River can be framed as the oldest layer of the destination: a landscape of shelter, paths, and observation points long before modern travel." },
+      { title: "Roman road evidence and fortified remains connect the area with older movement and trade routes.", detail: "Old routes matter because they show the area was connected. River corridors, high ground, and stone terrain supported movement, orientation, and protection." },
+      { title: "The local migration legend from Churek keeps the story of settlement and refuge alive.", detail: "This should be treated as local memory rather than hard archive. It gives the destination a human layer: people searching for safety, beginning again, and leaving names and stories behind." },
+      { title: "The memory of 1877 remains part of the village's historical respect and identity.", detail: "This layer should be quiet and respectful. It connects Aglen to wider Bulgarian memory without turning the page into a textbook." },
+      { title: "Today Aglen can grow as a quiet destination for eco-tourism, crafts, slow travel, and local storytelling.", detail: "Aglen's strongest tourism future is authentic and small-scale: weekend visits, guided walks, photography, crafts, river routes, and respect for the local environment." },
+    ],
     mysteries: [
       { title: "Where the River Disappears from View", tag: "Hidden routes", image: images.hero, description: "The Vit does not reveal everything at once. Bends, shadows, and cliff lines turn a short walk into a search." },
       { title: "The Cave Thresholds", tag: "Stone and silence", image: images.cave, description: "The caves belong to the older memory of the land: geological, human, and symbolic without exaggeration." },
@@ -284,7 +315,7 @@ export const contentByLanguage: Record<LanguageCode, PageCopy> = {
     mapStops: [
       { title: "Village Center", detail: "Start with the human scale of Aglen: streets, church, local memory, and orientation." },
       { title: "Vit River Path", detail: "Follow the water toward quiet viewpoints, bends, and shaded places for photography." },
-      { title: "Дупката", detail: "A natural stone threshold and one of the strongest visual symbols of the destination." },
+      { title: "The Hole", detail: "A natural stone threshold and one of the strongest visual symbols of the destination." },
       { title: "Caves & Rock Forms", detail: "Explore the older landscape layer with care, local guidance, and respect for terrain." },
     ],
     sourceNotes: ["Original Wix site and service list: https://vasilevasilvena.wixsite.com/aglen", "Public travel/history context: Banker.bg, Trip.dir.bg, BTA/Utro, Wikipedia/Wikitravel summaries.", "Generated draft visuals are placeholders for final owner-approved Aglen photography."],
@@ -306,7 +337,13 @@ export const contentByLanguage: Record<LanguageCode, PageCopy> = {
       { label: "Natur", value: "Fluss, Kalkstein, Wald", detail: "Die Landschaft wird vom Vit, Felsformen, Canyonblicken und Hoehlengelaende gepraegt." },
       { label: "Identitaet", value: "Der seltene Name Aglen", detail: "Bekannt als das einzige bulgarische Dorf, das mit dem Buchstaben Ъ beginnt." },
     ],
-    timeline: ["Palaeolithische Spuren in nahen Hoehlen deuten auf fruehe menschliche Praesenz.", "Roemische Strassenreste und Befestigungen verbinden die Gegend mit alten Routen.", "Die lokale Legende von Siedlern aus Churek bewahrt Erinnerung an Zuflucht.", "Die Erinnerung an 1877 bleibt Teil der lokalen Identitaet.", "Heute kann Aglen als ruhiges Ziel fuer Oekotourismus, Handwerk und langsames Reisen wachsen."],
+    timeline: [
+      { title: "Palaeolithische Spuren in nahen Hoehlen deuten auf fruehe menschliche Praesenz.", detail: "Die Hoehlen und Kalksteinformen am Vit bilden die aelteste Ebene der Landschaft: Schutz, Wege und Aussichtspunkte lange vor dem modernen Reisen." },
+      { title: "Roemische Strassenreste und Befestigungen verbinden die Gegend mit alten Routen.", detail: "Alte Routen zeigen, dass die Gegend verbunden war. Fluss, Hoehen und Steinlandschaft halfen bei Bewegung, Orientierung und Schutz." },
+      { title: "Die lokale Legende von Siedlern aus Churek bewahrt Erinnerung an Zuflucht.", detail: "Diese Erzaehlung sollte als lokale Erinnerung verstanden werden. Sie gibt dem Ort eine menschliche Ebene: Sicherheit suchen, neu beginnen, Namen und Geschichten hinterlassen." },
+      { title: "Die Erinnerung an 1877 bleibt Teil der lokalen Identitaet.", detail: "Diese Ebene braucht Ruhe und Respekt. Sie verbindet Aglen mit groesserer bulgarischer Erinnerung, ohne die Seite in ein Lehrbuch zu verwandeln." },
+      { title: "Heute kann Aglen als ruhiges Ziel fuer Oekotourismus, Handwerk und langsames Reisen wachsen.", detail: "Die staerkste Zukunft liegt in kleinen, authentischen Besuchen: Wochenenden, gefuehrte Spaziergaenge, Fotografie, Handwerk und Respekt fuer die Landschaft." },
+    ],
     mysteries: [
       { title: "Wo der Fluss aus dem Blick verschwindet", tag: "Verborgene Wege", image: images.hero, description: "Der Vit zeigt nicht alles auf einmal. Biegungen, Schatten und Felsen machen den Weg zur Suche." },
       { title: "Die Schwellen der Hoehlen", tag: "Stein und Stille", image: images.cave, description: "Die Hoehlen tragen eine aeltere Erinnerung der Landschaft: geologisch, menschlich und symbolisch." },
