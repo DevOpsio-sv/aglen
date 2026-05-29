@@ -1,32 +1,30 @@
-import {
-  experiences,
-  galleryItems,
-  highlights,
-  mapStops,
-  mysteries,
-  places,
-  sourceNotes,
-  timeline,
-} from "./content";
-
-const navItems = [
-  ["Начало", "#home"],
-  ["История", "#story"],
-  ["Легенди", "#legends"],
-  ["Места", "#places"],
-  ["Маршрути", "#map"],
-  ["Посещение", "#contact"],
-];
+import { useMemo, useState } from "react";
+import { contentByLanguage, languages, type LanguageCode } from "./content";
 
 export function App() {
+  const [language, setLanguage] = useState<LanguageCode>("bg");
+  const copy = contentByLanguage[language];
+
+  const navItems = useMemo(
+    () => [
+      [copy.nav.home, "#home"],
+      [copy.nav.story, "#story"],
+      [copy.nav.legends, "#legends"],
+      [copy.nav.places, "#places"],
+      [copy.nav.map, "#map"],
+      [copy.nav.contact, "#contact"],
+    ],
+    [copy],
+  );
+
   return (
-    <main>
-      <header className="site-header" aria-label="Основна навигация">
-        <a className="brand" href="#home" aria-label="Ъглен - начало">
+    <main lang={language}>
+      <header className="site-header" aria-label={copy.nav.home}>
+        <a className="brand" href="#home" aria-label={`${copy.brand.name} - ${copy.nav.home}`}>
           <span className="brand-mark">Ъ</span>
           <span>
-            <strong>Ъглен</strong>
-            <small>Aglen · Vit River</small>
+            <strong>{copy.brand.name}</strong>
+            <small>{copy.brand.subtitle}</small>
           </span>
         </a>
         <nav>
@@ -36,38 +34,46 @@ export function App() {
             </a>
           ))}
         </nav>
+        <label className="language-switch">
+          <span>Language</span>
+          <select
+            value={language}
+            onChange={(event) => setLanguage(event.target.value as LanguageCode)}
+            aria-label="Select language"
+          >
+            {languages.map((item) => (
+              <option key={item.code} value={item.code}>
+                {item.short} · {item.label}
+              </option>
+            ))}
+          </select>
+        </label>
       </header>
 
       <section id="home" className="hero">
-        <img
-          className="hero-image"
-          src="/assets/aglen-hero-river-canyon.png"
-          alt="Cinematic view of a river canyon and village landscape inspired by Aglen"
-        />
+        <img className="hero-image" src="/assets/aglen-hero-river-canyon.png" alt={copy.hero.imageAlt} />
         <div className="hero-overlay" aria-hidden="true" />
         <div className="hero-copy section-shell reveal">
-          <p className="eyebrow">Northern Bulgaria · Vit River · Near Lukovit</p>
-          <h1>АГЛЕН</h1>
-          <p className="hero-title">The Hidden Treasure of the Vit River</p>
-          <p className="hero-lede">
-            Where limestone cliffs, quiet forests, caves, and village legends meet.
-          </p>
+          <p className="eyebrow">{copy.hero.meta}</p>
+          <h1>{copy.hero.title}</h1>
+          <p className="hero-title">{copy.hero.subtitle}</p>
+          <p className="hero-lede">{copy.hero.lede}</p>
           <div className="hero-actions">
             <a className="button primary" href="#places">
-              Explore Aglen
+              {copy.hero.primary}
             </a>
             <a className="button ghost" href="#contact">
-              Plan Your Visit
+              {copy.hero.secondary}
             </a>
           </div>
         </div>
         <div className="scroll-cue" aria-hidden="true">
-          Discover the valley
+          {copy.hero.cue}
         </div>
       </section>
 
-      <section className="stats section-shell" aria-label="Защо да посетите Ъглен">
-        {highlights.map((item) => (
+      <section className="stats section-shell" aria-label={copy.statsLabel}>
+        {copy.highlights.map((item) => (
           <article className="stat-card reveal" key={item.label}>
             <p>{item.label}</p>
             <h2>{item.value}</h2>
@@ -78,15 +84,12 @@ export function App() {
 
       <section id="story" className="story section-shell">
         <div className="section-heading reveal">
-          <p className="eyebrow">История и местна памет</p>
-          <h2>Layers of time beside the river</h2>
-          <p>
-            Aglen is not only a point on the map. Its story gathers caves, river paths,
-            older routes, village memory, and the rare name that makes people stop and ask.
-          </p>
+          <p className="eyebrow">{copy.story.eyebrow}</p>
+          <h2>{copy.story.title}</h2>
+          <p>{copy.story.text}</p>
         </div>
         <ol className="timeline">
-          {timeline.map((event) => (
+          {copy.timeline.map((event) => (
             <li className="reveal" key={event}>
               <span />
               <p>{event}</p>
@@ -98,15 +101,12 @@ export function App() {
       <section id="legends" className="legends">
         <div className="section-shell">
           <div className="section-heading reveal">
-            <p className="eyebrow">Legends & Mysteries of Aglen</p>
-            <h2>Some places are found slowly.</h2>
-            <p>
-              The strongest stories here are not loud. They live in local names, cave
-              thresholds, unusual rock forms, and the way the river disappears around a bend.
-            </p>
+            <p className="eyebrow">{copy.legends.eyebrow}</p>
+            <h2>{copy.legends.title}</h2>
+            <p>{copy.legends.text}</p>
           </div>
           <div className="mystery-grid">
-            {mysteries.map((item) => (
+            {copy.mysteries.map((item) => (
               <article className="mystery-card reveal" key={item.title}>
                 <img src={item.image} alt="" aria-hidden="true" />
                 <div>
@@ -122,15 +122,12 @@ export function App() {
 
       <section id="places" className="places section-shell">
         <div className="section-heading reveal">
-          <p className="eyebrow">Places to Explore</p>
-          <h2>Canyon, river, caves, and village silence</h2>
-          <p>
-            A compact destination with a rare mix of natural landmarks and local stories.
-            The best visit is unhurried: walk, listen, photograph, and leave space for discovery.
-          </p>
+          <p className="eyebrow">{copy.places.eyebrow}</p>
+          <h2>{copy.places.title}</h2>
+          <p>{copy.places.text}</p>
         </div>
         <div className="place-grid">
-          {places.map((place) => (
+          {copy.placesList.map((place) => (
             <article className="place-card reveal" key={place.title}>
               <img src={place.image} alt={place.imageAlt} />
               <div>
@@ -145,24 +142,23 @@ export function App() {
 
       <section id="experiences" className="experiences section-shell">
         <div className="section-heading reveal">
-          <p className="eyebrow">Choose your Aglen weekend</p>
-          <h2>Guided moments, not tourist checklists</h2>
-          <p>
-            The existing excursions become clear visitor journeys: short enough for a weekend,
-            personal enough to feel local, and visual enough to remember.
-          </p>
+          <p className="eyebrow">{copy.experiences.eyebrow}</p>
+          <h2>{copy.experiences.title}</h2>
+          <p>{copy.experiences.text}</p>
         </div>
         <div className="experience-grid">
-          {experiences.map((experience) => (
+          {copy.experiencesList.map((experience) => (
             <article className="experience-card reveal" key={experience.title}>
               <div>
-                <p>{experience.duration} · {experience.bestFor}</p>
+                <p>
+                  {experience.duration} · {experience.bestFor}
+                </p>
                 <h3>{experience.title}</h3>
                 <span>{experience.description}</span>
               </div>
               <strong>{experience.price}</strong>
-              <a href="#contact" aria-label={`Запитване за ${experience.title}`}>
-                Request this route
+              <a href="#contact" aria-label={`${copy.experiences.cta}: ${experience.title}`}>
+                {copy.experiences.cta}
               </a>
             </article>
           ))}
@@ -171,11 +167,11 @@ export function App() {
 
       <section id="media" className="gallery section-shell">
         <div className="section-heading reveal">
-          <p className="eyebrow">Immersive Gallery</p>
-          <h2>A place told through river light and stone</h2>
+          <p className="eyebrow">{copy.gallery.eyebrow}</p>
+          <h2>{copy.gallery.title}</h2>
         </div>
-        <div className="gallery-grid" aria-label="Галерия Ъглен">
-          {galleryItems.map((item) => (
+        <div className="gallery-grid" aria-label={copy.gallery.aria}>
+          {copy.galleryItems.map((item) => (
             <figure className={`gallery-item ${item.size} reveal`} key={item.title}>
               <img src={item.image} alt={item.alt} />
               <figcaption>{item.title}</figcaption>
@@ -187,15 +183,12 @@ export function App() {
       <section id="map" className="map-section">
         <div className="section-shell map-layout">
           <div className="section-heading reveal">
-            <p className="eyebrow">Explorer Map</p>
-            <h2>Follow the river. Find the stone.</h2>
-            <p>
-              Use Aglen as a base for a slow route: village center, Vit River path,
-              rock landmarks, cave terrain, and sunset viewpoints.
-            </p>
+            <p className="eyebrow">{copy.map.eyebrow}</p>
+            <h2>{copy.map.title}</h2>
+            <p>{copy.map.text}</p>
           </div>
-          <div className="route-map reveal" aria-label="Маршрутни точки около Ъглен">
-            {mapStops.map((stop, index) => (
+          <div className="route-map reveal" aria-label={copy.map.aria}>
+            {copy.mapStops.map((stop, index) => (
               <article className="map-stop" key={stop.title}>
                 <strong>{index + 1}</strong>
                 <div>
@@ -210,25 +203,22 @@ export function App() {
 
       <section id="contact" className="contact section-shell">
         <div className="section-heading reveal">
-          <p className="eyebrow">Plan your visit</p>
-          <h2>Spend a weekend where the Vit keeps its secrets.</h2>
-          <p>
-            Ask for routes, guided walks, photo spots, local stories, and practical visitor
-            information. Aglen works best as a slow destination, not a rushed stop.
-          </p>
+          <p className="eyebrow">{copy.contact.eyebrow}</p>
+          <h2>{copy.contact.title}</h2>
+          <p>{copy.contact.text}</p>
         </div>
         <div className="contact-card reveal">
           <div>
-            <strong>Visitor notes</strong>
-            <span>Best for nature walks, photography, river viewpoints, caves, and local memory.</span>
-            <span>Bring walking shoes, water, sun protection, and respect for private/local spaces.</span>
+            <strong>{copy.contact.notesTitle}</strong>
+            <span>{copy.contact.noteOne}</span>
+            <span>{copy.contact.noteTwo}</span>
           </div>
           <a className="button primary" href="mailto:hello@example.com">
-            Send Inquiry
+            {copy.contact.cta}
           </a>
         </div>
         <footer className="site-footer">
-          {sourceNotes.map((note) => (
+          {copy.sourceNotes.map((note) => (
             <span key={note}>{note}</span>
           ))}
         </footer>
