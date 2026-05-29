@@ -130,6 +130,9 @@ const images = {
   arch: "/assets/aglen-rock-arch.png",
   cave: "/assets/aglen-cave-mystery.png",
   aerial: "/assets/aglen-aerial-river.png",
+  pool: "/assets/aglen-river-pool.png",
+  church: "/assets/aglen-village-church.png",
+  kaleto: "/assets/aglen-kaleto-ruins.png",
 };
 
 const prices = ["50 лв.", "80 лв.", "20 лв.", "120 лв.", "40 лв.", "70 лв."];
@@ -205,11 +208,11 @@ export const contentByLanguage: Record<LanguageCode, PageCopy> = {
     ],
     placesList: [
       { title: "Дупката", tag: "Скална арка", image: images.arch, imageAlt: "Варовикова скална арка над реката край Ъглен", description: "Естествена каменна арка над Вит, създадена за бавни разходки, тихи снимки и усещане за скрит маршрут." },
-      { title: "Слончето", tag: "Скална фигура", image: images.arch, imageAlt: "Варовикови скали и гора край река Вит", description: "Игрива крайречна форма, която превръща обикновената разходка в малко откритие." },
+      { title: "Слончето", tag: "Скална фигура", image: images.hero, imageAlt: "Каньон, река и варовикови скали край Ъглен", description: "Игрива крайречна форма, която превръща обикновената разходка в малко откритие." },
       { title: "Червена стена", tag: "Каньонна гледка", image: images.aerial, imageAlt: "Каньонен пейзаж с река и село", description: "Драматична среща на варовик, гора и речна светлина близо до селото." },
-      { title: "Рачков вир", tag: "Речен вир", image: images.hero, imageAlt: "Тих речен вир и горист каньон", description: "Спокойна природна точка за пауза край водата, пикник и по-бавен ритъм до Вит." },
-      { title: "Св. Архангел Михаил", tag: "Селска памет", image: images.aerial, imageAlt: "Традиционни селски къщи в зелена долина", description: "Църквата от 1888 г. пази човешкия пласт от историята на Ъглен." },
-      { title: "Калето", tag: "Археология", image: images.cave, imageAlt: "Пещерен вход и варовикови текстури", description: "Място, свързано със стари маршрути, укрепена памет и дългия живот край реката." },
+      { title: "Рачков вир", tag: "Речен вир", image: images.pool, imageAlt: "Тих речен вир с варовиков бряг и гора", description: "Спокойна природна точка за пауза край водата, пикник и по-бавен ритъм до Вит." },
+      { title: "Св. Архангел Михаил", tag: "Селска памет", image: images.church, imageAlt: "Селска църква, каменна улица и зелена долина", description: "Църквата от 1888 г. пази човешкия пласт от историята на Ъглен." },
+      { title: "Калето", tag: "Археология", image: images.kaleto, imageAlt: "Каменни останки на хълм над каньон и река", description: "Място, свързано със стари маршрути, укрепена памет и дългия живот край реката." },
     ],
     experiencesList: [
       { title: "Каньонна разходка", price: prices[0], duration: "2-3 часа", bestFor: "Първо посещение", description: "Водени гледки към Вит, скални форми и местните имена зад пейзажа." },
@@ -258,11 +261,11 @@ export const contentByLanguage: Record<LanguageCode, PageCopy> = {
     ],
     placesList: [
       { title: "Дупката", tag: "Rock arch", image: images.arch, imageAlt: "Limestone rock arch above the river near Aglen", description: "A natural stone arch above the Vit, made for slow walks, quiet photographs, and the feeling of entering a hidden route." },
-      { title: "Слончето", tag: "Rock figure", image: images.arch, imageAlt: "Warm limestone rock formations and forest near the Vit River", description: "A playful riverside rock shape that turns a simple walk into a small act of discovery." },
+      { title: "Слончето", tag: "Rock figure", image: images.hero, imageAlt: "Canyon, river, and limestone cliffs near Aglen", description: "A playful riverside rock shape that turns a simple walk into a small act of discovery." },
       { title: "Червена стена", tag: "Canyon view", image: images.aerial, imageAlt: "Aerial canyon landscape with river and village", description: "A dramatic meeting of limestone, forest, and river light close to the village." },
-      { title: "Рачков вир", tag: "River pool", image: images.hero, imageAlt: "Quiet river pool and forested canyon landscape", description: "A calm natural point for a pause by the water, a picnic, and a slower rhythm beside the Vit." },
-      { title: "St. Archangel Michael", tag: "Village memory", image: images.aerial, imageAlt: "Traditional village homes in the green valley landscape", description: "The village church, built in 1888, keeps the human layer of Aglen's story close to the landscape." },
-      { title: "Калето", tag: "Archaeology", image: images.cave, imageAlt: "Cave opening and limestone textures in Northern Bulgaria", description: "A place connected with older routes, fortified memory, and the long continuity of life around the river." },
+      { title: "Рачков вир", tag: "River pool", image: images.pool, imageAlt: "Quiet river pool with limestone bank and forest", description: "A calm natural point for a pause by the water, a picnic, and a slower rhythm beside the Vit." },
+      { title: "St. Archangel Michael", tag: "Village memory", image: images.church, imageAlt: "Village church, stone lane, and green valley", description: "The village church, built in 1888, keeps the human layer of Aglen's story close to the landscape." },
+      { title: "Калето", tag: "Archaeology", image: images.kaleto, imageAlt: "Stone ruins on a hilltop above canyon and river", description: "A place connected with older routes, fortified memory, and the long continuity of life around the river." },
     ],
     experiencesList: [
       { title: "Canyon Walk", price: prices[0], duration: "2-3 hours", bestFor: "First-time visitors", description: "Guided views toward the Vit, rock forms, and the local names behind the landscape." },
