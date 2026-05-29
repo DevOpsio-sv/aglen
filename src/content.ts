@@ -140,7 +140,7 @@ const images = {
   kaleto: "/assets/aglen-kaleto-ruins.png",
 };
 
-const prices = ["50 лв.", "80 лв.", "20 лв.", "120 лв.", "40 лв.", "70 лв."];
+const prices = ["€26", "€41", "€10", "€61", "€20", "€36"];
 
 export const contentByLanguage: Record<LanguageCode, PageCopy> = {
   bg: {

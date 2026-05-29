@@ -243,7 +243,7 @@ export function App() {
             <span>{copy.contact.noteOne}</span>
             <span>{copy.contact.noteTwo}</span>
           </div>
-          <a className="button primary" href="mailto:hello@example.com">
+          <a className="button primary" href="mailto:info.aglen@gmail.com">
             {copy.contact.cta}
           </a>
         </div>
