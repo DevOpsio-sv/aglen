@@ -134,20 +134,43 @@ type SEOConfig = {
   alternates: Array<{ lang: string; href: string }>;
 };
 
+export type ImageSitemapEntry = {
+  loc: string;
+  title: string;
+  caption: string;
+};
+
 const routeKeywordSuffix: Record<RouteId, string> = {
   home: "Aglen village, Ъглен tourism, Vit River Bulgaria",
   pillars: "Aglen tourism pillars, hidden Bulgaria village, cultural tourism Bulgaria",
   attractions: "Aglen attractions, Vit River landmarks, rock arch Aglen, Kaleto ruins",
   activities: "Aglen activities, canyon walk, fishing Vit River, Bulgaria eco tours",
+  fishing: "Vit River fishing, fishing Aglen, slow travel Bulgaria, river guide",
+  hiking: "Aglen hiking, canyon routes Bulgaria, Vit River trails, eco walking",
+  caves: "Aglen caves, limestone caves Bulgaria, rock forms, cave thresholds",
+  vitRiver: "Vit River Bulgaria, Aglen river, river canyon, Northern Bulgaria nature",
+  food: "Aglen food, local products Bulgaria, rural food guide, village travel",
+  nearby: "nearby destinations Aglen, Lukovit, Lovech Province, Prohodna cave",
   geo: "Aglen location, Lovech Province, Lukovit, Vit River map",
   stay: "Aglen accommodation, guest rooms Aglen, camping Vit River, Bulgaria rural stay",
   quests: "Hidden Bulgaria Quests, AR tourism Bulgaria, Aglen AR adventure",
   app: "Hidden Bulgaria Quests app, Android AR tourism app Bulgaria",
+  travelGuide: "Aglen travel guide, Bulgaria village guide, weekend itinerary",
+  seasonal: "Aglen seasonal guide, spring Bulgaria travel, autumn Vit River",
+  events: "Aglen events, local tourism updates, seasonal routes Bulgaria",
+  trust: "Aglen tourism about, local authors, E-E-A-T, visitor safety",
+  editorial: "Aglen editorial policy, tourism sources, content review, safety notes",
+  localSeo: "Aglen Google Business Profile, local SEO, NAP consistency",
+  crawlerPolicy: "Aglen crawler policy, llms.txt, AI search guidance",
   contact: "Aglen visit planning, guided routes Aglen, tourism contact Bulgaria",
 };
 
 function absoluteRouteUrl(lang: LanguageCode, routeId: RouteId): string {
   return `${SITE_URL}${buildRoutePath(lang, routeId)}`;
+}
+
+function absoluteAssetUrl(path: string): string {
+  return path.startsWith("http") ? path : `${SITE_URL}${path}`;
 }
 
 export function getSEOConfig(lang: LanguageCode, routeId: RouteId = "home"): SEOConfig {
@@ -168,6 +191,30 @@ export function getSEOConfig(lang: LanguageCode, routeId: RouteId = "home"): SEO
       title: `${copy.experiences.title} | ${copy.brand.name}`,
       description: copy.experiences.text,
     },
+    fishing: {
+      title: `Fishing by the Vit River | ${copy.brand.name}`,
+      description: "A practical evergreen guide to slow fishing near Aglen, river access, visitor etiquette, seasonal notes, and how to combine the Vit with a quiet village weekend.",
+    },
+    hiking: {
+      title: `Hiking and Canyon Routes | ${copy.brand.name}`,
+      description: "Plan gentle walks around Aglen's canyon views, river paths, rock forms, village center, and photo stops with safety notes for slow travel.",
+    },
+    caves: {
+      title: `Caves and Rock Forms around Aglen | ${copy.brand.name}`,
+      description: "Explore Aglen's cave thresholds, limestone forms, local names, nearby rock arches, and responsible cave-visit guidance.",
+    },
+    vitRiver: {
+      title: `Vit River Travel Guide | ${copy.brand.name}`,
+      description: "A destination guide to the Vit River around Aglen: river pools, canyon light, walking routes, photo stops, fishing, and nature etiquette.",
+    },
+    food: {
+      title: `Food and Local Products Guide | ${copy.brand.name}`,
+      description: "Use this guide to plan simple village food stops, seasonal local products, picnic ideas, and respectful rural travel around Aglen.",
+    },
+    nearby: {
+      title: `Nearby Destinations from Aglen | ${copy.brand.name}`,
+      description: "Connect Aglen with nearby Northern Bulgaria destinations including Lukovit, Lovech Province, cave landscapes, river routes, and weekend itineraries.",
+    },
     geo: {
       title: `${copy.landmarks.aria} | ${copy.brand.name}`,
       description: `${copy.hero.meta}. ${copy.landmarks.text}`,
@@ -183,6 +230,34 @@ export function getSEOConfig(lang: LanguageCode, routeId: RouteId = "home"): SEO
     app: {
       title: `${copy.app.title} | ${copy.brand.name}`,
       description: copy.app.text,
+    },
+    travelGuide: {
+      title: `Aglen Travel Guide | ${copy.brand.name}`,
+      description: "A crawlable travel hub for Aglen covering attractions, hiking, fishing, caves, river routes, accommodation, food, nearby destinations, safety, and seasonal updates.",
+    },
+    seasonal: {
+      title: `Seasonal Guide to Aglen | ${copy.brand.name}`,
+      description: "Monthly and seasonal planning notes for spring walks, summer river pauses, autumn photography, winter quiet travel, and route updates around Aglen.",
+    },
+    events: {
+      title: `Events and Route Updates | ${copy.brand.name}`,
+      description: "A freshness hub for local events, route updates, seasonal visitor notes, village stories, and travel-guide updates around Aglen.",
+    },
+    trust: {
+      title: `About Aglen Tourism | ${copy.brand.name}`,
+      description: "Learn who maintains the Aglen travel guide, how local knowledge is used, what sources inform the site, and which safety notes visitors should know.",
+    },
+    editorial: {
+      title: `Editorial Policy and Sources | ${copy.brand.name}`,
+      description: "Editorial standards for Aglen tourism content: source notes, local review, update cadence, safety guidance, image permissions, and correction requests.",
+    },
+    localSeo: {
+      title: `Local Presence and NAP Checklist | ${copy.brand.name}`,
+      description: "Public local SEO checklist for Aglen tourism profiles, consistent name-address-phone data, categories, photos, reviews, Q&A, and map ecosystems.",
+    },
+    crawlerPolicy: {
+      title: `Crawler and AI Search Policy | ${copy.brand.name}`,
+      description: "Crawler governance for Aglen tourism content, including sitemap discovery, AI-search guidance, source attribution, and llms.txt availability.",
     },
     contact: {
       title: `${copy.contact.title} | ${copy.brand.name}`,
@@ -201,6 +276,146 @@ export function getSEOConfig(lang: LanguageCode, routeId: RouteId = "home"): SEO
       ...allLanguageCodes.map((code) => ({ lang: code, href: absoluteRouteUrl(code, routeId) })),
     ],
   };
+}
+
+export function getRouteImageEntries(lang: LanguageCode, routeId: RouteId = "home"): ImageSitemapEntry[] {
+  const copy = contentByLanguage[lang];
+  const entriesByRoute: Record<RouteId, ImageSitemapEntry[]> = {
+    home: [
+      {
+        loc: OG_IMAGE,
+        title: copy.hero.title,
+        caption: copy.hero.imageAlt,
+      },
+      ...copy.galleryItems.map((item) => ({
+        loc: absoluteAssetUrl(item.image),
+        title: item.title,
+        caption: item.alt,
+      })),
+    ],
+    pillars: [
+      ...copy.mysteries.map((item) => ({
+        loc: absoluteAssetUrl(item.image),
+        title: item.title,
+        caption: item.description,
+      })),
+    ],
+    attractions: copy.placesList.map((place) => ({
+      loc: absoluteAssetUrl(place.image),
+      title: place.title,
+      caption: place.imageAlt || place.description,
+    })),
+    activities: [
+      {
+        loc: OG_IMAGE,
+        title: copy.experiences.title,
+        caption: copy.experiences.text,
+      },
+      ...copy.experiencesList.slice(0, 3).map((experience, index) => ({
+        loc: [OG_IMAGE, `${SITE_URL}/assets/aglen-river-pool.png`, `${SITE_URL}/assets/aglen-rock-arch.png`][index],
+        title: experience.title,
+        caption: experience.description,
+      })),
+    ],
+    fishing: [
+      { loc: `${SITE_URL}/assets/aglen-river-pool.png`, title: "Fishing by the Vit River", caption: "Quiet river pool and slow travel by the Vit near Aglen." },
+      { loc: OG_IMAGE, title: copy.brand.name, caption: copy.hero.imageAlt },
+    ],
+    hiking: [
+      { loc: OG_IMAGE, title: "Aglen canyon hiking routes", caption: copy.landmarks.text },
+      { loc: `${SITE_URL}/assets/aglen-rock-arch.png`, title: "Rock arch walking route", caption: copy.placesList[0]?.imageAlt ?? copy.landmarks.title },
+    ],
+    caves: [
+      { loc: `${SITE_URL}/assets/aglen-cave-mystery.png`, title: "Caves and rock forms around Aglen", caption: copy.mysteries[1]?.description ?? copy.landmarks.text },
+      { loc: `${SITE_URL}/assets/aglen-rock-arch.png`, title: copy.placesList[0]?.title ?? copy.landmarks.title, caption: copy.placesList[0]?.description ?? copy.landmarks.text },
+    ],
+    vitRiver: [
+      { loc: OG_IMAGE, title: "Vit River near Aglen", caption: copy.hero.imageAlt },
+      { loc: `${SITE_URL}/assets/aglen-river-pool.png`, title: copy.placesList[3]?.title ?? "Vit River pool", caption: copy.placesList[3]?.description ?? copy.landmarks.text },
+    ],
+    food: [
+      { loc: `${SITE_URL}/assets/aglen-village-church.png`, title: "Aglen village food and local products", caption: "Village center context for local food, picnics, and rural travel planning." },
+    ],
+    nearby: [
+      { loc: `${SITE_URL}/assets/aglen-aerial-river.png`, title: "Nearby destinations from Aglen", caption: "Aerial view of the Vit River corridor for nearby route planning." },
+      { loc: `${SITE_URL}/assets/aglen-cave-mystery.png`, title: "Nearby cave landscapes", caption: "Cave and limestone terrain connected with Northern Bulgaria routes." },
+    ],
+    geo: [
+      {
+        loc: `${SITE_URL}/assets/aglen-aerial-river.png`,
+        title: copy.landmarks.aria,
+        caption: copy.hero.meta,
+      },
+      {
+        loc: OG_IMAGE,
+        title: copy.landmarks.title,
+        caption: copy.landmarks.text,
+      },
+    ],
+    stay: copy.accommodationList.map((item) => ({
+      loc: absoluteAssetUrl(item.image),
+      title: item.title,
+      caption: item.description,
+    })),
+    quests: [
+      {
+        loc: OG_IMAGE,
+        title: copy.quests.title,
+        caption: copy.quests.text,
+      },
+      {
+        loc: `${SITE_URL}/assets/aglen-cave-mystery.png`,
+        title: copy.ar.title,
+        caption: copy.ar.text,
+      },
+    ],
+    app: [
+      {
+        loc: OG_IMAGE,
+        title: copy.app.title,
+        caption: copy.app.text,
+      },
+    ],
+    travelGuide: [
+      { loc: OG_IMAGE, title: "Aglen travel guide", caption: copy.hero.imageAlt },
+      { loc: `${SITE_URL}/assets/aglen-aerial-river.png`, title: "Aglen route planning", caption: copy.landmarks.text },
+    ],
+    seasonal: [
+      { loc: `${SITE_URL}/assets/aglen-aerial-river.png`, title: "Seasonal guide to Aglen", caption: "Seasonal travel planning for river light, walks, photography, and quiet weekends." },
+    ],
+    events: [
+      { loc: `${SITE_URL}/assets/aglen-village-church.png`, title: "Aglen events and local updates", caption: "Village context for local stories, events, and route updates." },
+    ],
+    trust: [
+      { loc: `${SITE_URL}/assets/aglen-village-church.png`, title: "About Aglen Tourism", caption: "Local identity, sources, safety notes, and visitor guidance." },
+    ],
+    editorial: [
+      { loc: `${SITE_URL}/assets/aglen-village-church.png`, title: "Editorial policy and sources", caption: "Source notes, local review, image permissions, and update cadence." },
+    ],
+    localSeo: [
+      { loc: `${SITE_URL}/assets/aglen-village-church.png`, title: "Aglen local presence", caption: "Public checklist for local profiles, NAP consistency, photos, reviews, and Q&A." },
+    ],
+    crawlerPolicy: [
+      { loc: OG_IMAGE, title: "Crawler and AI search policy", caption: "Sitemap, llms.txt, and crawler governance for Aglen tourism content." },
+    ],
+    contact: [
+      {
+        loc: `${SITE_URL}/assets/aglen-village-church.png`,
+        title: copy.contact.title,
+        caption: copy.contact.text,
+      },
+    ],
+  };
+
+  const seen = new Set<string>();
+  return entriesByRoute[routeId].filter((entry) => {
+    if (seen.has(entry.loc)) {
+      return false;
+    }
+
+    seen.add(entry.loc);
+    return true;
+  });
 }
 
 // ---------------------------------------------------------------------------
@@ -252,6 +467,131 @@ function injectJSONLD(data: object): void {
     document.head.appendChild(el);
   }
   el.textContent = JSON.stringify(data, null, 0);
+}
+
+function buildPageSpecificSchemas(lang: LanguageCode, routeId: RouteId, routeUrl: string): object[] {
+  const copy = contentByLanguage[lang];
+  const meta = getSEOConfig(lang, routeId);
+  const routeImages = getRouteImageEntries(lang, routeId);
+  const imageObjects = routeImages.map((image, index) => ({
+    "@type": "ImageObject",
+    "@id": `${routeUrl}#image-${index + 1}`,
+    url: image.loc,
+    name: image.title,
+    caption: image.caption,
+  }));
+
+  const isGuidePage = [
+    "pillars", "attractions", "activities", "fishing", "hiking", "caves", "vitRiver",
+    "food", "nearby", "geo", "stay", "travelGuide", "seasonal", "trust", "editorial",
+    "localSeo", "crawlerPolicy",
+  ].includes(routeId);
+
+  const schemas: object[] = [
+    ...imageObjects,
+    {
+      "@type": "TouristDestination",
+      "@id": `${routeUrl}#destination`,
+      name: meta.title,
+      description: meta.description,
+      url: routeUrl,
+      inLanguage: lang,
+      image: routeImages.map((image) => image.loc),
+      touristType: ["Nature travelers", "Cultural travelers", "Slow travel visitors", "Families"],
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: 43.267,
+        longitude: 24.221,
+      },
+      containsPlace: copy.placesList.map((place) => ({
+        "@type": "TouristAttraction",
+        name: place.title,
+        description: place.description,
+        image: absoluteAssetUrl(place.image),
+      })),
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `${routeUrl}#page-faq`,
+      mainEntity: [
+        {
+          "@type": "Question",
+          name: `What can visitors do on ${meta.title}?`,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: meta.description,
+          },
+        },
+        {
+          "@type": "Question",
+          name: "How should visitors plan this route?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Plan an unhurried visit, check weather and local access, bring water and walking shoes, respect private spaces, and contact Aglen Tourism for current route guidance.",
+          },
+        },
+      ],
+    },
+  ];
+
+  if (isGuidePage) {
+    schemas.push({
+      "@type": "Article",
+      "@id": `${routeUrl}#article`,
+      headline: meta.title,
+      description: meta.description,
+      image: routeImages.map((image) => image.loc),
+      author: {
+        "@type": "Organization",
+        name: "Aglen Tourism",
+      },
+      publisher: { "@id": `${SITE_URL}/#organization` },
+      mainEntityOfPage: routeUrl,
+      datePublished: "2026-05-30",
+      dateModified: "2026-05-30",
+      inLanguage: lang,
+    });
+  }
+
+  if (routeId === "events" || routeId === "seasonal") {
+    schemas.push({
+      "@type": "Event",
+      "@id": `${routeUrl}#seasonal-visit-window`,
+      name: "Seasonal Aglen Travel Updates",
+      description: "Recurring seasonal visitor notes, route updates, and local travel guidance for Aglen.",
+      eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+      eventStatus: "https://schema.org/EventScheduled",
+      startDate: "2026-06-01",
+      endDate: "2026-12-31",
+      location: {
+        "@type": "Place",
+        name: "Aglen, Lovech Province, Bulgaria",
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Ъглен",
+          addressRegion: "Lovech Province",
+          addressCountry: "BG",
+        },
+      },
+      organizer: { "@id": `${SITE_URL}/#organization` },
+      image: routeImages.map((image) => image.loc),
+    });
+  }
+
+  if (routeId === "quests" || routeId === "app") {
+    schemas.push({
+      "@type": "VideoObject",
+      "@id": `${routeUrl}#app-preview-video`,
+      name: copy.quests.title,
+      description: copy.quests.text,
+      thumbnailUrl: [OG_IMAGE],
+      uploadDate: "2026-05-30",
+      contentUrl: routeUrl,
+      embedUrl: routeUrl,
+    });
+  }
+
+  return schemas;
 }
 
 // ---------------------------------------------------------------------------
@@ -336,6 +676,8 @@ export function buildJSONLD(lang: LanguageCode, routeId: RouteId = "home"): obje
           height: 630,
         },
       },
+
+      ...buildPageSpecificSchemas(lang, routeId, routeUrl),
 
       // ── TouristAttraction + Place ─────────────────────────────────────────
       {
@@ -650,6 +992,36 @@ export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "hom
       ${paragraph(copy.experiences.text)}
       ${list(copy.experiencesList.map((experience) => `${experience.title}: ${experience.duration}, ${experience.bestFor}. ${experience.description}`))}
     `,
+    fishing: `
+      <h1>Fishing by the Vit River</h1>
+      ${paragraph("Use Aglen as a quiet base for slow fishing, river pauses, photography, and low-impact travel along the Vit. Check local conditions, respect private spaces, and avoid disturbing river habitats.")}
+      ${list(["Best paired with a half-day river walk", "Bring your own equipment and confirm local rules before fishing", "Keep riverbanks clean and follow catch-and-release where appropriate", copy.experiencesList[2]?.description ?? copy.experiences.text])}
+    `,
+    hiking: `
+      <h1>Hiking and Canyon Routes</h1>
+      ${paragraph("Aglen is best explored through short, unhurried walks: village center, river path, rock arch, canyon viewpoints, and shaded photo stops.")}
+      ${list(copy.mapStops.map((stop) => `${stop.title}: ${stop.detail}`))}
+    `,
+    caves: `
+      <h1>Caves and Rock Forms around Aglen</h1>
+      ${paragraph("The limestone terrain around Aglen gives the destination its cave thresholds, arches, rock names, and older landscape memory. Visit carefully and avoid entering unsafe cave spaces without local guidance.")}
+      ${list(copy.mysteries.map((item) => `${item.title}: ${item.description}`))}
+    `,
+    vitRiver: `
+      <h1>Vit River Travel Guide</h1>
+      ${paragraph("The Vit River shapes Aglen's walking routes, views, fishing moments, and slow weekend rhythm. Plan for water, shade, weather, and respectful access.")}
+      ${list(copy.placesList.filter((place) => /вир|river|pool|вит|Vit/i.test(`${place.title} ${place.description}`)).map((place) => `${place.title}: ${place.description}`))}
+    `,
+    food: `
+      <h1>Food and Local Products Guide</h1>
+      ${paragraph("Aglen is a rural destination, so food planning should stay practical: ask ahead, bring picnic basics, support local producers where available, and leave no waste near the river or trails.")}
+      ${list(["Pack water and simple picnic food for walking routes", "Ask hosts about seasonal fruit, herbs, preserves, and local products", "Use nearby towns for broader restaurant and grocery options", "Keep meals low-impact around nature stops"])}
+    `,
+    nearby: `
+      <h1>Nearby Destinations from Aglen</h1>
+      ${paragraph("Aglen fits naturally into a Northern Bulgaria weekend with Lukovit, Lovech Province, cave landscapes, river routes, and quiet village detours.")}
+      ${list(["Lukovit area for services and wider route planning", "Nearby limestone and cave landscapes for geology-focused trips", "Lovech Province for culture, history, and longer itineraries", "Vit River corridor for slow nature travel"])}
+    `,
     geo: `
       <h1>${escapeHtml(copy.landmarks.aria)}</h1>
       ${paragraph(copy.hero.meta)}
@@ -671,6 +1043,41 @@ export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "hom
       ${paragraph(copy.app.text)}
       ${paragraph(copy.app.note)}
       ${list(copy.ar.steps)}
+    `,
+    travelGuide: `
+      <h1>Aglen Travel Guide</h1>
+      ${paragraph("This hub organizes Aglen by visitor intent: attractions, fishing, hiking, caves, the Vit River, accommodation, food planning, nearby destinations, events, safety, and trusted sources.")}
+      ${list(["Attractions and landmarks", "Fishing and hiking routes", "Accommodation and food planning", "Seasonal updates and nearby destinations", "Editorial policy, local presence, and crawler governance"])}
+    `,
+    seasonal: `
+      <h1>Seasonal Guide to Aglen</h1>
+      ${paragraph("Spring and autumn are strongest for walking and photography, summer suits river pauses and camping, and winter favors quiet local stories and careful route planning.")}
+      ${list(["Spring: green river paths and flowers", "Summer: shade, water, and early starts", "Autumn: photography and soft light", "Winter: quiet travel and weather-aware walks"])}
+    `,
+    events: `
+      <h1>Events and Route Updates</h1>
+      ${paragraph("This page is the freshness layer for monthly guide updates, seasonal route notes, local stories, visitor advisories, and future event listings.")}
+      ${list(["Monthly route and access checks", "Seasonal travel notes", "Local story updates", "Visitor safety and weather reminders"])}
+    `,
+    trust: `
+      <h1>About Aglen Tourism</h1>
+      ${paragraph("The site is maintained as a practical travel guide for Aglen, combining local context, public sources, visitor safety notes, and permission-based media.")}
+      ${list(["Local-first destination framing", "Source notes visible in the footer", "Safety and access reminders for visitors", "Corrections accepted through the contact email"])}
+    `,
+    editorial: `
+      <h1>Editorial Policy and Sources</h1>
+      ${paragraph("Travel content is reviewed for usefulness, safety, source clarity, image permission, and seasonal freshness. Historical or legend material is framed as local memory unless verified by public sources.")}
+      ${list(["Use public sources and local review where possible", "Separate legends from verified historical claims", "Keep route and safety notes current", "Credit or permission-check images before publication"])}
+    `,
+    localSeo: `
+      <h1>Local Presence and NAP Checklist</h1>
+      ${paragraph("The code can publish the checklist, but claiming Google Business Profile, Bing Places, Apple Business Connect, reviews, and Q&A requires owner action outside the repository.")}
+      ${list(["Use one consistent name, address, phone, and website", "Choose tourism, attraction, and visitor information categories where accurate", "Upload current photos and answer common visitor questions", "Request reviews only from real visitors"])}
+    `,
+    crawlerPolicy: `
+      <h1>Crawler and AI Search Policy</h1>
+      ${paragraph("Aglen's public pages are discoverable through canonical language folders, XML sitemaps, image sitemap entries, and llms.txt guidance for AI search tools.")}
+      ${list(["Respect canonical URLs and sitemap index", "Attribute facts to Aglen Tourism and linked public sources", "Do not treat local legends as verified archival history", "Use current pages over cached query-string variants"])}
     `,
     contact: `
       <h1>${escapeHtml(copy.contact.title)}</h1>

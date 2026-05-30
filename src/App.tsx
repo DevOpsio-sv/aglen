@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type MouseEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 import { contentByLanguage, languages, type Accommodation, type LanguageCode, type TimelineItem } from "./content";
 import { buildRoutePath, getStaticRoute, resolveRoute, type RouteId, type ResolvedRoute } from "./routes";
 import { updateDocumentSEO } from "./seo";
@@ -10,6 +10,8 @@ export function App() {
   const [selectedTimeline, setSelectedTimeline] = useState<TimelineItem | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
+  const timelineDialogRef = useRef<HTMLElement | null>(null);
+  const timelineCloseRef = useRef<HTMLButtonElement | null>(null);
   const { language, routeId } = pageRoute;
   const copy = contentByLanguage[language];
   const currentRoute = getStaticRoute(routeId);
@@ -89,7 +91,34 @@ export function App() {
 
   useEffect(() => {
     if (!selectedTimeline) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setSelectedTimeline(null); };
+    timelineCloseRef.current?.focus();
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setSelectedTimeline(null);
+        return;
+      }
+
+      if (e.key !== "Tab" || !timelineDialogRef.current) return;
+
+      const focusable = Array.from(
+        timelineDialogRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])',
+        ),
+      );
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (!first || !last) return;
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [selectedTimeline]);
@@ -105,6 +134,32 @@ export function App() {
     ],
     [copy],
   ) as Array<[string, RouteId]>;
+
+  const guideLinks = useMemo(
+    () => [
+      { label: copy.landmarks.title, text: copy.landmarks.text, routeId: "attractions" },
+      { label: "Vit River guide", text: "River pools, canyon light, fishing, routes, and nature etiquette.", routeId: "vitRiver" },
+      { label: "Fishing by the Vit", text: copy.experiencesList[2]?.description ?? copy.experiences.text, routeId: "fishing" },
+      { label: "Hiking routes", text: "Short canyon walks, village routes, rock forms, and viewpoint planning.", routeId: "hiking" },
+      { label: "Caves and rock forms", text: copy.mysteries[1]?.description ?? copy.legends.text, routeId: "caves" },
+      { label: copy.stay.title, text: copy.stay.text, routeId: "stay" },
+      { label: "Food and local products", text: "Picnic planning, local products, host questions, and low-impact meals.", routeId: "food" },
+      { label: "Nearby destinations", text: "Connect Aglen with Lukovit, Lovech Province, cave landscapes, and river routes.", routeId: "nearby" },
+      { label: "Seasonal guide", text: "Monthly updates for routes, photography, weather, and quiet weekend planning.", routeId: "seasonal" },
+    ] satisfies Array<{ label: string; text: string; routeId: RouteId }>,
+    [copy],
+  );
+
+  const trustLinks = useMemo(
+    () => [
+      { label: "About this guide", routeId: "trust" },
+      { label: "Editorial policy", routeId: "editorial" },
+      { label: "Local presence checklist", routeId: "localSeo" },
+      { label: "Crawler policy", routeId: "crawlerPolicy" },
+      { label: "Events and updates", routeId: "events" },
+    ] satisfies Array<{ label: string; routeId: RouteId }>,
+    [],
+  );
 
   return (
     <main lang={language}>
@@ -235,7 +290,7 @@ export function App() {
       )}
 
       <section id="home" className="hero">
-        <img className="hero-image" src="/assets/aglen-hero-river-canyon.png" alt={copy.hero.imageAlt} fetchPriority="high" decoding="async" />
+        <img className="hero-image" src="/assets/aglen-hero-river-canyon.png" alt={copy.hero.imageAlt} width="1200" height="630" fetchPriority="high" decoding="async" />
         <div className="hero-overlay" aria-hidden="true" />
         <div className="hero-copy section-shell reveal">
           <p className="eyebrow">{copy.hero.meta}</p>
@@ -294,7 +349,7 @@ export function App() {
           <div className="mystery-grid">
             {copy.mysteries.map((item) => (
               <article className="mystery-card reveal" key={item.title}>
-                <img src={item.image} alt="" aria-hidden="true" loading="lazy" />
+                <img src={item.image} alt="" aria-hidden="true" width="1200" height="900" loading="lazy" />
                 <div>
                   <p>{item.tag}</p>
                   <h3>{item.title}</h3>
@@ -313,11 +368,13 @@ export function App() {
             role="dialog"
             aria-modal="true"
             aria-labelledby="timeline-dialog-title"
+            ref={timelineDialogRef}
             onClick={(event) => event.stopPropagation()}
           >
             <button
               className="modal-close"
               type="button"
+              ref={timelineCloseRef}
               onClick={() => setSelectedTimeline(null)}
               aria-label={copy.ui.modalCloseAria}
             >
@@ -339,7 +396,7 @@ export function App() {
         <div className="place-grid">
           {copy.placesList.map((place) => (
             <article className="place-card reveal" key={place.title}>
-              <img src={place.image} alt={place.imageAlt} loading="lazy" />
+              <img src={place.image} alt={place.imageAlt} width="1200" height="900" loading="lazy" />
               <div>
                 <p>{place.tag}</p>
                 <h3>{place.title}</h3>
@@ -358,7 +415,7 @@ export function App() {
         <div className="gallery-grid" aria-label={copy.gallery.aria}>
           {copy.galleryItems.map((item) => (
             <figure className={`gallery-item ${item.size} reveal`} key={item.title}>
-              <img src={item.image} alt={item.alt} loading="lazy" />
+              <img src={item.image} alt={item.alt} width="1200" height="900" loading="lazy" />
               <figcaption>{item.title}</figcaption>
             </figure>
           ))}
@@ -382,6 +439,31 @@ export function App() {
               </article>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section id="travel-guide" className="content-hub section-shell">
+        <div className="section-heading reveal">
+          <p className="eyebrow">Travel guide hub</p>
+          <h2>Plan Aglen by interest, route, and nearby place</h2>
+          <p>
+            Dedicated guide pages connect the main destination story with visitor intent:
+            attractions, hiking, fishing, caves, the Vit River, accommodation, food,
+            seasonal updates, and nearby destinations.
+          </p>
+        </div>
+        <div className="hub-grid">
+          {guideLinks.map((link) => (
+            <a
+              className="hub-card reveal"
+              href={routeHref(link.routeId)}
+              key={link.routeId}
+              onClick={(event) => handleRouteClick(event, link.routeId)}
+            >
+              <span>{link.label}</span>
+              <p>{link.text}</p>
+            </a>
+          ))}
         </div>
       </section>
 
@@ -423,7 +505,7 @@ export function App() {
         <div className="place-grid">
           {copy.accommodationList.map((item: Accommodation) => (
             <article className="place-card reveal" key={item.title}>
-              <img src={item.image} alt="" aria-hidden="true" loading="lazy" />
+              <img src={item.image} alt="" aria-hidden="true" width="1200" height="900" loading="lazy" />
               <div>
                 <p>{item.type}</p>
                 <h3>{item.title}</h3>
@@ -549,10 +631,21 @@ export function App() {
             {copy.contact.cta}
           </a>
         </div>
-        <footer className="site-footer">
+        <footer id="trust" className="site-footer">
           {copy.sourceNotes.map((note) => (
             <span key={note}>{note}</span>
           ))}
+          <nav className="footer-links" aria-label="Trust and policy pages">
+            {trustLinks.map((link) => (
+              <a
+                href={routeHref(link.routeId)}
+                key={link.routeId}
+                onClick={(event) => handleRouteClick(event, link.routeId)}
+              >
+                {link.label}
+              </a>
+            ))}
+          </nav>
         </footer>
       </section>
     </main>

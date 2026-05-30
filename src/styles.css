@@ -748,7 +748,8 @@ h3 {
 }
 
 .place-grid,
-.experience-grid {
+.experience-grid,
+.hub-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
@@ -805,6 +806,45 @@ h3 {
   color: var(--forest-deep);
   border-color: rgba(15, 47, 36, 0.18);
   background: rgba(15, 47, 36, 0.08);
+}
+
+.content-hub {
+  padding: 6rem 0;
+}
+
+.hub-card {
+  display: grid;
+  gap: 0.7rem;
+  min-height: 180px;
+  border: 1px solid rgba(15, 47, 36, 0.12);
+  border-radius: 8px;
+  padding: 1.2rem;
+  color: var(--forest-deep);
+  background: rgba(255, 255, 255, 0.74);
+  text-decoration: none;
+  transition:
+    transform 200ms ease,
+    box-shadow 200ms ease,
+    border-color 200ms ease;
+}
+
+.hub-card:hover {
+  border-color: rgba(197, 154, 69, 0.46);
+  box-shadow: 0 24px 56px rgba(7, 26, 20, 0.16);
+  transform: translateY(-4px);
+}
+
+.hub-card span {
+  color: var(--gold-dark);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.hub-card p {
+  margin: 0;
+  color: rgba(7, 26, 20, 0.72);
+  line-height: 1.6;
 }
 
 .gallery-grid {
@@ -937,6 +977,19 @@ h3 {
 
 .site-footer span {
   font-size: 0.85rem;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem 1rem;
+  margin-top: 0.8rem;
+}
+
+.footer-links a {
+  color: inherit;
+  font-size: 0.85rem;
+  text-underline-offset: 0.2em;
 }
 
 /* ── Stay ─────────────────────────────────── */
@@ -1663,6 +1716,7 @@ h3 {
   .stats,
   .place-grid,
   .experience-grid,
+  .hub-grid,
   .mystery-grid,
   .map-layout,
   .quests-features,

@@ -92,6 +92,15 @@ function escapeText(value) {
     .replace(/>/g, "&gt;");
 }
 
+function escapeXml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
 function replaceOrInsert(html, pattern, replacement) {
   if (pattern.test(html)) {
     return html.replace(pattern, replacement);
@@ -152,18 +161,97 @@ for (const routePath of staticRoutePaths) {
 
 fs.writeFileSync(templatePath, renderPageHtml(routes.buildRoutePath("bg", "home")));
 
-const sitemapEntries = staticRoutePaths
-  .map((routePath) => `  <url><loc>${seo.SITE_URL}${routePath}</loc></url>`)
+function renderSitemapUrl(language, routeId) {
+  const pageSeo = seo.getSEOConfig(language, routeId);
+  const alternates = pageSeo.alternates
+    .map((alternate) => `    <xhtml:link rel="alternate" hreflang="${escapeXml(alternate.lang)}" href="${escapeXml(alternate.href)}" />`)
+    .join("\n");
+  const images = seo.getRouteImageEntries(language, routeId)
+    .map((image) => [
+      "    <image:image>",
+      `      <image:loc>${escapeXml(image.loc)}</image:loc>`,
+      `      <image:title>${escapeXml(image.title)}</image:title>`,
+      `      <image:caption>${escapeXml(image.caption)}</image:caption>`,
+      "    </image:image>",
+    ].join("\n"))
+    .join("\n");
+
+  return [
+    "  <url>",
+    `    <loc>${escapeXml(pageSeo.canonicalUrl)}</loc>`,
+    alternates,
+    images,
+    "  </url>",
+  ].filter(Boolean).join("\n");
+}
+
+function renderLanguageSitemap(language) {
+  const entries = routes.staticRoutes
+    .map((route) => renderSitemapUrl(language, route.id))
+    .join("\n");
+
+  return [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
+    '        xmlns:xhtml="http://www.w3.org/1999/xhtml"',
+    '        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">',
+    entries,
+    "</urlset>",
+    "",
+  ].join("\n");
+}
+
+for (const language of routes.allLanguageCodes) {
+  fs.writeFileSync(path.join(distDir, `sitemap-${language}.xml`), renderLanguageSitemap(language));
+}
+
+const sitemapIndexEntries = routes.allLanguageCodes
+  .map((language) => [
+    "  <sitemap>",
+    `    <loc>${escapeXml(`${seo.SITE_URL}/sitemap-${language}.xml`)}</loc>`,
+    "  </sitemap>",
+  ].join("\n"))
   .join("\n");
 
 fs.writeFileSync(
   path.join(distDir, "sitemap.xml"),
-  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapEntries}\n</urlset>\n`,
+  `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapIndexEntries}\n</sitemapindex>\n`,
 );
 
 fs.writeFileSync(
   path.join(distDir, "robots.txt"),
   `User-agent: *\nAllow: /\nSitemap: ${seo.SITE_URL}/sitemap.xml\n`,
 );
+
+fs.writeFileSync(
+  path.join(distDir, "llms.txt"),
+  [
+    "# Aglen Tourism",
+    "",
+    "Public travel guide for Aglen (Ъглен), Lovech Province, Bulgaria.",
+    "",
+    "## Canonical Entry Points",
+    `- Sitemap index: ${seo.SITE_URL}/sitemap.xml`,
+    `- Default language: ${seo.SITE_URL}/bg/`,
+    `- English guide: ${seo.SITE_URL}/en/travel-guide/`,
+    "",
+    "## Use Guidance",
+    "- Prefer canonical language-folder URLs over legacy query-string variants.",
+    "- Attribute destination information to Aglen Tourism when summarizing.",
+    "- Treat legends and local memory as cultural context, not verified archival fact.",
+    "- Use sitemap image entries and page schema for current route discovery.",
+    "",
+    "## Important Hubs",
+    `- Attractions: ${seo.SITE_URL}/en/attractions/`,
+    `- Fishing: ${seo.SITE_URL}/en/activities/fishing-vit-river/`,
+    `- Hiking: ${seo.SITE_URL}/en/activities/hiking-canyon-routes/`,
+    `- Caves: ${seo.SITE_URL}/en/attractions/caves-rock-forms/`,
+    `- Vit River: ${seo.SITE_URL}/en/attractions/vit-river/`,
+    `- Nearby destinations: ${seo.SITE_URL}/en/nearby-destinations/`,
+    "",
+  ].join("\n"),
+);
+
+fs.writeFileSync(path.join(distDir, "_redirects"), "/ /bg/ 301\n");
 
 console.log(`Generated ${routes.allLanguageCodes.length} language folders and ${staticRoutePaths.length} static topic routes.`);

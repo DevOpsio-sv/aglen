@@ -6,10 +6,23 @@ export type RouteId =
   | "pillars"
   | "attractions"
   | "activities"
+  | "fishing"
+  | "hiking"
+  | "caves"
+  | "vitRiver"
+  | "food"
+  | "nearby"
   | "geo"
   | "stay"
   | "quests"
   | "app"
+  | "travelGuide"
+  | "seasonal"
+  | "events"
+  | "trust"
+  | "editorial"
+  | "localSeo"
+  | "crawlerPolicy"
   | "contact";
 
 export type StaticRoute = {
@@ -30,10 +43,23 @@ export const staticRoutes: StaticRoute[] = [
   { id: "pillars", slug: "tourism", sectionId: "about" },
   { id: "attractions", slug: "attractions", sectionId: "landmarks" },
   { id: "activities", slug: "activities", sectionId: "experiences" },
+  { id: "fishing", slug: "activities/fishing-vit-river", sectionId: "experiences" },
+  { id: "hiking", slug: "activities/hiking-canyon-routes", sectionId: "experiences" },
+  { id: "caves", slug: "attractions/caves-rock-forms", sectionId: "landmarks" },
+  { id: "vitRiver", slug: "attractions/vit-river", sectionId: "location" },
+  { id: "food", slug: "travel-guide/food-local-products", sectionId: "travel-guide" },
+  { id: "nearby", slug: "nearby-destinations", sectionId: "travel-guide" },
   { id: "geo", slug: "location", sectionId: "location" },
   { id: "stay", slug: "stay", sectionId: "stay" },
   { id: "quests", slug: "hidden-bulgaria-quests", sectionId: "quests" },
   { id: "app", slug: "app", sectionId: "app" },
+  { id: "travelGuide", slug: "travel-guide", sectionId: "travel-guide" },
+  { id: "seasonal", slug: "travel-guide/seasonal-guide", sectionId: "travel-guide" },
+  { id: "events", slug: "events", sectionId: "travel-guide" },
+  { id: "trust", slug: "about", sectionId: "trust" },
+  { id: "editorial", slug: "editorial-policy", sectionId: "trust" },
+  { id: "localSeo", slug: "local-presence", sectionId: "trust" },
+  { id: "crawlerPolicy", slug: "crawler-policy", sectionId: "trust" },
   { id: "contact", slug: "contact", sectionId: "contact" },
 ];
 
