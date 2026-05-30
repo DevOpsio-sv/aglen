@@ -1,4 +1,6 @@
 import type { LanguageCode } from "./locales/types";
+import { contentByLanguage } from "./content";
+import { allLanguageCodes, buildRoutePath, DEFAULT_LANGUAGE, type RouteId } from "./routes";
 
 // ---------------------------------------------------------------------------
 // IMPORTANT: Update SITE_URL to your production domain before deploying.
@@ -123,12 +125,83 @@ const seoMeta: Record<
   },
 };
 
-// ---------------------------------------------------------------------------
-// All supported language codes (mirrors src/locales/shared.ts)
-// ---------------------------------------------------------------------------
-const ALL_LANGS: LanguageCode[] = [
-  "bg", "en", "de", "fr", "es", "it", "ro", "tr", "el", "pl", "ru", "ja", "sr",
-];
+type SEOConfig = {
+  title: string;
+  description: string;
+  locale: string;
+  keywords: string;
+  canonicalUrl: string;
+  alternates: Array<{ lang: string; href: string }>;
+};
+
+const routeKeywordSuffix: Record<RouteId, string> = {
+  home: "Aglen village, Ъглен tourism, Vit River Bulgaria",
+  pillars: "Aglen tourism pillars, hidden Bulgaria village, cultural tourism Bulgaria",
+  attractions: "Aglen attractions, Vit River landmarks, rock arch Aglen, Kaleto ruins",
+  activities: "Aglen activities, canyon walk, fishing Vit River, Bulgaria eco tours",
+  geo: "Aglen location, Lovech Province, Lukovit, Vit River map",
+  stay: "Aglen accommodation, guest rooms Aglen, camping Vit River, Bulgaria rural stay",
+  quests: "Hidden Bulgaria Quests, AR tourism Bulgaria, Aglen AR adventure",
+  app: "Hidden Bulgaria Quests app, Android AR tourism app Bulgaria",
+  contact: "Aglen visit planning, guided routes Aglen, tourism contact Bulgaria",
+};
+
+function absoluteRouteUrl(lang: LanguageCode, routeId: RouteId): string {
+  return `${SITE_URL}${buildRoutePath(lang, routeId)}`;
+}
+
+export function getSEOConfig(lang: LanguageCode, routeId: RouteId = "home"): SEOConfig {
+  const base = seoMeta[lang];
+  const copy = contentByLanguage[lang];
+
+  const routeText: Record<RouteId, { title: string; description: string }> = {
+    home: { title: base.title, description: base.description },
+    pillars: {
+      title: `${copy.about.title} | ${copy.brand.name}`,
+      description: `${copy.about.text} ${copy.legends.text}`,
+    },
+    attractions: {
+      title: `${copy.landmarks.title} | ${copy.brand.name}`,
+      description: copy.landmarks.text,
+    },
+    activities: {
+      title: `${copy.experiences.title} | ${copy.brand.name}`,
+      description: copy.experiences.text,
+    },
+    geo: {
+      title: `${copy.landmarks.aria} | ${copy.brand.name}`,
+      description: `${copy.hero.meta}. ${copy.landmarks.text}`,
+    },
+    stay: {
+      title: `${copy.stay.title} | ${copy.brand.name}`,
+      description: copy.stay.text,
+    },
+    quests: {
+      title: `${copy.quests.title} | ${copy.brand.name}`,
+      description: copy.quests.text,
+    },
+    app: {
+      title: `${copy.app.title} | ${copy.brand.name}`,
+      description: copy.app.text,
+    },
+    contact: {
+      title: `${copy.contact.title} | ${copy.brand.name}`,
+      description: copy.contact.text,
+    },
+  };
+
+  return {
+    title: routeText[routeId].title,
+    description: routeText[routeId].description,
+    locale: base.locale,
+    keywords: `${base.keywords}, ${routeKeywordSuffix[routeId]}`,
+    canonicalUrl: absoluteRouteUrl(lang, routeId),
+    alternates: [
+      { lang: "x-default", href: absoluteRouteUrl(DEFAULT_LANGUAGE, routeId) },
+      ...allLanguageCodes.map((code) => ({ lang: code, href: absoluteRouteUrl(code, routeId) })),
+    ],
+  };
+}
 
 // ---------------------------------------------------------------------------
 // DOM helpers
@@ -154,7 +227,7 @@ function setCanonical(href: string): void {
   el.href = href;
 }
 
-function setHreflangLinks(activeLang: LanguageCode): void {
+function setHreflangLinks(lang: LanguageCode, routeId: RouteId): void {
   document.querySelectorAll('link[rel="alternate"][hreflang]').forEach((n) => n.remove());
 
   const addLink = (lang: string, href: string) => {
@@ -165,13 +238,9 @@ function setHreflangLinks(activeLang: LanguageCode): void {
     document.head.appendChild(link);
   };
 
-  addLink("x-default", SITE_URL + "/");
-  ALL_LANGS.forEach((code) => {
-    const url = code === "bg" ? `${SITE_URL}/` : `${SITE_URL}/?lang=${code}`;
-    addLink(code, url);
+  getSEOConfig(lang, routeId).alternates.forEach((alternate) => {
+    addLink(alternate.lang, alternate.href);
   });
-
-  void activeLang; // used by caller to update URL
 }
 
 function injectJSONLD(data: object): void {
@@ -188,10 +257,11 @@ function injectJSONLD(data: object): void {
 // ---------------------------------------------------------------------------
 // JSON-LD @graph builder
 // ---------------------------------------------------------------------------
-function buildJSONLD(lang: LanguageCode): object {
-  const meta = seoMeta[lang];
-  const canonicalUrl =
-    lang === "bg" ? `${SITE_URL}/` : `${SITE_URL}/?lang=${lang}`;
+export function buildJSONLD(lang: LanguageCode, routeId: RouteId = "home"): object {
+  const meta = getSEOConfig(lang, routeId);
+  const copy = contentByLanguage[lang];
+  const homeUrl = absoluteRouteUrl(lang, "home");
+  const routeUrl = meta.canonicalUrl;
 
   return {
     "@context": "https://schema.org",
@@ -234,16 +304,16 @@ function buildJSONLD(lang: LanguageCode): object {
       {
         "@type": "WebSite",
         "@id": `${SITE_URL}/#website`,
-        url: SITE_URL,
+        url: homeUrl,
         name: meta.title,
         description: meta.description,
         publisher: { "@id": `${SITE_URL}/#organization` },
-        inLanguage: ALL_LANGS,
+        inLanguage: allLanguageCodes,
         potentialAction: {
           "@type": "SearchAction",
           target: {
             "@type": "EntryPoint",
-            urlTemplate: `${SITE_URL}/?search={search_term_string}`,
+            urlTemplate: `${homeUrl}?search={search_term_string}`,
           },
           "query-input": "required name=search_term_string",
         },
@@ -252,8 +322,8 @@ function buildJSONLD(lang: LanguageCode): object {
       // ── WebPage ───────────────────────────────────────────────────────────
       {
         "@type": "WebPage",
-        "@id": canonicalUrl,
-        url: canonicalUrl,
+        "@id": routeUrl,
+        url: routeUrl,
         name: meta.title,
         description: meta.description,
         inLanguage: lang,
@@ -275,7 +345,7 @@ function buildJSONLD(lang: LanguageCode): object {
         alternateName: ["Ъглен", "Ăglen", "Uglen"],
         description:
           "Bulgaria's only village whose name starts with the letter Ъ. Known for limestone canyons, the Vit River, historical caves, the Калето ruins, and the Hidden Bulgaria Quests AR adventure.",
-        url: SITE_URL,
+        url: homeUrl,
         image: [
           `${SITE_URL}/assets/aglen-hero-river-canyon.png`,
           `${SITE_URL}/assets/aglen-rock-arch.png`,
@@ -350,7 +420,7 @@ function buildJSONLD(lang: LanguageCode): object {
           "Free to download and play",
         ],
         publisher: { "@id": `${SITE_URL}/#organization` },
-        inLanguage: ALL_LANGS,
+        inLanguage: allLanguageCodes,
         isAccessibleForFree: true,
         availableOnDevice: "Mobile",
       },
@@ -524,27 +594,109 @@ function buildJSONLD(lang: LanguageCode): object {
       {
         "@type": "BreadcrumbList",
         "@id": `${SITE_URL}/#breadcrumbs`,
-        itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
-          { "@type": "ListItem", position: 2, name: "Landmarks", item: `${SITE_URL}/#landmarks` },
-          { "@type": "ListItem", position: 3, name: "Experiences", item: `${SITE_URL}/#experiences` },
-          { "@type": "ListItem", position: 4, name: "Stay", item: `${SITE_URL}/#stay` },
-          { "@type": "ListItem", position: 5, name: "Hidden Bulgaria Quests", item: `${SITE_URL}/#quests` },
-          { "@type": "ListItem", position: 6, name: "Download App", item: `${SITE_URL}/#app` },
-          { "@type": "ListItem", position: 7, name: "Contact", item: `${SITE_URL}/#contact` },
-        ],
+        itemListElement: routeId === "home"
+          ? [{ "@type": "ListItem", position: 1, name: copy.nav.home, item: homeUrl }]
+          : [
+              { "@type": "ListItem", position: 1, name: copy.nav.home, item: homeUrl },
+              { "@type": "ListItem", position: 2, name: meta.title, item: routeUrl },
+            ],
       },
     ],
   };
 }
 
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function paragraph(text: string): string {
+  return `<p>${escapeHtml(text)}</p>`;
+}
+
+function list(items: string[]): string {
+  return `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
+}
+
+export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "home"): string {
+  const copy = contentByLanguage[lang];
+  const meta = getSEOConfig(lang, routeId);
+
+  const sections: Record<RouteId, string> = {
+    home: `
+      <p>${escapeHtml(copy.hero.meta)}</p>
+      <h1>${escapeHtml(copy.hero.title)}</h1>
+      ${paragraph(copy.hero.subtitle)}
+      ${paragraph(copy.hero.lede)}
+      ${list(copy.highlights.map((item) => `${item.value}: ${item.detail}`))}
+    `,
+    pillars: `
+      <h1>${escapeHtml(copy.about.title)}</h1>
+      ${paragraph(copy.about.text)}
+      <h2>${escapeHtml(copy.legends.title)}</h2>
+      ${paragraph(copy.legends.text)}
+      ${list(copy.timeline.map((item) => item.title))}
+    `,
+    attractions: `
+      <h1>${escapeHtml(copy.landmarks.title)}</h1>
+      ${paragraph(copy.landmarks.text)}
+      ${list(copy.placesList.map((place) => `${place.title}: ${place.description}`))}
+    `,
+    activities: `
+      <h1>${escapeHtml(copy.experiences.title)}</h1>
+      ${paragraph(copy.experiences.text)}
+      ${list(copy.experiencesList.map((experience) => `${experience.title}: ${experience.duration}, ${experience.bestFor}. ${experience.description}`))}
+    `,
+    geo: `
+      <h1>${escapeHtml(copy.landmarks.aria)}</h1>
+      ${paragraph(copy.hero.meta)}
+      ${paragraph(copy.landmarks.text)}
+      ${list(copy.mapStops.map((stop) => `${stop.title}: ${stop.detail}`))}
+    `,
+    stay: `
+      <h1>${escapeHtml(copy.stay.title)}</h1>
+      ${paragraph(copy.stay.text)}
+      ${list(copy.accommodationList.map((item) => `${item.title}: ${item.description}`))}
+    `,
+    quests: `
+      <h1>${escapeHtml(copy.quests.title)}</h1>
+      ${paragraph(copy.quests.text)}
+      ${list(copy.quests.features.map((feature) => `${feature.title}: ${feature.text}`))}
+    `,
+    app: `
+      <h1>${escapeHtml(copy.app.title)}</h1>
+      ${paragraph(copy.app.text)}
+      ${paragraph(copy.app.note)}
+      ${list(copy.ar.steps)}
+    `,
+    contact: `
+      <h1>${escapeHtml(copy.contact.title)}</h1>
+      ${paragraph(copy.contact.text)}
+      ${paragraph(copy.contact.noteOne)}
+      ${paragraph(copy.contact.noteTwo)}
+    `,
+  };
+
+  return `
+    <main id="static-seo-content" lang="${lang}">
+      <article>
+        <p>${escapeHtml(copy.brand.name)} - ${escapeHtml(copy.brand.subtitle)}</p>
+        <h1>${escapeHtml(meta.title)}</h1>
+        ${paragraph(meta.description)}
+        ${sections[routeId]}
+      </article>
+    </main>
+  `;
+}
+
 // ---------------------------------------------------------------------------
 // Main export — call once per language change
 // ---------------------------------------------------------------------------
-export function updateDocumentSEO(lang: LanguageCode): void {
-  const meta = seoMeta[lang];
-  const canonicalUrl =
-    lang === "bg" ? `${SITE_URL}/` : `${SITE_URL}/?lang=${lang}`;
+export function updateDocumentSEO(lang: LanguageCode, routeId: RouteId = "home"): void {
+  const meta = getSEOConfig(lang, routeId);
 
   // Title
   document.title = meta.title;
@@ -559,7 +711,7 @@ export function updateDocumentSEO(lang: LanguageCode): void {
   // Open Graph
   setMeta("og:type", "website", true);
   setMeta("og:site_name", "Aglen — Hidden Bulgaria", true);
-  setMeta("og:url", canonicalUrl, true);
+  setMeta("og:url", meta.canonicalUrl, true);
   setMeta("og:title", meta.title, true);
   setMeta("og:description", meta.description, true);
   setMeta("og:image", OG_IMAGE, true);
@@ -580,11 +732,11 @@ export function updateDocumentSEO(lang: LanguageCode): void {
   setMeta("twitter:image:alt", "Aglen — Vit River Canyon, Hidden Bulgaria");
 
   // Canonical
-  setCanonical(canonicalUrl);
+  setCanonical(meta.canonicalUrl);
 
   // Hreflang
-  setHreflangLinks(lang);
+  setHreflangLinks(lang, routeId);
 
   // JSON-LD structured data
-  injectJSONLD(buildJSONLD(lang));
+  injectJSONLD(buildJSONLD(lang, routeId));
 }

@@ -1,31 +1,79 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type MouseEvent } from "react";
 import { contentByLanguage, languages, type Accommodation, type LanguageCode, type TimelineItem } from "./content";
+import { buildRoutePath, getStaticRoute, resolveRoute, type RouteId, type ResolvedRoute } from "./routes";
 import { updateDocumentSEO } from "./seo";
 
 export function App() {
-  const [language, setLanguage] = useState<LanguageCode>(() => {
-    const params = new URLSearchParams(window.location.search);
-    const urlLang = params.get("lang") as LanguageCode | null;
-    return urlLang && languages.some((l) => l.code === urlLang) ? urlLang : "bg";
-  });
+  const [pageRoute, setPageRoute] = useState<ResolvedRoute>(() =>
+    resolveRoute(window.location.pathname, window.location.search),
+  );
   const [selectedTimeline, setSelectedTimeline] = useState<TimelineItem | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
+  const { language, routeId } = pageRoute;
   const copy = contentByLanguage[language];
+  const currentRoute = getStaticRoute(routeId);
   const selectedLanguage = languages.find((item) => item.code === language) ?? languages[0];
 
-  const changeLanguage = (nextLanguage: LanguageCode) => {
+  const navigateTo = (nextRoute: ResolvedRoute, replace = false) => {
+    const url = buildRoutePath(nextRoute.language, nextRoute.routeId);
     setSelectedTimeline(null);
-    setLanguage(nextLanguage);
     setLanguageMenuOpen(false);
-    const url = nextLanguage === "bg" ? "/" : `/?lang=${nextLanguage}`;
-    history.replaceState(null, "", url);
+    setMobileMenuOpen(false);
+    setPageRoute(nextRoute);
+
+    if (replace) {
+      history.replaceState(null, "", url);
+      return;
+    }
+
+    history.pushState(null, "", url);
+  };
+
+  const routeHref = (nextRouteId: RouteId, nextLanguage = language) =>
+    buildRoutePath(nextLanguage, nextRouteId);
+
+  const handleRouteClick = (event: MouseEvent<HTMLAnchorElement>, nextRouteId: RouteId) => {
+    if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+      return;
+    }
+
+    event.preventDefault();
+    navigateTo({ language, routeId: nextRouteId });
+  };
+
+  const changeLanguage = (nextLanguage: LanguageCode) => {
+    navigateTo({ language: nextLanguage, routeId }, true);
   };
 
   useEffect(() => {
     document.documentElement.lang = language;
-    updateDocumentSEO(language);
-  }, [language]);
+    updateDocumentSEO(language, routeId);
+
+    const canonicalPath = buildRoutePath(language, routeId);
+    if (window.location.pathname !== canonicalPath || window.location.search) {
+      history.replaceState(null, "", canonicalPath);
+    }
+  }, [language, routeId]);
+
+  useEffect(() => {
+    const onPopState = () => {
+      setSelectedTimeline(null);
+      setPageRoute(resolveRoute(window.location.pathname, window.location.search));
+    };
+
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
+
+  useEffect(() => {
+    const target = document.getElementById(currentRoute.sectionId);
+    if (!target) return;
+
+    window.requestAnimationFrame(() => {
+      target.scrollIntoView({ block: "start" });
+    });
+  }, [currentRoute.sectionId]);
 
   useEffect(() => {
     document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
@@ -48,19 +96,25 @@ export function App() {
 
   const navItems = useMemo(
     () => [
-      [copy.nav.home, "#home"],
-      [copy.nav.about, "#about"],
-      [copy.nav.landmarks, "#landmarks"],
-      [copy.nav.stay, "#stay"],
-      [copy.nav.quests, "#quests"],
+      [copy.nav.home, "home"],
+      [copy.nav.about, "pillars"],
+      [copy.nav.landmarks, "attractions"],
+      [copy.experiences.eyebrow, "activities"],
+      [copy.nav.stay, "stay"],
+      [copy.nav.quests, "quests"],
     ],
     [copy],
-  );
+  ) as Array<[string, RouteId]>;
 
   return (
     <main lang={language}>
       <header className="site-header" aria-label={copy.nav.home}>
-        <a className="brand" href="#home" aria-label={`${copy.brand.name} - ${copy.nav.home}`}>
+        <a
+          className="brand"
+          href={routeHref("home")}
+          aria-label={`${copy.brand.name} - ${copy.nav.home}`}
+          onClick={(event) => handleRouteClick(event, "home")}
+        >
           <span className="brand-mark">Ъ</span>
           <span>
             <strong>{copy.brand.name}</strong>
@@ -68,8 +122,13 @@ export function App() {
           </span>
         </a>
         <nav className="desktop-nav">
-          {navItems.map(([label, href]) => (
-            <a key={href} href={href}>
+          {navItems.map(([label, navRouteId]) => (
+            <a
+              key={navRouteId}
+              href={routeHref(navRouteId)}
+              onClick={(event) => handleRouteClick(event, navRouteId)}
+              aria-current={navRouteId === routeId ? "page" : undefined}
+            >
               {label}
             </a>
           ))}
@@ -140,8 +199,13 @@ export function App() {
             >
               ×
             </button>
-            {navItems.map(([label, href]) => (
-              <a key={href} href={href} onClick={() => setMobileMenuOpen(false)}>
+            {navItems.map(([label, navRouteId]) => (
+              <a
+                key={navRouteId}
+                href={routeHref(navRouteId)}
+                onClick={(event) => handleRouteClick(event, navRouteId)}
+                aria-current={navRouteId === routeId ? "page" : undefined}
+              >
                 {label}
               </a>
             ))}
@@ -179,10 +243,10 @@ export function App() {
           <p className="hero-title">{copy.hero.subtitle}</p>
           <p className="hero-lede">{copy.hero.lede}</p>
           <div className="hero-actions">
-            <a className="button primary" href="#landmarks">
+            <a className="button primary" href={routeHref("attractions")} onClick={(event) => handleRouteClick(event, "attractions")}>
               {copy.hero.primary}
             </a>
-            <a className="button ghost" href="#app">
+            <a className="button ghost" href={routeHref("app")} onClick={(event) => handleRouteClick(event, "app")}>
               {copy.hero.secondary}
             </a>
           </div>
@@ -301,7 +365,7 @@ export function App() {
         </div>
       </section>
 
-      <section className="map-section">
+      <section id="location" className="map-section">
         <div className="section-shell map-layout">
           <div className="section-heading reveal">
             <p className="eyebrow">{copy.landmarks.aria}</p>
@@ -338,7 +402,11 @@ export function App() {
                 <span>{experience.description}</span>
               </div>
               <strong>{experience.price}</strong>
-              <a href="#contact" aria-label={`${copy.experiences.cta}: ${experience.title}`}>
+              <a
+                href={routeHref("contact")}
+                aria-label={`${copy.experiences.cta}: ${experience.title}`}
+                onClick={(event) => handleRouteClick(event, "contact")}
+              >
                 {copy.experiences.cta}
               </a>
             </article>
@@ -365,7 +433,7 @@ export function App() {
           ))}
         </div>
         <div className="stay-contact reveal">
-          <a className="button ghost" href="#contact">
+          <a className="button ghost" href={routeHref("contact")} onClick={(event) => handleRouteClick(event, "contact")}>
             {copy.contact.cta}
           </a>
         </div>
@@ -388,7 +456,7 @@ export function App() {
             ))}
           </div>
           <div className="quests-cta reveal">
-            <a className="button primary quests-btn" href="#app">
+            <a className="button primary quests-btn" href={routeHref("app")} onClick={(event) => handleRouteClick(event, "app")}>
               {copy.quests.cta}
             </a>
           </div>
@@ -410,7 +478,7 @@ export function App() {
           ))}
         </ol>
         <div className="ar-cta reveal">
-          <a className="button primary" href="#app">
+          <a className="button primary" href={routeHref("app")} onClick={(event) => handleRouteClick(event, "app")}>
             {copy.ar.cta}
           </a>
         </div>
