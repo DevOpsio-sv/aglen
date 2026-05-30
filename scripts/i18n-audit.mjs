@@ -8,6 +8,17 @@ const reportsDir = path.join(rootDir, "reports");
 const reportPath = path.join(reportsDir, "i18n-bg-audit.md");
 const sourceLanguage = "bg";
 const ignoredLocaleModules = new Set(["index", "shared", "types"]);
+const ignoredTextPathPatterns = [
+  /^experiencesList\.\d+\.price$/,
+  /^galleryItems\.\d+\.size$/,
+];
+const allowedSameAsSourcePathPatterns = [
+  /^app\.title$/,
+  /^brand\.name$/,
+  /^hero\.title$/,
+  /^nav\.quests$/,
+  /^placesList\.\d+\.title$/,
+];
 
 function readSource(filePath) {
   return fs.readFileSync(filePath, "utf8");
@@ -140,9 +151,16 @@ function isText(value) {
   return value?.kind === "text";
 }
 
+function shouldAuditPath(dottedPath) {
+  return !ignoredTextPathPatterns.some((pattern) => pattern.test(dottedPath));
+}
+
+function canMatchSource(dottedPath) {
+  return allowedSameAsSourcePathPatterns.some((pattern) => pattern.test(dottedPath));
+}
+
 function compareLocale(language, sourceRows, sourcePaths, localeValue) {
-  const localeRows = flattenText(localeValue);
-  const localePathMap = new Map(localeRows.map((row) => [row.path, row.value]));
+  const localeRows = flattenText(localeValue).filter((row) => shouldAuditPath(row.path));
   const missing = [];
   const nonText = [];
   const sameAsBulgarian = [];
@@ -164,7 +182,7 @@ function compareLocale(language, sourceRows, sourcePaths, localeValue) {
     const targetValue = localeNode.value.trim();
     const sourceValue = sourceRow.value.trim();
 
-    if (targetValue === sourceValue) {
+    if (targetValue === sourceValue && !canMatchSource(sourceRow.path)) {
       sameAsBulgarian.push({ ...sourceRow, current: targetValue });
     }
 
@@ -201,6 +219,16 @@ function formatIssueRows(rows, includeCurrent = false) {
   return `${header}\n${body}\n`;
 }
 
+function formatLocaleRows(rows) {
+  if (rows.length === 0) return "_None._\n";
+
+  const body = rows
+    .map((row) => `| \`${row.path}\` | ${markdownEscape(row.value)} |`)
+    .join("\n");
+
+  return `| Path | Current value |\n| --- | --- |\n${body}\n`;
+}
+
 function buildReport(sourceRows, comparisons) {
   const generatedAt = new Date().toISOString();
   const report = [];
@@ -214,8 +242,9 @@ function buildReport(sourceRows, comparisons) {
   report.push("");
   report.push("1. Review the Bulgarian source checklist below for spelling, tone, and factual accuracy.");
   report.push("2. Update each non-Bulgarian locale at the same object path as the Bulgarian source.");
-  report.push("3. Run `npm run i18n:audit` again until every locale has zero missing paths and no stale Bulgarian text.");
-  report.push("4. Run `npm run build` before publishing.");
+  report.push("3. Use the per-language sections as the update brief: each row shows the Bulgarian source and the current target value that needs review.");
+  report.push("4. Run `npm run i18n:audit` again until every locale has zero missing paths and no stale Bulgarian text.");
+  report.push("5. Run `npm run build` before publishing.");
   report.push("");
   report.push("## Summary");
   report.push("");
@@ -254,6 +283,9 @@ function buildReport(sourceRows, comparisons) {
     report.push("### Likely Too Short");
     report.push("");
     report.push(formatIssueRows(comparison.likelyTooShort, true));
+    report.push("### Extra Target-Language Paths");
+    report.push("");
+    report.push(formatLocaleRows(comparison.extra));
   }
 
   return `${report.join("\n")}\n`;
@@ -281,7 +313,7 @@ for (const language of localeFiles) {
 }
 
 const sourceValue = locales.get(sourceLanguage);
-const sourceRows = flattenText(sourceValue);
+const sourceRows = flattenText(sourceValue).filter((row) => shouldAuditPath(row.path));
 const sourcePaths = new Set(sourceRows.map((row) => row.path));
 const comparisons = [...locales.entries()]
   .filter(([language]) => language !== sourceLanguage)
@@ -294,7 +326,9 @@ const issueCount = comparisons.reduce(
   (total, comparison) => total
     + comparison.missing.length
     + comparison.nonText.length
-    + comparison.sameAsBulgarian.length,
+    + comparison.sameAsBulgarian.length
+    + comparison.likelyTooShort.length
+    + comparison.extra.length,
   0,
 );
 

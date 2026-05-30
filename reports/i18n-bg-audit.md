@@ -1,35 +1,36 @@
 # Bulgarian Copy Audit
 
-Generated: 2026-05-30T10:57:49.248Z
+Generated: 2026-05-30T11:00:52.734Z
 Source of truth: `src/locales/bg.ts`
 
 ## How To Use This
 
 1. Review the Bulgarian source checklist below for spelling, tone, and factual accuracy.
 2. Update each non-Bulgarian locale at the same object path as the Bulgarian source.
-3. Run `npm run i18n:audit` again until every locale has zero missing paths and no stale Bulgarian text.
-4. Run `npm run build` before publishing.
+3. Use the per-language sections as the update brief: each row shows the Bulgarian source and the current target value that needs review.
+4. Run `npm run i18n:audit` again until every locale has zero missing paths and no stale Bulgarian text.
+5. Run `npm run build` before publishing.
 
 ## Summary
 
 | Language | Text nodes | Missing | Non-text at BG path | Same as BG | Likely too short | Extra |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| de | 182 | 0 | 0 | 18 | 0 | 0 |
-| el | 183 | 0 | 0 | 18 | 3 | 1 |
-| en | 182 | 0 | 0 | 17 | 0 | 0 |
-| es | 182 | 0 | 0 | 17 | 0 | 0 |
-| fr | 183 | 0 | 0 | 18 | 0 | 1 |
-| it | 183 | 0 | 0 | 18 | 1 | 1 |
-| ja | 182 | 0 | 0 | 18 | 11 | 0 |
-| pl | 183 | 0 | 0 | 18 | 2 | 1 |
-| ro | 183 | 0 | 0 | 18 | 1 | 1 |
-| ru | 182 | 0 | 0 | 27 | 0 | 0 |
-| sr | 183 | 0 | 0 | 25 | 3 | 1 |
-| tr | 183 | 0 | 0 | 18 | 2 | 1 |
+| de | 172 | 0 | 0 | 1 | 0 | 0 |
+| el | 173 | 0 | 0 | 1 | 3 | 1 |
+| en | 172 | 0 | 0 | 0 | 0 | 0 |
+| es | 172 | 0 | 0 | 0 | 0 | 0 |
+| fr | 173 | 0 | 0 | 1 | 0 | 1 |
+| it | 173 | 0 | 0 | 1 | 1 | 1 |
+| ja | 172 | 0 | 0 | 1 | 11 | 0 |
+| pl | 173 | 0 | 0 | 1 | 2 | 1 |
+| ro | 173 | 0 | 0 | 1 | 1 | 1 |
+| ru | 172 | 0 | 0 | 7 | 0 | 0 |
+| sr | 173 | 0 | 0 | 7 | 3 | 1 |
+| tr | 173 | 0 | 0 | 1 | 2 | 1 |
 
 ## Bulgarian Source Checklist
 
-Total Bulgarian text nodes: 182
+Total Bulgarian text nodes: 172
 
 | Path | Bulgarian text |
 | --- | --- |
@@ -155,47 +156,37 @@ Total Bulgarian text nodes: 182
 | `placesList.5.imageAlt` | Каменни останки на хълм над каньон и река |
 | `placesList.5.description` | Място, свързано със стари маршрути, укрепена памет и дългия живот край реката. |
 | `experiencesList.0.title` | Каньонна разходка |
-| `experiencesList.0.price` | €25 |
 | `experiencesList.0.duration` | 2-3 часа |
 | `experiencesList.0.bestFor` | Първо посещение |
 | `experiencesList.0.description` | Водени гледки към Вит, скални форми и местните имена зад пейзажа. |
 | `experiencesList.1.title` | Речно фото пътешествие |
-| `experiencesList.1.price` | €40 |
 | `experiencesList.1.duration` | Полуден |
 | `experiencesList.1.bestFor` | Фотографи |
 | `experiencesList.1.description` | Подбрани места около реката, скалите, старите улици и меката естествена светлина. |
 | `experiencesList.2.title` | Риболов край Вит |
-| `experiencesList.2.price` | €10 |
 | `experiencesList.2.duration` | 2 часа |
 | `experiencesList.2.bestFor` | Бавно пътуване |
 | `experiencesList.2.description` | Тих местен ритъм край водата с практични насоки и грижа към реката. |
 | `experiencesList.3.title` | Уикенд бягство в Ъглен |
-| `experiencesList.3.price` | €60 |
 | `experiencesList.3.duration` | 2 дни |
 | `experiencesList.3.bestFor` | Двойки и приятели |
 | `experiencesList.3.description` | Разходки, пикник, занаяти и вечерен маршрут през селски истории. |
 | `experiencesList.4.title` | Билки и селско знание |
-| `experiencesList.4.price` | €20 |
 | `experiencesList.4.duration` | 90 мин. |
 | `experiencesList.4.bestFor` | Любопитни пътешественици |
 | `experiencesList.4.description` | Разпознаване на билки, традиционна употреба и отговорно събиране. |
 | `experiencesList.5.title` | Ученически ден за откриване |
-| `experiencesList.5.price` | €35 |
 | `experiencesList.5.duration` | 1 ден |
 | `experiencesList.5.bestFor` | Ученически групи |
 | `experiencesList.5.description` | Полеви маршрут през география, история, местни легенди и природозащита. |
 | `galleryItems.0.title` | Каньонът на Вит |
 | `galleryItems.0.alt` | Кинематографичен речен каньон и село при изгрев |
-| `galleryItems.0.size` | wide |
 | `galleryItems.1.title` | Каменната арка |
 | `galleryItems.1.alt` | Естествена варовикова арка над реката |
-| `galleryItems.1.size` | standard |
 | `galleryItems.2.title` | Пещерна светлина |
 | `galleryItems.2.alt` | Пещерен вход с топла светлина |
-| `galleryItems.2.size` | tall |
 | `galleryItems.3.title` | Над скритата долина |
 | `galleryItems.3.alt` | Въздушна гледка към река, скали и село |
-| `galleryItems.3.size` | wide |
 | `mapStops.0.title` | Центърът на селото |
 | `mapStops.0.detail` | Започни от човешкия мащаб на Ъглен: улици, църква, местна памет и ориентация. |
 | `mapStops.1.title` | Пътеката край Вит |
@@ -230,26 +221,13 @@ _None._
 
 | Path | Bulgarian source | Current value |
 | --- | --- | --- |
-| `nav.quests` | Hidden Bulgaria Quests | Hidden Bulgaria Quests |
-| `app.title` | Hidden Bulgaria Quests | Hidden Bulgaria Quests |
-| `placesList.0.title` | Дупката | Дупката |
-| `placesList.1.title` | Слончето | Слончето |
-| `placesList.2.title` | Червена стена | Червена стена |
-| `placesList.3.title` | Рачков вир | Рачков вир |
-| `placesList.5.title` | Калето | Калето |
-| `experiencesList.0.price` | €25 | €25 |
-| `experiencesList.1.price` | €40 | €40 |
-| `experiencesList.2.price` | €10 | €10 |
-| `experiencesList.3.price` | €60 | €60 |
-| `experiencesList.4.price` | €20 | €20 |
-| `experiencesList.5.price` | €35 | €35 |
-| `galleryItems.0.size` | wide | wide |
-| `galleryItems.1.size` | standard | standard |
-| `galleryItems.2.size` | tall | tall |
-| `galleryItems.3.size` | wide | wide |
 | `mapStops.2.title` | Дупката | Дупката |
 
 ### Likely Too Short
+
+_None._
+
+### Extra Target-Language Paths
 
 _None._
 
@@ -268,23 +246,6 @@ _None._
 
 | Path | Bulgarian source | Current value |
 | --- | --- | --- |
-| `nav.quests` | Hidden Bulgaria Quests | Hidden Bulgaria Quests |
-| `app.title` | Hidden Bulgaria Quests | Hidden Bulgaria Quests |
-| `placesList.0.title` | Дупката | Дупката |
-| `placesList.1.title` | Слончето | Слончето |
-| `placesList.2.title` | Червена стена | Червена стена |
-| `placesList.3.title` | Рачков вир | Рачков вир |
-| `placesList.5.title` | Калето | Калето |
-| `experiencesList.0.price` | €25 | €25 |
-| `experiencesList.1.price` | €40 | €40 |
-| `experiencesList.2.price` | €10 | €10 |
-| `experiencesList.3.price` | €60 | €60 |
-| `experiencesList.4.price` | €20 | €20 |
-| `experiencesList.5.price` | €35 | €35 |
-| `galleryItems.0.size` | wide | wide |
-| `galleryItems.1.size` | standard | standard |
-| `galleryItems.2.size` | tall | tall |
-| `galleryItems.3.size` | wide | wide |
 | `mapStops.2.title` | Дупката | Дупката |
 
 ### Likely Too Short
@@ -294,6 +255,12 @@ _None._
 | `timeline.1.detail` | Старите пътища са важни, защото показват, че районът не е бил изолиран. Реката, скалите и високите места са помагали за ориентация, преминаване и защита. | Οι παλιοί δρόμοι δείχνουν ότι η περιοχή δεν ήταν απομονωμένη. |
 | `timeline.2.detail` | Легендите не трябва да се представят като доказан архив, а като местна памет. Те дават човешко лице на мястото: хора, които търсят безопасност, започват отново и оставят имена, разкази и принадлежност. | Είναι τοπική μνήμη: άνθρωποι που αναζητούν ασφάλεια και αφήνουν ονόματα και ιστορίες. |
 | `timeline.3.detail` | Тази част трябва да бъде разказана спокойно и с уважение. Тя свързва Ъглен с по-широката национална памет, без да превръща сайта в учебник. | Αυτό το στρώμα χρειάζεται ήρεμη και σεβαστική αφήγηση. |
+
+### Extra Target-Language Paths
+
+| Path | Current value |
+| --- | --- |
+| `sourceNotes.2` | Οι δημιουργημένες εικόνες είναι placeholders για τελικές εγκεκριμένες φωτογραφίες. |
 
 
 ## EN Update Checklist
@@ -308,27 +275,13 @@ _None._
 
 ### Same As Bulgarian
 
-| Path | Bulgarian source | Current value |
-| --- | --- | --- |
-| `nav.quests` | Hidden Bulgaria Quests | Hidden Bulgaria Quests |
-| `app.title` | Hidden Bulgaria Quests | Hidden Bulgaria Quests |
-| `placesList.0.title` | Дупката | Дупката |
-| `placesList.1.title` | Слончето | Слончето |
-| `placesList.2.title` | Червена стена | Червена стена |
-| `placesList.3.title` | Рачков вир | Рачков вир |
-| `placesList.5.title` | Калето | Калето |
-| `experiencesList.0.price` | €25 | €25 |
-| `experiencesList.1.price` | €40 | €40 |
-| `experiencesList.2.price` | €10 | €10 |
-| `experiencesList.3.price` | €60 | €60 |
-| `experiencesList.4.price` | €20 | €20 |
-| `experiencesList.5.price` | €35 | €35 |
-| `galleryItems.0.size` | wide | wide |
-| `galleryItems.1.size` | standard | standard |
-| `galleryItems.2.size` | tall | tall |
-| `galleryItems.3.size` | wide | wide |
+_None._
 
 ### Likely Too Short
+
+_None._
+
+### Extra Target-Language Paths
 
 _None._
 
@@ -345,27 +298,13 @@ _None._
 
 ### Same As Bulgarian
 
-| Path | Bulgarian source | Current value |
-| --- | --- | --- |
-| `nav.quests` | Hidden Bulgaria Quests | Hidden Bulgaria Quests |
-| `app.title` | Hidden Bulgaria Quests | Hidden Bulgaria Quests |
-| `placesList.0.title` | Дупката | Дупката |
-| `placesList.1.title` | Слончето | Слончето |
-| `placesList.2.title` | Червена стена | Червена стена |
-| `placesList.3.title` | Рачков вир | Рачков вир |
-| `placesList.5.title` | Калето | Калето |
-| `experiencesList.0.price` | €25 | €25 |
-| `experiencesList.1.price` | €40 | €40 |
-| `experiencesList.2.price` | €10 | €10 |
-| `experiencesList.3.price` | €60 | €60 |
-| `experiencesList.4.price` | €20 | €20 |
-| `experiencesList.5.price` | €35 | €35 |
-| `galleryItems.0.size` | wide | wide |
-| `galleryItems.1.size` | standard | standard |
-| `galleryItems.2.size` | tall | tall |
-| `galleryItems.3.size` | wide | wide |
+_None._
 
 ### Likely Too Short
+
+_None._
+
+### Extra Target-Language Paths
 
 _None._
 
@@ -384,28 +323,17 @@ _None._
 
 | Path | Bulgarian source | Current value |
 | --- | --- | --- |
-| `nav.quests` | Hidden Bulgaria Quests | Hidden Bulgaria Quests |
-| `app.title` | Hidden Bulgaria Quests | Hidden Bulgaria Quests |
-| `placesList.0.title` | Дупката | Дупката |
-| `placesList.1.title` | Слончето | Слончето |
-| `placesList.2.title` | Червена стена | Червена стена |
-| `placesList.3.title` | Рачков вир | Рачков вир |
-| `placesList.5.title` | Калето | Калето |
-| `experiencesList.0.price` | €25 | €25 |
-| `experiencesList.1.price` | €40 | €40 |
-| `experiencesList.2.price` | €10 | €10 |
-| `experiencesList.3.price` | €60 | €60 |
-| `experiencesList.4.price` | €20 | €20 |
-| `experiencesList.5.price` | €35 | €35 |
-| `galleryItems.0.size` | wide | wide |
-| `galleryItems.1.size` | standard | standard |
-| `galleryItems.2.size` | tall | tall |
-| `galleryItems.3.size` | wide | wide |
 | `mapStops.2.title` | Дупката | Дупката |
 
 ### Likely Too Short
 
 _None._
+
+### Extra Target-Language Paths
+
+| Path | Current value |
+| --- | --- |
+| `sourceNotes.2` | Les visuels générés sont des placeholders pour des photos finales approuvées. |
 
 
 ## IT Update Checklist
@@ -422,23 +350,6 @@ _None._
 
 | Path | Bulgarian source | Current value |
 | --- | --- | --- |
-| `nav.quests` | Hidden Bulgaria Quests | Hidden Bulgaria Quests |
-| `app.title` | Hidden Bulgaria Quests | Hidden Bulgaria Quests |
-| `placesList.0.title` | Дупката | Дупката |
-| `placesList.1.title` | Слончето | Слончето |
-| `placesList.2.title` | Червена стена | Червена стена |
-| `placesList.3.title` | Рачков вир | Рачков вир |
-| `placesList.5.title` | Калето | Калето |
-| `experiencesList.0.price` | €25 | €25 |
-| `experiencesList.1.price` | €40 | €40 |
-| `experiencesList.2.price` | €10 | €10 |
-| `experiencesList.3.price` | €60 | €60 |
-| `experiencesList.4.price` | €20 | €20 |
-| `experiencesList.5.price` | €35 | €35 |
-| `galleryItems.0.size` | wide | wide |
-| `galleryItems.1.size` | standard | standard |
-| `galleryItems.2.size` | tall | tall |
-| `galleryItems.3.size` | wide | wide |
 | `mapStops.2.title` | Дупката | Дупката |
 
 ### Likely Too Short
@@ -446,6 +357,12 @@ _None._
 | Path | Bulgarian source | Current value |
 | --- | --- | --- |
 | `timeline.0.detail` | Пещерите и варовиковите форми около поречието на Вит са част от по-дълбоката история на района. В туристическия разказ това може да се представи като пласт от време преди селото: земя, която е давала убежище, пътеки и наблюдателни точки много преди съвременните маршрути. | Le grotte e le forme calcaree del Vit sono lo strato più antico del territorio: rifugi, cammini e punti di osservazione. |
+
+### Extra Target-Language Paths
+
+| Path | Current value |
+| --- | --- |
+| `sourceNotes.2` | Le immagini generate sono placeholder per foto finali approvate. |
 
 
 ## JA Update Checklist
@@ -462,23 +379,6 @@ _None._
 
 | Path | Bulgarian source | Current value |
 | --- | --- | --- |
-| `nav.quests` | Hidden Bulgaria Quests | Hidden Bulgaria Quests |
-| `app.title` | Hidden Bulgaria Quests | Hidden Bulgaria Quests |
-| `placesList.0.title` | Дупката | Дупката |
-| `placesList.1.title` | Слончето | Слончето |
-| `placesList.2.title` | Червена стена | Червена стена |
-| `placesList.3.title` | Рачков вир | Рачков вир |
-| `placesList.5.title` | Калето | Калето |
-| `experiencesList.0.price` | €25 | €25 |
-| `experiencesList.1.price` | €40 | €40 |
-| `experiencesList.2.price` | €10 | €10 |
-| `experiencesList.3.price` | €60 | €60 |
-| `experiencesList.4.price` | €20 | €20 |
-| `experiencesList.5.price` | €35 | €35 |
-| `galleryItems.0.size` | wide | wide |
-| `galleryItems.1.size` | standard | standard |
-| `galleryItems.2.size` | tall | tall |
-| `galleryItems.3.size` | wide | wide |
 | `mapStops.2.title` | Дупката | Дупката |
 
 ### Likely Too Short
@@ -497,6 +397,10 @@ _None._
 | `timeline.3.detail` | Тази част трябва да бъде разказана спокойно и с уважение. Тя свързва Ъглен с по-широката национална памет, без да превръща сайта в учебник. | この部分は静かに、敬意をもって語るべきです。ページを教科書にせず、アグレンをブルガリアの広い記憶へつなげます。 |
 | `timeline.4.detail` | Бъдещето на Ъглен е най-силно, ако остане автентично. Вместо масов туризъм — уикенд посещения, малки групи, фотографски маршрути и уважение към хората, реката и селската среда. | アグレンの強みは小さく本物であることです。週末訪問、ガイド散策、写真、手仕事、川沿いのルート、地域環境への敬意が未来を支えます。 |
 
+### Extra Target-Language Paths
+
+_None._
+
 
 ## PL Update Checklist
 
@@ -512,23 +416,6 @@ _None._
 
 | Path | Bulgarian source | Current value |
 | --- | --- | --- |
-| `nav.quests` | Hidden Bulgaria Quests | Hidden Bulgaria Quests |
-| `app.title` | Hidden Bulgaria Quests | Hidden Bulgaria Quests |
-| `placesList.0.title` | Дупката | Дупката |
-| `placesList.1.title` | Слончето | Слончето |
-| `placesList.2.title` | Червена стена | Червена стена |
-| `placesList.3.title` | Рачков вир | Рачков вир |
-| `placesList.5.title` | Калето | Калето |
-| `experiencesList.0.price` | €25 | €25 |
-| `experiencesList.1.price` | €40 | €40 |
-| `experiencesList.2.price` | €10 | €10 |
-| `experiencesList.3.price` | €60 | €60 |
-| `experiencesList.4.price` | €20 | €20 |
-| `experiencesList.5.price` | €35 | €35 |
-| `galleryItems.0.size` | wide | wide |
-| `galleryItems.1.size` | standard | standard |
-| `galleryItems.2.size` | tall | tall |
-| `galleryItems.3.size` | wide | wide |
 | `mapStops.2.title` | Дупката | Дупката |
 
 ### Likely Too Short
@@ -537,6 +424,12 @@ _None._
 | --- | --- | --- |
 | `timeline.0.detail` | Пещерите и варовиковите форми около поречието на Вит са част от по-дълбоката история на района. В туристическия разказ това може да се представи като пласт от време преди селото: земя, която е давала убежище, пътеки и наблюдателни точки много преди съвременните маршрути. | Jaskinie i wapienne formy wokół Vit są najstarszą warstwą miejsca: schronienia, ścieżki i punkty obserwacyjne. |
 | `timeline.3.detail` | Тази част трябва да бъде разказана спокойно и с уважение. Тя свързва Ъглен с по-широката национална памет, без да превръща сайта в учебник. | Tę warstwę warto opowiadać spokojnie i z szacunkiem. |
+
+### Extra Target-Language Paths
+
+| Path | Current value |
+| --- | --- |
+| `sourceNotes.2` | Wygenerowane obrazy są placeholderami dla finalnych zatwierdzonych zdjęć. |
 
 
 ## RO Update Checklist
@@ -553,23 +446,6 @@ _None._
 
 | Path | Bulgarian source | Current value |
 | --- | --- | --- |
-| `nav.quests` | Hidden Bulgaria Quests | Hidden Bulgaria Quests |
-| `app.title` | Hidden Bulgaria Quests | Hidden Bulgaria Quests |
-| `placesList.0.title` | Дупката | Дупката |
-| `placesList.1.title` | Слончето | Слончето |
-| `placesList.2.title` | Червена стена | Червена стена |
-| `placesList.3.title` | Рачков вир | Рачков вир |
-| `placesList.5.title` | Калето | Калето |
-| `experiencesList.0.price` | €25 | €25 |
-| `experiencesList.1.price` | €40 | €40 |
-| `experiencesList.2.price` | €10 | €10 |
-| `experiencesList.3.price` | €60 | €60 |
-| `experiencesList.4.price` | €20 | €20 |
-| `experiencesList.5.price` | €35 | €35 |
-| `galleryItems.0.size` | wide | wide |
-| `galleryItems.1.size` | standard | standard |
-| `galleryItems.2.size` | tall | tall |
-| `galleryItems.3.size` | wide | wide |
 | `mapStops.2.title` | Дупката | Дупката |
 
 ### Likely Too Short
@@ -577,6 +453,12 @@ _None._
 | Path | Bulgarian source | Current value |
 | --- | --- | --- |
 | `timeline.2.detail` | Легендите не трябва да се представят като доказан архив, а като местна памет. Те дават човешко лице на мястото: хора, които търсят безопасност, започват отново и оставят имена, разкази и принадлежност. | Este memorie locală: oameni care caută siguranță, încep din nou și lasă nume și povești. |
+
+### Extra Target-Language Paths
+
+| Path | Current value |
+| --- | --- |
+| `sourceNotes.2` | Imaginile generate sunt placeholder pentru fotografii finale aprobate. |
 
 
 ## RU Update Checklist
@@ -593,35 +475,19 @@ _None._
 
 | Path | Bulgarian source | Current value |
 | --- | --- | --- |
-| `nav.quests` | Hidden Bulgaria Quests | Hidden Bulgaria Quests |
 | `ui.mobileMenuAria` | Меню | Меню |
-| `brand.name` | Ъглен | Ъглен |
-| `hero.title` | ЪГЛЕН | ЪГЛЕН |
-| `app.title` | Hidden Bulgaria Quests | Hidden Bulgaria Quests |
 | `highlights.1.label` | Природа | Природа |
-| `placesList.0.title` | Дупката | Дупката |
-| `placesList.1.title` | Слончето | Слончето |
-| `placesList.2.title` | Червена стена | Червена стена |
-| `placesList.3.title` | Рачков вир | Рачков вир |
-| `placesList.4.title` | Св. Архангел Михаил | Св. Архангел Михаил |
-| `placesList.5.title` | Калето | Калето |
 | `placesList.5.tag` | Археология | Археология |
-| `experiencesList.0.price` | €25 | €25 |
 | `experiencesList.0.duration` | 2-3 часа | 2-3 часа |
-| `experiencesList.1.price` | €40 | €40 |
-| `experiencesList.2.price` | €10 | €10 |
 | `experiencesList.2.duration` | 2 часа | 2 часа |
-| `experiencesList.3.price` | €60 | €60 |
-| `experiencesList.4.price` | €20 | €20 |
 | `experiencesList.4.duration` | 90 мин. | 90 мин. |
-| `experiencesList.5.price` | €35 | €35 |
-| `galleryItems.0.size` | wide | wide |
-| `galleryItems.1.size` | standard | standard |
-| `galleryItems.2.size` | tall | tall |
-| `galleryItems.3.size` | wide | wide |
 | `mapStops.2.title` | Дупката | Дупката |
 
 ### Likely Too Short
+
+_None._
+
+### Extra Target-Language Paths
 
 _None._
 
@@ -640,28 +506,10 @@ _None._
 
 | Path | Bulgarian source | Current value |
 | --- | --- | --- |
-| `nav.quests` | Hidden Bulgaria Quests | Hidden Bulgaria Quests |
 | `ui.modalCloseAria` | Затвори | Затвори |
-| `app.title` | Hidden Bulgaria Quests | Hidden Bulgaria Quests |
 | `highlights.1.label` | Природа | Природа |
-| `placesList.0.title` | Дупката | Дупката |
-| `placesList.1.title` | Слончето | Слончето |
-| `placesList.2.title` | Червена стена | Червена стена |
-| `placesList.3.title` | Рачков вир | Рачков вир |
-| `placesList.4.title` | Св. Архангел Михаил | Св. Архангел Михаил |
-| `placesList.5.title` | Калето | Калето |
-| `experiencesList.0.price` | €25 | €25 |
-| `experiencesList.1.price` | €40 | €40 |
 | `experiencesList.1.bestFor` | Фотографи | Фотографи |
-| `experiencesList.2.price` | €10 | €10 |
-| `experiencesList.3.price` | €60 | €60 |
-| `experiencesList.4.price` | €20 | €20 |
 | `experiencesList.4.duration` | 90 мин. | 90 мин. |
-| `experiencesList.5.price` | €35 | €35 |
-| `galleryItems.0.size` | wide | wide |
-| `galleryItems.1.size` | standard | standard |
-| `galleryItems.2.size` | tall | tall |
-| `galleryItems.3.size` | wide | wide |
 | `mapStops.2.title` | Дупката | Дупката |
 | `accommodationList.2.title` | Планинска вила | Планинска вила |
 | `accommodationList.2.type` | Вила | Вила |
@@ -673,6 +521,12 @@ _None._
 | `timeline.0.detail` | Пещерите и варовиковите форми около поречието на Вит са част от по-дълбоката история на района. В туристическия разказ това може да се представи като пласт от време преди селото: земя, която е давала убежище, пътеки и наблюдателни точки много преди съвременните маршрути. | Пећине и кречњачке форме око Вита су најстарији слој подручја: склоништа, стазе и видиковци пре модерних рута. |
 | `timeline.2.detail` | Легендите не трябва да се представят като доказан архив, а като местна памет. Те дават човешко лице на мястото: хора, които търсят безопасност, започват отново и оставят имена, разкази и принадлежност. | То је локално памћење: људи који траже сигурност, почињу поново и остављају имена и приче. |
 | `timeline.3.detail` | Тази част трябва да бъде разказана спокойно и с уважение. Тя свързва Ъглен с по-широката национална памет, без да превръща сайта в учебник. | Овај слој треба причати мирно и с поштовањем. |
+
+### Extra Target-Language Paths
+
+| Path | Current value |
+| --- | --- |
+| `sourceNotes.2` | Генерисане слике су привремене док се не одобре финалне фотографије. |
 
 
 ## TR Update Checklist
@@ -689,23 +543,6 @@ _None._
 
 | Path | Bulgarian source | Current value |
 | --- | --- | --- |
-| `nav.quests` | Hidden Bulgaria Quests | Hidden Bulgaria Quests |
-| `app.title` | Hidden Bulgaria Quests | Hidden Bulgaria Quests |
-| `placesList.0.title` | Дупката | Дупката |
-| `placesList.1.title` | Слончето | Слончето |
-| `placesList.2.title` | Червена стена | Червена стена |
-| `placesList.3.title` | Рачков вир | Рачков вир |
-| `placesList.5.title` | Калето | Калето |
-| `experiencesList.0.price` | €25 | €25 |
-| `experiencesList.1.price` | €40 | €40 |
-| `experiencesList.2.price` | €10 | €10 |
-| `experiencesList.3.price` | €60 | €60 |
-| `experiencesList.4.price` | €20 | €20 |
-| `experiencesList.5.price` | €35 | €35 |
-| `galleryItems.0.size` | wide | wide |
-| `galleryItems.1.size` | standard | standard |
-| `galleryItems.2.size` | tall | tall |
-| `galleryItems.3.size` | wide | wide |
 | `mapStops.2.title` | Дупката | Дупката |
 
 ### Likely Too Short
@@ -714,4 +551,10 @@ _None._
 | --- | --- | --- |
 | `timeline.0.detail` | Пещерите и варовиковите форми около поречието на Вит са част от по-дълбоката история на района. В туристическия разказ това може да се представи като пласт от време преди селото: земя, която е давала убежище, пътеки и наблюдателни точки много преди съвременните маршрути. | Vit çevresindeki mağaralar ve kireçtaşı formları bölgenin en eski katmanıdır: sığınaklar, yollar ve gözlem noktaları. |
 | `timeline.2.detail` | Легендите не трябва да се представят като доказан архив, а като местна памет. Те дават човешко лице на мястото: хора, които търсят безопасност, започват отново и оставят имена, разкази и принадлежност. | Bunu kesin arşiv değil, yerel hafıza olarak anlatmak doğru olur. |
+
+### Extra Target-Language Paths
+
+| Path | Current value |
+| --- | --- |
+| `sourceNotes.2` | Oluşturulan görseller final onaylı fotoğraflar için yer tutucudur. |
 
