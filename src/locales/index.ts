@@ -20,11 +20,12 @@ export type {
   TimelineItem,
 } from "./types";
 
-export const contentByLanguage: Record<LanguageCode, PageCopy> = {
-  bg,
-  en,
-  de,
-  ru,
-  ja,
-  es,
-};
+const built: Record<LanguageCode, PageCopy> = { bg, en, de, ru, ja, es };
+
+for (const lang of ["de", "ru", "ja", "es"] as LanguageCode[]) {
+  if (built[lang].quests.features.length === 0) {
+    built[lang].quests.features = built.en.quests.features;
+  }
+}
+
+export const contentByLanguage = built;

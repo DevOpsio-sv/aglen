@@ -18,10 +18,15 @@ export const en: PageCopy = {
     text: "Aglen offers quiet accommodation options surrounded by nature. For availability and bookings, get in touch.",
   },
   quests: {
-    eyebrow: "Hidden Bulgaria Quests",
-    title: "Discover the hidden side of Aglen",
-    text: "Hidden Bulgaria Quests is a mobile adventure that takes you to real places around Aglen. Solve puzzles, follow clues, and uncover the stories hidden in the cliffs, the river, and the forest. Suitable for all ages.",
-    cta: "Start the adventure",
+    eyebrow: "First of its kind in Bulgaria",
+    title: "A real AR adventure in Aglen",
+    text: "Hidden Bulgaria Quests takes you to real locations — through your phone's camera you see a hidden 3D world, solve puzzles, and follow the Guardian's trail. Not a simulation. Not a museum. A live adventure.",
+    cta: "Download and start",
+    features: [
+      { title: "Augmented Reality", text: "Point your camera at a marked location and watch the hidden world come alive — 3D characters, signs, and stories layered over reality." },
+      { title: "Live GPS Quests", text: "Each quest guides you to real landmarks around Aglen. Every location holds the next clue." },
+      { title: "History, told differently", text: "Aglen's legends become a game. The Guardian, the caves, the river — all connected in one living experience." },
+    ],
   },
   ar: {
     eyebrow: "AR Adventure",

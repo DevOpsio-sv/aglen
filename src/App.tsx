@@ -254,16 +254,27 @@ export function App() {
         </div>
       </section>
 
-      <section id="quests" className="quests section-shell">
-        <div className="section-heading reveal">
-          <p className="eyebrow">{copy.quests.eyebrow}</p>
-          <h2>{copy.quests.title}</h2>
-          <p>{copy.quests.text}</p>
-        </div>
-        <div className="quests-cta reveal">
-          <a className="button primary" href="#app">
-            {copy.quests.cta}
-          </a>
+      <section id="quests" className="quests">
+        <div className="section-shell">
+          <div className="quests-header reveal">
+            <p className="eyebrow">{copy.quests.eyebrow}</p>
+            <h2>{copy.quests.title}</h2>
+            <p className="quests-lede">{copy.quests.text}</p>
+          </div>
+          <div className="quests-features">
+            {copy.quests.features.map((f, i) => (
+              <article className="quest-feature reveal" key={i}>
+                <span className="quest-feature-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+                <h3>{f.title}</h3>
+                <p>{f.text}</p>
+              </article>
+            ))}
+          </div>
+          <div className="quests-cta reveal">
+            <a className="button primary quests-btn" href="#app">
+              {copy.quests.cta}
+            </a>
+          </div>
         </div>
       </section>
 

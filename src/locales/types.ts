@@ -118,6 +118,7 @@ export type PageCopy = {
     title: string;
     text: string;
     cta: string;
+    features: Array<{ title: string; text: string }>;
   };
   ar: {
     eyebrow: string;

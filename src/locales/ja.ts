@@ -13,7 +13,7 @@ export const ja: PageCopy = {
   experiences: { eyebrow: "アグレンの週末を選ぶ", title: "観光リストではなく、案内される時間", text: "週末に合う短さと、土地らしさを感じる個人的な体験です。", cta: "ルートを問い合わせる" },
   gallery: { eyebrow: "没入型ギャラリー", title: "川の光と石で語られる場所", aria: "アグレンのギャラリー" },
   stay: { eyebrow: "アグレンに泊まる", title: "川のそばで休む", text: "アグレンでは自然に囲まれた静かな宿泊施設をご利用いただけます。空き状況やご予約はお問い合わせください。" },
-  quests: { eyebrow: "Hidden Bulgaria Quests", title: "アグレンの隠れた側面を発見", text: "Hidden Bulgaria Questsはアグレン周辺の実際の場所へ連れて行くモバイルアドベンチャーです。謎を解き、手がかりをたどり、崖・川・森に隠された物語を明かしましょう。全年齢対象。", cta: "冒険を始める" },
+  quests: { eyebrow: "ブルガリア初の体験", title: "アグレンでのリアルARアドベンチャー", text: "Hidden Bulgaria Questsはリアルな場所へ案内します。カメラを通して隠れた3D世界を見て、謎を解き、守護者の痕跡をたどります。シミュレーションではなく、本物の体験です。", cta: "ダウンロードして始める", features: [] },
   ar: { eyebrow: "ARアドベンチャー", title: "守護者の世界を見る", text: "スマートフォンのカメラでアグレンの隠れた世界を生き生きとさせましょう。ARレイヤーが物語やキャラクターを、それが起きた場所で直接明かします。", steps: ["Google PlayからHidden Bulgaria Questsをダウンロード", "アグレンのARマーク地点へ移動", "カメラを向けて隠れた世界を見る"], cta: "ダウンロードして始める" },
   app: { eyebrow: "アプリをダウンロード", title: "Hidden Bulgaria Quests", text: "Android向け無料モバイルアプリ。アグレン周辺のクエストを見つけて本物の冒険へ出発しましょう。", badge: "Google Playで入手", note: "Android対応。iOS版は近日公開予定。" },
   contact: { eyebrow: "訪問を計画", title: "ヴィト川が秘密を守る場所で週末を。", text: "ルート、ガイド付き散策、写真スポット、地元の話、実用的な訪問情報を問い合わせてください。", notesTitle: "訪問メモ", noteOne: "自然散策、写真、川の景色、洞窟、地元の記憶に向いています。", noteTwo: "歩きやすい靴、水、日よけ、地域への敬意を持ってお越しください。", cta: "問い合わせる" },

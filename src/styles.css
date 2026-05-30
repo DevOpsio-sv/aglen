@@ -799,22 +799,108 @@ h3 {
 /* ── Hidden Bulgaria Quests ───────────────── */
 
 .quests {
-  padding: 6rem 0;
-  background: linear-gradient(160deg, var(--forest-deep) 0%, var(--ink) 100%);
+  padding: 7rem 0 6rem;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(31, 111, 122, 0.18) 0%, transparent 70%),
+    linear-gradient(170deg, var(--forest-deep) 0%, var(--ink) 100%);
   color: var(--mist);
+  position: relative;
+  overflow: hidden;
 }
 
-.quests .eyebrow {
+.quests::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 59px,
+    rgba(255, 255, 255, 0.025) 60px
+  );
+  pointer-events: none;
+}
+
+.quests-header {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 3.5rem;
+}
+
+.quests-header .eyebrow {
   color: var(--gold-soft);
+  letter-spacing: 0.14em;
 }
 
-.quests .section-heading p:last-child {
+.quests-header h2 {
+  font-size: clamp(2.4rem, 5.5vw, 4rem);
+  color: var(--mist);
+  margin: 0.5rem 0 1.2rem;
+}
+
+.quests-lede {
   color: var(--stone);
+  font-size: 1.08rem;
+  line-height: 1.7;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.quests-features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+  margin-bottom: 3.5rem;
+}
+
+.quest-feature {
+  position: relative;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 14px;
+  padding: 2rem 1.6rem 1.8rem;
+  transition: border-color 280ms ease, background 280ms ease;
+}
+
+.quest-feature:hover {
+  background: rgba(31, 111, 122, 0.12);
+  border-color: rgba(31, 111, 122, 0.45);
+}
+
+.quest-feature-num {
+  display: block;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--river);
+  margin-bottom: 1rem;
+}
+
+.quest-feature h3 {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--mist);
+  margin: 0 0 0.6rem;
+}
+
+.quest-feature p {
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--stone);
+  margin: 0;
 }
 
 .quests-cta {
-  margin-top: 2.5rem;
   text-align: center;
+}
+
+.quests-btn {
+  font-size: 1.05rem;
+  padding: 0.95rem 2.4rem;
+  border-radius: 50px;
+  letter-spacing: 0.02em;
 }
 
 /* ── AR Section ───────────────────────────── */
@@ -979,7 +1065,8 @@ h3 {
   .place-grid,
   .experience-grid,
   .mystery-grid,
-  .map-layout {
+  .map-layout,
+  .quests-features {
     grid-template-columns: 1fr;
   }
 
