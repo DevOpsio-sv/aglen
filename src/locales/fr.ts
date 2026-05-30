@@ -3,7 +3,7 @@ import type { PageCopy } from "./types";
 
 export const fr: PageCopy = {
   nav: { home: "Accueil", about: "À propos d'Aglen", landmarks: "Sites", stay: "Séjour", quests: "Hidden Bulgaria Quests" },
-  ui: { languageLabel: "Langue", languageSelectAria: "Choisir la langue", modalCloseAria: "Fermer" },
+  ui: { languageLabel: "Langue", languageSelectAria: "Choisir la langue", modalCloseAria: "Fermer", mobileMenuAria: "Menu" },
   brand: { name: "Aglen", subtitle: "Destination sur la rivière Vit" },
   hero: { meta: "Nord de la Bulgarie · rivière Vit · près de Lukovit", title: "AGLEN", subtitle: "Le trésor caché de la rivière Vit", lede: "Là où falaises calcaires, forêts calmes, grottes et légendes de village se rencontrent.", primary: "Explorer Aglen", secondary: "Télécharger l'app", cue: "Découvrir la vallée", imageAlt: "Vue cinématographique d'un canyon fluvial et d'un paysage de village inspirés d'Aglen" },
   statsLabel: "Pourquoi visiter Aglen",

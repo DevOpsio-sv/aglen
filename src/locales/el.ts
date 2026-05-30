@@ -3,7 +3,7 @@ import type { PageCopy } from "./types";
 
 export const el: PageCopy = {
   nav: { home: "Αρχική", about: "Για το Aglen", landmarks: "Αξιοθέατα", stay: "Διαμονή", quests: "Hidden Bulgaria Quests" },
-  ui: { languageLabel: "Γλώσσα", languageSelectAria: "Επιλογή γλώσσας", modalCloseAria: "Κλείσιμο" },
+  ui: { languageLabel: "Γλώσσα", languageSelectAria: "Επιλογή γλώσσας", modalCloseAria: "Κλείσιμο", mobileMenuAria: "Μενού" },
   brand: { name: "Aglen", subtitle: "Προορισμός στον ποταμό Vit" },
   hero: { meta: "Βόρεια Βουλγαρία · ποταμός Vit · κοντά στο Lukovit", title: "AGLEN", subtitle: "Ο κρυμμένος θησαυρός του ποταμού Vit", lede: "Εκεί όπου ασβεστολιθικοί βράχοι, ήσυχα δάση, σπηλιές και χωριάτικοι θρύλοι συναντιούνται.", primary: "Εξερεύνησε το Aglen", secondary: "Κατέβασε την εφαρμογή", cue: "Ανακάλυψε την κοιλάδα", imageAlt: "Κινηματογραφική θέα φαραγγιού ποταμού και χωριού εμπνευσμένη από το Aglen" },
   statsLabel: "Γιατί να επισκεφθείς το Aglen",

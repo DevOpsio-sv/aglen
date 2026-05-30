@@ -3,7 +3,7 @@ import type { PageCopy } from "./types";
 
 export const tr: PageCopy = {
   nav: { home: "Ana sayfa", about: "Aglen hakkında", landmarks: "Yerler", stay: "Konaklama", quests: "Hidden Bulgaria Quests" },
-  ui: { languageLabel: "Dil", languageSelectAria: "Dil seç", modalCloseAria: "Kapat" },
+  ui: { languageLabel: "Dil", languageSelectAria: "Dil seç", modalCloseAria: "Kapat", mobileMenuAria: "Menü" },
   brand: { name: "Aglen", subtitle: "Vit Nehri destinasyonu" },
   hero: { meta: "Kuzey Bulgaristan · Vit Nehri · Lukovit yakınında", title: "AGLEN", subtitle: "Vit Nehri'nin gizli hazinesi", lede: "Kireçtaşı kayalıkları, sessiz ormanlar, mağaralar ve köy efsanelerinin buluştuğu yer.", primary: "Aglen'i keşfet", secondary: "Uygulamayı indir", cue: "Vadiyi keşfet", imageAlt: "Aglen'den esinlenen nehir kanyonu ve köy manzarası" },
   statsLabel: "Neden Aglen?",

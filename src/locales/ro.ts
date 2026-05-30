@@ -3,7 +3,7 @@ import type { PageCopy } from "./types";
 
 export const ro: PageCopy = {
   nav: { home: "Acasă", about: "Despre Aglen", landmarks: "Locuri", stay: "Cazare", quests: "Hidden Bulgaria Quests" },
-  ui: { languageLabel: "Limbă", languageSelectAria: "Selectează limba", modalCloseAria: "Închide" },
+  ui: { languageLabel: "Limbă", languageSelectAria: "Selectează limba", modalCloseAria: "Închide", mobileMenuAria: "Meniu" },
   brand: { name: "Aglen", subtitle: "Destinație pe râul Vit" },
   hero: { meta: "Bulgaria de Nord · râul Vit · lângă Lukovit", title: "AGLEN", subtitle: "Comoara ascunsă a râului Vit", lede: "Locul unde stâncile de calcar, pădurile liniștite, peșterile și legendele satului se întâlnesc.", primary: "Explorează Aglen", secondary: "Descarcă aplicația", cue: "Descoperă valea", imageAlt: "Vedere cinematică a unui canion de râu și peisaj rural inspirat de Aglen" },
   statsLabel: "De ce să vizitezi Aglen",

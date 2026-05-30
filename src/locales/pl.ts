@@ -3,7 +3,7 @@ import type { PageCopy } from "./types";
 
 export const pl: PageCopy = {
   nav: { home: "Start", about: "O Aglen", landmarks: "Miejsca", stay: "Nocleg", quests: "Hidden Bulgaria Quests" },
-  ui: { languageLabel: "Język", languageSelectAria: "Wybierz język", modalCloseAria: "Zamknij" },
+  ui: { languageLabel: "Język", languageSelectAria: "Wybierz język", modalCloseAria: "Zamknij", mobileMenuAria: "Menu" },
   brand: { name: "Aglen", subtitle: "Destynacja nad rzeką Vit" },
   hero: { meta: "Północna Bułgaria · rzeka Vit · blisko Lukovit", title: "AGLEN", subtitle: "Ukryty skarb rzeki Vit", lede: "Miejsce, gdzie wapienne skały, ciche lasy, jaskinie i wiejskie legendy spotykają się.", primary: "Odkryj Aglen", secondary: "Pobierz aplikację", cue: "Odkryj dolinę", imageAlt: "Filmowy widok kanionu rzecznego i krajobrazu wsi inspirowany Aglen" },
   statsLabel: "Dlaczego odwiedzić Aglen",

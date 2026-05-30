@@ -3,7 +3,7 @@ import type { PageCopy } from "./types";
 
 export const sr: PageCopy = {
   nav: { home: "Почетна", about: "О Аглену", landmarks: "Знаменитости", stay: "Смештај", quests: "Hidden Bulgaria Quests" },
-  ui: { languageLabel: "Језик", languageSelectAria: "Изабери језик", modalCloseAria: "Затвори" },
+  ui: { languageLabel: "Језик", languageSelectAria: "Изабери језик", modalCloseAria: "Затвори", mobileMenuAria: "Мени" },
   brand: { name: "Аглен", subtitle: "Село крај реке Вит" },
   hero: { meta: "Северна Бугарска · река Вит · близу Луковита", title: "АГЛЕН", subtitle: "Скривено благо реке Вит", lede: "Место где се сусрећу кречњачке стене, тиха шума, пећине и сеоске легенде.", primary: "Истражи Аглен", secondary: "Преузми апликацију", cue: "Откриј долину", imageAlt: "Кинематографски поглед на речни кањон и сеоски пејзаж инспирисан Агленом" },
   statsLabel: "Зашто посетити Аглен",

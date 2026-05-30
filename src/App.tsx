@@ -371,7 +371,7 @@ export function App() {
             <p className="quests-lede">{copy.quests.text}</p>
           </div>
           <div className="quests-features">
-            {copy.quests.features.map((f) => (
+            {copy.quests.features.map((f, i) => (
               <article className="quest-feature reveal" key={f.title}>
                 <span className="quest-feature-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
                 <h3>{f.title}</h3>
