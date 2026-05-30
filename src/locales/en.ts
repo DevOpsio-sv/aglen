@@ -1,18 +1,46 @@
-import { images, prices } from "./shared";
+import { accommodationEn, images, prices } from "./shared";
 import type { PageCopy } from "./types";
 
 export const en: PageCopy = {
-  nav: { home: "Home", story: "Story", legends: "Legends", places: "Places", map: "Routes", contact: "Visit" },
+  nav: { home: "Home", about: "About Aglen", landmarks: "Landmarks", stay: "Stay", quests: "Hidden Bulgaria Quests" },
   ui: { languageLabel: "Language", languageSelectAria: "Select language", modalCloseAria: "Close" },
   brand: { name: "Aglen", subtitle: "Vit River destination" },
-  hero: { meta: "Northern Bulgaria · Vit River · Near Lukovit", title: "AGLEN", subtitle: "The Hidden Treasure of the Vit River", lede: "Where limestone cliffs, quiet forests, caves, and village legends meet.", primary: "Explore Aglen", secondary: "Plan Your Visit", cue: "Discover the valley", imageAlt: "Cinematic view of a river canyon and village landscape inspired by Aglen" },
+  hero: { meta: "Northern Bulgaria · Vit River · Near Lukovit", title: "AGLEN", subtitle: "The Hidden Treasure of the Vit River", lede: "Where limestone cliffs, quiet forests, caves, and village legends meet.", primary: "Explore Aglen", secondary: "Download the App", cue: "Discover the valley", imageAlt: "Cinematic view of a river canyon and village landscape inspired by Aglen" },
   statsLabel: "Why visit Aglen",
-  story: { eyebrow: "History and local memory", title: "Layers of time beside the river", text: "Aglen is not only a point on the map. Its story gathers caves, river paths, older routes, village memory, and the rare name that stays with visitors." },
+  about: { eyebrow: "History and local memory", title: "Layers of time beside the river", text: "Aglen is not only a point on the map. Its story gathers caves, river paths, older routes, village memory, and the rare name that stays with visitors." },
   legends: { eyebrow: "Legends & Mysteries of Aglen", title: "Some places are found slowly.", text: "The strongest stories here are not loud. They live in local names, cave thresholds, unusual rock forms, and the way the river disappears around a bend." },
-  places: { eyebrow: "Places to Explore", title: "Canyon, river, caves, and village silence", text: "A compact destination with a rare mix of natural landmarks and local stories. The best visit is unhurried: walk, listen, photograph, and leave space for discovery." },
+  landmarks: { eyebrow: "Places to Explore", title: "Canyon, river, caves, and village silence", text: "A compact destination with a rare mix of natural landmarks and local stories. The best visit is unhurried: walk, listen, photograph, and leave space for discovery.", aria: "Route stops around Aglen" },
   experiences: { eyebrow: "Choose your Aglen weekend", title: "Guided moments, not tourist checklists", text: "The excursions become clear visitor journeys: short enough for a weekend, personal enough to feel local, and visual enough to remember.", cta: "Request this route" },
   gallery: { eyebrow: "Immersive Gallery", title: "A place told through river light and stone", aria: "Aglen gallery" },
-  map: { eyebrow: "Explorer Map", title: "Follow the river. Find the stone.", text: "Use Aglen as a base for a slow route: village center, Vit River path, rock landmarks, cave terrain, and sunset viewpoints.", aria: "Route stops around Aglen" },
+  stay: {
+    eyebrow: "Stay in Aglen",
+    title: "Rest close to the river",
+    text: "Aglen offers quiet accommodation options surrounded by nature. For availability and bookings, get in touch.",
+  },
+  quests: {
+    eyebrow: "Hidden Bulgaria Quests",
+    title: "Discover the hidden side of Aglen",
+    text: "Hidden Bulgaria Quests is a mobile adventure that takes you to real places around Aglen. Solve puzzles, follow clues, and uncover the stories hidden in the cliffs, the river, and the forest. Suitable for all ages.",
+    cta: "Start the adventure",
+  },
+  ar: {
+    eyebrow: "AR Adventure",
+    title: "See the Guardian's World",
+    text: "Using your phone's camera, bring the hidden world of Aglen to life. The AR layer reveals stories, signs, and characters invisible to the naked eye — right at the places where they happened.",
+    steps: [
+      "Download Hidden Bulgaria Quests from Google Play",
+      "Go to a marked AR location in Aglen",
+      "Point your camera and see the hidden world",
+    ],
+    cta: "Download and start",
+  },
+  app: {
+    eyebrow: "Download the App",
+    title: "Hidden Bulgaria Quests",
+    text: "A free mobile app for Android. Find the quests around Aglen and set off on a real adventure.",
+    badge: "Get it on Google Play",
+    note: "Available for Android. iOS version coming soon.",
+  },
   contact: { eyebrow: "Plan your visit", title: "Spend a weekend where the Vit keeps its secrets.", text: "Ask for routes, guided walks, photo spots, local stories, and practical visitor information.", notesTitle: "Visitor notes", noteOne: "Best for nature walks, photography, river viewpoints, caves, and local memory.", noteTwo: "Bring walking shoes, water, sun protection, and respect for private/local spaces.", cta: "Send Inquiry" },
   highlights: [
     { label: "Hidden Bulgaria", value: "A quiet village on the Vit", detail: "For visitors who prefer discovery, river paths, cliffs, caves, and silence over crowded routes." },
@@ -59,5 +87,6 @@ export const en: PageCopy = {
     { title: "The Hole", detail: "A natural stone threshold and one of the strongest visual symbols of the destination." },
     { title: "Caves & Rock Forms", detail: "Explore the older landscape layer with care, local guidance, and respect for terrain." },
   ],
+  accommodationList: accommodationEn,
   sourceNotes: ["Original Wix site and service list: https://vasilevasilvena.wixsite.com/aglen", "Public travel/history context: Banker.bg, Trip.dir.bg, BTA/Utro, Wikipedia/Wikitravel summaries.", "Generated draft visuals are placeholders for final owner-approved Aglen photography."],
 };

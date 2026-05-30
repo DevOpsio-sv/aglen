@@ -785,6 +785,124 @@ h3 {
   font-size: 0.85rem;
 }
 
+/* ── Stay ─────────────────────────────────── */
+
+.stay {
+  padding: 6rem 0;
+}
+
+.stay-contact {
+  margin-top: 2.5rem;
+  text-align: center;
+}
+
+/* ── Hidden Bulgaria Quests ───────────────── */
+
+.quests {
+  padding: 6rem 0;
+  background: linear-gradient(160deg, var(--forest-deep) 0%, var(--ink) 100%);
+  color: var(--mist);
+}
+
+.quests .eyebrow {
+  color: var(--gold-soft);
+}
+
+.quests .section-heading p:last-child {
+  color: var(--stone);
+}
+
+.quests-cta {
+  margin-top: 2.5rem;
+  text-align: center;
+}
+
+/* ── AR Section ───────────────────────────── */
+
+.ar-section {
+  padding: 6rem 0;
+}
+
+.ar-steps {
+  display: grid;
+  gap: 1.1rem;
+  list-style: none;
+  margin: 2.5rem 0 0;
+  padding: 0;
+  max-width: 560px;
+}
+
+.ar-steps li {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: var(--mist);
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+}
+
+.ar-steps li strong {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--river);
+  color: #fff;
+  font-size: 0.9rem;
+  font-family: var(--sans);
+  font-weight: 700;
+}
+
+.ar-steps li span {
+  padding-top: 0.25rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.ar-cta {
+  margin-top: 2.5rem;
+}
+
+/* ── Download App ─────────────────────────── */
+
+.app-section {
+  padding: 6rem 0;
+  background: var(--forest-deep);
+  color: var(--mist);
+}
+
+.app-section .eyebrow {
+  color: var(--gold-soft);
+}
+
+.app-section .section-heading p:last-child {
+  color: var(--stone);
+}
+
+.app-download {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+
+.app-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+}
+
+.app-note {
+  font-size: 0.85rem;
+  color: var(--stone);
+  margin: 0;
+}
+
 .reveal {
   animation: rise 720ms ease both;
 }
@@ -910,6 +1028,10 @@ h3 {
   .places,
   .experiences,
   .gallery,
+  .stay,
+  .quests,
+  .ar-section,
+  .app-section,
   .contact {
     padding-top: 4.5rem;
   }

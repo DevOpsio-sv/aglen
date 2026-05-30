@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { contentByLanguage, languages, type LanguageCode, type TimelineItem } from "./content";
+import { contentByLanguage, languages, type Accommodation, type LanguageCode, type TimelineItem } from "./content";
 
 export function App() {
   const [language, setLanguage] = useState<LanguageCode>("bg");
@@ -9,11 +9,10 @@ export function App() {
   const navItems = useMemo(
     () => [
       [copy.nav.home, "#home"],
-      [copy.nav.story, "#story"],
-      [copy.nav.legends, "#legends"],
-      [copy.nav.places, "#places"],
-      [copy.nav.map, "#map"],
-      [copy.nav.contact, "#contact"],
+      [copy.nav.about, "#about"],
+      [copy.nav.landmarks, "#landmarks"],
+      [copy.nav.stay, "#stay"],
+      [copy.nav.quests, "#quests"],
     ],
     [copy],
   );
@@ -63,10 +62,10 @@ export function App() {
           <p className="hero-title">{copy.hero.subtitle}</p>
           <p className="hero-lede">{copy.hero.lede}</p>
           <div className="hero-actions">
-            <a className="button primary" href="#places">
+            <a className="button primary" href="#landmarks">
               {copy.hero.primary}
             </a>
-            <a className="button ghost" href="#contact">
+            <a className="button ghost" href="#app">
               {copy.hero.secondary}
             </a>
           </div>
@@ -86,11 +85,11 @@ export function App() {
         ))}
       </section>
 
-      <section id="story" className="story section-shell">
+      <section id="about" className="story section-shell">
         <div className="section-heading reveal">
-          <p className="eyebrow">{copy.story.eyebrow}</p>
-          <h2>{copy.story.title}</h2>
-          <p>{copy.story.text}</p>
+          <p className="eyebrow">{copy.about.eyebrow}</p>
+          <h2>{copy.about.title}</h2>
+          <p>{copy.about.text}</p>
         </div>
         <ol className="timeline">
           {copy.timeline.map((event) => (
@@ -104,31 +103,7 @@ export function App() {
         </ol>
       </section>
 
-      {selectedTimeline && (
-        <div className="timeline-modal" role="presentation" onClick={() => setSelectedTimeline(null)}>
-          <article
-            className="timeline-dialog"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="timeline-dialog-title"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <button
-              className="modal-close"
-              type="button"
-              onClick={() => setSelectedTimeline(null)}
-              aria-label={copy.ui.modalCloseAria}
-            >
-              ×
-            </button>
-            <p className="eyebrow">{copy.story.eyebrow}</p>
-            <h3 id="timeline-dialog-title">{selectedTimeline.title}</h3>
-            <p>{selectedTimeline.detail}</p>
-          </article>
-        </div>
-      )}
-
-      <section id="legends" className="legends">
+      <section className="legends">
         <div className="section-shell">
           <div className="section-heading reveal">
             <p className="eyebrow">{copy.legends.eyebrow}</p>
@@ -150,11 +125,35 @@ export function App() {
         </div>
       </section>
 
-      <section id="places" className="places section-shell">
+      {selectedTimeline && (
+        <div className="timeline-modal" role="presentation" onClick={() => setSelectedTimeline(null)}>
+          <article
+            className="timeline-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="timeline-dialog-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              className="modal-close"
+              type="button"
+              onClick={() => setSelectedTimeline(null)}
+              aria-label={copy.ui.modalCloseAria}
+            >
+              ×
+            </button>
+            <p className="eyebrow">{copy.about.eyebrow}</p>
+            <h3 id="timeline-dialog-title">{selectedTimeline.title}</h3>
+            <p>{selectedTimeline.detail}</p>
+          </article>
+        </div>
+      )}
+
+      <section id="landmarks" className="places section-shell">
         <div className="section-heading reveal">
-          <p className="eyebrow">{copy.places.eyebrow}</p>
-          <h2>{copy.places.title}</h2>
-          <p>{copy.places.text}</p>
+          <p className="eyebrow">{copy.landmarks.eyebrow}</p>
+          <h2>{copy.landmarks.title}</h2>
+          <p>{copy.landmarks.text}</p>
         </div>
         <div className="place-grid">
           {copy.placesList.map((place) => (
@@ -167,6 +166,41 @@ export function App() {
               </div>
             </article>
           ))}
+        </div>
+      </section>
+
+      <section id="media" className="gallery section-shell">
+        <div className="section-heading reveal">
+          <p className="eyebrow">{copy.gallery.eyebrow}</p>
+          <h2>{copy.gallery.title}</h2>
+        </div>
+        <div className="gallery-grid" aria-label={copy.gallery.aria}>
+          {copy.galleryItems.map((item) => (
+            <figure className={`gallery-item ${item.size} reveal`} key={item.title}>
+              <img src={item.image} alt={item.alt} />
+              <figcaption>{item.title}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+
+      <section className="map-section">
+        <div className="section-shell map-layout">
+          <div className="section-heading reveal">
+            <p className="eyebrow">{copy.landmarks.aria}</p>
+            <h2>{copy.landmarks.title}</h2>
+          </div>
+          <div className="route-map reveal" aria-label={copy.landmarks.aria}>
+            {copy.mapStops.map((stop, index) => (
+              <article className="map-stop" key={stop.title}>
+                <strong>{index + 1}</strong>
+                <div>
+                  <h3>{stop.title}</h3>
+                  <p>{stop.detail}</p>
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -195,39 +229,81 @@ export function App() {
         </div>
       </section>
 
-      <section id="media" className="gallery section-shell">
+      <section id="stay" className="stay section-shell">
         <div className="section-heading reveal">
-          <p className="eyebrow">{copy.gallery.eyebrow}</p>
-          <h2>{copy.gallery.title}</h2>
+          <p className="eyebrow">{copy.stay.eyebrow}</p>
+          <h2>{copy.stay.title}</h2>
+          <p>{copy.stay.text}</p>
         </div>
-        <div className="gallery-grid" aria-label={copy.gallery.aria}>
-          {copy.galleryItems.map((item) => (
-            <figure className={`gallery-item ${item.size} reveal`} key={item.title}>
-              <img src={item.image} alt={item.alt} />
-              <figcaption>{item.title}</figcaption>
-            </figure>
+        <div className="place-grid">
+          {copy.accommodationList.map((item: Accommodation) => (
+            <article className="place-card reveal" key={item.title}>
+              <img src={item.image} alt="" aria-hidden="true" />
+              <div>
+                <p>{item.type}</p>
+                <h3>{item.title}</h3>
+                <span>{item.description}</span>
+              </div>
+            </article>
           ))}
+        </div>
+        <div className="stay-contact reveal">
+          <a className="button ghost" href="#contact">
+            {copy.contact.cta}
+          </a>
         </div>
       </section>
 
-      <section id="map" className="map-section">
-        <div className="section-shell map-layout">
-          <div className="section-heading reveal">
-            <p className="eyebrow">{copy.map.eyebrow}</p>
-            <h2>{copy.map.title}</h2>
-            <p>{copy.map.text}</p>
-          </div>
-          <div className="route-map reveal" aria-label={copy.map.aria}>
-            {copy.mapStops.map((stop, index) => (
-              <article className="map-stop" key={stop.title}>
-                <strong>{index + 1}</strong>
-                <div>
-                  <h3>{stop.title}</h3>
-                  <p>{stop.detail}</p>
-                </div>
-              </article>
-            ))}
-          </div>
+      <section id="quests" className="quests section-shell">
+        <div className="section-heading reveal">
+          <p className="eyebrow">{copy.quests.eyebrow}</p>
+          <h2>{copy.quests.title}</h2>
+          <p>{copy.quests.text}</p>
+        </div>
+        <div className="quests-cta reveal">
+          <a className="button primary" href="#app">
+            {copy.quests.cta}
+          </a>
+        </div>
+      </section>
+
+      <section id="ar" className="ar-section section-shell">
+        <div className="section-heading reveal">
+          <p className="eyebrow">{copy.ar.eyebrow}</p>
+          <h2>{copy.ar.title}</h2>
+          <p>{copy.ar.text}</p>
+        </div>
+        <ol className="ar-steps reveal">
+          {copy.ar.steps.map((step, index) => (
+            <li key={index}>
+              <strong>{index + 1}</strong>
+              <span>{step}</span>
+            </li>
+          ))}
+        </ol>
+        <div className="ar-cta reveal">
+          <a className="button primary" href="#app">
+            {copy.ar.cta}
+          </a>
+        </div>
+      </section>
+
+      <section id="app" className="app-section section-shell">
+        <div className="section-heading reveal">
+          <p className="eyebrow">{copy.app.eyebrow}</p>
+          <h2>{copy.app.title}</h2>
+          <p>{copy.app.text}</p>
+        </div>
+        <div className="app-download reveal">
+          <a
+            className="button primary app-badge"
+            href="https://play.google.com/store/apps/details?id=com.hiddenBulgaria.quests"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {copy.app.badge}
+          </a>
+          <p className="app-note">{copy.app.note}</p>
         </div>
       </section>
 

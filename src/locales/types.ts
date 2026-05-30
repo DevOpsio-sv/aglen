@@ -46,14 +46,20 @@ export type TimelineItem = {
   detail: string;
 };
 
+export type Accommodation = {
+  title: string;
+  type: string;
+  description: string;
+  image: string;
+};
+
 export type PageCopy = {
   nav: {
     home: string;
-    story: string;
-    legends: string;
-    places: string;
-    map: string;
-    contact: string;
+    about: string;
+    landmarks: string;
+    stay: string;
+    quests: string;
   };
   ui: {
     languageLabel: string;
@@ -75,7 +81,7 @@ export type PageCopy = {
     imageAlt: string;
   };
   statsLabel: string;
-  story: {
+  about: {
     eyebrow: string;
     title: string;
     text: string;
@@ -85,10 +91,11 @@ export type PageCopy = {
     title: string;
     text: string;
   };
-  places: {
+  landmarks: {
     eyebrow: string;
     title: string;
     text: string;
+    aria: string;
   };
   experiences: {
     eyebrow: string;
@@ -101,11 +108,30 @@ export type PageCopy = {
     title: string;
     aria: string;
   };
-  map: {
+  stay: {
     eyebrow: string;
     title: string;
     text: string;
-    aria: string;
+  };
+  quests: {
+    eyebrow: string;
+    title: string;
+    text: string;
+    cta: string;
+  };
+  ar: {
+    eyebrow: string;
+    title: string;
+    text: string;
+    steps: [string, string, string];
+    cta: string;
+  };
+  app: {
+    eyebrow: string;
+    title: string;
+    text: string;
+    badge: string;
+    note: string;
   };
   contact: {
     eyebrow: string;
@@ -123,5 +149,6 @@ export type PageCopy = {
   experiencesList: Experience[];
   galleryItems: GalleryItem[];
   mapStops: MapStop[];
+  accommodationList: Accommodation[];
   sourceNotes: string[];
 };

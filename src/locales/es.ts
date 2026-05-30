@@ -1,18 +1,21 @@
-import { images, prices } from "./shared";
+import { accommodationEn, images, prices } from "./shared";
 import type { PageCopy } from "./types";
 
 export const es: PageCopy = {
-  nav: { home: "Inicio", story: "Historia", legends: "Leyendas", places: "Lugares", map: "Rutas", contact: "Visita" },
+  nav: { home: "Inicio", about: "Sobre Aglen", landmarks: "Lugares", stay: "Alojamiento", quests: "Hidden Bulgaria Quests" },
   ui: { languageLabel: "Idioma", languageSelectAria: "Seleccionar idioma", modalCloseAria: "Cerrar" },
   brand: { name: "Aglen", subtitle: "Destino del río Vit" },
-  hero: { meta: "Norte de Bulgaria · río Vit · cerca de Lukovit", title: "AGLEN", subtitle: "El tesoro oculto del río Vit", lede: "Donde los acantilados calizos, bosques tranquilos, cuevas y leyendas del pueblo se encuentran.", primary: "Explorar Aglen", secondary: "Planear visita", cue: "Descubre el valle", imageAlt: "Vista cinematográfica de un cañón fluvial y paisaje rural inspirado en Aglen" },
+  hero: { meta: "Norte de Bulgaria · río Vit · cerca de Lukovit", title: "AGLEN", subtitle: "El tesoro oculto del río Vit", lede: "Donde los acantilados calizos, bosques tranquilos, cuevas y leyendas del pueblo se encuentran.", primary: "Explorar Aglen", secondary: "Descargar la app", cue: "Descubre el valle", imageAlt: "Vista cinematográfica de un cañón fluvial y paisaje rural inspirado en Aglen" },
   statsLabel: "Por qué visitar Aglen",
-  story: { eyebrow: "Historia y memoria local", title: "Capas de tiempo junto al río", text: "Aglen no es solo un punto en el mapa. Su historia reúne cuevas, caminos de río, rutas antiguas, memoria del pueblo y un nombre raro." },
+  about: { eyebrow: "Historia y memoria local", title: "Capas de tiempo junto al río", text: "Aglen no es solo un punto en el mapa. Su historia reúne cuevas, caminos de río, rutas antiguas, memoria del pueblo y un nombre raro." },
   legends: { eyebrow: "Leyendas y misterios de Aglen", title: "Algunos lugares se descubren despacio.", text: "Las historias más fuertes aquí no son ruidosas. Viven en nombres locales, umbrales de cuevas, rocas extrañas y curvas del río." },
-  places: { eyebrow: "Lugares para explorar", title: "Cañón, río, cuevas y silencio rural", text: "Un destino compacto con una rara mezcla de naturaleza e historias locales. La mejor visita es lenta: caminar, escuchar, fotografiar y dejar espacio al descubrimiento." },
+  landmarks: { eyebrow: "Lugares para explorar", title: "Cañón, río, cuevas y silencio rural", text: "Un destino compacto con una rara mezcla de naturaleza e historias locales. La mejor visita es lenta: caminar, escuchar, fotografiar y dejar espacio al descubrimiento.", aria: "Puntos de ruta alrededor de Aglen" },
   experiences: { eyebrow: "Elige tu fin de semana en Aglen", title: "Momentos guiados, no listas turísticas", text: "Experiencias claras para visitantes: cortas para un fin de semana, personales y memorables.", cta: "Solicitar ruta" },
   gallery: { eyebrow: "Galería inmersiva", title: "Un lugar contado con luz de río y piedra", aria: "Galería de Aglen" },
-  map: { eyebrow: "Mapa explorador", title: "Sigue el río. Encuentra la piedra.", text: "Usa Aglen como base para una ruta lenta: centro del pueblo, camino del Vit, rocas, cuevas y miradores al atardecer.", aria: "Puntos de ruta alrededor de Aglen" },
+  stay: { eyebrow: "Alojamiento en Aglen", title: "Descansa cerca del río", text: "Aglen ofrece opciones de alojamiento tranquilas rodeadas de naturaleza. Para disponibilidad y reservas, contáctanos." },
+  quests: { eyebrow: "Hidden Bulgaria Quests", title: "Descubre el lado oculto de Aglen", text: "Hidden Bulgaria Quests es una aventura móvil que te lleva a lugares reales alrededor de Aglen. Resuelve enigmas, sigue pistas y desvela las historias ocultas en los acantilados, el río y el bosque. Apto para todas las edades.", cta: "Iniciar la aventura" },
+  ar: { eyebrow: "Aventura AR", title: "Ve el mundo del Guardián", text: "Con la cámara de tu teléfono, da vida al mundo oculto de Aglen. La capa AR revela historias y personajes invisibles a simple vista, justo en los lugares donde ocurrieron.", steps: ["Descarga Hidden Bulgaria Quests de Google Play", "Ve a un lugar AR marcado en Aglen", "Apunta la cámara y ve el mundo oculto"], cta: "Descargar y empezar" },
+  app: { eyebrow: "Descargar la app", title: "Hidden Bulgaria Quests", text: "Una app móvil gratuita para Android. Encuentra los quests alrededor de Aglen y emprende una aventura real.", badge: "Disponible en Google Play", note: "Disponible para Android. Versión iOS próximamente." },
   contact: { eyebrow: "Planear visita", title: "Pasa un fin de semana donde el Vit guarda sus secretos.", text: "Pregunta por rutas, paseos guiados, lugares para fotos, historias locales e información práctica.", notesTitle: "Notas para visitantes", noteOne: "Ideal para paseos en la naturaleza, fotografía, vistas al río, cuevas y memoria local.", noteTwo: "Trae calzado cómodo, agua, protección solar y respeto por los espacios locales.", cta: "Enviar consulta" },
   highlights: [
     { label: "Bulgaria oculta", value: "Un pueblo tranquilo en el Vit", detail: "Para visitantes que prefieren descubrimiento, senderos de río, rocas, cuevas y silencio." },
@@ -56,8 +59,9 @@ export const es: PageCopy = {
   mapStops: [
     { title: "Centro del pueblo", detail: "Empieza por la escala humana de Aglen: calles, iglesia, memoria local y orientación." },
     { title: "Camino del Vit", detail: "Sigue el agua hacia miradores tranquilos, curvas y lugares de sombra para fotografiar." },
-    { title: "Дупката", detail: "Un umbral natural de piedra y uno de los símbolos visuales más fuertes del destino." },
+    { title: "Dupkata", detail: "Un umbral natural de piedra y uno de los símbolos visuales más fuertes del destino." },
     { title: "Cuevas y formas de roca", detail: "Descubre la capa más antigua del paisaje con cuidado, guía local y respeto por el terreno." },
   ],
+  accommodationList: accommodationEn,
   sourceNotes: ["Sitio Wix original y lista de servicios: https://vasilevasilvena.wixsite.com/aglen", "Contexto público histórico y turístico: Banker.bg, Trip.dir.bg, BTA/Utro, resúmenes de Wikipedia/Wikitravel.", "Las imágenes generadas son marcadores provisionales para fotografía final de Aglen aprobada por el propietario."],
 };

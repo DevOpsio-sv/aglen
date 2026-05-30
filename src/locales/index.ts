@@ -8,6 +8,7 @@ import type { LanguageCode, PageCopy } from "./types";
 
 export { languages } from "./shared";
 export type {
+  Accommodation,
   Experience,
   GalleryItem,
   Highlight,

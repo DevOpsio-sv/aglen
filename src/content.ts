@@ -1,5 +1,6 @@
 export { contentByLanguage, languages } from "./locales";
 export type {
+  Accommodation,
   Experience,
   GalleryItem,
   Highlight,

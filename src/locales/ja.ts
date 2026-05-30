@@ -1,18 +1,21 @@
-import { images, prices } from "./shared";
+import { accommodationEn, images, prices } from "./shared";
 import type { PageCopy } from "./types";
 
 export const ja: PageCopy = {
-  nav: { home: "ホーム", story: "物語", legends: "伝説", places: "見どころ", map: "ルート", contact: "訪問" },
+  nav: { home: "ホーム", about: "アグレンについて", landmarks: "見どころ", stay: "宿泊", quests: "Hidden Bulgaria Quests" },
   ui: { languageLabel: "言語", languageSelectAria: "言語を選択", modalCloseAria: "閉じる" },
   brand: { name: "アグレン", subtitle: "ヴィト川の旅先" },
-  hero: { meta: "ブルガリア北部 · ヴィト川 · ルコヴィト近郊", title: "AGLEN", subtitle: "ヴィト川に隠れた宝物", lede: "石灰岩の崖、静かな森、洞窟、村の伝説が出会う場所。", primary: "アグレンを見る", secondary: "訪問を計画", cue: "谷を発見", imageAlt: "アグレンをイメージした川の峡谷と村の風景" },
+  hero: { meta: "ブルガリア北部 · ヴィト川 · ルコヴィト近郊", title: "AGLEN", subtitle: "ヴィト川に隠れた宝物", lede: "石灰岩の崖、静かな森、洞窟、村の伝説が出会う場所。", primary: "アグレンを見る", secondary: "アプリをダウンロード", cue: "谷を発見", imageAlt: "アグレンをイメージした川の峡谷と村の風景" },
   statsLabel: "アグレンを訪れる理由",
-  story: { eyebrow: "歴史と土地の記憶", title: "川辺に重なる時間", text: "アグレンは地図上の一点ではありません。洞窟、川沿いの道、古いルート、村の記憶、そして忘れにくい名前が重なります。" },
+  about: { eyebrow: "歴史と土地の記憶", title: "川辺に重なる時間", text: "アグレンは地図上の一点ではありません。洞窟、川沿いの道、古いルート、村の記憶、そして忘れにくい名前が重なります。" },
   legends: { eyebrow: "アグレンの伝説と謎", title: "ゆっくり見つかる場所がある。", text: "ここで強い物語は静かです。地名、洞窟の入口、不思議な岩、川の曲がり角に残っています。" },
-  places: { eyebrow: "見どころ", title: "峡谷、川、洞窟、村の静けさ", text: "自然のランドマークと地元の物語がまとまった小さな目的地。急がず歩き、聞き、撮影し、発見を待つ場所です。" },
+  landmarks: { eyebrow: "見どころ", title: "峡谷、川、洞窟、村の静けさ", text: "自然のランドマークと地元の物語がまとまった小さな目的地。急がず歩き、聞き、撮影し、発見を待つ場所です。", aria: "アグレン周辺のルート地点" },
   experiences: { eyebrow: "アグレンの週末を選ぶ", title: "観光リストではなく、案内される時間", text: "週末に合う短さと、土地らしさを感じる個人的な体験です。", cta: "ルートを問い合わせる" },
   gallery: { eyebrow: "没入型ギャラリー", title: "川の光と石で語られる場所", aria: "アグレンのギャラリー" },
-  map: { eyebrow: "探検マップ", title: "川をたどり、石を見つける。", text: "村の中心、ヴィト川沿い、岩の名所、洞窟地形、夕日の展望地へゆっくり進みます。", aria: "アグレン周辺のルート地点" },
+  stay: { eyebrow: "アグレンに泊まる", title: "川のそばで休む", text: "アグレンでは自然に囲まれた静かな宿泊施設をご利用いただけます。空き状況やご予約はお問い合わせください。" },
+  quests: { eyebrow: "Hidden Bulgaria Quests", title: "アグレンの隠れた側面を発見", text: "Hidden Bulgaria Questsはアグレン周辺の実際の場所へ連れて行くモバイルアドベンチャーです。謎を解き、手がかりをたどり、崖・川・森に隠された物語を明かしましょう。全年齢対象。", cta: "冒険を始める" },
+  ar: { eyebrow: "ARアドベンチャー", title: "守護者の世界を見る", text: "スマートフォンのカメラでアグレンの隠れた世界を生き生きとさせましょう。ARレイヤーが物語やキャラクターを、それが起きた場所で直接明かします。", steps: ["Google PlayからHidden Bulgaria Questsをダウンロード", "アグレンのARマーク地点へ移動", "カメラを向けて隠れた世界を見る"], cta: "ダウンロードして始める" },
+  app: { eyebrow: "アプリをダウンロード", title: "Hidden Bulgaria Quests", text: "Android向け無料モバイルアプリ。アグレン周辺のクエストを見つけて本物の冒険へ出発しましょう。", badge: "Google Playで入手", note: "Android対応。iOS版は近日公開予定。" },
   contact: { eyebrow: "訪問を計画", title: "ヴィト川が秘密を守る場所で週末を。", text: "ルート、ガイド付き散策、写真スポット、地元の話、実用的な訪問情報を問い合わせてください。", notesTitle: "訪問メモ", noteOne: "自然散策、写真、川の景色、洞窟、地元の記憶に向いています。", noteTwo: "歩きやすい靴、水、日よけ、地域への敬意を持ってお越しください。", cta: "問い合わせる" },
   highlights: [
     { label: "隠れたブルガリア", value: "ヴィト川沿いの静かな村", detail: "混雑よりも発見、川沿いの道、崖、洞窟、静けさを求める人へ。" },
@@ -59,5 +62,6 @@ export const ja: PageCopy = {
     { title: "Дупката", detail: "自然の石の入口であり、この目的地の強い視覚的シンボルの一つです。" },
     { title: "洞窟と岩の形", detail: "より古い風景の層を、注意深く、地元の案内と地形への敬意をもって見つけます。" },
   ],
+  accommodationList: accommodationEn,
   sourceNotes: ["元のWixサイトとサービス一覧: https://vasilevasilvena.wixsite.com/aglen", "公開されている歴史・観光情報: Banker.bg、Trip.dir.bg、BTA/Utro、Wikipedia/Wikitravel の概要。", "生成された下書き画像は、最終的な承認済みアグレン写真のプレースホルダーです。"],
 };
