@@ -964,6 +964,11 @@ h3 {
   color: var(--gold-soft);
 }
 
+.app-section h2 {
+  color: var(--mist);
+  font-size: clamp(2rem, 4vw, 3.5rem);
+}
+
 .app-section .section-heading p:last-child {
   color: var(--stone);
 }
