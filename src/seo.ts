@@ -440,8 +440,8 @@ function paragraph(text: string): string {
   return `<p>${escapeHtml(text)}</p>`;
 }
 
-function list(items: string[]): string {
-  return `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
+function staticFallbackLink(lang: LanguageCode, label: string, routeId: RouteId): string {
+  return `<a href="${buildRoutePath(lang, routeId)}">${escapeHtml(label)}</a>`;
 }
 
 export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "home"): string {
@@ -452,16 +452,37 @@ export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "hom
 
   if (landing) {
     return `
-      <main id="static-seo-content" lang="${lang}">
-        <article>
-          <p>${escapeHtml(landing.category)}</p>
-          <h1>${escapeHtml(landing.h1)}</h1>
-          ${paragraph(landing.intro)}
-          ${landing.sections.map((section) => `<h2>${escapeHtml(section.heading)}</h2>${paragraph(section.body)}`).join("")}
-          <h2>${escapeHtml(ui.landing.visitorAnswers)}</h2>
-          ${landing.faqs.map((faq) => `<h3>${escapeHtml(faq.question)}</h3>${paragraph(faq.answer)}`).join("")}
-          <h2>${escapeHtml(ui.landing.relatedGuides)}</h2>
-          ${list(landing.internalLinks.map((link) => link.label))}
+      <main id="static-seo-content" class="static-fallback" lang="${lang}">
+        <article class="seo-landing section-shell">
+          <div class="seo-landing-panel">
+            <div class="seo-landing-hero">
+              <div>
+                <p class="eyebrow">${escapeHtml(landing.category)}</p>
+                <h1>${escapeHtml(landing.h1)}</h1>
+                ${paragraph(landing.intro)}
+                <div class="seo-landing-actions">
+                  <a class="button primary" href="${buildRoutePath(lang, "contact")}">${escapeHtml(landing.ctaLabel)}</a>
+                  <a class="button ghost" href="${buildRoutePath(lang, "routeMap")}">${escapeHtml(ui.landing.routeMap)}</a>
+                </div>
+              </div>
+              <img src="${landing.image}" alt="${escapeHtml(landing.imageAlt)}" loading="eager" />
+            </div>
+            <div class="seo-section-grid">
+              ${landing.sections.map((section) => `<section class="seo-section-card"><h2>${escapeHtml(section.heading)}</h2>${paragraph(section.body)}</section>`).join("")}
+            </div>
+            <div class="seo-faq-links">
+              <div class="seo-faq">
+                <p class="eyebrow">${escapeHtml(ui.landing.visitorAnswers)}</p>
+                <h2>${escapeHtml(ui.landing.visitorAnswers)}</h2>
+                ${landing.faqs.map((faq) => `<details open><summary>${escapeHtml(faq.question)}</summary>${paragraph(faq.answer)}</details>`).join("")}
+              </div>
+              <aside class="seo-related" aria-label="${escapeHtml(ui.landing.relatedGuidesAria)}">
+                <p class="eyebrow">${escapeHtml(ui.landing.internalLinks)}</p>
+                <h2>${escapeHtml(ui.landing.relatedGuides)}</h2>
+                ${landing.internalLinks.map((link) => staticFallbackLink(lang, link.label, link.routeId as RouteId)).join("")}
+              </aside>
+            </div>
+          </div>
         </article>
       </main>
     `;
@@ -493,12 +514,16 @@ export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "hom
   };
 
   return `
-    <main id="static-seo-content" lang="${lang}">
-      <article>
-        <p>${escapeHtml(copy.brand.name)} - ${escapeHtml(copy.brand.subtitle)}</p>
-        <h1>${escapeHtml(meta.title)}</h1>
-        ${paragraph(meta.description)}
-        ${list(routeLists[routeId as CoreRouteId] ?? [meta.description])}
+    <main id="static-seo-content" class="static-fallback" lang="${lang}">
+      <article class="content-hub section-shell">
+        <div class="section-heading">
+          <p class="eyebrow">${escapeHtml(copy.brand.name)} - ${escapeHtml(copy.brand.subtitle)}</p>
+          <h1>${escapeHtml(meta.title)}</h1>
+          ${paragraph(meta.description)}
+        </div>
+        <div class="hub-grid">
+          ${(routeLists[routeId as CoreRouteId] ?? [meta.description]).map((item) => `<div class="hub-card"><span>${escapeHtml(item)}</span></div>`).join("")}
+        </div>
       </article>
     </main>
   `;

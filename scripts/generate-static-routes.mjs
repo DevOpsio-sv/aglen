@@ -148,7 +148,10 @@ function renderPageHtml(routePath) {
     "</head>",
     `${renderAlternateLinks(pageSeo.alternates)}\n${renderOpenGraphLocaleAlternates(pageSeo.ogLocaleAlternates)}\n    <script type="application/ld+json" id="site-jsonld">${JSON.stringify(seo.buildJSONLD(language, routeId))}</script>\n  </head>`,
   );
-  html = html.replace('<div id="root"></div>', `${seo.renderStaticFallback(language, routeId)}\n    <div id="root"></div>`);
+  html = html.replace(
+    '<div id="root"></div>',
+    `${seo.renderStaticFallback(language, routeId)}\n    <div id="root"></div>\n    <script>document.getElementById("static-seo-content")?.remove();</script>`,
+  );
 
   return html;
 }
