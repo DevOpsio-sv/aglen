@@ -36,14 +36,14 @@ export function App() {
           ))}
         </nav>
         <label className="language-switch">
-          <span>Language</span>
+          <span>{copy.ui.languageLabel}</span>
           <select
             value={language}
             onChange={(event) => {
               setSelectedTimeline(null);
               setLanguage(event.target.value as LanguageCode);
             }}
-            aria-label="Select language"
+            aria-label={copy.ui.languageSelectAria}
           >
             {languages.map((item) => (
               <option key={item.code} value={item.code}>
@@ -117,7 +117,7 @@ export function App() {
               className="modal-close"
               type="button"
               onClick={() => setSelectedTimeline(null)}
-              aria-label="Close"
+              aria-label={copy.ui.modalCloseAria}
             >
               ×
             </button>

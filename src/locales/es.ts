@@ -1,0 +1,63 @@
+import { images, prices } from "./shared";
+import type { PageCopy } from "./types";
+
+export const es: PageCopy = {
+  nav: { home: "Inicio", story: "Historia", legends: "Leyendas", places: "Lugares", map: "Rutas", contact: "Visita" },
+  ui: { languageLabel: "Idioma", languageSelectAria: "Seleccionar idioma", modalCloseAria: "Cerrar" },
+  brand: { name: "Aglen", subtitle: "Destino del río Vit" },
+  hero: { meta: "Norte de Bulgaria · río Vit · cerca de Lukovit", title: "AGLEN", subtitle: "El tesoro oculto del río Vit", lede: "Donde los acantilados calizos, bosques tranquilos, cuevas y leyendas del pueblo se encuentran.", primary: "Explorar Aglen", secondary: "Planear visita", cue: "Descubre el valle", imageAlt: "Vista cinematográfica de un cañón fluvial y paisaje rural inspirado en Aglen" },
+  statsLabel: "Por qué visitar Aglen",
+  story: { eyebrow: "Historia y memoria local", title: "Capas de tiempo junto al río", text: "Aglen no es solo un punto en el mapa. Su historia reúne cuevas, caminos de río, rutas antiguas, memoria del pueblo y un nombre raro." },
+  legends: { eyebrow: "Leyendas y misterios de Aglen", title: "Algunos lugares se descubren despacio.", text: "Las historias más fuertes aquí no son ruidosas. Viven en nombres locales, umbrales de cuevas, rocas extrañas y curvas del río." },
+  places: { eyebrow: "Lugares para explorar", title: "Cañón, río, cuevas y silencio rural", text: "Un destino compacto con una rara mezcla de naturaleza e historias locales. La mejor visita es lenta: caminar, escuchar, fotografiar y dejar espacio al descubrimiento." },
+  experiences: { eyebrow: "Elige tu fin de semana en Aglen", title: "Momentos guiados, no listas turísticas", text: "Experiencias claras para visitantes: cortas para un fin de semana, personales y memorables.", cta: "Solicitar ruta" },
+  gallery: { eyebrow: "Galería inmersiva", title: "Un lugar contado con luz de río y piedra", aria: "Galería de Aglen" },
+  map: { eyebrow: "Mapa explorador", title: "Sigue el río. Encuentra la piedra.", text: "Usa Aglen como base para una ruta lenta: centro del pueblo, camino del Vit, rocas, cuevas y miradores al atardecer.", aria: "Puntos de ruta alrededor de Aglen" },
+  contact: { eyebrow: "Planear visita", title: "Pasa un fin de semana donde el Vit guarda sus secretos.", text: "Pregunta por rutas, paseos guiados, lugares para fotos, historias locales e información práctica.", notesTitle: "Notas para visitantes", noteOne: "Ideal para paseos en la naturaleza, fotografía, vistas al río, cuevas y memoria local.", noteTwo: "Trae calzado cómodo, agua, protección solar y respeto por los espacios locales.", cta: "Enviar consulta" },
+  highlights: [
+    { label: "Bulgaria oculta", value: "Un pueblo tranquilo en el Vit", detail: "Para visitantes que prefieren descubrimiento, senderos de río, rocas, cuevas y silencio." },
+    { label: "Naturaleza", value: "Río, caliza, bosque", detail: "El paisaje está formado por el río Vit, formas rocosas naturales, vistas de cañón y terreno de cuevas." },
+    { label: "Identidad", value: "El raro nombre Aglen", detail: "Conocido como el único pueblo búlgaro que empieza con la letra Ъ." },
+  ],
+  timeline: [
+    { title: "Rastros paleolíticos en cuevas cercanas sugieren presencia humana temprana en la zona.", detail: "Las cuevas y las formas calizas alrededor del Vit pueden contarse como la capa más antigua del destino: una tierra de refugios, caminos y puntos de observación mucho antes del viaje moderno." },
+    { title: "Un camino romano y restos fortificados conectan el área con rutas antiguas de movimiento.", detail: "Las rutas antiguas importan porque muestran que la zona no estaba aislada. El río, las alturas y la piedra ayudaban a moverse, orientarse y protegerse." },
+    { title: "La leyenda local de colonos de Churek conserva memoria de asentamiento y refugio.", detail: "Esta historia debe tratarse como memoria local, no como archivo probado. Da al lugar una capa humana: personas que buscan seguridad, empiezan de nuevo y dejan nombres e historias." },
+    { title: "La memoria de 1877 sigue siendo parte del respeto histórico y la identidad del pueblo.", detail: "Esta capa debe contarse con calma y respeto. Conecta Aglen con una memoria búlgara más amplia sin convertir la página en un libro de texto." },
+    { title: "Hoy Aglen puede crecer como destino tranquilo para ecoturismo, artesanía y viaje lento.", detail: "El futuro más fuerte de Aglen está en lo auténtico y pequeño: visitas de fin de semana, paseos guiados, fotografía, artesanía, rutas de río y respeto por el entorno local." },
+  ],
+  mysteries: [
+    { title: "Donde el río desaparece de la vista", tag: "Rutas ocultas", image: images.hero, description: "El Vit no revela todo de una vez. Curvas, sombras y líneas de roca convierten el paseo en una búsqueda." },
+    { title: "Los umbrales de las cuevas", tag: "Piedra y silencio", image: images.cave, description: "Las cuevas pertenecen a una memoria más antigua de la tierra: geológica, humana y simbólica." },
+    { title: "Rocas con nombres locales", tag: "Paisaje de folclore", image: images.arch, description: "Nombres como Дупката y Слончето hacen que el paisaje se sienta personal: puntos de referencia e historias a la vez." },
+  ],
+  placesList: [
+    { title: "Дупката", tag: "Arco de roca", image: images.arch, imageAlt: "Arco de roca caliza sobre el río cerca de Aglen", description: "Un arco natural de piedra sobre el Vit, pensado para caminatas lentas, fotos tranquilas y la sensación de entrar en una ruta escondida." },
+    { title: "Слончето", tag: "Figura de roca", image: images.hero, imageAlt: "Cañón, río y acantilados calizos cerca de Aglen", description: "Una forma juguetona junto al río que convierte una caminata sencilla en un pequeño descubrimiento." },
+    { title: "Червена стена", tag: "Vista de cañón", image: images.aerial, imageAlt: "Paisaje de cañón con río y pueblo visto desde arriba", description: "Un encuentro dramático de caliza, bosque y luz de río cerca del pueblo." },
+    { title: "Рачков вир", tag: "Poza del río", image: images.pool, imageAlt: "Poza tranquila del río con orilla caliza y bosque", description: "Un punto natural sereno para pausar junto al agua, hacer picnic y bajar el ritmo al lado del Vit." },
+    { title: "San Arcángel Miguel", tag: "Memoria del pueblo", image: images.church, imageAlt: "Iglesia del pueblo, calle de piedra y valle verde", description: "La iglesia de 1888 conserva la capa humana de la historia de Aglen." },
+    { title: "Калето", tag: "Arqueología", image: images.kaleto, imageAlt: "Restos de piedra en una colina sobre cañón y río", description: "Un lugar conectado con rutas antiguas, memoria fortificada y la larga continuidad de vida junto al río." },
+  ],
+  experiencesList: [
+    { title: "Caminata por el cañón", price: prices[0], duration: "2-3 horas", bestFor: "Primera visita", description: "Vistas guiadas hacia el Vit, formas de roca y los nombres locales detrás del paisaje." },
+    { title: "Viaje fotográfico del río", price: prices[1], duration: "Medio día", bestFor: "Fotógrafos", description: "Lugares seleccionados junto al río, las rocas, las calles antiguas y la luz natural suave." },
+    { title: "Pesca junto al Vit", price: prices[2], duration: "2 horas", bestFor: "Viaje lento", description: "Un ritmo local tranquilo junto al agua con orientación práctica y cuidado por el río." },
+    { title: "Escapada de fin de semana en Aglen", price: prices[3], duration: "2 días", bestFor: "Parejas y amigos", description: "Caminatas, picnic, artesanía y una ruta de tarde por historias del pueblo." },
+    { title: "Hierbas y saber del pueblo", price: prices[4], duration: "90 min.", bestFor: "Viajeros curiosos", description: "Reconocimiento de hierbas, usos tradicionales y recolección responsable." },
+    { title: "Día escolar de descubrimiento", price: prices[5], duration: "1 día", bestFor: "Grupos escolares", description: "Una ruta de campo por geografía, historia, leyendas locales y protección de la naturaleza." },
+  ],
+  galleryItems: [
+    { title: "Cañón del río Vit", image: images.hero, alt: "Cañón fluvial cinematográfico y pueblo al amanecer", size: "wide" },
+    { title: "El arco de piedra", image: images.arch, alt: "Arco natural de caliza sobre el río", size: "standard" },
+    { title: "Luz de cueva", image: images.cave, alt: "Entrada de cueva con luz cálida", size: "tall" },
+    { title: "Sobre el valle oculto", image: images.aerial, alt: "Vista aérea de río, acantilados y pueblo rural", size: "wide" },
+  ],
+  mapStops: [
+    { title: "Centro del pueblo", detail: "Empieza por la escala humana de Aglen: calles, iglesia, memoria local y orientación." },
+    { title: "Camino del Vit", detail: "Sigue el agua hacia miradores tranquilos, curvas y lugares de sombra para fotografiar." },
+    { title: "Дупката", detail: "Un umbral natural de piedra y uno de los símbolos visuales más fuertes del destino." },
+    { title: "Cuevas y formas de roca", detail: "Descubre la capa más antigua del paisaje con cuidado, guía local y respeto por el terreno." },
+  ],
+  sourceNotes: ["Sitio Wix original y lista de servicios: https://vasilevasilvena.wixsite.com/aglen", "Contexto público histórico y turístico: Banker.bg, Trip.dir.bg, BTA/Utro, resúmenes de Wikipedia/Wikitravel.", "Las imágenes generadas son marcadores provisionales para fotografía final de Aglen aprobada por el propietario."],
+};

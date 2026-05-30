@@ -1,0 +1,63 @@
+import { images, prices } from "./shared";
+import type { PageCopy } from "./types";
+
+export const ja: PageCopy = {
+  nav: { home: "ホーム", story: "物語", legends: "伝説", places: "見どころ", map: "ルート", contact: "訪問" },
+  ui: { languageLabel: "言語", languageSelectAria: "言語を選択", modalCloseAria: "閉じる" },
+  brand: { name: "アグレン", subtitle: "ヴィト川の旅先" },
+  hero: { meta: "ブルガリア北部 · ヴィト川 · ルコヴィト近郊", title: "AGLEN", subtitle: "ヴィト川に隠れた宝物", lede: "石灰岩の崖、静かな森、洞窟、村の伝説が出会う場所。", primary: "アグレンを見る", secondary: "訪問を計画", cue: "谷を発見", imageAlt: "アグレンをイメージした川の峡谷と村の風景" },
+  statsLabel: "アグレンを訪れる理由",
+  story: { eyebrow: "歴史と土地の記憶", title: "川辺に重なる時間", text: "アグレンは地図上の一点ではありません。洞窟、川沿いの道、古いルート、村の記憶、そして忘れにくい名前が重なります。" },
+  legends: { eyebrow: "アグレンの伝説と謎", title: "ゆっくり見つかる場所がある。", text: "ここで強い物語は静かです。地名、洞窟の入口、不思議な岩、川の曲がり角に残っています。" },
+  places: { eyebrow: "見どころ", title: "峡谷、川、洞窟、村の静けさ", text: "自然のランドマークと地元の物語がまとまった小さな目的地。急がず歩き、聞き、撮影し、発見を待つ場所です。" },
+  experiences: { eyebrow: "アグレンの週末を選ぶ", title: "観光リストではなく、案内される時間", text: "週末に合う短さと、土地らしさを感じる個人的な体験です。", cta: "ルートを問い合わせる" },
+  gallery: { eyebrow: "没入型ギャラリー", title: "川の光と石で語られる場所", aria: "アグレンのギャラリー" },
+  map: { eyebrow: "探検マップ", title: "川をたどり、石を見つける。", text: "村の中心、ヴィト川沿い、岩の名所、洞窟地形、夕日の展望地へゆっくり進みます。", aria: "アグレン周辺のルート地点" },
+  contact: { eyebrow: "訪問を計画", title: "ヴィト川が秘密を守る場所で週末を。", text: "ルート、ガイド付き散策、写真スポット、地元の話、実用的な訪問情報を問い合わせてください。", notesTitle: "訪問メモ", noteOne: "自然散策、写真、川の景色、洞窟、地元の記憶に向いています。", noteTwo: "歩きやすい靴、水、日よけ、地域への敬意を持ってお越しください。", cta: "問い合わせる" },
+  highlights: [
+    { label: "隠れたブルガリア", value: "ヴィト川沿いの静かな村", detail: "混雑よりも発見、川沿いの道、崖、洞窟、静けさを求める人へ。" },
+    { label: "自然", value: "川、石灰岩、森", detail: "ヴィト川、自然の岩、峡谷の眺め、洞窟地形が風景を作ります。" },
+    { label: "アイデンティティ", value: "珍しい名前 Aglen", detail: "ブルガリア語の Ъ で始まる唯一の村として知られています。" },
+  ],
+  timeline: [
+    { title: "近くの洞窟に残る旧石器時代の痕跡は、この地域に早くから人がいたことを示しています。", detail: "ヴィト川流域の洞窟と石灰岩の地形は、目的地の最も古い層として語れます。現代の旅よりずっと前から、避難場所、道、見晴らしの場所を与えてきた土地です。" },
+    { title: "ローマ道と要塞の痕跡は、この地域を古い移動ルートと結びつけます。", detail: "古い道は、この地域が孤立していなかったことを示します。川、高台、石の地形は、移動、方向感覚、防御を支えていました。" },
+    { title: "チュレクから来た移住者の地元伝説は、定住と避難の記憶を残しています。", detail: "この物語は確定した記録ではなく、土地の記憶として扱うのが自然です。安全を求め、新しく始め、名前と物語を残した人々の層を加えます。" },
+    { title: "1877年の記憶は、村の歴史への敬意とアイデンティティの一部です。", detail: "この部分は静かに、敬意をもって語るべきです。ページを教科書にせず、アグレンをブルガリアの広い記憶へつなげます。" },
+    { title: "今日のアグレンは、エコツーリズム、手仕事、スロートラベルの静かな目的地として育つことができます。", detail: "アグレンの強みは小さく本物であることです。週末訪問、ガイド散策、写真、手仕事、川沿いのルート、地域環境への敬意が未来を支えます。" },
+  ],
+  mysteries: [
+    { title: "川が視界から消える場所", tag: "隠れた道", image: images.hero, description: "ヴィト川は一度にすべてを見せません。曲がり角、影、崖が、散策を探す時間に変えます。" },
+    { title: "洞窟の入口", tag: "石と静けさ", image: images.cave, description: "洞窟は土地の古い記憶に属しています。地質、人の営み、象徴が重なる場所です。" },
+    { title: "地元名を持つ岩", tag: "民話の風景", image: images.arch, description: "Дупката や Слончето のような名前が、風景を個人的なものにします。目印であり、同時に物語でもあります。" },
+  ],
+  placesList: [
+    { title: "Дупката", tag: "岩のアーチ", image: images.arch, imageAlt: "アグレン近くの川の上にある石灰岩の岩のアーチ", description: "ヴィト川の上にある自然の石のアーチ。ゆっくり歩き、静かに撮影し、隠れたルートへ入る感覚を味わえます。" },
+    { title: "Слончето", tag: "岩の形", image: images.hero, imageAlt: "アグレン近くの峡谷、川、石灰岩の崖", description: "川辺の遊び心ある岩の形が、普通の散策を小さな発見に変えます。" },
+    { title: "Червена стена", tag: "峡谷の眺め", image: images.aerial, imageAlt: "川と村を含む峡谷の空撮風景", description: "村の近くで、石灰岩、森、川の光が劇的に出会う場所です。" },
+    { title: "Рачков вир", tag: "川の淵", image: images.pool, imageAlt: "石灰岩の岸と森に囲まれた静かな川の淵", description: "水辺で休み、ピクニックし、ヴィト川のそばでゆっくりしたリズムを感じる自然の地点です。" },
+    { title: "聖大天使ミカエル教会", tag: "村の記憶", image: images.church, imageAlt: "村の教会、石の道、緑の谷", description: "1888年に建てられた教会は、アグレンの物語にある人々の層を守っています。" },
+    { title: "Калето", tag: "考古学", image: images.kaleto, imageAlt: "峡谷と川を見下ろす丘の上の石の遺構", description: "古いルート、防御の記憶、川辺で続いてきた暮らしと結びつく場所です。" },
+  ],
+  experiencesList: [
+    { title: "峡谷ウォーク", price: prices[0], duration: "2-3時間", bestFor: "初めての訪問", description: "ヴィト川、岩の形、風景に残る地元名をガイドと一緒にたどります。" },
+    { title: "川辺の写真旅", price: prices[1], duration: "半日", bestFor: "写真好き", description: "川、岩、古い村道、やわらかな自然光の撮影ポイントを巡ります。" },
+    { title: "ヴィト川での釣り", price: prices[2], duration: "2時間", bestFor: "スロートラベル", description: "川を大切にしながら、実用的な案内とともに水辺の静かなリズムを楽しみます。" },
+    { title: "アグレン週末エスケープ", price: prices[3], duration: "2日", bestFor: "カップルと友人", description: "散策、ピクニック、手仕事、村の物語をたどる夕方のルートです。" },
+    { title: "ハーブと村の知恵", price: prices[4], duration: "90分", bestFor: "好奇心ある旅行者", description: "ハーブの見分け方、伝統的な使い方、責任ある採取を学びます。" },
+    { title: "学校向け発見の日", price: prices[5], duration: "1日", bestFor: "学生グループ", description: "地理、歴史、地元伝説、自然保護を結ぶフィールドルートです。" },
+  ],
+  galleryItems: [
+    { title: "ヴィト川の峡谷", image: images.hero, alt: "日の出の川の峡谷と村の映画的な風景", size: "wide" },
+    { title: "石のアーチ", image: images.arch, alt: "川の上にある自然の石灰岩アーチ", size: "standard" },
+    { title: "洞窟の光", image: images.cave, alt: "暖かな光が差す洞窟の入口", size: "tall" },
+    { title: "隠れた谷の上から", image: images.aerial, alt: "川、崖、田園の村を見下ろす空撮風景", size: "wide" },
+  ],
+  mapStops: [
+    { title: "村の中心", detail: "アグレンの人の尺度から始めます。道、教会、地元の記憶、方向感覚を感じる場所です。" },
+    { title: "ヴィト川沿いの道", detail: "水をたどり、静かな眺め、曲がり角、写真に向く木陰へ進みます。" },
+    { title: "Дупката", detail: "自然の石の入口であり、この目的地の強い視覚的シンボルの一つです。" },
+    { title: "洞窟と岩の形", detail: "より古い風景の層を、注意深く、地元の案内と地形への敬意をもって見つけます。" },
+  ],
+  sourceNotes: ["元のWixサイトとサービス一覧: https://vasilevasilvena.wixsite.com/aglen", "公開されている歴史・観光情報: Banker.bg、Trip.dir.bg、BTA/Utro、Wikipedia/Wikitravel の概要。", "生成された下書き画像は、最終的な承認済みアグレン写真のプレースホルダーです。"],
+};

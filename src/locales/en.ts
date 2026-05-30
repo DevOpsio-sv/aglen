@@ -1,0 +1,63 @@
+import { images, prices } from "./shared";
+import type { PageCopy } from "./types";
+
+export const en: PageCopy = {
+  nav: { home: "Home", story: "Story", legends: "Legends", places: "Places", map: "Routes", contact: "Visit" },
+  ui: { languageLabel: "Language", languageSelectAria: "Select language", modalCloseAria: "Close" },
+  brand: { name: "Aglen", subtitle: "Vit River destination" },
+  hero: { meta: "Northern Bulgaria · Vit River · Near Lukovit", title: "AGLEN", subtitle: "The Hidden Treasure of the Vit River", lede: "Where limestone cliffs, quiet forests, caves, and village legends meet.", primary: "Explore Aglen", secondary: "Plan Your Visit", cue: "Discover the valley", imageAlt: "Cinematic view of a river canyon and village landscape inspired by Aglen" },
+  statsLabel: "Why visit Aglen",
+  story: { eyebrow: "History and local memory", title: "Layers of time beside the river", text: "Aglen is not only a point on the map. Its story gathers caves, river paths, older routes, village memory, and the rare name that stays with visitors." },
+  legends: { eyebrow: "Legends & Mysteries of Aglen", title: "Some places are found slowly.", text: "The strongest stories here are not loud. They live in local names, cave thresholds, unusual rock forms, and the way the river disappears around a bend." },
+  places: { eyebrow: "Places to Explore", title: "Canyon, river, caves, and village silence", text: "A compact destination with a rare mix of natural landmarks and local stories. The best visit is unhurried: walk, listen, photograph, and leave space for discovery." },
+  experiences: { eyebrow: "Choose your Aglen weekend", title: "Guided moments, not tourist checklists", text: "The excursions become clear visitor journeys: short enough for a weekend, personal enough to feel local, and visual enough to remember.", cta: "Request this route" },
+  gallery: { eyebrow: "Immersive Gallery", title: "A place told through river light and stone", aria: "Aglen gallery" },
+  map: { eyebrow: "Explorer Map", title: "Follow the river. Find the stone.", text: "Use Aglen as a base for a slow route: village center, Vit River path, rock landmarks, cave terrain, and sunset viewpoints.", aria: "Route stops around Aglen" },
+  contact: { eyebrow: "Plan your visit", title: "Spend a weekend where the Vit keeps its secrets.", text: "Ask for routes, guided walks, photo spots, local stories, and practical visitor information.", notesTitle: "Visitor notes", noteOne: "Best for nature walks, photography, river viewpoints, caves, and local memory.", noteTwo: "Bring walking shoes, water, sun protection, and respect for private/local spaces.", cta: "Send Inquiry" },
+  highlights: [
+    { label: "Hidden Bulgaria", value: "A quiet village on the Vit", detail: "For visitors who prefer discovery, river paths, cliffs, caves, and silence over crowded routes." },
+    { label: "Nature", value: "River, limestone, forest", detail: "The landscape is shaped by the Vit River, natural rock forms, canyon views, and cave terrain." },
+    { label: "Identity", value: "The rare name Aglen", detail: "Known as the only Bulgarian village beginning with the letter Ъ." },
+  ],
+  timeline: [
+    { title: "Paleolithic traces in nearby caves suggest early human presence in the surrounding landscape.", detail: "The cave terrain and limestone forms around the Vit River can be framed as the oldest layer of the destination: a landscape of shelter, paths, and observation points long before modern travel." },
+    { title: "Roman road evidence and fortified remains connect the area with older movement and trade routes.", detail: "Old routes matter because they show the area was connected. River corridors, high ground, and stone terrain supported movement, orientation, and protection." },
+    { title: "The local migration legend from Churek keeps the story of settlement and refuge alive.", detail: "This should be treated as local memory rather than hard archive. It gives the destination a human layer: people searching for safety, beginning again, and leaving names and stories behind." },
+    { title: "The memory of 1877 remains part of the village's historical respect and identity.", detail: "This layer should be quiet and respectful. It connects Aglen to wider Bulgarian memory without turning the page into a textbook." },
+    { title: "Today Aglen can grow as a quiet destination for eco-tourism, crafts, slow travel, and local storytelling.", detail: "Aglen's strongest tourism future is authentic and small-scale: weekend visits, guided walks, photography, crafts, river routes, and respect for the local environment." },
+  ],
+  mysteries: [
+    { title: "Where the River Disappears from View", tag: "Hidden routes", image: images.hero, description: "The Vit does not reveal everything at once. Bends, shadows, and cliff lines turn a short walk into a search." },
+    { title: "The Cave Thresholds", tag: "Stone and silence", image: images.cave, description: "The caves belong to the older memory of the land: geological, human, and symbolic without exaggeration." },
+    { title: "Rock Shapes with Local Names", tag: "Folklore landscape", image: images.arch, description: "Names like Дупката and Слончето make the landscape feel personal: landmarks and stories at once." },
+  ],
+  placesList: [
+    { title: "Дупката", tag: "Rock arch", image: images.arch, imageAlt: "Limestone rock arch above the river near Aglen", description: "A natural stone arch above the Vit, made for slow walks, quiet photographs, and the feeling of entering a hidden route." },
+    { title: "Слончето", tag: "Rock figure", image: images.hero, imageAlt: "Canyon, river, and limestone cliffs near Aglen", description: "A playful riverside rock shape that turns a simple walk into a small act of discovery." },
+    { title: "Червена стена", tag: "Canyon view", image: images.aerial, imageAlt: "Aerial canyon landscape with river and village", description: "A dramatic meeting of limestone, forest, and river light close to the village." },
+    { title: "Рачков вир", tag: "River pool", image: images.pool, imageAlt: "Quiet river pool with limestone bank and forest", description: "A calm natural point for a pause by the water, a picnic, and a slower rhythm beside the Vit." },
+    { title: "St. Archangel Michael", tag: "Village memory", image: images.church, imageAlt: "Village church, stone lane, and green valley", description: "The village church, built in 1888, keeps the human layer of Aglen's story close to the landscape." },
+    { title: "Калето", tag: "Archaeology", image: images.kaleto, imageAlt: "Stone ruins on a hilltop above canyon and river", description: "A place connected with older routes, fortified memory, and the long continuity of life around the river." },
+  ],
+  experiencesList: [
+    { title: "Canyon Walk", price: prices[0], duration: "2-3 hours", bestFor: "First-time visitors", description: "Guided views toward the Vit, rock forms, and the local names behind the landscape." },
+    { title: "River Photo Journey", price: prices[1], duration: "Half day", bestFor: "Photographers", description: "Selected places around the river, rocks, old village streets, and soft natural light." },
+    { title: "Fishing by the Vit", price: prices[2], duration: "2 hours", bestFor: "Slow travel", description: "A quiet local rhythm by the water with practical guidance and care for the river." },
+    { title: "Aglen Weekend Escape", price: prices[3], duration: "2 days", bestFor: "Couples and friends", description: "Walks, picnic time, crafts, and an evening route through village stories." },
+    { title: "Herbs & Village Knowledge", price: prices[4], duration: "90 min.", bestFor: "Curious travelers", description: "Recognizing herbs, traditional uses, and responsible gathering in the local landscape." },
+    { title: "School Discovery Day", price: prices[5], duration: "1 day", bestFor: "Student groups", description: "A field route through geography, history, local legends, and nature protection." },
+  ],
+  galleryItems: [
+    { title: "Vit River Canyon", image: images.hero, alt: "Cinematic river canyon and village at sunrise", size: "wide" },
+    { title: "The Stone Arch", image: images.arch, alt: "Natural limestone rock arch above the river", size: "standard" },
+    { title: "Cave Light", image: images.cave, alt: "Cave entrance with warm light and river beyond", size: "tall" },
+    { title: "Above the Hidden Valley", image: images.aerial, alt: "Aerial view of river, cliffs, and rural village", size: "wide" },
+  ],
+  mapStops: [
+    { title: "Village Center", detail: "Start with the human scale of Aglen: streets, church, local memory, and orientation." },
+    { title: "Vit River Path", detail: "Follow the water toward quiet viewpoints, bends, and shaded places for photography." },
+    { title: "The Hole", detail: "A natural stone threshold and one of the strongest visual symbols of the destination." },
+    { title: "Caves & Rock Forms", detail: "Explore the older landscape layer with care, local guidance, and respect for terrain." },
+  ],
+  sourceNotes: ["Original Wix site and service list: https://vasilevasilvena.wixsite.com/aglen", "Public travel/history context: Banker.bg, Trip.dir.bg, BTA/Utro, Wikipedia/Wikitravel summaries.", "Generated draft visuals are placeholders for final owner-approved Aglen photography."],
+};
