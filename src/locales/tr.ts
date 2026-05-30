@@ -1,0 +1,75 @@
+import { images, prices } from "./shared";
+import type { PageCopy } from "./types";
+
+export const tr: PageCopy = {
+  nav: { home: "Ana sayfa", about: "Aglen hakkında", landmarks: "Yerler", stay: "Konaklama", quests: "Hidden Bulgaria Quests" },
+  ui: { languageLabel: "Dil", languageSelectAria: "Dil seç", modalCloseAria: "Kapat" },
+  brand: { name: "Aglen", subtitle: "Vit Nehri destinasyonu" },
+  hero: { meta: "Kuzey Bulgaristan · Vit Nehri · Lukovit yakınında", title: "AGLEN", subtitle: "Vit Nehri'nin gizli hazinesi", lede: "Kireçtaşı kayalıkları, sessiz ormanlar, mağaralar ve köy efsanelerinin buluştuğu yer.", primary: "Aglen'i keşfet", secondary: "Uygulamayı indir", cue: "Vadiyi keşfet", imageAlt: "Aglen'den esinlenen nehir kanyonu ve köy manzarası" },
+  statsLabel: "Neden Aglen?",
+  about: { eyebrow: "Tarih ve yerel hafıza", title: "Nehir kenarında zaman katmanları", text: "Aglen haritadaki bir nokta değil. Hikayesi mağaraları, nehir yollarını, eski rotaları, köy hafızasını ve nadir adını bir araya getirir." },
+  legends: { eyebrow: "Aglen efsaneleri ve sırları", title: "Bazı yerler yavaş keşfedilir.", text: "Buradaki en güçlü hikayeler sessizdir. Yerel adlarda, mağara eşiklerinde, kaya şekillerinde ve nehrin kıvrımlarında yaşarlar." },
+  landmarks: { eyebrow: "Keşfedilecek yerler", title: "Kanyon, nehir, mağaralar ve köy sessizliği", text: "Doğa ve yerel hikayelerin nadir birleşimi. En iyi ziyaret yavaştır: yürü, dinle, fotoğraf çek ve keşfe alan bırak.", aria: "Aglen çevresindeki rota durakları" },
+  experiences: { eyebrow: "Aglen hafta sonunu seç", title: "Turist listesi değil, rehberli anlar", text: "Hafta sonu için kısa, yerel hissettirecek kadar kişisel ziyaret deneyimleri.", cta: "Bu rotayı sor" },
+  gallery: { eyebrow: "Sürükleyici galeri", title: "Nehir ışığı ve taşla anlatılan bir yer", aria: "Aglen galerisi" },
+  stay: { eyebrow: "Aglen'de konaklama", title: "Nehre yakın dinlen", text: "Aglen doğa içinde sakin konaklama seçenekleri sunar. Uygunluk ve rezervasyon için iletişime geçin." },
+  quests: { eyebrow: "Bulgaristan'da türünün ilki", title: "Aglen'de gerçek bir AR macerası", text: "Hidden Bulgaria Quests sizi gerçek yerlere götürür: telefon kamerasıyla gizli bir 3D dünya görür, bilmeceler çözer ve Koruyucu'nun izini takip edersiniz.", cta: "İndir ve başla", features: [
+    { title: "Artırılmış gerçeklik", text: "Kamerayı işaretli yere tutun ve 3D karakterler, işaretler ve hikayelerle gizli dünyanın canlandığını görün." },
+    { title: "Canlı GPS görevleri", text: "Her görev sizi Aglen çevresindeki gerçek noktalara götürür. Her yer bir sonraki ipucunu saklar." },
+    { title: "Tarih farklı anlatılır", text: "Aglen efsaneleri oyuna dönüşür: Koruyucu, mağaralar ve nehir tek bir deneyimde birleşir." },
+  ] },
+  ar: { eyebrow: "AR macerası", title: "Koruyucu'nun dünyasını gör", text: "Telefon kamerasıyla Aglen'in gizli dünyasını canlandırın. AR katmanı hikayeleri, işaretleri ve karakterleri doğrudan yerinde gösterir.", steps: ["Hidden Bulgaria Quests'i Google Play'den indirin", "Aglen'de işaretli bir AR noktasına gidin", "Kamerayı tutun ve gizli dünyayı görün"], cta: "İndir ve başla" },
+  app: { eyebrow: "Uygulamayı indir", title: "Hidden Bulgaria Quests", text: "Android için mobil uygulama. Aglen çevresindeki görevleri bulun ve gerçek bir maceraya çıkın.", badge: "Google Play'de mevcut", note: "Android için mevcut. iOS sürümü yakında." },
+  contact: { eyebrow: "Ziyareti planla", title: "Vit'in sırlarını sakladığı yerde bir hafta sonu geçir.", text: "Rotalar, rehberli yürüyüşler, fotoğraf noktaları, yerel hikayeler ve pratik bilgiler için yazın.", notesTitle: "Ziyaretçi notları", noteOne: "Doğa yürüyüşleri, fotoğraf, nehir manzaraları, mağaralar ve yerel hafıza için uygundur.", noteTwo: "Rahat ayakkabı, su, güneş koruması ve yerel alanlara saygı getirin.", cta: "Talep gönder" },
+  highlights: [
+    { label: "Gizli Bulgaristan", value: "Vit kıyısında sakin köy", detail: "Keşif, nehir yolları, kayalar, mağaralar ve sessizlik isteyen ziyaretçiler için." },
+    { label: "Doğa", value: "Nehir, kireçtaşı, orman", detail: "Manzara Vit Nehri, doğal kaya şekilleri, kanyon görünümleri ve mağara arazisiyle oluşur." },
+    { label: "Kimlik", value: "Nadir Aglen adı", detail: "Ъ harfiyle başlayan tek Bulgar köyü olarak bilinir." },
+  ],
+  timeline: [
+    { title: "Yakındaki mağaralarda paleolitik izler erken insan varlığına işaret eder.", detail: "Vit çevresindeki mağaralar ve kireçtaşı formları bölgenin en eski katmanıdır: sığınaklar, yollar ve gözlem noktaları." },
+    { title: "Roma yolu ve güçlendirilmiş kalıntılar bölgeyi eski rotalara bağlar.", detail: "Eski yollar bölgenin izole olmadığını gösterir. Nehir, yükseklikler ve taş yön bulmayı destekledi." },
+    { title: "Churek'ten gelen yerleşimciler efsanesi yerel hafızayı korur.", detail: "Bunu kesin arşiv değil, yerel hafıza olarak anlatmak doğru olur." },
+    { title: "1877 hatırası köy kimliğinin parçasıdır.", detail: "Bu katman sakin ve saygılı anlatılmalı, Aglen'i daha geniş Bulgar hafızasına bağlamalıdır." },
+    { title: "Bugün Aglen ekoturizm ve yavaş seyahat destinasyonu olabilir.", detail: "En güçlü gelecek küçük ve otantik ziyaretlerde: hafta sonları, rehberler, fotoğraf, el sanatları ve saygı." },
+  ],
+  mysteries: [
+    { title: "Nehrin gözden kaybolduğu yer", tag: "Gizli yollar", image: images.hero, description: "Vit her şeyi bir anda göstermez. Kıvrımlar, gölgeler ve kayalar yürüyüşü arayışa dönüştürür." },
+    { title: "Mağara eşikleri", tag: "Taş ve sessizlik", image: images.cave, description: "Mağaralar daha eski bir hafızayı taşır: jeolojik, insani ve sembolik." },
+    { title: "Yerel adları olan kayalar", tag: "Folklor manzarası", image: images.arch, description: "Дупката ve Слончето gibi adlar manzarayı kişisel kılar." },
+  ],
+  placesList: [
+    { title: "Дупката", tag: "Kaya kemeri", image: images.arch, imageAlt: "Aglen yakınında nehir üstünde kireçtaşı kemer", description: "Vit üzerinde doğal bir taş kemer; yavaş yürüyüş ve sakin fotoğraflar için." },
+    { title: "Слончето", tag: "Kaya şekli", image: images.hero, imageAlt: "Aglen yakınında kanyon, nehir ve kireçtaşı kayalıkları", description: "Nehir kıyısındaki oyunlu kaya şekli yürüyüşü küçük bir keşfe çevirir." },
+    { title: "Червена стена", tag: "Kanyon görünümü", image: images.aerial, imageAlt: "Nehir ve köy içeren kanyon manzarası", description: "Kireçtaşı, orman ve nehir ışığının dramatik buluşması." },
+    { title: "Рачков вир", tag: "Nehir havuzu", image: images.pool, imageAlt: "Kireçtaşı kıyılı sakin nehir havuzu", description: "Su kenarında sakin bir mola noktası." },
+    { title: "Aziz Başmelek Mihail", tag: "Köy hafızası", image: images.church, imageAlt: "Köy kilisesi ve yeşil vadi", description: "1888 tarihli kilise Aglen hikayesinin insani katmanını korur." },
+    { title: "Калето", tag: "Arkeoloji", image: images.kaleto, imageAlt: "Kanyon üzerindeki taş kalıntılar", description: "Eski rotalar, savunma hafızası ve nehir yaşamıyla bağlantılı bir yer." },
+  ],
+  experiencesList: [
+    { title: "Kanyon yürüyüşü", price: prices[0], duration: "2-3 saat", bestFor: "İlk ziyaret", description: "Vit'e, kaya şekillerine ve yerel adlara rehberli bakış." },
+    { title: "Nehir fotoğraf rotası", price: prices[1], duration: "Yarım gün", bestFor: "Fotoğrafçılar", description: "Nehir, kayalar ve eski sokaklar çevresinde seçilmiş noktalar." },
+    { title: "Vit'te balıkçılık", price: prices[2], duration: "2 saat", bestFor: "Yavaş seyahat", description: "Pratik yönlendirmeyle su kenarında sakin yerel ritim." },
+    { title: "Aglen hafta sonu", price: prices[3], duration: "2 gün", bestFor: "Çiftler ve arkadaşlar", description: "Yürüyüşler, piknik, el sanatları ve köy hikayeleri." },
+    { title: "Otlar ve köy bilgisi", price: prices[4], duration: "90 dk", bestFor: "Meraklı gezginler", description: "Otları tanıma, geleneksel kullanım ve sorumlu toplama." },
+    { title: "Okul keşif günü", price: prices[5], duration: "1 gün", bestFor: "Okul grupları", description: "Coğrafya, tarih, yerel efsaneler ve doğa koruma rotası." },
+  ],
+  galleryItems: [
+    { title: "Vit Nehri kanyonu", image: images.hero, alt: "Gün doğumunda nehir kanyonu ve köy", size: "wide" },
+    { title: "Taş kemer", image: images.arch, alt: "Nehir üstünde doğal kireçtaşı kemer", size: "standard" },
+    { title: "Mağara ışığı", image: images.cave, alt: "Sıcak ışıklı mağara girişi", size: "tall" },
+    { title: "Gizli vadinin üstünde", image: images.aerial, alt: "Nehir, kayalar ve köyün havadan görünümü", size: "wide" },
+  ],
+  mapStops: [
+    { title: "Köy merkezi", detail: "Aglen'in insan ölçeğinden başlayın: sokaklar, kilise, yerel hafıza ve yön bulma." },
+    { title: "Vit yolu", detail: "Suyu takip ederek sakin manzaralara, kıvrımlara ve gölgeli noktalara gidin." },
+    { title: "Дупката", detail: "Doğal taş eşiği ve destinasyonun güçlü görsel sembollerinden biri." },
+    { title: "Mağaralar ve kaya şekilleri", detail: "Eski manzara katmanını dikkatle, yerel rehberle ve saygıyla keşfedin." },
+  ],
+  accommodationList: [
+    { title: "Misafir odaları", type: "Köy konaklaması", description: "Doğaya ve nehre yakın yerel evde sakin odalar.", image: images.church },
+    { title: "Kamp alanı", type: "Kamp", description: "Vit Nehri ve doğal rotalara erişimli açık çadır alanı.", image: images.aerial },
+    { title: "Dağ villası", type: "Villa", description: "Kanyon manzaralı, küçük gruplar ve hafta sonları için uygun villa.", image: images.pool },
+  ],
+  sourceNotes: ["Orijinal Wix sitesi ve hizmet listesi: https://vasilevasilvena.wixsite.com/aglen", "Kamu seyahat/tarih bağlamı: Banker.bg, Trip.dir.bg, BTA/Utro, Wikipedia/Wikitravel.", "Oluşturulan görseller final onaylı fotoğraflar için yer tutucudur."],
+};

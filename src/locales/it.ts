@@ -1,0 +1,75 @@
+import { images, prices } from "./shared";
+import type { PageCopy } from "./types";
+
+export const it: PageCopy = {
+  nav: { home: "Home", about: "Aglen", landmarks: "Luoghi", stay: "Soggiorno", quests: "Hidden Bulgaria Quests" },
+  ui: { languageLabel: "Lingua", languageSelectAria: "Seleziona lingua", modalCloseAria: "Chiudi" },
+  brand: { name: "Aglen", subtitle: "Destinazione sul fiume Vit" },
+  hero: { meta: "Bulgaria del Nord · fiume Vit · vicino a Lukovit", title: "AGLEN", subtitle: "Il tesoro nascosto del fiume Vit", lede: "Dove scogliere calcaree, boschi silenziosi, grotte e leggende del villaggio si incontrano.", primary: "Esplora Aglen", secondary: "Scarica l'app", cue: "Scopri la valle", imageAlt: "Vista cinematografica di un canyon fluviale e paesaggio rurale ispirati ad Aglen" },
+  statsLabel: "Perché visitare Aglen",
+  about: { eyebrow: "Storia e memoria locale", title: "Strati di tempo accanto al fiume", text: "Aglen non è solo un punto sulla mappa. La sua storia raccoglie grotte, sentieri lungo il fiume, antiche rotte, memoria del villaggio e un nome raro." },
+  legends: { eyebrow: "Leggende e misteri di Aglen", title: "Alcuni luoghi si scoprono lentamente.", text: "Le storie più forti qui sono silenziose. Vivono nei nomi locali, negli ingressi delle grotte, nelle forme rocciose e nelle curve del fiume." },
+  landmarks: { eyebrow: "Luoghi da scoprire", title: "Canyon, fiume, grotte e silenzio rurale", text: "Una destinazione compatta con una rara combinazione di natura e storie locali. La visita migliore è lenta: cammina, ascolta, fotografa e lascia spazio alla scoperta.", aria: "Tappe intorno ad Aglen" },
+  experiences: { eyebrow: "Scegli il tuo weekend ad Aglen", title: "Momenti guidati, non liste turistiche", text: "Esperienze chiare per i visitatori: brevi per un weekend, personali e memorabili.", cta: "Richiedi questo percorso" },
+  gallery: { eyebrow: "Galleria immersiva", title: "Un luogo raccontato dalla luce del fiume e dalla pietra", aria: "Galleria di Aglen" },
+  stay: { eyebrow: "Soggiornare ad Aglen", title: "Riposa vicino al fiume", text: "Aglen offre sistemazioni tranquille immerse nella natura. Per disponibilità e prenotazioni, contattaci." },
+  quests: { eyebrow: "Primo nel suo genere in Bulgaria", title: "Una vera avventura AR ad Aglen", text: "Hidden Bulgaria Quests ti porta in luoghi reali: con la fotocamera del telefono vedi un mondo 3D nascosto, risolvi enigmi e segui le tracce del Guardiano.", cta: "Scarica e inizia", features: [
+    { title: "Realtà aumentata", text: "Punta la fotocamera verso un luogo segnato e guarda il mondo nascosto prendere vita con personaggi, segni e storie 3D." },
+    { title: "Missioni GPS dal vivo", text: "Ogni missione ti guida verso veri punti d'interesse intorno ad Aglen. Ogni luogo nasconde l'indizio successivo." },
+    { title: "Storia raccontata diversamente", text: "Le leggende di Aglen diventano un gioco: il Guardiano, le grotte e il fiume in un'unica esperienza." },
+  ] },
+  ar: { eyebrow: "Avventura AR", title: "Vedi il mondo del Guardiano", text: "Con la fotocamera del telefono dai vita al mondo nascosto di Aglen. Il livello AR rivela storie, segni e personaggi direttamente nei luoghi.", steps: ["Scarica Hidden Bulgaria Quests da Google Play", "Vai a un luogo AR segnato ad Aglen", "Punta la fotocamera e scopri il mondo nascosto"], cta: "Scarica e inizia" },
+  app: { eyebrow: "Scarica l'app", title: "Hidden Bulgaria Quests", text: "App mobile per Android. Trova le missioni intorno ad Aglen e parti per una vera avventura.", badge: "Disponibile su Google Play", note: "Disponibile per Android. Versione iOS in arrivo." },
+  contact: { eyebrow: "Pianifica la visita", title: "Trascorri un weekend dove il Vit custodisce i suoi segreti.", text: "Chiedi percorsi, passeggiate guidate, luoghi fotografici, storie locali e informazioni pratiche.", notesTitle: "Note per i visitatori", noteOne: "Ideale per natura, fotografia, viste sul fiume, grotte e memoria locale.", noteTwo: "Porta scarpe comode, acqua, protezione solare e rispetto per gli spazi locali.", cta: "Invia richiesta" },
+  highlights: [
+    { label: "Bulgaria nascosta", value: "Un villaggio tranquillo sul Vit", detail: "Per chi preferisce scoperta, sentieri fluviali, rocce, grotte e silenzio." },
+    { label: "Natura", value: "Fiume, calcare, bosco", detail: "Il paesaggio è modellato dal Vit, dalle forme rocciose, dalle viste del canyon e dal terreno carsico." },
+    { label: "Identità", value: "Il raro nome Aglen", detail: "Conosciuto come l'unico villaggio bulgaro che inizia con la lettera Ъ." },
+  ],
+  timeline: [
+    { title: "Tracce paleolitiche in grotte vicine indicano una presenza umana antica.", detail: "Le grotte e le forme calcaree del Vit sono lo strato più antico del territorio: rifugi, cammini e punti di osservazione." },
+    { title: "Una strada romana e resti fortificati collegano l'area ad antiche rotte.", detail: "Vecchie vie mostrano che la zona era collegata: fiume, alture e pietra aiutavano orientamento e passaggio." },
+    { title: "La leggenda locale dei migranti da Churek conserva memoria di insediamento.", detail: "È memoria locale: persone in cerca di sicurezza che ricominciano e lasciano nomi e racconti." },
+    { title: "La memoria del 1877 resta parte dell'identità del villaggio.", detail: "Va raccontata con calma e rispetto, collegando Aglen alla memoria bulgara più ampia." },
+    { title: "Oggi Aglen può crescere come destinazione per ecoturismo e viaggio lento.", detail: "Il futuro più forte è autentico e piccolo: weekend, guide, fotografia, artigianato e rispetto del luogo." },
+  ],
+  mysteries: [
+    { title: "Dove il fiume scompare alla vista", tag: "Percorsi nascosti", image: images.hero, description: "Il Vit non rivela tutto subito. Curve, ombre e rocce trasformano la passeggiata in ricerca." },
+    { title: "Le soglie delle grotte", tag: "Pietra e silenzio", image: images.cave, description: "Le grotte custodiscono una memoria più antica: geologica, umana e simbolica." },
+    { title: "Rocce con nomi locali", tag: "Paesaggio folclorico", image: images.arch, description: "Nomi come Дупката e Слончето rendono il paesaggio personale: luoghi e storie insieme." },
+  ],
+  placesList: [
+    { title: "Дупката", tag: "Arco roccioso", image: images.arch, imageAlt: "Arco calcareo sopra il fiume vicino ad Aglen", description: "Un arco naturale sopra il Vit, perfetto per camminate lente e fotografie tranquille." },
+    { title: "Слончето", tag: "Figura rocciosa", image: images.hero, imageAlt: "Canyon, fiume e scogliere calcaree vicino ad Aglen", description: "Una forma giocosa vicino al fiume che trasforma la passeggiata in una piccola scoperta." },
+    { title: "Червена стена", tag: "Vista canyon", image: images.aerial, imageAlt: "Paesaggio di canyon con fiume e villaggio", description: "Un incontro scenografico tra calcare, bosco e luce del fiume." },
+    { title: "Рачков вир", tag: "Pozza del fiume", image: images.pool, imageAlt: "Pozza tranquilla con riva calcarea e bosco", description: "Un punto naturale calmo per una pausa accanto all'acqua." },
+    { title: "San Michele Arcangelo", tag: "Memoria del villaggio", image: images.church, imageAlt: "Chiesa del villaggio e valle verde", description: "La chiesa del 1888 conserva lo strato umano della storia di Aglen." },
+    { title: "Калето", tag: "Archeologia", image: images.kaleto, imageAlt: "Resti di pietra sopra canyon e fiume", description: "Un luogo legato ad antiche rotte, memoria fortificata e vita lungo il fiume." },
+  ],
+  experiencesList: [
+    { title: "Passeggiata nel canyon", price: prices[0], duration: "2-3 ore", bestFor: "Prima visita", description: "Viste guidate verso il Vit, forme rocciose e nomi locali del paesaggio." },
+    { title: "Viaggio fotografico sul fiume", price: prices[1], duration: "Mezza giornata", bestFor: "Fotografi", description: "Luoghi scelti intorno al fiume, alle rocce e alle vecchie strade." },
+    { title: "Pesca sul Vit", price: prices[2], duration: "2 ore", bestFor: "Viaggio lento", description: "Ritmo locale calmo sull'acqua con consigli pratici." },
+    { title: "Weekend ad Aglen", price: prices[3], duration: "2 giorni", bestFor: "Coppie e amici", description: "Passeggiate, picnic, artigianato e storie serali del villaggio." },
+    { title: "Erbe e sapere del villaggio", price: prices[4], duration: "90 min", bestFor: "Viaggiatori curiosi", description: "Riconoscere erbe, usi tradizionali e raccolta responsabile." },
+    { title: "Giornata scoperta per scuole", price: prices[5], duration: "1 giorno", bestFor: "Gruppi scolastici", description: "Un percorso tra geografia, storia, leggende locali e natura." },
+  ],
+  galleryItems: [
+    { title: "Canyon del Vit", image: images.hero, alt: "Canyon fluviale e villaggio all'alba", size: "wide" },
+    { title: "L'arco di pietra", image: images.arch, alt: "Arco calcareo naturale sopra il fiume", size: "standard" },
+    { title: "Luce nella grotta", image: images.cave, alt: "Ingresso di grotta con luce calda", size: "tall" },
+    { title: "Sopra la valle nascosta", image: images.aerial, alt: "Vista aerea di fiume, rocce e villaggio", size: "wide" },
+  ],
+  mapStops: [
+    { title: "Centro del villaggio", detail: "Inizia dalla scala umana di Aglen: strade, chiesa, memoria locale e orientamento." },
+    { title: "Sentiero del Vit", detail: "Segui l'acqua verso punti panoramici, curve e luoghi ombreggiati." },
+    { title: "Дупката", detail: "Una soglia naturale di pietra e uno dei simboli visivi del luogo." },
+    { title: "Grotte e forme rocciose", detail: "Scopri lo strato antico del paesaggio con cura, guida locale e rispetto." },
+  ],
+  accommodationList: [
+    { title: "Camere per ospiti", type: "Soggiorno nel villaggio", description: "Camere tranquille in una casa locale, vicino alla natura e al fiume.", image: images.church },
+    { title: "Area campeggio", type: "Camping", description: "Spazio aperto per tende con accesso al Vit e ai sentieri naturali.", image: images.aerial },
+    { title: "Villa di montagna", type: "Villa", description: "Villa appartata con vista canyon, ideale per piccoli gruppi e weekend.", image: images.pool },
+  ],
+  sourceNotes: ["Sito Wix originale e lista servizi: https://vasilevasilvena.wixsite.com/aglen", "Contesto pubblico viaggio/storia: Banker.bg, Trip.dir.bg, BTA/Utro, Wikipedia/Wikitravel.", "Le immagini generate sono placeholder per foto finali approvate."],
+};

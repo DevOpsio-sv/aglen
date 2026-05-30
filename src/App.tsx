@@ -5,7 +5,15 @@ export function App() {
   const [language, setLanguage] = useState<LanguageCode>("bg");
   const [selectedTimeline, setSelectedTimeline] = useState<TimelineItem | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
   const copy = contentByLanguage[language];
+  const selectedLanguage = languages.find((item) => item.code === language) ?? languages[0];
+
+  const changeLanguage = (nextLanguage: LanguageCode) => {
+    setSelectedTimeline(null);
+    setLanguage(nextLanguage);
+    setLanguageMenuOpen(false);
+  };
 
   useEffect(() => {
     document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
@@ -40,23 +48,46 @@ export function App() {
             </a>
           ))}
         </nav>
-        <label className="language-switch">
-          <span>{copy.ui.languageLabel}</span>
-          <select
-            value={language}
-            onChange={(event) => {
-              setSelectedTimeline(null);
-              setLanguage(event.target.value as LanguageCode);
-            }}
-            aria-label={copy.ui.languageSelectAria}
+        <div
+          className={`language-switch ${languageMenuOpen ? "open" : ""}`}
+          onBlur={(event) => {
+            const nextTarget = event.relatedTarget;
+            if (!(nextTarget instanceof Node) || !event.currentTarget.contains(nextTarget)) {
+              setLanguageMenuOpen(false);
+            }
+          }}
+        >
+          <span id="language-switch-label" className="language-switch-label">{copy.ui.languageLabel}</span>
+          <button
+            className="language-trigger"
+            type="button"
+            aria-label={`${copy.ui.languageSelectAria}: ${selectedLanguage.label}`}
+            aria-expanded={languageMenuOpen}
+            aria-haspopup="listbox"
+            onClick={() => setLanguageMenuOpen((open) => !open)}
           >
-            {languages.map((item) => (
-              <option key={item.code} value={item.code}>
-                {item.short} · {item.label}
-              </option>
-            ))}
-          </select>
-        </label>
+            <span className="language-globe" aria-hidden="true" />
+            <span>{selectedLanguage.short} · {selectedLanguage.label}</span>
+            <span className="language-chevron" aria-hidden="true" />
+          </button>
+          {languageMenuOpen && (
+            <div className="language-popover" role="listbox" aria-label={copy.ui.languageSelectAria}>
+              {languages.map((item) => (
+                <button
+                  key={item.code}
+                  className={item.code === language ? "active" : ""}
+                  type="button"
+                  role="option"
+                  aria-selected={item.code === language}
+                  onClick={() => changeLanguage(item.code)}
+                >
+                  <strong>{item.short}</strong>
+                  <span>{item.label}</span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
         <button
           className="hamburger"
           type="button"
@@ -88,22 +119,26 @@ export function App() {
                 {label}
               </a>
             ))}
-            <div className="mobile-language">
-              <select
-                value={language}
-                onChange={(event) => {
-                  setSelectedTimeline(null);
-                  setLanguage(event.target.value as LanguageCode);
-                  setMobileMenuOpen(false);
-                }}
-                aria-label={copy.ui.languageSelectAria}
-              >
+            <div className="mobile-language" aria-labelledby="mobile-language-title">
+              <strong id="mobile-language-title">{copy.ui.languageLabel}</strong>
+              <div className="mobile-language-grid" role="listbox" aria-label={copy.ui.languageSelectAria}>
                 {languages.map((item) => (
-                  <option key={item.code} value={item.code}>
-                    {item.short} · {item.label}
-                  </option>
+                  <button
+                    key={item.code}
+                    className={item.code === language ? "active" : ""}
+                    type="button"
+                    role="option"
+                    aria-selected={item.code === language}
+                    onClick={() => {
+                      changeLanguage(item.code);
+                      setMobileMenuOpen(false);
+                    }}
+                  >
+                    <strong>{item.short}</strong>
+                    <span>{item.label}</span>
+                  </button>
                 ))}
-              </select>
+              </div>
             </div>
           </nav>
         </>

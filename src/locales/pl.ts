@@ -1,0 +1,75 @@
+import { images, prices } from "./shared";
+import type { PageCopy } from "./types";
+
+export const pl: PageCopy = {
+  nav: { home: "Start", about: "O Aglen", landmarks: "Miejsca", stay: "Nocleg", quests: "Hidden Bulgaria Quests" },
+  ui: { languageLabel: "Język", languageSelectAria: "Wybierz język", modalCloseAria: "Zamknij" },
+  brand: { name: "Aglen", subtitle: "Destynacja nad rzeką Vit" },
+  hero: { meta: "Północna Bułgaria · rzeka Vit · blisko Lukovit", title: "AGLEN", subtitle: "Ukryty skarb rzeki Vit", lede: "Miejsce, gdzie wapienne skały, ciche lasy, jaskinie i wiejskie legendy spotykają się.", primary: "Odkryj Aglen", secondary: "Pobierz aplikację", cue: "Odkryj dolinę", imageAlt: "Filmowy widok kanionu rzecznego i krajobrazu wsi inspirowany Aglen" },
+  statsLabel: "Dlaczego odwiedzić Aglen",
+  about: { eyebrow: "Historia i lokalna pamięć", title: "Warstwy czasu nad rzeką", text: "Aglen to nie tylko punkt na mapie. Jego historia łączy jaskinie, rzeczne ścieżki, stare trasy, pamięć wsi i rzadką nazwę." },
+  legends: { eyebrow: "Legendy i tajemnice Aglen", title: "Niektóre miejsca odkrywa się powoli.", text: "Najsilniejsze historie tutaj są ciche. Żyją w lokalnych nazwach, progach jaskiń, kształtach skał i zakrętach rzeki." },
+  landmarks: { eyebrow: "Miejsca do odkrycia", title: "Kanion, rzeka, jaskinie i wiejska cisza", text: "Kompaktowa destynacja z rzadkim połączeniem natury i lokalnych historii. Najlepsza wizyta jest spokojna: idź, słuchaj, fotografuj i zostaw miejsce na odkrycie.", aria: "Punkty trasy wokół Aglen" },
+  experiences: { eyebrow: "Wybierz weekend w Aglen", title: "Prowadzone momenty, nie lista turystyczna", text: "Jasne doświadczenia: krótkie na weekend, osobiste i zapadające w pamięć.", cta: "Zapytaj o trasę" },
+  gallery: { eyebrow: "Galeria immersyjna", title: "Miejsce opowiedziane światłem rzeki i kamieniem", aria: "Galeria Aglen" },
+  stay: { eyebrow: "Nocleg w Aglen", title: "Odpocznij blisko rzeki", text: "Aglen oferuje spokojne opcje noclegu w naturze. W sprawie dostępności i rezerwacji skontaktuj się z nami." },
+  quests: { eyebrow: "Pierwsze takie w Bułgarii", title: "Prawdziwa przygoda AR w Aglen", text: "Hidden Bulgaria Quests prowadzi do realnych miejsc: przez kamerę telefonu widzisz ukryty świat 3D, rozwiązujesz zagadki i idziesz śladem Strażnika.", cta: "Pobierz i zacznij", features: [
+    { title: "Rzeczywistość rozszerzona", text: "Skieruj kamerę na oznaczone miejsce i zobacz, jak ukryty świat ożywa przez postacie 3D, znaki i historie." },
+    { title: "Questy GPS na żywo", text: "Każdy quest prowadzi do prawdziwych miejsc wokół Aglen. Każde miejsce kryje kolejny trop." },
+    { title: "Historia opowiedziana inaczej", text: "Legendy Aglen stają się grą: Strażnik, jaskinie i rzeka łączą się w jedno doświadczenie." },
+  ] },
+  ar: { eyebrow: "Przygoda AR", title: "Zobacz świat Strażnika", text: "Kamerą telefonu ożyw ukryty świat Aglen. Warstwa AR pokazuje historie, znaki i postacie dokładnie w tych miejscach.", steps: ["Pobierz Hidden Bulgaria Quests z Google Play", "Idź do oznaczonego miejsca AR w Aglen", "Skieruj kamerę i zobacz ukryty świat"], cta: "Pobierz i zacznij" },
+  app: { eyebrow: "Pobierz aplikację", title: "Hidden Bulgaria Quests", text: "Aplikacja mobilna na Androida. Znajdź questy wokół Aglen i rusz w prawdziwą przygodę.", badge: "Dostępne w Google Play", note: "Dostępne na Androida. Wersja iOS wkrótce." },
+  contact: { eyebrow: "Zaplanuj wizytę", title: "Spędź weekend tam, gdzie Vit strzeże swoich sekretów.", text: "Zapytaj o trasy, spacery z przewodnikiem, miejsca do zdjęć, lokalne historie i praktyczne informacje.", notesTitle: "Informacje dla odwiedzających", noteOne: "Dobre na spacery przyrodnicze, fotografię, widoki rzeki, jaskinie i lokalną pamięć.", noteTwo: "Weź wygodne buty, wodę, ochronę przeciwsłoneczną i szacunek dla miejsc.", cta: "Wyślij zapytanie" },
+  highlights: [
+    { label: "Ukryta Bułgaria", value: "Cicha wieś nad Vit", detail: "Dla odwiedzających, którzy wybierają odkrywanie, rzeczne ścieżki, skały, jaskinie i ciszę." },
+    { label: "Natura", value: "Rzeka, wapień, las", detail: "Krajobraz tworzą rzeka Vit, naturalne formy skalne, widoki kanionu i teren jaskiniowy." },
+    { label: "Tożsamość", value: "Rzadka nazwa Aglen", detail: "Znana jako jedyna bułgarska wieś zaczynająca się literą Ъ." },
+  ],
+  timeline: [
+    { title: "Ślady paleolityczne w pobliskich jaskiniach sugerują wczesną obecność człowieka.", detail: "Jaskinie i wapienne formy wokół Vit są najstarszą warstwą miejsca: schronienia, ścieżki i punkty obserwacyjne." },
+    { title: "Rzymska droga i pozostałości obronne łączą obszar ze starymi trasami.", detail: "Stare drogi pokazują, że region był połączony. Rzeka, wzgórza i kamień pomagały w orientacji." },
+    { title: "Lokalna legenda o osadnikach z Churek zachowuje pamięć osiedlenia.", detail: "To lokalna pamięć: ludzie szukający bezpieczeństwa, zaczynający od nowa i zostawiający nazwy oraz opowieści." },
+    { title: "Pamięć roku 1877 pozostaje częścią tożsamości wsi.", detail: "Tę warstwę warto opowiadać spokojnie i z szacunkiem." },
+    { title: "Dziś Aglen może rosnąć jako cel ekoturystyki i slow travel.", detail: "Najsilniejsza przyszłość to autentyczne, małe wizyty: weekendy, przewodnicy, fotografia, rzemiosło i szacunek." },
+  ],
+  mysteries: [
+    { title: "Gdzie rzeka znika z widoku", tag: "Ukryte ścieżki", image: images.hero, description: "Vit nie pokazuje wszystkiego od razu. Zakręty, cienie i skały zmieniają spacer w poszukiwanie." },
+    { title: "Progi jaskiń", tag: "Kamień i cisza", image: images.cave, description: "Jaskinie niosą starszą pamięć ziemi: geologiczną, ludzką i symboliczną." },
+    { title: "Skały z lokalnymi nazwami", tag: "Krajobraz folkloru", image: images.arch, description: "Nazwy jak Дупката i Слончето sprawiają, że krajobraz staje się osobisty." },
+  ],
+  placesList: [
+    { title: "Дупката", tag: "Skalny łuk", image: images.arch, imageAlt: "Wapienny łuk nad rzeką koło Aglen", description: "Naturalny kamienny łuk nad Vit, idealny na spokojny spacer i zdjęcia." },
+    { title: "Слончето", tag: "Forma skalna", image: images.hero, imageAlt: "Kanion, rzeka i wapienne skały koło Aglen", description: "Zabawna forma nad rzeką, która zmienia spacer w małe odkrycie." },
+    { title: "Червена стена", tag: "Widok kanionu", image: images.aerial, imageAlt: "Krajobraz kanionu z rzeką i wsią", description: "Dramatyczne spotkanie wapienia, lasu i światła rzeki." },
+    { title: "Рачков вир", tag: "Rzeczne rozlewisko", image: images.pool, imageAlt: "Spokojne rozlewisko z wapiennym brzegiem", description: "Naturalny punkt na przerwę przy wodzie." },
+    { title: "Św. Archanioł Michał", tag: "Pamięć wsi", image: images.church, imageAlt: "Wiejski kościół i zielona dolina", description: "Kościół z 1888 roku zachowuje ludzką warstwę historii Aglen." },
+    { title: "Калето", tag: "Archeologia", image: images.kaleto, imageAlt: "Kamienne pozostałości nad kanionem", description: "Miejsce związane ze starymi trasami, obronną pamięcią i życiem przy rzece." },
+  ],
+  experiencesList: [
+    { title: "Spacer kanionem", price: prices[0], duration: "2-3 godz.", bestFor: "Pierwsza wizyta", description: "Widoki na Vit, formy skalne i lokalne nazwy z przewodnikiem." },
+    { title: "Fotowyprawa nad rzeką", price: prices[1], duration: "Pół dnia", bestFor: "Fotografowie", description: "Wybrane miejsca nad rzeką, przy skałach i starych ulicach." },
+    { title: "Wędkowanie nad Vit", price: prices[2], duration: "2 godz.", bestFor: "Slow travel", description: "Spokojny rytm przy wodzie z praktycznymi wskazówkami." },
+    { title: "Weekend w Aglen", price: prices[3], duration: "2 dni", bestFor: "Pary i przyjaciele", description: "Spacery, piknik, rzemiosło i wieczorne historie wsi." },
+    { title: "Zioła i wiedza wsi", price: prices[4], duration: "90 min", bestFor: "Ciekawi podróżnicy", description: "Rozpoznawanie ziół, tradycyjne użycie i odpowiedzialne zbieranie." },
+    { title: "Dzień odkryć dla szkół", price: prices[5], duration: "1 dzień", bestFor: "Grupy szkolne", description: "Trasa przez geografię, historię, lokalne legendy i przyrodę." },
+  ],
+  galleryItems: [
+    { title: "Kanion rzeki Vit", image: images.hero, alt: "Kanion rzeczny i wieś o wschodzie słońca", size: "wide" },
+    { title: "Kamienny łuk", image: images.arch, alt: "Naturalny wapienny łuk nad rzeką", size: "standard" },
+    { title: "Światło jaskini", image: images.cave, alt: "Wejście do jaskini z ciepłym światłem", size: "tall" },
+    { title: "Nad ukrytą doliną", image: images.aerial, alt: "Widok z góry na rzekę, skały i wieś", size: "wide" },
+  ],
+  mapStops: [
+    { title: "Centrum wsi", detail: "Zacznij od ludzkiej skali Aglen: ulic, kościoła, lokalnej pamięci i orientacji." },
+    { title: "Ścieżka nad Vit", detail: "Podążaj za wodą do spokojnych widoków, zakrętów i cienia." },
+    { title: "Дупката", detail: "Naturalny kamienny próg i jeden z mocnych symboli miejsca." },
+    { title: "Jaskinie i formy skalne", detail: "Odkrywaj starszą warstwę krajobrazu ostrożnie, z lokalnym przewodnikiem i szacunkiem." },
+  ],
+  accommodationList: [
+    { title: "Pokoje gościnne", type: "Pobyt we wsi", description: "Ciche pokoje w lokalnym domu, blisko natury i rzeki.", image: images.church },
+    { title: "Pole namiotowe", type: "Camping", description: "Otwarta przestrzeń na namioty z dostępem do Vit i ścieżek.", image: images.aerial },
+    { title: "Willa górska", type: "Willa", description: "Ustronna willa z widokiem na kanion, dobra dla małych grup.", image: images.pool },
+  ],
+  sourceNotes: ["Oryginalna strona Wix i lista usług: https://vasilevasilvena.wixsite.com/aglen", "Publiczny kontekst podróży/historii: Banker.bg, Trip.dir.bg, BTA/Utro, Wikipedia/Wikitravel.", "Wygenerowane obrazy są placeholderami dla finalnych zatwierdzonych zdjęć."],
+};
