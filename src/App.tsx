@@ -16,9 +16,27 @@ export function App() {
   };
 
   useEffect(() => {
+    document.documentElement.lang = language;
+  }, [language]);
+
+  useEffect(() => {
     document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [mobileMenuOpen]);
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setMobileMenuOpen(false); };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [mobileMenuOpen]);
+
+  useEffect(() => {
+    if (!selectedTimeline) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setSelectedTimeline(null); };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [selectedTimeline]);
 
   const navItems = useMemo(
     () => [
@@ -91,7 +109,7 @@ export function App() {
         <button
           className="hamburger"
           type="button"
-          aria-label="Меню"
+          aria-label={copy.ui.mobileMenuAria}
           aria-expanded={mobileMenuOpen}
           aria-controls="mobile-nav"
           onClick={() => setMobileMenuOpen(true)}
@@ -204,7 +222,7 @@ export function App() {
           <div className="mystery-grid">
             {copy.mysteries.map((item) => (
               <article className="mystery-card reveal" key={item.title}>
-                <img src={item.image} alt="" aria-hidden="true" />
+                <img src={item.image} alt="" aria-hidden="true" loading="lazy" />
                 <div>
                   <p>{item.tag}</p>
                   <h3>{item.title}</h3>
@@ -217,7 +235,7 @@ export function App() {
       </section>
 
       {selectedTimeline && (
-        <div className="timeline-modal" role="presentation" onClick={() => setSelectedTimeline(null)}>
+        <div className="timeline-modal" onClick={() => setSelectedTimeline(null)}>
           <article
             className="timeline-dialog"
             role="dialog"
@@ -249,7 +267,7 @@ export function App() {
         <div className="place-grid">
           {copy.placesList.map((place) => (
             <article className="place-card reveal" key={place.title}>
-              <img src={place.image} alt={place.imageAlt} />
+              <img src={place.image} alt={place.imageAlt} loading="lazy" />
               <div>
                 <p>{place.tag}</p>
                 <h3>{place.title}</h3>
@@ -268,7 +286,7 @@ export function App() {
         <div className="gallery-grid" aria-label={copy.gallery.aria}>
           {copy.galleryItems.map((item) => (
             <figure className={`gallery-item ${item.size} reveal`} key={item.title}>
-              <img src={item.image} alt={item.alt} />
+              <img src={item.image} alt={item.alt} loading="lazy" />
               <figcaption>{item.title}</figcaption>
             </figure>
           ))}
@@ -329,7 +347,7 @@ export function App() {
         <div className="place-grid">
           {copy.accommodationList.map((item: Accommodation) => (
             <article className="place-card reveal" key={item.title}>
-              <img src={item.image} alt="" aria-hidden="true" />
+              <img src={item.image} alt="" aria-hidden="true" loading="lazy" />
               <div>
                 <p>{item.type}</p>
                 <h3>{item.title}</h3>
@@ -353,8 +371,8 @@ export function App() {
             <p className="quests-lede">{copy.quests.text}</p>
           </div>
           <div className="quests-features">
-            {copy.quests.features.map((f, i) => (
-              <article className="quest-feature reveal" key={i}>
+            {copy.quests.features.map((f) => (
+              <article className="quest-feature reveal" key={f.title}>
                 <span className="quest-feature-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
                 <h3>{f.title}</h3>
                 <p>{f.text}</p>

@@ -3,7 +3,7 @@ import type { PageCopy } from "./types";
 
 export const bg: PageCopy = {
   nav: { home: "Начало", about: "За Ъглен", landmarks: "Забележителности", stay: "Настаняване", quests: "Hidden Bulgaria Quests" },
-  ui: { languageLabel: "Език", languageSelectAria: "Избор на език", modalCloseAria: "Затвори" },
+  ui: { languageLabel: "Език", languageSelectAria: "Избор на език", modalCloseAria: "Затвори", mobileMenuAria: "Меню" },
   brand: { name: "Ъглен", subtitle: "Село до река Вит" },
   hero: {
     meta: "Северна България · река Вит · близо до Луковит",

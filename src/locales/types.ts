@@ -65,6 +65,7 @@ export type PageCopy = {
     languageLabel: string;
     languageSelectAria: string;
     modalCloseAria: string;
+    mobileMenuAria: string;
   };
   brand: {
     name: string;

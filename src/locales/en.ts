@@ -3,7 +3,7 @@ import type { PageCopy } from "./types";
 
 export const en: PageCopy = {
   nav: { home: "Home", about: "About Aglen", landmarks: "Landmarks", stay: "Stay", quests: "Hidden Bulgaria Quests" },
-  ui: { languageLabel: "Language", languageSelectAria: "Select language", modalCloseAria: "Close" },
+  ui: { languageLabel: "Language", languageSelectAria: "Select language", modalCloseAria: "Close", mobileMenuAria: "Menu" },
   brand: { name: "Aglen", subtitle: "Vit River destination" },
   hero: { meta: "Northern Bulgaria · Vit River · Near Lukovit", title: "AGLEN", subtitle: "The Hidden Treasure of the Vit River", lede: "Where limestone cliffs, quiet forests, caves, and village legends meet.", primary: "Explore Aglen", secondary: "Download the App", cue: "Discover the valley", imageAlt: "Cinematic view of a river canyon and village landscape inspired by Aglen" },
   statsLabel: "Why visit Aglen",
@@ -93,5 +93,5 @@ export const en: PageCopy = {
     { title: "Caves & Rock Forms", detail: "Explore the older landscape layer with care, local guidance, and respect for terrain." },
   ],
   accommodationList: accommodationEn,
-  sourceNotes: ["Original Wix site and service list: https://vasilevasilvena.wixsite.com/aglen", "Public travel/history context: Banker.bg, Trip.dir.bg, BTA/Utro, Wikipedia/Wikitravel summaries.", "Generated draft visuals are placeholders for final owner-approved Aglen photography."],
+  sourceNotes: ["Original Wix site and service list: https://vasilevasilvena.wixsite.com/aglen", "Public travel/history context: Banker.bg, Trip.dir.bg, BTA/Utro, Wikipedia/Wikitravel summaries."],
 };

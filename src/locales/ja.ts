@@ -3,7 +3,7 @@ import type { PageCopy } from "./types";
 
 export const ja: PageCopy = {
   nav: { home: "ホーム", about: "アグレンについて", landmarks: "見どころ", stay: "宿泊", quests: "Hidden Bulgaria Quests" },
-  ui: { languageLabel: "言語", languageSelectAria: "言語を選択", modalCloseAria: "閉じる" },
+  ui: { languageLabel: "言語", languageSelectAria: "言語を選択", modalCloseAria: "閉じる", mobileMenuAria: "メニュー" },
   brand: { name: "アグレン", subtitle: "ヴィト川の旅先" },
   hero: { meta: "ブルガリア北部 · ヴィト川 · ルコヴィト近郊", title: "AGLEN", subtitle: "ヴィト川に隠れた宝物", lede: "石灰岩の崖、静かな森、洞窟、村の伝説が出会う場所。", primary: "アグレンを見る", secondary: "アプリをダウンロード", cue: "谷を発見", imageAlt: "アグレンをイメージした川の峡谷と村の風景" },
   statsLabel: "アグレンを訪れる理由",
@@ -13,7 +13,11 @@ export const ja: PageCopy = {
   experiences: { eyebrow: "アグレンの週末を選ぶ", title: "観光リストではなく、案内される時間", text: "週末に合う短さと、土地らしさを感じる個人的な体験です。", cta: "ルートを問い合わせる" },
   gallery: { eyebrow: "没入型ギャラリー", title: "川の光と石で語られる場所", aria: "アグレンのギャラリー" },
   stay: { eyebrow: "アグレンに泊まる", title: "川のそばで休む", text: "アグレンでは自然に囲まれた静かな宿泊施設をご利用いただけます。空き状況やご予約はお問い合わせください。" },
-  quests: { eyebrow: "ブルガリア初の体験", title: "アグレンでのリアルARアドベンチャー", text: "Hidden Bulgaria Questsはリアルな場所へ案内します。カメラを通して隠れた3D世界を見て、謎を解き、守護者の痕跡をたどります。シミュレーションではなく、本物の体験です。", cta: "ダウンロードして始める", features: [] },
+  quests: { eyebrow: "ブルガリア初の体験", title: "アグレンでのリアルARアドベンチャー", text: "Hidden Bulgaria Questsはリアルな場所へ案内します。カメラを通して隠れた3D世界を見て、謎を解き、守護者の痕跡をたどります。シミュレーションではなく、本物の体験です。", cta: "ダウンロードして始める", features: [
+    { title: "拡張現実（AR）", text: "マークされた場所にカメラを向けると、隠れた世界が目の前で生き生きとします — 3Dキャラクター、サイン、物語が現実に重なります。" },
+    { title: "リアルタイムGPSクエスト", text: "クエストはアグレン周辺の実在するランドマークへ案内します。各場所が次の手がかりを隠しています。" },
+    { title: "違う形で語られる歴史", text: "アグレンの伝説がゲームになります。守護者、洞窟、川 — すべてが一つのライブ体験としてつながります。" },
+  ] },
   ar: { eyebrow: "ARアドベンチャー", title: "守護者の世界を見る", text: "スマートフォンのカメラでアグレンの隠れた世界を生き生きとさせましょう。ARレイヤーが物語やキャラクターを、それが起きた場所で直接明かします。", steps: ["Google PlayからHidden Bulgaria Questsをダウンロード", "アグレンのARマーク地点へ移動", "カメラを向けて隠れた世界を見る"], cta: "ダウンロードして始める" },
   app: { eyebrow: "アプリをダウンロード", title: "Hidden Bulgaria Quests", text: "Android向け無料モバイルアプリ。アグレン周辺のクエストを見つけて本物の冒険へ出発しましょう。", badge: "Google Playで入手", note: "Android対応。iOS版は近日公開予定。" },
   contact: { eyebrow: "訪問を計画", title: "ヴィト川が秘密を守る場所で週末を。", text: "ルート、ガイド付き散策、写真スポット、地元の話、実用的な訪問情報を問い合わせてください。", notesTitle: "訪問メモ", noteOne: "自然散策、写真、川の景色、洞窟、地元の記憶に向いています。", noteTwo: "歩きやすい靴、水、日よけ、地域への敬意を持ってお越しください。", cta: "問い合わせる" },
@@ -63,5 +67,5 @@ export const ja: PageCopy = {
     { title: "洞窟と岩の形", detail: "より古い風景の層を、注意深く、地元の案内と地形への敬意をもって見つけます。" },
   ],
   accommodationList: accommodationEn,
-  sourceNotes: ["元のWixサイトとサービス一覧: https://vasilevasilvena.wixsite.com/aglen", "公開されている歴史・観光情報: Banker.bg、Trip.dir.bg、BTA/Utro、Wikipedia/Wikitravel の概要。", "生成された下書き画像は、最終的な承認済みアグレン写真のプレースホルダーです。"],
+  sourceNotes: ["元のWixサイトとサービス一覧: https://vasilevasilvena.wixsite.com/aglen", "公開されている歴史・観光情報: Banker.bg、Trip.dir.bg、BTA/Utro、Wikipedia/Wikitravel の概要。"],
 };

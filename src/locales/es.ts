@@ -3,7 +3,7 @@ import type { PageCopy } from "./types";
 
 export const es: PageCopy = {
   nav: { home: "Inicio", about: "Sobre Aglen", landmarks: "Lugares", stay: "Alojamiento", quests: "Hidden Bulgaria Quests" },
-  ui: { languageLabel: "Idioma", languageSelectAria: "Seleccionar idioma", modalCloseAria: "Cerrar" },
+  ui: { languageLabel: "Idioma", languageSelectAria: "Seleccionar idioma", modalCloseAria: "Cerrar", mobileMenuAria: "Menú" },
   brand: { name: "Aglen", subtitle: "Destino del río Vit" },
   hero: { meta: "Norte de Bulgaria · río Vit · cerca de Lukovit", title: "AGLEN", subtitle: "El tesoro oculto del río Vit", lede: "Donde los acantilados calizos, bosques tranquilos, cuevas y leyendas del pueblo se encuentran.", primary: "Explorar Aglen", secondary: "Descargar la app", cue: "Descubre el valle", imageAlt: "Vista cinematográfica de un cañón fluvial y paisaje rural inspirado en Aglen" },
   statsLabel: "Por qué visitar Aglen",
@@ -13,7 +13,11 @@ export const es: PageCopy = {
   experiences: { eyebrow: "Elige tu fin de semana en Aglen", title: "Momentos guiados, no listas turísticas", text: "Experiencias claras para visitantes: cortas para un fin de semana, personales y memorables.", cta: "Solicitar ruta" },
   gallery: { eyebrow: "Galería inmersiva", title: "Un lugar contado con luz de río y piedra", aria: "Galería de Aglen" },
   stay: { eyebrow: "Alojamiento en Aglen", title: "Descansa cerca del río", text: "Aglen ofrece opciones de alojamiento tranquilas rodeadas de naturaleza. Para disponibilidad y reservas, contáctanos." },
-  quests: { eyebrow: "El primero en Bulgaria", title: "Una aventura AR real en Aglen", text: "Hidden Bulgaria Quests te lleva a lugares reales — a través de la cámara ves un mundo 3D oculto, resuelves enigmas y sigues el rastro del Guardián. No es una simulación. Es una aventura en vivo.", cta: "Descargar y empezar", features: [] },
+  quests: { eyebrow: "El primero en Bulgaria", title: "Una aventura AR real en Aglen", text: "Hidden Bulgaria Quests te lleva a lugares reales — a través de la cámara ves un mundo 3D oculto, resuelves enigmas y sigues el rastro del Guardián. No es una simulación. Es una aventura en vivo.", cta: "Descargar y empezar", features: [
+    { title: "Realidad Aumentada (AR)", text: "Apunta la cámara a un lugar marcado y ve cómo el mundo oculto cobra vida — personajes 3D, señales e historias superpuestas a la realidad." },
+    { title: "Quests GPS en vivo", text: "Los quests te guían hacia lugares reales alrededor de Aglen. Cada lugar esconde la siguiente pista." },
+    { title: "Historia contada de otra manera", text: "Las leyendas de Aglen se convierten en un juego. El Guardián, las cuevas, el río — todo conectado en una experiencia en vivo." },
+  ] },
   ar: { eyebrow: "Aventura AR", title: "Ve el mundo del Guardián", text: "Con la cámara de tu teléfono, da vida al mundo oculto de Aglen. La capa AR revela historias y personajes invisibles a simple vista, justo en los lugares donde ocurrieron.", steps: ["Descarga Hidden Bulgaria Quests de Google Play", "Ve a un lugar AR marcado en Aglen", "Apunta la cámara y ve el mundo oculto"], cta: "Descargar y empezar" },
   app: { eyebrow: "Descargar la app", title: "Hidden Bulgaria Quests", text: "Una app móvil gratuita para Android. Encuentra los quests alrededor de Aglen y emprende una aventura real.", badge: "Disponible en Google Play", note: "Disponible para Android. Versión iOS próximamente." },
   contact: { eyebrow: "Planear visita", title: "Pasa un fin de semana donde el Vit guarda sus secretos.", text: "Pregunta por rutas, paseos guiados, lugares para fotos, historias locales e información práctica.", notesTitle: "Notas para visitantes", noteOne: "Ideal para paseos en la naturaleza, fotografía, vistas al río, cuevas y memoria local.", noteTwo: "Trae calzado cómodo, agua, protección solar y respeto por los espacios locales.", cta: "Enviar consulta" },
@@ -63,5 +67,5 @@ export const es: PageCopy = {
     { title: "Cuevas y formas de roca", detail: "Descubre la capa más antigua del paisaje con cuidado, guía local y respeto por el terreno." },
   ],
   accommodationList: accommodationEn,
-  sourceNotes: ["Sitio Wix original y lista de servicios: https://vasilevasilvena.wixsite.com/aglen", "Contexto público histórico y turístico: Banker.bg, Trip.dir.bg, BTA/Utro, resúmenes de Wikipedia/Wikitravel.", "Las imágenes generadas son marcadores provisionales para fotografía final de Aglen aprobada por el propietario."],
+  sourceNotes: ["Sitio Wix original y lista de servicios: https://vasilevasilvena.wixsite.com/aglen", "Contexto público histórico y turístico: Banker.bg, Trip.dir.bg, BTA/Utro, resúmenes de Wikipedia/Wikitravel."],
 };
