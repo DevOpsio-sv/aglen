@@ -26,11 +26,11 @@ export const images = {
   kaleto: "/assets/aglen-kaleto-ruins.png",
 };
 
-export const prices = ["€26", "€41", "€10", "€61", "€20", "€36"];
+export const prices = ["€25", "€40", "€10", "€60", "€20", "€35"];
 
 export const accommodationBg: Accommodation[] = [
   { title: "Стаи за гости", type: "Настаняване в село", description: "Тихо настаняване в местен дом, близо до природата и реката.", image: images.church },
-  { title: "Лагерен терен", type: "Кемпинг", description: "Открито пространство за палатки с достъп до река Вит и природните маршрути.", image: images.aerial },
+  { title: "Лагерен терен", type: "Къмпинг", description: "Открито пространство за палатки с достъп до река Вит и природните маршрути.", image: images.aerial },
   { title: "Планинска вила", type: "Вила", description: "Уединена вила с гледка към каньона, подходяща за малки групи и уикенд бягства.", image: images.pool },
 ];
 
