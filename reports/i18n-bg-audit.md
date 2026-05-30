@@ -1,6 +1,6 @@
 # Bulgarian Copy Audit
 
-Generated: 2026-05-30T11:00:52.734Z
+Generated: 2026-05-30T16:34:35.143Z
 Source of truth: `src/locales/bg.ts`
 
 ## How To Use This
@@ -15,18 +15,18 @@ Source of truth: `src/locales/bg.ts`
 
 | Language | Text nodes | Missing | Non-text at BG path | Same as BG | Likely too short | Extra |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| de | 172 | 0 | 0 | 1 | 0 | 0 |
-| el | 173 | 0 | 0 | 1 | 3 | 1 |
+| de | 172 | 0 | 0 | 0 | 0 | 0 |
+| el | 172 | 0 | 0 | 0 | 0 | 0 |
 | en | 172 | 0 | 0 | 0 | 0 | 0 |
 | es | 172 | 0 | 0 | 0 | 0 | 0 |
-| fr | 173 | 0 | 0 | 1 | 0 | 1 |
-| it | 173 | 0 | 0 | 1 | 1 | 1 |
-| ja | 172 | 0 | 0 | 1 | 11 | 0 |
-| pl | 173 | 0 | 0 | 1 | 2 | 1 |
-| ro | 173 | 0 | 0 | 1 | 1 | 1 |
-| ru | 172 | 0 | 0 | 7 | 0 | 0 |
-| sr | 173 | 0 | 0 | 7 | 3 | 1 |
-| tr | 173 | 0 | 0 | 1 | 2 | 1 |
+| fr | 172 | 0 | 0 | 0 | 0 | 0 |
+| it | 172 | 0 | 0 | 0 | 0 | 0 |
+| ja | 172 | 0 | 0 | 0 | 0 | 0 |
+| pl | 172 | 0 | 0 | 0 | 0 | 0 |
+| ro | 172 | 0 | 0 | 0 | 0 | 0 |
+| ru | 172 | 0 | 0 | 0 | 0 | 0 |
+| sr | 172 | 0 | 0 | 0 | 0 | 0 |
+| tr | 172 | 0 | 0 | 0 | 0 | 0 |
 
 ## Bulgarian Source Checklist
 
@@ -219,9 +219,7 @@ _None._
 
 ### Same As Bulgarian
 
-| Path | Bulgarian source | Current value |
-| --- | --- | --- |
-| `mapStops.2.title` | Дупката | Дупката |
+_None._
 
 ### Likely Too Short
 
@@ -244,23 +242,15 @@ _None._
 
 ### Same As Bulgarian
 
-| Path | Bulgarian source | Current value |
-| --- | --- | --- |
-| `mapStops.2.title` | Дупката | Дупката |
+_None._
 
 ### Likely Too Short
 
-| Path | Bulgarian source | Current value |
-| --- | --- | --- |
-| `timeline.1.detail` | Старите пътища са важни, защото показват, че районът не е бил изолиран. Реката, скалите и високите места са помагали за ориентация, преминаване и защита. | Οι παλιοί δρόμοι δείχνουν ότι η περιοχή δεν ήταν απομονωμένη. |
-| `timeline.2.detail` | Легендите не трябва да се представят като доказан архив, а като местна памет. Те дават човешко лице на мястото: хора, които търсят безопасност, започват отново и оставят имена, разкази и принадлежност. | Είναι τοπική μνήμη: άνθρωποι που αναζητούν ασφάλεια και αφήνουν ονόματα και ιστορίες. |
-| `timeline.3.detail` | Тази част трябва да бъде разказана спокойно и с уважение. Тя свързва Ъглен с по-широката национална памет, без да превръща сайта в учебник. | Αυτό το στρώμα χρειάζεται ήρεμη και σεβαστική αφήγηση. |
+_None._
 
 ### Extra Target-Language Paths
 
-| Path | Current value |
-| --- | --- |
-| `sourceNotes.2` | Οι δημιουργημένες εικόνες είναι placeholders για τελικές εγκεκριμένες φωτογραφίες. |
+_None._
 
 
 ## EN Update Checklist
@@ -321,9 +311,7 @@ _None._
 
 ### Same As Bulgarian
 
-| Path | Bulgarian source | Current value |
-| --- | --- | --- |
-| `mapStops.2.title` | Дупката | Дупката |
+_None._
 
 ### Likely Too Short
 
@@ -331,9 +319,7 @@ _None._
 
 ### Extra Target-Language Paths
 
-| Path | Current value |
-| --- | --- |
-| `sourceNotes.2` | Les visuels générés sont des placeholders pour des photos finales approuvées. |
+_None._
 
 
 ## IT Update Checklist
@@ -348,21 +334,15 @@ _None._
 
 ### Same As Bulgarian
 
-| Path | Bulgarian source | Current value |
-| --- | --- | --- |
-| `mapStops.2.title` | Дупката | Дупката |
+_None._
 
 ### Likely Too Short
 
-| Path | Bulgarian source | Current value |
-| --- | --- | --- |
-| `timeline.0.detail` | Пещерите и варовиковите форми около поречието на Вит са част от по-дълбоката история на района. В туристическия разказ това може да се представи като пласт от време преди селото: земя, която е давала убежище, пътеки и наблюдателни точки много преди съвременните маршрути. | Le grotte e le forme calcaree del Vit sono lo strato più antico del territorio: rifugi, cammini e punti di osservazione. |
+_None._
 
 ### Extra Target-Language Paths
 
-| Path | Current value |
-| --- | --- |
-| `sourceNotes.2` | Le immagini generate sono placeholder per foto finali approvate. |
+_None._
 
 
 ## JA Update Checklist
@@ -377,25 +357,11 @@ _None._
 
 ### Same As Bulgarian
 
-| Path | Bulgarian source | Current value |
-| --- | --- | --- |
-| `mapStops.2.title` | Дупката | Дупката |
+_None._
 
 ### Likely Too Short
 
-| Path | Bulgarian source | Current value |
-| --- | --- | --- |
-| `about.text` | Ъглен не е просто точка на картата. Разказът му събира пещери, речни пътеки, стари маршрути, селска памет и рядко име, което остава в съзнанието. | アグレンは地図上の一点ではありません。洞窟、川沿いの道、古いルート、村の記憶、そして忘れにくい名前が重なります。 |
-| `legends.text` | Най-силните истории тук не са шумни. Те живеят в местните имена, пещерните прагове, странните скални форми и завоите на реката. | ここで強い物語は静かです。地名、洞窟の入口、不思議な岩、川の曲がり角に残っています。 |
-| `landmarks.text` | Компактна дестинация с рядка комбинация от природни забележителности и местни истории. Най-доброто посещение е спокойно: върви, слушай, снимай и остави място за откритие. | 自然のランドマークと地元の物語がまとまった小さな目的地。急がず歩き、聞き、撮影し、発見を待つ場所です。 |
-| `experiences.text` | Екскурзиите са оформени като ясни преживявания: достатъчно кратки за уикенд, достатъчно лични, за да се почувстват местни. | 週末に合う短さと、土地らしさを感じる個人的な体験です。 |
-| `quests.features.2.text` | Легендите на пещера Проходна оживяват като игра. Пазителят, пещерата, древните знаци - всичко е свързано в едно преживяване. | アグレンの伝説がゲームになります。守護者、洞窟、川 — すべてが一つのライブ体験としてつながります。 |
-| `ar.text` | С камерата на телефона си оживи скрития свят на Проходна. AR слоят разкрива истории, знаци и персонажи, невидими с просто око, но само на местата, където са се случили. | スマートフォンのカメラでアグレンの隠れた世界を生き生きとさせましょう。ARレイヤーが物語やキャラクターを、それが起きた場所で直接明かします。 |
-| `timeline.0.detail` | Пещерите и варовиковите форми около поречието на Вит са част от по-дълбоката история на района. В туристическия разказ това може да се представи като пласт от време преди селото: земя, която е давала убежище, пътеки и наблюдателни точки много преди съвременните маршрути. | ヴィト川流域の洞窟と石灰岩の地形は、目的地の最も古い層として語れます。現代の旅よりずっと前から、避難場所、道、見晴らしの場所を与えてきた土地です。 |
-| `timeline.1.detail` | Старите пътища са важни, защото показват, че районът не е бил изолиран. Реката, скалите и високите места са помагали за ориентация, преминаване и защита. | 古い道は、この地域が孤立していなかったことを示します。川、高台、石の地形は、移動、方向感覚、防御を支えていました。 |
-| `timeline.2.detail` | Легендите не трябва да се представят като доказан архив, а като местна памет. Те дават човешко лице на мястото: хора, които търсят безопасност, започват отново и оставят имена, разкази и принадлежност. | この物語は確定した記録ではなく、土地の記憶として扱うのが自然です。安全を求め、新しく始め、名前と物語を残した人々の層を加えます。 |
-| `timeline.3.detail` | Тази част трябва да бъде разказана спокойно и с уважение. Тя свързва Ъглен с по-широката национална памет, без да превръща сайта в учебник. | この部分は静かに、敬意をもって語るべきです。ページを教科書にせず、アグレンをブルガリアの広い記憶へつなげます。 |
-| `timeline.4.detail` | Бъдещето на Ъглен е най-силно, ако остане автентично. Вместо масов туризъм — уикенд посещения, малки групи, фотографски маршрути и уважение към хората, реката и селската среда. | アグレンの強みは小さく本物であることです。週末訪問、ガイド散策、写真、手仕事、川沿いのルート、地域環境への敬意が未来を支えます。 |
+_None._
 
 ### Extra Target-Language Paths
 
@@ -414,22 +380,15 @@ _None._
 
 ### Same As Bulgarian
 
-| Path | Bulgarian source | Current value |
-| --- | --- | --- |
-| `mapStops.2.title` | Дупката | Дупката |
+_None._
 
 ### Likely Too Short
 
-| Path | Bulgarian source | Current value |
-| --- | --- | --- |
-| `timeline.0.detail` | Пещерите и варовиковите форми около поречието на Вит са част от по-дълбоката история на района. В туристическия разказ това може да се представи като пласт от време преди селото: земя, която е давала убежище, пътеки и наблюдателни точки много преди съвременните маршрути. | Jaskinie i wapienne formy wokół Vit są najstarszą warstwą miejsca: schronienia, ścieżki i punkty obserwacyjne. |
-| `timeline.3.detail` | Тази част трябва да бъде разказана спокойно и с уважение. Тя свързва Ъглен с по-широката национална памет, без да превръща сайта в учебник. | Tę warstwę warto opowiadać spokojnie i z szacunkiem. |
+_None._
 
 ### Extra Target-Language Paths
 
-| Path | Current value |
-| --- | --- |
-| `sourceNotes.2` | Wygenerowane obrazy są placeholderami dla finalnych zatwierdzonych zdjęć. |
+_None._
 
 
 ## RO Update Checklist
@@ -444,21 +403,15 @@ _None._
 
 ### Same As Bulgarian
 
-| Path | Bulgarian source | Current value |
-| --- | --- | --- |
-| `mapStops.2.title` | Дупката | Дупката |
+_None._
 
 ### Likely Too Short
 
-| Path | Bulgarian source | Current value |
-| --- | --- | --- |
-| `timeline.2.detail` | Легендите не трябва да се представят като доказан архив, а като местна памет. Те дават човешко лице на мястото: хора, които търсят безопасност, започват отново и оставят имена, разкази и принадлежност. | Este memorie locală: oameni care caută siguranță, încep din nou și lasă nume și povești. |
+_None._
 
 ### Extra Target-Language Paths
 
-| Path | Current value |
-| --- | --- |
-| `sourceNotes.2` | Imaginile generate sunt placeholder pentru fotografii finale aprobate. |
+_None._
 
 
 ## RU Update Checklist
@@ -473,15 +426,7 @@ _None._
 
 ### Same As Bulgarian
 
-| Path | Bulgarian source | Current value |
-| --- | --- | --- |
-| `ui.mobileMenuAria` | Меню | Меню |
-| `highlights.1.label` | Природа | Природа |
-| `placesList.5.tag` | Археология | Археология |
-| `experiencesList.0.duration` | 2-3 часа | 2-3 часа |
-| `experiencesList.2.duration` | 2 часа | 2 часа |
-| `experiencesList.4.duration` | 90 мин. | 90 мин. |
-| `mapStops.2.title` | Дупката | Дупката |
+_None._
 
 ### Likely Too Short
 
@@ -504,29 +449,15 @@ _None._
 
 ### Same As Bulgarian
 
-| Path | Bulgarian source | Current value |
-| --- | --- | --- |
-| `ui.modalCloseAria` | Затвори | Затвори |
-| `highlights.1.label` | Природа | Природа |
-| `experiencesList.1.bestFor` | Фотографи | Фотографи |
-| `experiencesList.4.duration` | 90 мин. | 90 мин. |
-| `mapStops.2.title` | Дупката | Дупката |
-| `accommodationList.2.title` | Планинска вила | Планинска вила |
-| `accommodationList.2.type` | Вила | Вила |
+_None._
 
 ### Likely Too Short
 
-| Path | Bulgarian source | Current value |
-| --- | --- | --- |
-| `timeline.0.detail` | Пещерите и варовиковите форми около поречието на Вит са част от по-дълбоката история на района. В туристическия разказ това може да се представи като пласт от време преди селото: земя, която е давала убежище, пътеки и наблюдателни точки много преди съвременните маршрути. | Пећине и кречњачке форме око Вита су најстарији слој подручја: склоништа, стазе и видиковци пре модерних рута. |
-| `timeline.2.detail` | Легендите не трябва да се представят като доказан архив, а като местна памет. Те дават човешко лице на мястото: хора, които търсят безопасност, започват отново и оставят имена, разкази и принадлежност. | То је локално памћење: људи који траже сигурност, почињу поново и остављају имена и приче. |
-| `timeline.3.detail` | Тази част трябва да бъде разказана спокойно и с уважение. Тя свързва Ъглен с по-широката национална памет, без да превръща сайта в учебник. | Овај слој треба причати мирно и с поштовањем. |
+_None._
 
 ### Extra Target-Language Paths
 
-| Path | Current value |
-| --- | --- |
-| `sourceNotes.2` | Генерисане слике су привремене док се не одобре финалне фотографије. |
+_None._
 
 
 ## TR Update Checklist
@@ -541,20 +472,13 @@ _None._
 
 ### Same As Bulgarian
 
-| Path | Bulgarian source | Current value |
-| --- | --- | --- |
-| `mapStops.2.title` | Дупката | Дупката |
+_None._
 
 ### Likely Too Short
 
-| Path | Bulgarian source | Current value |
-| --- | --- | --- |
-| `timeline.0.detail` | Пещерите и варовиковите форми около поречието на Вит са част от по-дълбоката история на района. В туристическия разказ това може да се представи като пласт от време преди селото: земя, която е давала убежище, пътеки и наблюдателни точки много преди съвременните маршрути. | Vit çevresindeki mağaralar ve kireçtaşı formları bölgenin en eski katmanıdır: sığınaklar, yollar ve gözlem noktaları. |
-| `timeline.2.detail` | Легендите не трябва да се представят като доказан архив, а като местна памет. Те дават човешко лице на мястото: хора, които търсят безопасност, започват отново и оставят имена, разкази и принадлежност. | Bunu kesin arşiv değil, yerel hafıza olarak anlatmak doğru olur. |
+_None._
 
 ### Extra Target-Language Paths
 
-| Path | Current value |
-| --- | --- |
-| `sourceNotes.2` | Oluşturulan görseller final onaylı fotoğraflar için yer tutucudur. |
+_None._
 

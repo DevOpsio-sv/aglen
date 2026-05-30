@@ -4,7 +4,7 @@ import type { PageCopy } from "./types";
 export const ro: PageCopy = {
   nav: { home: "Acasă", about: "Despre Aglen", landmarks: "Locuri", stay: "Cazare", quests: "Hidden Bulgaria Quests" },
   ui: { languageLabel: "Limbă", languageSelectAria: "Selectează limba", modalCloseAria: "Închide", mobileMenuAria: "Meniu" },
-  brand: { name: "Aglen", subtitle: "Destinație pe râul Vit" },
+  brand: { name: "Aglen", subtitle: "Sat lângă râul Vit" },
   hero: { meta: "Bulgaria de Nord · râul Vit · lângă Lukovit", title: "AGLEN", subtitle: "Comoara ascunsă a râului Vit", lede: "Locul unde stâncile de calcar, pădurile liniștite, peșterile și legendele satului se întâlnesc.", primary: "Explorează Aglen", secondary: "Descarcă aplicația", cue: "Descoperă valea", imageAlt: "Vedere cinematică a unui canion de râu și peisaj rural inspirat de Aglen" },
   statsLabel: "De ce să vizitezi Aglen",
   about: { eyebrow: "Istorie și memorie locală", title: "Straturi de timp lângă râu", text: "Aglen nu este doar un punct pe hartă. Povestea lui adună peșteri, poteci de râu, rute vechi, memorie sătească și un nume rar." },
@@ -13,12 +13,12 @@ export const ro: PageCopy = {
   experiences: { eyebrow: "Alege weekendul tău în Aglen", title: "Momente ghidate, nu liste turistice", text: "Experiențe clare pentru vizitatori: destul de scurte pentru un weekend, destul de personale pentru a simți locul.", cta: "Cere acest traseu" },
   gallery: { eyebrow: "Galerie imersivă", title: "Un loc povestit prin lumina râului și piatră", aria: "Galeria Aglen" },
   stay: { eyebrow: "Cazare în Aglen", title: "Odihnă aproape de râu", text: "Aglen oferă opțiuni liniștite de cazare în natură. Pentru disponibilitate și rezervări, contactează-ne." },
-  quests: { eyebrow: "Primul de acest fel în Bulgaria", title: "O aventură AR reală în Aglen", text: "Hidden Bulgaria Quests te duce în locuri reale: prin camera telefonului vezi o lume 3D ascunsă, rezolvi enigme și urmezi urmele Gardianului.", cta: "Descarcă și începe", features: [
-    { title: "Realitate augmentată", text: "Îndreaptă camera spre un loc marcat și vezi lumea ascunsă prind viață cu personaje, semne și povești 3D." },
-    { title: "Questuri GPS live", text: "Fiecare quest te conduce la repere reale din jurul Aglen. Fiecare loc ascunde următorul indiciu." },
-    { title: "Istorie spusă altfel", text: "Legendele din Aglen devin joc: Gardianul, peșterile și râul într-o singură experiență." },
+  quests: { eyebrow: "Primul de acest fel în Bulgaria", title: "O aventură AR reală lângă Aglen", text: "Hidden Bulgaria Quests te duce în locuri reale - cu telefonul vezi o lume 3D ascunsă, rezolvi enigme și urmezi urmele Gardianului. Nu este simulare. Nu este muzeu. Este o aventură reală live.", cta: "Descarcă și începe", features: [
+    { title: "Realitate augmentată (AR)", text: "Îndreaptă camera spre un loc marcat și vezi cum lumea ascunsă prinde viață în fața ochilor: personaje 3D, semne și povești." },
+    { title: "Misiuni GPS live", text: "Călătoriile te conduc la repere reale din jurul Aglen. Fiecare loc ascunde următorul indiciu." },
+    { title: "Istorie spusă altfel", text: "Legendele peșterii Prohodna prind viață ca joc. Gardianul, peștera, semnele vechi - totul este legat într-o singură experiență." },
   ] },
-  ar: { eyebrow: "Aventură AR", title: "Vezi lumea Gardianului", text: "Cu camera telefonului dai viață lumii ascunse din Aglen. Stratul AR dezvăluie povești, semne și personaje chiar în locurile lor.", steps: ["Descarcă Hidden Bulgaria Quests din Google Play", "Mergi la un loc AR marcat în Aglen", "Îndreaptă camera și vezi lumea ascunsă"], cta: "Descarcă și începe" },
+  ar: { eyebrow: "Aventură AR", title: "Privește lumea Gardianului", text: "Cu camera telefonului dai viață lumii ascunse din Prohodna. Stratul AR dezvăluie povești, semne și personaje invizibile cu ochiul liber, dar numai în locurile unde s-au petrecut.", steps: ["Descarcă Hidden Bulgaria Quests din Google Play", "Mergi la un loc AR marcat în jurul Aglen", "Îndreaptă camera și vezi lumea ascunsă"], cta: "Descarcă și începe" },
   app: { eyebrow: "Descarcă aplicația", title: "Hidden Bulgaria Quests", text: "Aplicație mobilă pentru Android. Găsește questurile din jurul Aglen și pornește într-o aventură reală.", badge: "Disponibil pe Google Play", note: "Disponibil pentru Android. Versiunea iOS va veni curând." },
   contact: { eyebrow: "Planifică vizita", title: "Petrece un weekend acolo unde Vit își păstrează secretele.", text: "Întreabă despre trasee, plimbări ghidate, locuri foto, povești locale și informații practice.", notesTitle: "Note pentru vizitatori", noteOne: "Potrivit pentru plimbări în natură, fotografie, priveliști spre râu, peșteri și memorie locală.", noteTwo: "Ia încălțăminte comodă, apă, protecție solară și respect pentru locurile locale.", cta: "Trimite solicitare" },
   highlights: [
@@ -29,20 +29,20 @@ export const ro: PageCopy = {
   timeline: [
     { title: "Urme paleolitice în peșteri apropiate sugerează prezență umană timpurie.", detail: "Peșterile și calcarul din jurul Vit formează cel mai vechi strat al destinației: adăposturi, drumuri și puncte de observație." },
     { title: "Un drum roman și vestigii fortificate leagă zona de rute vechi.", detail: "Rutele vechi arată că zona era conectată. Râul, înălțimile și piatra ajutau la orientare și trecere." },
-    { title: "Legenda locală a migranților din Churek păstrează memoria așezării.", detail: "Este memorie locală: oameni care caută siguranță, încep din nou și lasă nume și povești." },
+    { title: "Legenda locală a migranților din Churek păstrează memoria așezării.", detail: "Legendele nu trebuie prezentate ca arhivă dovedită, ci ca memorie locală. Ele dau locului o față umană: oameni care caută siguranță, încep din nou și lasă nume, povești și apartenență." },
     { title: "Memoria anului 1877 rămâne parte din identitatea satului.", detail: "Această parte trebuie spusă calm și cu respect, legând Aglen de memoria bulgară mai largă." },
     { title: "Astăzi Aglen poate crește ca destinație de ecoturism și slow travel.", detail: "Viitorul puternic este autentic și la scară mică: weekenduri, ghizi, fotografie, meșteșuguri și respect." },
   ],
   mysteries: [
     { title: "Unde râul dispare din vedere", tag: "Poteci ascunse", image: images.hero, description: "Vit nu arată totul deodată. Coturile, umbrele și stâncile transformă plimbarea în căutare." },
     { title: "Pragurile peșterilor", tag: "Piatră și liniște", image: images.cave, description: "Peșterile poartă o memorie mai veche: geologică, umană și simbolică." },
-    { title: "Stânci cu nume locale", tag: "Peisaj folcloric", image: images.arch, description: "Nume ca Gaura și Elefantul fac peisajul personal: repere și povești deodată." },
+    { title: "Stânci cu nume locale", tag: "Peisaj folcloric", image: images.arch, description: "Nume precum Дупката și Слончето fac peisajul personal. Sunt repere și povești în același timp." },
   ],
   placesList: [
-    { title: "Gaura", tag: "Arcă de stâncă", image: images.arch, imageAlt: "Arcă de calcar deasupra râului lângă Aglen", description: "O arcă naturală deasupra râului Vit, ideală pentru plimbări lente și fotografii calme." },
-    { title: "Elefantul", tag: "Formă de stâncă", image: images.hero, imageAlt: "Canion, râu și stânci calcaroase lângă Aglen", description: "O formă jucăușă lângă râu care transformă plimbarea într-o mică descoperire." },
-    { title: "Peretele Roșu", tag: "Vedere de canion", image: images.aerial, imageAlt: "Peisaj de canion cu râu și sat", description: "O întâlnire dramatică între calcar, pădure și lumina râului." },
-    { title: "Bazinul Racilor", tag: "Bulboană de râu", image: images.pool, imageAlt: "Bulboană liniștită cu mal calcaros și pădure", description: "Un loc natural calm pentru pauză lângă apă." },
+    { title: "Дупката", tag: "Arcă de stâncă", image: images.arch, imageAlt: "Arcă de calcar deasupra râului lângă Aglen", description: "O arcă naturală de piatră deasupra râului Vit, creată pentru plimbări lente, fotografii calme și sentimentul unui traseu ascuns." },
+    { title: "Слончето", tag: "Formă de stâncă", image: images.hero, imageAlt: "Canion, râu și stânci calcaroase lângă Aglen", description: "O formă jucăușă de lângă râu care transformă o plimbare obișnuită într-o mică descoperire." },
+    { title: "Червена стена", tag: "Vedere de canion", image: images.aerial, imageAlt: "Peisaj de canion cu râu și sat", description: "O întâlnire dramatică între calcar, pădure și lumina râului aproape de sat." },
+    { title: "Рачков вир", tag: "Bulboană de râu", image: images.pool, imageAlt: "Bulboană liniștită cu mal calcaros și pădure", description: "Un punct natural calm pentru o pauză lângă apă, picnic și un ritm mai lent lângă Vit." },
     { title: "Sf. Arhanghel Mihail", tag: "Memoria satului", image: images.church, imageAlt: "Biserică de sat și vale verde", description: "Biserica din 1888 păstrează stratul uman al poveștii Aglen." },
     { title: "Калето", tag: "Arheologie", image: images.kaleto, imageAlt: "Vestigii de piatră deasupra canionului", description: "Un loc legat de rute vechi, memorie fortificată și viață lângă râu." },
   ],
@@ -63,7 +63,7 @@ export const ro: PageCopy = {
   mapStops: [
     { title: "Centrul satului", detail: "Începe cu scara umană a Aglen: străzi, biserică, memorie locală și orientare." },
     { title: "Poteca de pe Vit", detail: "Urmează apa spre priveliști calme, coturi și locuri umbrite." },
-    { title: "Gaura", detail: "Un prag natural de piatră și unul dintre simbolurile vizuale ale destinației." },
+    { title: "Дупката", detail: "Un prag natural de piatră și unul dintre simbolurile vizuale puternice ale destinației." },
     { title: "Peșteri și forme de stâncă", detail: "Descoperă stratul vechi al peisajului cu grijă, ghid local și respect." },
   ],
   accommodationList: [
@@ -71,5 +71,5 @@ export const ro: PageCopy = {
     { title: "Loc de camping", type: "Camping", description: "Spațiu deschis pentru corturi cu acces la râul Vit și poteci naturale.", image: images.aerial },
     { title: "Vilă de munte", type: "Vilă", description: "Vilă retrasă cu vedere spre canion, ideală pentru grupuri mici și weekenduri.", image: images.pool },
   ],
-  sourceNotes: ["Site Wix original și lista de servicii: https://vasilevasilvena.wixsite.com/aglen", "Context public de călătorie/istorie: Banker.bg, Trip.dir.bg, BTA/Utro, Wikipedia/Wikitravel.", "Imaginile generate sunt placeholder pentru fotografii finale aprobate."],
+  sourceNotes: ["Creat de DevOpsio - www.devopsio.eu", "Toate imaginile sunt realizate de fotografi locali și sunt folosite cu permisiune."],
 };

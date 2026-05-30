@@ -1,25 +1,25 @@
-import { accommodationEn, images, negotiablePrice } from "./shared";
+import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const de: PageCopy = {
   nav: { home: "Start", about: "Über Aglen", landmarks: "Sehenswürdigkeiten", stay: "Übernachten", quests: "Hidden Bulgaria Quests" },
   ui: { languageLabel: "Sprache", languageSelectAria: "Sprache auswählen", modalCloseAria: "Schließen", mobileMenuAria: "Menü" },
-  brand: { name: "Aglen", subtitle: "Reiseziel am Vit" },
+  brand: { name: "Aglen", subtitle: "Dorf am Fluss Vit" },
   hero: { meta: "Nordbulgarien · Fluss Vit · nahe Lukovit", title: "AGLEN", subtitle: "Der verborgene Schatz am Fluss Vit", lede: "Wo Kalksteinfelsen, stille Wälder, Höhlen und Dorflegenden zusammentreffen.", primary: "Aglen entdecken", secondary: "App herunterladen", cue: "Tal entdecken", imageAlt: "Cinematische Ansicht eines Flusscanyons und einer Dorflandschaft bei Aglen" },
   statsLabel: "Warum Aglen besuchen",
   about: { eyebrow: "Geschichte und lokale Erinnerung", title: "Zeitschichten am Fluss", text: "Aglen ist nicht nur ein Punkt auf der Karte. Seine Geschichte verbindet Höhlen, Flusswege, alte Routen, Dorfgedächtnis und einen seltenen Namen." },
   legends: { eyebrow: "Legenden und Mysterien von Aglen", title: "Manche Orte findet man langsam.", text: "Die stärksten Geschichten sind hier leise. Sie leben in lokalen Namen, Höhlenschwellen, ungewöhnlichen Felsformen und Flussbiegungen." },
   landmarks: { eyebrow: "Orte zum Entdecken", title: "Canyon, Fluss, Höhlen und Dorfstille", text: "Ein kompaktes Reiseziel mit einer seltenen Mischung aus Naturzeichen und lokalen Geschichten. Der beste Besuch ist ruhig: gehen, zuhören, fotografieren und Raum für Entdeckung lassen.", aria: "Routenpunkte um Aglen" },
-  experiences: { eyebrow: "Wähle dein Aglen-Wochenende", title: "Geführte Momente statt Checkliste", text: "Die Ausflüge sind klare Erlebnisse: kurz genug für ein Wochenende, persönlich genug, um lokal zu wirken.", cta: "Route anfragen" },
+  experiences: { eyebrow: "Wähle dein Aglen-Wochenende", title: "Geführte Momente, keine touristische Liste", text: "Die Ausflüge sind als klare Erlebnisse gestaltet: kurz genug für ein Wochenende, persönlich genug, um sich lokal anzufühlen.", cta: "Nach der Route fragen" },
   gallery: { eyebrow: "Immersive Galerie", title: "Ein Ort aus Flusslicht und Stein", aria: "Aglen-Galerie" },
   stay: { eyebrow: "Übernachten in Aglen", title: "Nahe am Fluss ruhen", text: "Aglen bietet ruhige Unterkunftsmöglichkeiten inmitten der Natur. Für Verfügbarkeit und Buchungen kontaktiere uns." },
-  quests: { eyebrow: "Einzigartig in Bulgarien", title: "Ein echtes AR-Abenteuer in Aglen", text: "Hidden Bulgaria Quests führt dich zu echten Orten — durch deine Kamera siehst du eine verborgene 3D-Welt, löst Rätsel und folgst den Spuren des Wächters. Kein Museum. Ein echtes Erlebnis.", cta: "Herunterladen und starten", features: [
-    { title: "Augmented Reality (AR)", text: "Richte die Kamera auf eine markierte Stelle und sieh die verborgene Welt lebendig werden — 3D-Figuren, Zeichen und Geschichten." },
-    { title: "Live-GPS-Quests", text: "Die Quests führen dich zu echten Sehenswürdigkeiten rund um Aglen. Jeder Ort enthüllt den nächsten Hinweis." },
-    { title: "Geschichte, anders erzählt", text: "Aglens Legenden werden zum Spiel. Der Wächter, die Höhlen, der Fluss — alles verbunden in einem lebendigen Erlebnis." },
+  quests: { eyebrow: "Das erste seiner Art in Bulgarien", title: "Ein echtes AR-Abenteuer bei Aglen", text: "Hidden Bulgaria Quests führt dich zu realen Orten - mit deinem Telefon siehst du eine verborgene 3D-Welt, löst Rätsel und folgst den Spuren des Wächters. Keine Simulation. Kein Museum. Ein echtes Live-Abenteuer.", cta: "Herunterladen und starten", features: [
+    { title: "Augmented Reality (AR)", text: "Richte die Kamera auf einen markierten Ort und sieh, wie die verborgene Welt vor deinen Augen lebendig wird - 3D-Figuren, Zeichen und Geschichten." },
+    { title: "Live-GPS-Missionen", text: "Die Reisen führen dich zu realen Sehenswürdigkeiten rund um Aglen. Jeder Ort verbirgt den nächsten Hinweis." },
+    { title: "Geschichte, anders erzählt", text: "Die Legenden der Höhle Prohodna werden als Spiel lebendig. Der Wächter, die Höhle, die alten Zeichen - alles ist in einem Erlebnis verbunden." },
   ] },
-  ar: { eyebrow: "AR-Abenteuer", title: "Sieh die Welt des Wächters", text: "Mit der Kamera deines Handys bringst du die verborgene Welt von Aglen zum Leben. Die AR-Ebene enthüllt Geschichten und Figuren direkt an den Orten, wo sie geschehen sind.", steps: ["Lade Hidden Bulgaria Quests aus Google Play herunter", "Gehe zu einem markierten AR-Ort in Aglen", "Richte die Kamera und sieh die verborgene Welt"], cta: "Herunterladen und starten" },
-  app: { eyebrow: "App herunterladen", title: "Hidden Bulgaria Quests", text: "Eine kostenlose mobile App für Android. Finde die Quests rund um Aglen und brich zu einem echten Abenteuer auf.", badge: "Bei Google Play herunterladen", note: "Verfügbar für Android. iOS-Version demnächst." },
+  ar: { eyebrow: "AR-Abenteuer", title: "Sieh die Welt des Wächters", text: "Mit der Kamera deines Telefons erweckst du die verborgene Welt von Prohodna zum Leben. Die AR-Ebene enthüllt Geschichten, Zeichen und Figuren, die mit bloßem Auge unsichtbar sind, aber nur an den Orten, an denen sie geschehen sind.", steps: ["Lade Hidden Bulgaria Quests aus Google Play herunter", "Gehe zu einem markierten AR-Ort rund um Aglen", "Richte die Kamera aus und sieh die verborgene Welt"], cta: "Herunterladen und starten" },
+  app: { eyebrow: "App herunterladen", title: "Hidden Bulgaria Quests", text: "Mobile App für Android. Finde die Missionen rund um Aglen und brich zu einem echten Abenteuer auf.", badge: "Bei Google Play herunterladen", note: "Verfügbar für Android. iOS-Version demnächst." },
   contact: { eyebrow: "Besuch planen", title: "Verbringe ein Wochenende dort, wo der Vit seine Geheimnisse bewahrt.", text: "Frage nach Routen, geführten Spaziergängen, Fotopunkten, lokalen Geschichten und praktischen Besucherinfos.", notesTitle: "Hinweise für Besucher", noteOne: "Ideal für Naturspaziergänge, Fotografie, Flussblicke, Höhlen und lokale Erinnerung.", noteTwo: "Bring bequeme Schuhe, Wasser, Sonnenschutz und Respekt für lokale Orte mit.", cta: "Anfrage senden" },
   highlights: [
     { label: "Verborgenes Bulgarien", value: "Ein stilles Dorf am Vit", detail: "Für Besucher, die Entdeckung, Flusswege, Felsen, Höhlen und Ruhe suchen." },
@@ -31,18 +31,18 @@ export const de: PageCopy = {
     { title: "Römische Straßenreste und befestigte Spuren verbinden die Gegend mit alten Routen.", detail: "Alte Wege zeigen, dass die Region nicht isoliert war. Fluss, Höhen und Steinlandschaft halfen bei Bewegung, Orientierung und Schutz." },
     { title: "Die lokale Legende von Siedlern aus Churek bewahrt Erinnerung an Ansiedlung und Zuflucht.", detail: "Diese Erzählung sollte als lokale Erinnerung verstanden werden. Sie gibt dem Ort eine menschliche Ebene: Menschen suchen Sicherheit, beginnen neu und hinterlassen Namen und Geschichten." },
     { title: "Die Erinnerung an 1877 bleibt Teil des historischen Respekts und der Identität des Dorfes.", detail: "Diese Schicht braucht Ruhe und Respekt. Sie verbindet Aglen mit größerer bulgarischer Erinnerung, ohne die Seite in ein Lehrbuch zu verwandeln." },
-    { title: "Heute kann Aglen als ruhiges Ziel für Ökotourismus, Handwerk und langsames Reisen wachsen.", detail: "Die stärkste Zukunft liegt in kleinen, authentischen Besuchen: Wochenenden, geführte Spaziergänge, Fotografie, Handwerk und Respekt für Menschen, Fluss und Dorfumgebung." },
+    { title: "Heute kann Aglen als ruhiges Ziel für Ökotourismus, Handwerk und langsames Reisen wachsen.", detail: "Die Zukunft von Aglen ist am stärksten, wenn sie authentisch bleibt. Statt Massentourismus - Wochenendbesuche, kleine Gruppen, Fotorouten und Respekt vor Menschen, Fluss und Dorfumgebung." },
   ],
   mysteries: [
     { title: "Wo der Fluss aus dem Blick verschwindet", tag: "Verborgene Wege", image: images.hero, description: "Der Vit zeigt nicht alles auf einmal. Biegungen, Schatten und Felsen machen den Spaziergang zu einer Suche." },
     { title: "Die Schwellen der Höhlen", tag: "Stein und Stille", image: images.cave, description: "Die Höhlen tragen eine ältere Erinnerung der Landschaft: geologisch, menschlich und symbolisch." },
-    { title: "Felsen mit lokalen Namen", tag: "Folklore-Landschaft", image: images.arch, description: "Namen wie Das Loch und Das Elefantchen machen die Landschaft persönlich. Sie sind Sehenswürdigkeiten und Geschichten zugleich." },
+    { title: "Felsen mit lokalen Namen", tag: "Folklore-Landschaft", image: images.arch, description: "Namen wie Дупката und Слончето machen die Landschaft persönlich. Sie sind Sehenswürdigkeiten und Geschichten zugleich." },
   ],
   placesList: [
-    { title: "Das Loch", tag: "Felsbogen", image: images.arch, imageAlt: "Kalkstein-Felsbogen über dem Fluss nahe Aglen", description: "Ein natürlicher Steinbogen über dem Vit, ideal für langsame Spaziergänge, ruhige Fotos und das Gefühl einer verborgenen Route." },
-    { title: "Das Elefantchen", tag: "Felsfigur", image: images.hero, imageAlt: "Canyon, Fluss und Kalksteinfelsen nahe Aglen", description: "Eine spielerische Felsform am Fluss, die einen einfachen Spaziergang in eine kleine Entdeckung verwandelt." },
-    { title: "Rote Wand", tag: "Canyonblick", image: images.aerial, imageAlt: "Canyonlandschaft aus der Luft mit Fluss und Dorf", description: "Ein dramatisches Zusammentreffen von Kalkstein, Wald und Flusslicht nahe dem Dorf." },
-    { title: "Krebsbecken", tag: "Flussbecken", image: images.pool, imageAlt: "Ruhiges Flussbecken mit Kalksteinufer und Wald", description: "Ein stiller Naturpunkt für eine Pause am Wasser, ein Picknick und einen langsameren Rhythmus am Vit." },
+    { title: "Дупката", tag: "Felsbogen", image: images.arch, imageAlt: "Kalkstein-Felsbogen über dem Fluss nahe Aglen", description: "Ein natürlicher Steinbogen über dem Vit, geschaffen für langsame Spaziergänge, ruhige Fotos und das Gefühl einer verborgenen Route." },
+    { title: "Слончето", tag: "Felsfigur", image: images.hero, imageAlt: "Canyon, Fluss und Kalksteinfelsen nahe Aglen", description: "Eine spielerische Form am Fluss, die einen gewöhnlichen Spaziergang in eine kleine Entdeckung verwandelt." },
+    { title: "Червена стена", tag: "Canyonblick", image: images.aerial, imageAlt: "Canyonlandschaft mit Fluss und Dorf", description: "Ein dramatisches Zusammentreffen von Kalkstein, Wald und Flusslicht nahe dem Dorf." },
+    { title: "Рачков вир", tag: "Flussbecken", image: images.pool, imageAlt: "Ruhiges Flussbecken mit Kalksteinufer und Wald", description: "Ein stiller Naturpunkt für eine Pause am Wasser, ein Picknick und einen langsameren Rhythmus am Vit." },
     { title: "St. Erzengel Michael", tag: "Dorfgedächtnis", image: images.church, imageAlt: "Dorfkirche, Steingasse und grünes Tal", description: "Die 1888 erbaute Dorfkirche bewahrt die menschliche Schicht der Geschichte von Aglen." },
     { title: "Калето", tag: "Archäologie", image: images.kaleto, imageAlt: "Steinreste auf einer Anhöhe über Canyon und Fluss", description: "Ein Ort, verbunden mit alten Routen, befestigter Erinnerung und der langen Kontinuität des Lebens am Fluss." },
   ],
@@ -61,11 +61,15 @@ export const de: PageCopy = {
     { title: "Über dem verborgenen Tal", image: images.aerial, alt: "Luftblick auf Fluss, Felsen und ländliches Dorf", size: "wide" },
   ],
   mapStops: [
-    { title: "Dorfzentrum", detail: "Beginne mit dem menschlichen Maßstab von Aglen: Straßen, Kirche, lokale Erinnerung und Orientierung." },
-    { title: "Vit-Uferweg", detail: "Folge dem Wasser zu stillen Aussichtspunkten, Biegungen und schattigen Orten für Fotografie." },
-    { title: "Das Loch", detail: "Eine natürliche Steinschwelle und eines der stärksten visuellen Symbole des Reiseziels." },
+    { title: "Das Dorfzentrum", detail: "Beginne mit dem menschlichen Maßstab von Aglen: Straßen, Kirche, lokale Erinnerung und Orientierung." },
+    { title: "Der Weg am Vit", detail: "Folge dem Wasser zu stillen Aussichten, Biegungen und schattigen Orten für Fotografie." },
+    { title: "Дупката", detail: "Eine natürliche Steinschwelle und eines der starken visuellen Symbole des Reiseziels." },
     { title: "Höhlen und Felsformen", detail: "Entdecke die ältere Landschaftsschicht mit Sorgfalt, lokaler Führung und Respekt vor dem Gelände." },
   ],
-  accommodationList: accommodationEn,
-  sourceNotes: ["Ursprüngliche Wix-Seite und Service-Liste: https://vasilevasilvena.wixsite.com/aglen", "Öffentlicher Reise- und Geschichtskontext: Banker.bg, Trip.dir.bg, BTA/Utro, Wikipedia/Wikitravel-Zusammenfassungen."],
+  accommodationList: [
+    { title: "Gästezimmer", type: "Unterkunft im Dorf", description: "Ruhige Unterkunft in einem lokalen Haus, nahe an Natur und Fluss.", image: images.church },
+    { title: "Zeltplatz", type: "Camping", description: "Offene Fläche für Zelte mit Zugang zum Fluss Vit und zu den Naturwegen.", image: images.aerial },
+    { title: "Bergvilla", type: "Villa", description: "Abgelegene Villa mit Blick auf den Canyon, geeignet für kleine Gruppen und Wochenendauszeiten.", image: images.pool },
+  ],
+  sourceNotes: ["Erstellt von DevOpsio - www.devopsio.eu", "Alle Bilder stammen von lokalen Fotografen und werden mit Genehmigung verwendet."],
 };

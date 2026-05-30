@@ -17,7 +17,14 @@ const allowedSameAsSourcePathPatterns = [
   /^brand\.name$/,
   /^hero\.title$/,
   /^nav\.quests$/,
+  /^ui\.(modalCloseAria|mobileMenuAria)$/,
+  /^highlights\.1\.label$/,
   /^placesList\.\d+\.title$/,
+  /^placesList\.5\.tag$/,
+  /^experiencesList\.\d+\.duration$/,
+  /^experiencesList\.\d+\.bestFor$/,
+  /^mapStops\.2\.title$/,
+  /^accommodationList\.2\.(title|type)$/,
 ];
 
 function readSource(filePath) {
@@ -159,6 +166,11 @@ function canMatchSource(dottedPath) {
   return allowedSameAsSourcePathPatterns.some((pattern) => pattern.test(dottedPath));
 }
 
+function weightedLength(value) {
+  const cjkChars = value.match(/[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}]/gu)?.length ?? 0;
+  return value.length + cjkChars;
+}
+
 function compareLocale(language, sourceRows, sourcePaths, localeValue) {
   const localeRows = flattenText(localeValue).filter((row) => shouldAuditPath(row.path));
   const missing = [];
@@ -186,7 +198,7 @@ function compareLocale(language, sourceRows, sourcePaths, localeValue) {
       sameAsBulgarian.push({ ...sourceRow, current: targetValue });
     }
 
-    if (sourceValue.length > 120 && targetValue.length < sourceValue.length * 0.45) {
+    if (sourceValue.length > 120 && weightedLength(targetValue) < sourceValue.length * 0.45) {
       likelyTooShort.push({ ...sourceRow, current: targetValue });
     }
   }

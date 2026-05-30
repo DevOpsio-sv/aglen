@@ -1,4 +1,4 @@
-import { accommodationEn, images, negotiablePrice } from "./shared";
+import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const ja: PageCopy = {
@@ -10,15 +10,15 @@ export const ja: PageCopy = {
   about: { eyebrow: "歴史と土地の記憶", title: "川辺に重なる時間", text: "アグレンは地図上の一点ではありません。洞窟、川沿いの道、古いルート、村の記憶、そして忘れにくい名前が重なります。" },
   legends: { eyebrow: "アグレンの伝説と謎", title: "ゆっくり見つかる場所がある。", text: "ここで強い物語は静かです。地名、洞窟の入口、不思議な岩、川の曲がり角に残っています。" },
   landmarks: { eyebrow: "見どころ", title: "峡谷、川、洞窟、村の静けさ", text: "自然のランドマークと地元の物語がまとまった小さな目的地。急がず歩き、聞き、撮影し、発見を待つ場所です。", aria: "アグレン周辺のルート地点" },
-  experiences: { eyebrow: "アグレンの週末を選ぶ", title: "観光リストではなく、案内される時間", text: "週末に合う短さと、土地らしさを感じる個人的な体験です。", cta: "ルートを問い合わせる" },
+  experiences: { eyebrow: "アグレンの週末を選ぶ", title: "観光リストではなく、案内される時間", text: "これらのツアーは、はっきりした体験として形づくられています。週末に十分短く、地元らしさを感じられるほど個人的な内容です。", cta: "ルートを問い合わせる" },
   gallery: { eyebrow: "没入型ギャラリー", title: "川の光と石で語られる場所", aria: "アグレンのギャラリー" },
   stay: { eyebrow: "アグレンに泊まる", title: "川のそばで休む", text: "アグレンでは自然に囲まれた静かな宿泊施設をご利用いただけます。空き状況やご予約はお問い合わせください。" },
-  quests: { eyebrow: "ブルガリア初の体験", title: "アグレンでのリアルARアドベンチャー", text: "Hidden Bulgaria Questsはリアルな場所へ案内します。カメラを通して隠れた3D世界を見て、謎を解き、守護者の痕跡をたどります。シミュレーションではなく、本物の体験です。", cta: "ダウンロードして始める", features: [
-    { title: "拡張現実（AR）", text: "マークされた場所にカメラを向けると、隠れた世界が目の前で生き生きとします — 3Dキャラクター、サイン、物語が現実に重なります。" },
-    { title: "リアルタイムGPSクエスト", text: "クエストはアグレン周辺の実在するランドマークへ案内します。各場所が次の手がかりを隠しています。" },
-    { title: "違う形で語られる歴史", text: "アグレンの伝説がゲームになります。守護者、洞窟、川 — すべてが一つのライブ体験としてつながります。" },
+  quests: { eyebrow: "ブルガリア初の体験", title: "アグレン近くのリアルARアドベンチャー", text: "Hidden Bulgaria Questsは実在する場所へ案内します。スマートフォンで隠れた3D世界を見て、謎を解き、守護者の痕跡をたどります。シミュレーションではありません。博物館でもありません。本物のライブアドベンチャーです。", cta: "ダウンロードして始める", features: [
+    { title: "拡張現実（AR）", text: "マークされた場所にカメラを向けると、隠れた世界が目の前で生き生きとします。3Dキャラクター、サイン、物語が現れます。" },
+    { title: "ライブGPSミッション", text: "旅はアグレン周辺の実在する見どころへ案内します。各場所が次の手がかりを隠しています。" },
+    { title: "違う形で語られる歴史", text: "プロホドナ洞窟の伝説がゲームとして生き生きとします。守護者、洞窟、古代の印、すべてが一つの体験としてつながります。" },
   ] },
-  ar: { eyebrow: "ARアドベンチャー", title: "守護者の世界を見る", text: "スマートフォンのカメラでアグレンの隠れた世界を生き生きとさせましょう。ARレイヤーが物語やキャラクターを、それが起きた場所で直接明かします。", steps: ["Google PlayからHidden Bulgaria Questsをダウンロード", "アグレンのARマーク地点へ移動", "カメラを向けて隠れた世界を見る"], cta: "ダウンロードして始める" },
+  ar: { eyebrow: "ARアドベンチャー", title: "守護者の世界を見る", text: "スマートフォンのカメラでプロホドナの隠れた世界を生き生きとさせましょう。ARレイヤーは肉眼では見えない物語、印、キャラクターを、それが起きた場所だけで明かします。", steps: ["Google PlayからHidden Bulgaria Questsをダウンロード", "アグレン周辺のARマーク地点へ移動", "カメラを向けて隠れた世界を見る"], cta: "ダウンロードして始める" },
   app: { eyebrow: "アプリをダウンロード", title: "Hidden Bulgaria Quests", text: "Android向け無料モバイルアプリ。アグレン周辺のクエストを見つけて本物の冒険へ出発しましょう。", badge: "Google Playで入手", note: "Android対応。iOS版は近日公開予定。" },
   contact: { eyebrow: "訪問を計画", title: "ヴィト川が秘密を守る場所で週末を。", text: "ルート、ガイド付き散策、写真スポット、地元の話、実用的な訪問情報を問い合わせてください。", notesTitle: "訪問メモ", noteOne: "自然散策、写真、川の景色、洞窟、地元の記憶に向いています。", noteTwo: "歩きやすい靴、水、日よけ、地域への敬意を持ってお越しください。", cta: "問い合わせる" },
   highlights: [
@@ -36,13 +36,13 @@ export const ja: PageCopy = {
   mysteries: [
     { title: "川が視界から消える場所", tag: "隠れた道", image: images.hero, description: "ヴィト川は一度にすべてを見せません。曲がり角、影、崖が、散策を探す時間に変えます。" },
     { title: "洞窟の入口", tag: "石と静けさ", image: images.cave, description: "洞窟は土地の古い記憶に属しています。地質、人の営み、象徴が重なる場所です。" },
-    { title: "地元名を持つ岩", tag: "民話の風景", image: images.arch, description: "岩穴や象の岩のような名前が、風景を個人的なものにします。目印であり、同時に物語でもあります。" },
+    { title: "地元名を持つ岩", tag: "民話の風景", image: images.arch, description: "Дупката や Слончето のような名前が、風景を個人的なものにします。それらは見どころであり、同時に物語でもあります。" },
   ],
   placesList: [
-    { title: "岩穴", tag: "岩のアーチ", image: images.arch, imageAlt: "アグレン近くの川の上にある石灰岩の岩のアーチ", description: "ヴィト川の上にある自然の石のアーチ。ゆっくり歩き、静かに撮影し、隠れたルートへ入る感覚を味わえます。" },
-    { title: "象の岩", tag: "岩の形", image: images.hero, imageAlt: "アグレン近くの峡谷、川、石灰岩の崖", description: "川辺の遊び心ある岩の形が、普通の散策を小さな発見に変えます。" },
-    { title: "赤い壁", tag: "峡谷の眺め", image: images.aerial, imageAlt: "川と村を含む峡谷の空撮風景", description: "村の近くで、石灰岩、森、川の光が劇的に出会う場所です。" },
-    { title: "ザリガニの淵", tag: "川の淵", image: images.pool, imageAlt: "石灰岩の岸と森に囲まれた静かな川の淵", description: "水辺で休み、ピクニックし、ヴィト川のそばでゆっくりしたリズムを感じる自然の地点です。" },
+    { title: "Дупката", tag: "岩のアーチ", image: images.arch, imageAlt: "アグレン近くの川の上にある石灰岩の岩のアーチ", description: "ヴィト川の上にある自然の石のアーチ。ゆっくり歩き、静かに撮影し、隠れたルートの感覚を味わうための場所です。" },
+    { title: "Слончето", tag: "岩の形", image: images.hero, imageAlt: "アグレン近くの峡谷、川、石灰岩の崖", description: "川辺の遊び心ある形が、普通の散策を小さな発見に変えます。" },
+    { title: "Червена стена", tag: "峡谷の眺め", image: images.aerial, imageAlt: "川と村を含む峡谷の風景", description: "村の近くで、石灰岩、森、川の光が劇的に出会う場所です。" },
+    { title: "Рачков вир", tag: "川の淵", image: images.pool, imageAlt: "石灰岩の岸と森に囲まれた静かな川の淵", description: "水辺で休み、ピクニックし、ヴィト川のそばでゆっくりしたリズムを感じる静かな自然の地点です。" },
     { title: "聖大天使ミカエル教会", tag: "村の記憶", image: images.church, imageAlt: "村の教会、石の道、緑の谷", description: "1888年に建てられた教会は、アグレンの物語にある人々の層を守っています。" },
     { title: "Калето", tag: "考古学", image: images.kaleto, imageAlt: "峡谷と川を見下ろす丘の上の石の遺構", description: "古いルート、防御の記憶、川辺で続いてきた暮らしと結びつく場所です。" },
   ],
@@ -63,9 +63,13 @@ export const ja: PageCopy = {
   mapStops: [
     { title: "村の中心", detail: "アグレンの人の尺度から始めます。道、教会、地元の記憶、方向感覚を感じる場所です。" },
     { title: "ヴィト川沿いの道", detail: "水をたどり、静かな眺め、曲がり角、写真に向く木陰へ進みます。" },
-    { title: "岩穴", detail: "自然の石の入口であり、この目的地の強い視覚的シンボルの一つです。" },
+    { title: "Дупката", detail: "自然の石の入口であり、この目的地の強い視覚的シンボルの一つです。" },
     { title: "洞窟と岩の形", detail: "より古い風景の層を、注意深く、地元の案内と地形への敬意をもって見つけます。" },
   ],
-  accommodationList: accommodationEn,
-  sourceNotes: ["元のWixサイトとサービス一覧: https://vasilevasilvena.wixsite.com/aglen", "公開されている歴史・観光情報: Banker.bg、Trip.dir.bg、BTA/Utro、Wikipedia/Wikitravel の概要。"],
+  accommodationList: [
+    { title: "ゲストルーム", type: "村での宿泊", description: "自然と川に近い地元の家での静かな宿泊。", image: images.church },
+    { title: "キャンプ場", type: "キャンプ", description: "ヴィト川と自然ルートにアクセスできるテント用の開けた空間。", image: images.aerial },
+    { title: "山のヴィラ", type: "ヴィラ", description: "峡谷の眺めがある静かなヴィラ。小グループや週末の滞在に向いています。", image: images.pool },
+  ],
+  sourceNotes: ["DevOpsio により作成 - www.devopsio.eu", "すべての画像は地元の写真家によるもので、許可を得て使用しています。"],
 };
