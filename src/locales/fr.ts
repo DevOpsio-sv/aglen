@@ -1,4 +1,4 @@
-import { images, prices } from "./shared";
+import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const fr: PageCopy = {
@@ -53,12 +53,12 @@ export const fr: PageCopy = {
     { title: "Калето", tag: "Archéologie", image: images.kaleto, imageAlt: "Vestiges de pierre sur une colline au-dessus du canyon", description: "Un lieu lié aux anciennes routes, à la mémoire fortifiée et à la vie près de la rivière." },
   ],
   experiencesList: [
-    { title: "Promenade du canyon", price: prices[0], duration: "2-3 h", bestFor: "Première visite", description: "Vues guidées vers la Vit, formes rocheuses et noms locaux du paysage." },
-    { title: "Voyage photo sur la rivière", price: prices[1], duration: "Demi-journée", bestFor: "Photographes", description: "Lieux choisis autour de la rivière, des rochers et des anciennes rues." },
-    { title: "Pêche près de la Vit", price: prices[2], duration: "2 h", bestFor: "Voyage lent", description: "Un rythme local calme au bord de l'eau avec conseils pratiques." },
-    { title: "Week-end à Aglen", price: prices[3], duration: "2 jours", bestFor: "Couples et amis", description: "Marches, pique-nique, artisanat et itinéraire du soir à travers les histoires du village." },
-    { title: "Herbes et savoir villageois", price: prices[4], duration: "90 min", bestFor: "Curieux", description: "Reconnaître les herbes, leurs usages traditionnels et la cueillette responsable." },
-    { title: "Journée découverte scolaire", price: prices[5], duration: "1 jour", bestFor: "Groupes scolaires", description: "Un parcours terrain entre géographie, histoire, légendes et nature." },
+    { title: "Promenade du canyon", price: negotiablePrice.fr, duration: "2-3 h", bestFor: "Première visite", description: "Vues guidées vers la Vit, formes rocheuses et noms locaux du paysage." },
+    { title: "Voyage photo sur la rivière", price: negotiablePrice.fr, duration: "Demi-journée", bestFor: "Photographes", description: "Lieux choisis autour de la rivière, des rochers et des anciennes rues." },
+    { title: "Pêche près de la Vit", price: negotiablePrice.fr, duration: "2 h", bestFor: "Voyage lent", description: "Un rythme local calme au bord de l'eau avec conseils pratiques." },
+    { title: "Week-end à Aglen", price: negotiablePrice.fr, duration: "2 jours", bestFor: "Couples et amis", description: "Marches, pique-nique, artisanat et itinéraire du soir à travers les histoires du village." },
+    { title: "Herbes et savoir villageois", price: negotiablePrice.fr, duration: "90 min", bestFor: "Curieux", description: "Reconnaître les herbes, leurs usages traditionnels et la cueillette responsable." },
+    { title: "Journée découverte scolaire", price: negotiablePrice.fr, duration: "1 jour", bestFor: "Groupes scolaires", description: "Un parcours terrain entre géographie, histoire, légendes et nature." },
   ],
   galleryItems: [
     { title: "Canyon de la Vit", image: images.hero, alt: "Canyon fluvial et village au lever du soleil", size: "wide" },

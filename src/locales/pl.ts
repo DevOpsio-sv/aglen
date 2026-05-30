@@ -1,4 +1,4 @@
-import { images, prices } from "./shared";
+import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const pl: PageCopy = {
@@ -47,12 +47,12 @@ export const pl: PageCopy = {
     { title: "Калето", tag: "Archeologia", image: images.kaleto, imageAlt: "Kamienne pozostałości nad kanionem", description: "Miejsce związane ze starymi trasami, obronną pamięcią i życiem przy rzece." },
   ],
   experiencesList: [
-    { title: "Spacer kanionem", price: prices[0], duration: "2-3 godz.", bestFor: "Pierwsza wizyta", description: "Widoki na Vit, formy skalne i lokalne nazwy z przewodnikiem." },
-    { title: "Fotowyprawa nad rzeką", price: prices[1], duration: "Pół dnia", bestFor: "Fotografowie", description: "Wybrane miejsca nad rzeką, przy skałach i starych ulicach." },
-    { title: "Wędkowanie nad Vit", price: prices[2], duration: "2 godz.", bestFor: "Slow travel", description: "Spokojny rytm przy wodzie z praktycznymi wskazówkami." },
-    { title: "Weekend w Aglen", price: prices[3], duration: "2 dni", bestFor: "Pary i przyjaciele", description: "Spacery, piknik, rzemiosło i wieczorne historie wsi." },
-    { title: "Zioła i wiedza wsi", price: prices[4], duration: "90 min", bestFor: "Ciekawi podróżnicy", description: "Rozpoznawanie ziół, tradycyjne użycie i odpowiedzialne zbieranie." },
-    { title: "Dzień odkryć dla szkół", price: prices[5], duration: "1 dzień", bestFor: "Grupy szkolne", description: "Trasa przez geografię, historię, lokalne legendy i przyrodę." },
+    { title: "Spacer kanionem", price: negotiablePrice.pl, duration: "2-3 godz.", bestFor: "Pierwsza wizyta", description: "Widoki na Vit, formy skalne i lokalne nazwy z przewodnikiem." },
+    { title: "Fotowyprawa nad rzeką", price: negotiablePrice.pl, duration: "Pół dnia", bestFor: "Fotografowie", description: "Wybrane miejsca nad rzeką, przy skałach i starych ulicach." },
+    { title: "Wędkowanie nad Vit", price: negotiablePrice.pl, duration: "2 godz.", bestFor: "Slow travel", description: "Spokojny rytm przy wodzie z praktycznymi wskazówkami." },
+    { title: "Weekend w Aglen", price: negotiablePrice.pl, duration: "2 dni", bestFor: "Pary i przyjaciele", description: "Spacery, piknik, rzemiosło i wieczorne historie wsi." },
+    { title: "Zioła i wiedza wsi", price: negotiablePrice.pl, duration: "90 min", bestFor: "Ciekawi podróżnicy", description: "Rozpoznawanie ziół, tradycyjne użycie i odpowiedzialne zbieranie." },
+    { title: "Dzień odkryć dla szkół", price: negotiablePrice.pl, duration: "1 dzień", bestFor: "Grupy szkolne", description: "Trasa przez geografię, historię, lokalne legendy i przyrodę." },
   ],
   galleryItems: [
     { title: "Kanion rzeki Vit", image: images.hero, alt: "Kanion rzeczny i wieś o wschodzie słońca", size: "wide" },

@@ -1,4 +1,4 @@
-import { images, prices } from "./shared";
+import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const ro: PageCopy = {
@@ -47,12 +47,12 @@ export const ro: PageCopy = {
     { title: "Калето", tag: "Arheologie", image: images.kaleto, imageAlt: "Vestigii de piatră deasupra canionului", description: "Un loc legat de rute vechi, memorie fortificată și viață lângă râu." },
   ],
   experiencesList: [
-    { title: "Plimbare prin canion", price: prices[0], duration: "2-3 ore", bestFor: "Prima vizită", description: "Priveliști ghidate spre Vit, forme de stâncă și nume locale." },
-    { title: "Călătorie foto pe râu", price: prices[1], duration: "Jumătate de zi", bestFor: "Fotografi", description: "Locuri alese lângă râu, stânci și străzi vechi." },
-    { title: "Pescuit pe Vit", price: prices[2], duration: "2 ore", bestFor: "Slow travel", description: "Ritm local liniștit lângă apă cu sfaturi practice." },
-    { title: "Weekend în Aglen", price: prices[3], duration: "2 zile", bestFor: "Cupluri și prieteni", description: "Plimbări, picnic, meșteșuguri și povești de seară." },
-    { title: "Plante și cunoaștere sătească", price: prices[4], duration: "90 min", bestFor: "Călători curioși", description: "Recunoașterea plantelor, utilizări tradiționale și cules responsabil." },
-    { title: "Zi de descoperire pentru școli", price: prices[5], duration: "1 zi", bestFor: "Grupuri școlare", description: "Traseu de teren prin geografie, istorie, legende și natură." },
+    { title: "Plimbare prin canion", price: negotiablePrice.ro, duration: "2-3 ore", bestFor: "Prima vizită", description: "Priveliști ghidate spre Vit, forme de stâncă și nume locale." },
+    { title: "Călătorie foto pe râu", price: negotiablePrice.ro, duration: "Jumătate de zi", bestFor: "Fotografi", description: "Locuri alese lângă râu, stânci și străzi vechi." },
+    { title: "Pescuit pe Vit", price: negotiablePrice.ro, duration: "2 ore", bestFor: "Slow travel", description: "Ritm local liniștit lângă apă cu sfaturi practice." },
+    { title: "Weekend în Aglen", price: negotiablePrice.ro, duration: "2 zile", bestFor: "Cupluri și prieteni", description: "Plimbări, picnic, meșteșuguri și povești de seară." },
+    { title: "Plante și cunoaștere sătească", price: negotiablePrice.ro, duration: "90 min", bestFor: "Călători curioși", description: "Recunoașterea plantelor, utilizări tradiționale și cules responsabil." },
+    { title: "Zi de descoperire pentru școli", price: negotiablePrice.ro, duration: "1 zi", bestFor: "Grupuri școlare", description: "Traseu de teren prin geografie, istorie, legende și natură." },
   ],
   galleryItems: [
     { title: "Canionul râului Vit", image: images.hero, alt: "Canion fluvial și sat la răsărit", size: "wide" },

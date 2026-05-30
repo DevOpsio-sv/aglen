@@ -1,4 +1,4 @@
-import { accommodationEn, images, prices } from "./shared";
+import { accommodationEn, images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const ru: PageCopy = {
@@ -47,12 +47,12 @@ export const ru: PageCopy = {
     { title: "Калето", tag: "Археология", image: images.kaleto, imageAlt: "Каменные остатки на холме над каньоном и рекой", description: "Место, связанное со старыми путями, укрепленной памятью и долгой жизнью у реки." },
   ],
   experiencesList: [
-    { title: "Прогулка по каньону", price: prices[0], duration: "2-3 часа", bestFor: "Первый визит", description: "Виды к Виту с проводником, скальные формы и местные названия за пейзажем." },
-    { title: "Речное фотопутешествие", price: prices[1], duration: "Полдня", bestFor: "Фотографы", description: "Выбранные места у реки, скал, старых улиц и мягкого естественного света." },
-    { title: "Рыбалка у Вита", price: prices[2], duration: "2 часа", bestFor: "Медленное путешествие", description: "Тихий местный ритм у воды с практическими советами и заботой о реке." },
-    { title: "Выходные в Аглене", price: prices[3], duration: "2 дня", bestFor: "Пары и друзья", description: "Прогулки, пикник, ремесла и вечерний маршрут через деревенские истории." },
-    { title: "Травы и деревенское знание", price: prices[4], duration: "90 мин.", bestFor: "Любознательные путешественники", description: "Распознавание трав, традиционное использование и ответственное собирание." },
-    { title: "Школьный день открытий", price: prices[5], duration: "1 день", bestFor: "Школьные группы", description: "Полевой маршрут через географию, историю, местные легенды и охрану природы." },
+    { title: "Прогулка по каньону", price: negotiablePrice.ru, duration: "2-3 часа", bestFor: "Первый визит", description: "Виды к Виту с проводником, скальные формы и местные названия за пейзажем." },
+    { title: "Речное фотопутешествие", price: negotiablePrice.ru, duration: "Полдня", bestFor: "Фотографы", description: "Выбранные места у реки, скал, старых улиц и мягкого естественного света." },
+    { title: "Рыбалка у Вита", price: negotiablePrice.ru, duration: "2 часа", bestFor: "Медленное путешествие", description: "Тихий местный ритм у воды с практическими советами и заботой о реке." },
+    { title: "Выходные в Аглене", price: negotiablePrice.ru, duration: "2 дня", bestFor: "Пары и друзья", description: "Прогулки, пикник, ремесла и вечерний маршрут через деревенские истории." },
+    { title: "Травы и деревенское знание", price: negotiablePrice.ru, duration: "90 мин.", bestFor: "Любознательные путешественники", description: "Распознавание трав, традиционное использование и ответственное собирание." },
+    { title: "Школьный день открытий", price: negotiablePrice.ru, duration: "1 день", bestFor: "Школьные группы", description: "Полевой маршрут через географию, историю, местные легенды и охрану природы." },
   ],
   galleryItems: [
     { title: "Каньон Вита", image: images.hero, alt: "Кинематографичный речной каньон и село на рассвете", size: "wide" },

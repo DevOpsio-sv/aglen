@@ -1,4 +1,4 @@
-import { images, prices } from "./shared";
+import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const tr: PageCopy = {
@@ -47,12 +47,12 @@ export const tr: PageCopy = {
     { title: "Калето", tag: "Arkeoloji", image: images.kaleto, imageAlt: "Kanyon üzerindeki taş kalıntılar", description: "Eski rotalar, savunma hafızası ve nehir yaşamıyla bağlantılı bir yer." },
   ],
   experiencesList: [
-    { title: "Kanyon yürüyüşü", price: prices[0], duration: "2-3 saat", bestFor: "İlk ziyaret", description: "Vit'e, kaya şekillerine ve yerel adlara rehberli bakış." },
-    { title: "Nehir fotoğraf rotası", price: prices[1], duration: "Yarım gün", bestFor: "Fotoğrafçılar", description: "Nehir, kayalar ve eski sokaklar çevresinde seçilmiş noktalar." },
-    { title: "Vit'te balıkçılık", price: prices[2], duration: "2 saat", bestFor: "Yavaş seyahat", description: "Pratik yönlendirmeyle su kenarında sakin yerel ritim." },
-    { title: "Aglen hafta sonu", price: prices[3], duration: "2 gün", bestFor: "Çiftler ve arkadaşlar", description: "Yürüyüşler, piknik, el sanatları ve köy hikayeleri." },
-    { title: "Otlar ve köy bilgisi", price: prices[4], duration: "90 dk", bestFor: "Meraklı gezginler", description: "Otları tanıma, geleneksel kullanım ve sorumlu toplama." },
-    { title: "Okul keşif günü", price: prices[5], duration: "1 gün", bestFor: "Okul grupları", description: "Coğrafya, tarih, yerel efsaneler ve doğa koruma rotası." },
+    { title: "Kanyon yürüyüşü", price: negotiablePrice.tr, duration: "2-3 saat", bestFor: "İlk ziyaret", description: "Vit'e, kaya şekillerine ve yerel adlara rehberli bakış." },
+    { title: "Nehir fotoğraf rotası", price: negotiablePrice.tr, duration: "Yarım gün", bestFor: "Fotoğrafçılar", description: "Nehir, kayalar ve eski sokaklar çevresinde seçilmiş noktalar." },
+    { title: "Vit'te balıkçılık", price: negotiablePrice.tr, duration: "2 saat", bestFor: "Yavaş seyahat", description: "Pratik yönlendirmeyle su kenarında sakin yerel ritim." },
+    { title: "Aglen hafta sonu", price: negotiablePrice.tr, duration: "2 gün", bestFor: "Çiftler ve arkadaşlar", description: "Yürüyüşler, piknik, el sanatları ve köy hikayeleri." },
+    { title: "Otlar ve köy bilgisi", price: negotiablePrice.tr, duration: "90 dk", bestFor: "Meraklı gezginler", description: "Otları tanıma, geleneksel kullanım ve sorumlu toplama." },
+    { title: "Okul keşif günü", price: negotiablePrice.tr, duration: "1 gün", bestFor: "Okul grupları", description: "Coğrafya, tarih, yerel efsaneler ve doğa koruma rotası." },
   ],
   galleryItems: [
     { title: "Vit Nehri kanyonu", image: images.hero, alt: "Gün doğumunda nehir kanyonu ve köy", size: "wide" },

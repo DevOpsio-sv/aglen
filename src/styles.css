@@ -847,6 +847,130 @@ h3 {
   line-height: 1.6;
 }
 
+.hub-card small {
+  width: fit-content;
+  border: 1px solid rgba(197, 154, 69, 0.32);
+  border-radius: 999px;
+  padding: 0.24rem 0.58rem;
+  color: var(--forest);
+  background: rgba(197, 154, 69, 0.12);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.seo-landing {
+  padding: 4rem 0 1.5rem;
+}
+
+.seo-landing-panel {
+  display: grid;
+  gap: 2rem;
+  border: 1px solid rgba(15, 47, 36, 0.14);
+  border-radius: 30px;
+  padding: clamp(1rem, 3vw, 2rem);
+  background: rgba(247, 242, 231, 0.88);
+  box-shadow: 0 28px 80px rgba(7, 26, 20, 0.14);
+}
+
+.seo-landing-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(280px, 0.92fr);
+  gap: clamp(1.2rem, 3vw, 2rem);
+  align-items: center;
+}
+
+.seo-landing-hero h1,
+.seo-faq h2,
+.seo-related h2,
+.seo-section-card h2 {
+  margin: 0;
+  color: var(--forest-deep);
+  font-family: var(--serif);
+}
+
+.seo-landing-hero h1 {
+  max-width: 780px;
+  font-size: clamp(2.6rem, 6vw, 5.8rem);
+  line-height: 0.92;
+}
+
+.seo-landing-hero p {
+  max-width: 760px;
+  color: rgba(7, 26, 20, 0.78);
+  font-size: 1.1rem;
+  line-height: 1.75;
+}
+
+.seo-landing-hero img {
+  width: 100%;
+  height: min(420px, 52vw);
+  min-height: 280px;
+  border-radius: 24px;
+  object-fit: cover;
+  box-shadow: var(--shadow);
+}
+
+.seo-landing-actions,
+.seo-related,
+.seo-faq {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.seo-landing-actions {
+  grid-template-columns: repeat(2, fit-content(220px));
+  margin-top: 1.2rem;
+}
+
+.seo-section-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.seo-section-card,
+.seo-faq,
+.seo-related {
+  border: 1px solid rgba(15, 47, 36, 0.12);
+  border-radius: 22px;
+  padding: 1.2rem;
+  background: rgba(255, 255, 255, 0.68);
+}
+
+.seo-section-card p,
+.seo-faq p {
+  color: rgba(7, 26, 20, 0.72);
+  line-height: 1.7;
+}
+
+.seo-faq-links {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.36fr);
+  gap: 1rem;
+}
+
+.seo-faq details {
+  border-top: 1px solid rgba(15, 47, 36, 0.12);
+  padding: 0.9rem 0 0;
+}
+
+.seo-faq summary {
+  color: var(--forest-deep);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.seo-related a {
+  border: 1px solid rgba(15, 47, 36, 0.1);
+  border-radius: 14px;
+  padding: 0.76rem 0.9rem;
+  color: var(--forest-deep);
+  background: rgba(15, 47, 36, 0.06);
+  font-weight: 800;
+}
+
 .gallery-grid {
   display: grid;
   grid-auto-rows: 260px;
@@ -1720,7 +1844,10 @@ h3 {
   .mystery-grid,
   .map-layout,
   .quests-features,
-  .app-panel {
+  .app-panel,
+  .seo-landing-hero,
+  .seo-section-grid,
+  .seo-faq-links {
     grid-template-columns: 1fr;
   }
 
@@ -1773,6 +1900,7 @@ h3 {
   .places,
   .experiences,
   .gallery,
+  .seo-landing,
   .stay,
   .quests,
   .ar-section,
@@ -1808,6 +1936,18 @@ h3 {
   }
 
   .contact-card .button {
+    width: 100%;
+  }
+
+  .seo-landing-panel {
+    border-radius: 22px;
+  }
+
+  .seo-landing-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .seo-landing-actions .button {
     width: 100%;
   }
 

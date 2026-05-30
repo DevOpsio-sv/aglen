@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 import { contentByLanguage, languages, type Accommodation, type LanguageCode, type TimelineItem } from "./content";
+import { isLandingPageId, landingPages, landingPagesById } from "./landingPages";
 import { buildRoutePath, getStaticRoute, resolveRoute, type RouteId, type ResolvedRoute } from "./routes";
 import { updateDocumentSEO } from "./seo";
 
@@ -15,6 +16,7 @@ export function App() {
   const { language, routeId } = pageRoute;
   const copy = contentByLanguage[language];
   const currentRoute = getStaticRoute(routeId);
+  const currentLandingPage = isLandingPageId(routeId) ? landingPagesById.get(routeId) : undefined;
   const selectedLanguage = languages.find((item) => item.code === language) ?? languages[0];
 
   const navigateTo = (nextRoute: ResolvedRoute, replace = false) => {
@@ -158,6 +160,16 @@ export function App() {
       { label: "Crawler policy", routeId: "crawlerPolicy" },
       { label: "Events and updates", routeId: "events" },
     ] satisfies Array<{ label: string; routeId: RouteId }>,
+    [],
+  );
+
+  const landingPageLinks = useMemo(
+    () => landingPages.map((page) => ({
+      label: page.h1,
+      text: page.metaDescription,
+      routeId: page.id,
+      category: page.category,
+    })),
     [],
   );
 
@@ -311,6 +323,64 @@ export function App() {
         </div>
       </section>
 
+      {currentLandingPage && (
+        <section id="seo-guide" className="seo-landing section-shell">
+          <article className="seo-landing-panel reveal">
+            <div className="seo-landing-hero">
+              <div>
+                <p className="eyebrow">{currentLandingPage.category}</p>
+                <h1>{currentLandingPage.h1}</h1>
+                <p>{currentLandingPage.intro}</p>
+                <div className="seo-landing-actions">
+                  <a className="button primary" href={routeHref("contact")} onClick={(event) => handleRouteClick(event, "contact")}>
+                    {currentLandingPage.ctaLabel}
+                  </a>
+                  <a className="button ghost" href={routeHref("routeMap")} onClick={(event) => handleRouteClick(event, "routeMap")}>
+                    View route map
+                  </a>
+                </div>
+              </div>
+              <img src={currentLandingPage.image} alt={currentLandingPage.imageAlt} loading="eager" />
+            </div>
+
+            <div className="seo-section-grid">
+              {currentLandingPage.sections.map((section) => (
+                <section className="seo-section-card" key={section.heading}>
+                  <h2>{section.heading}</h2>
+                  <p>{section.body}</p>
+                </section>
+              ))}
+            </div>
+
+            <div className="seo-faq-links">
+              <div className="seo-faq">
+                <p className="eyebrow">Visitor answers</p>
+                <h2>FAQ</h2>
+                {currentLandingPage.faqs.map((faq) => (
+                  <details key={faq.question}>
+                    <summary>{faq.question}</summary>
+                    <p>{faq.answer}</p>
+                  </details>
+                ))}
+              </div>
+              <aside className="seo-related" aria-label="Related Aglen guides">
+                <p className="eyebrow">Internal links</p>
+                <h2>Related guides</h2>
+                {currentLandingPage.internalLinks.map((link) => (
+                  <a
+                    href={routeHref(link.routeId as RouteId)}
+                    key={`${link.routeId}-${link.label}`}
+                    onClick={(event) => handleRouteClick(event, link.routeId as RouteId)}
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </aside>
+            </div>
+          </article>
+        </section>
+      )}
+
       <section className="stats section-shell" aria-label={copy.statsLabel}>
         {copy.highlights.map((item) => (
           <article className="stat-card reveal" key={item.label}>
@@ -453,13 +523,14 @@ export function App() {
           </p>
         </div>
         <div className="hub-grid">
-          {guideLinks.map((link) => (
+          {[...guideLinks, ...landingPageLinks].map((link) => (
             <a
               className="hub-card reveal"
               href={routeHref(link.routeId)}
               key={link.routeId}
               onClick={(event) => handleRouteClick(event, link.routeId)}
             >
+              {"category" in link && <small>{link.category}</small>}
               <span>{link.label}</span>
               <p>{link.text}</p>
             </a>

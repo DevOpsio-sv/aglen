@@ -1,4 +1,4 @@
-import { accommodationEn, images, prices } from "./shared";
+import { accommodationEn, images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const en: PageCopy = {
@@ -73,12 +73,12 @@ export const en: PageCopy = {
     { title: "Калето", tag: "Archaeology", image: images.kaleto, imageAlt: "Stone ruins on a hilltop above canyon and river", description: "A place connected with older routes, fortified memory, and the long continuity of life around the river." },
   ],
   experiencesList: [
-    { title: "Canyon Walk", price: prices[0], duration: "2-3 hours", bestFor: "First-time visitors", description: "Guided views toward the Vit, rock forms, and the local names behind the landscape." },
-    { title: "River Photo Journey", price: prices[1], duration: "Half day", bestFor: "Photographers", description: "Selected places around the river, rocks, old village streets, and soft natural light." },
-    { title: "Fishing by the Vit", price: prices[2], duration: "2 hours", bestFor: "Slow travel", description: "A quiet local rhythm by the water with practical guidance and care for the river." },
-    { title: "Aglen Weekend Escape", price: prices[3], duration: "2 days", bestFor: "Couples and friends", description: "Walks, picnic time, crafts, and an evening route through village stories." },
-    { title: "Herbs & Village Knowledge", price: prices[4], duration: "90 min.", bestFor: "Curious travelers", description: "Recognizing herbs, traditional uses, and responsible gathering in the local landscape." },
-    { title: "School Discovery Day", price: prices[5], duration: "1 day", bestFor: "Student groups", description: "A field route through geography, history, local legends, and nature protection." },
+    { title: "Canyon Walk", price: negotiablePrice.en, duration: "2-3 hours", bestFor: "First-time visitors", description: "Guided views toward the Vit, rock forms, and the local names behind the landscape." },
+    { title: "River Photo Journey", price: negotiablePrice.en, duration: "Half day", bestFor: "Photographers", description: "Selected places around the river, rocks, old village streets, and soft natural light." },
+    { title: "Fishing by the Vit", price: negotiablePrice.en, duration: "2 hours", bestFor: "Slow travel", description: "A quiet local rhythm by the water with practical guidance and care for the river." },
+    { title: "Aglen Weekend Escape", price: negotiablePrice.en, duration: "2 days", bestFor: "Couples and friends", description: "Walks, picnic time, crafts, and an evening route through village stories." },
+    { title: "Herbs & Village Knowledge", price: negotiablePrice.en, duration: "90 min.", bestFor: "Curious travelers", description: "Recognizing herbs, traditional uses, and responsible gathering in the local landscape." },
+    { title: "School Discovery Day", price: negotiablePrice.en, duration: "1 day", bestFor: "Student groups", description: "A field route through geography, history, local legends, and nature protection." },
   ],
   galleryItems: [
     { title: "Vit River Canyon", image: images.hero, alt: "Cinematic river canyon and village at sunrise", size: "wide" },

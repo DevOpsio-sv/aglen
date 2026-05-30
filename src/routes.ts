@@ -1,7 +1,8 @@
 import { languages } from "./locales/shared";
 import type { LanguageCode } from "./locales/types";
+import { landingPages, type LandingPageId } from "./landingPages";
 
-export type RouteId =
+export type CoreRouteId =
   | "home"
   | "pillars"
   | "attractions"
@@ -25,6 +26,8 @@ export type RouteId =
   | "crawlerPolicy"
   | "contact";
 
+export type RouteId = CoreRouteId | LandingPageId;
+
 export type StaticRoute = {
   id: RouteId;
   slug: string;
@@ -38,7 +41,7 @@ export type ResolvedRoute = {
 
 export const DEFAULT_LANGUAGE: LanguageCode = "bg";
 
-export const staticRoutes: StaticRoute[] = [
+const coreRoutes: StaticRoute[] = [
   { id: "home", slug: "", sectionId: "home" },
   { id: "pillars", slug: "tourism", sectionId: "about" },
   { id: "attractions", slug: "attractions", sectionId: "landmarks" },
@@ -61,6 +64,15 @@ export const staticRoutes: StaticRoute[] = [
   { id: "localSeo", slug: "local-presence", sectionId: "trust" },
   { id: "crawlerPolicy", slug: "crawler-policy", sectionId: "trust" },
   { id: "contact", slug: "contact", sectionId: "contact" },
+];
+
+export const staticRoutes: StaticRoute[] = [
+  ...coreRoutes,
+  ...landingPages.map((page) => ({
+    id: page.id,
+    slug: page.slug,
+    sectionId: page.sectionId,
+  })),
 ];
 
 const languageCodes = new Set(languages.map((language) => language.code));

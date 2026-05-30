@@ -1,4 +1,4 @@
-import { accommodationEn, images, prices } from "./shared";
+import { accommodationEn, images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const ja: PageCopy = {
@@ -47,12 +47,12 @@ export const ja: PageCopy = {
     { title: "Калето", tag: "考古学", image: images.kaleto, imageAlt: "峡谷と川を見下ろす丘の上の石の遺構", description: "古いルート、防御の記憶、川辺で続いてきた暮らしと結びつく場所です。" },
   ],
   experiencesList: [
-    { title: "峡谷ウォーク", price: prices[0], duration: "2-3時間", bestFor: "初めての訪問", description: "ヴィト川、岩の形、風景に残る地元名をガイドと一緒にたどります。" },
-    { title: "川辺の写真旅", price: prices[1], duration: "半日", bestFor: "写真好き", description: "川、岩、古い村道、やわらかな自然光の撮影ポイントを巡ります。" },
-    { title: "ヴィト川での釣り", price: prices[2], duration: "2時間", bestFor: "スロートラベル", description: "川を大切にしながら、実用的な案内とともに水辺の静かなリズムを楽しみます。" },
-    { title: "アグレン週末エスケープ", price: prices[3], duration: "2日", bestFor: "カップルと友人", description: "散策、ピクニック、手仕事、村の物語をたどる夕方のルートです。" },
-    { title: "ハーブと村の知恵", price: prices[4], duration: "90分", bestFor: "好奇心ある旅行者", description: "ハーブの見分け方、伝統的な使い方、責任ある採取を学びます。" },
-    { title: "学校向け発見の日", price: prices[5], duration: "1日", bestFor: "学生グループ", description: "地理、歴史、地元伝説、自然保護を結ぶフィールドルートです。" },
+    { title: "峡谷ウォーク", price: negotiablePrice.ja, duration: "2-3時間", bestFor: "初めての訪問", description: "ヴィト川、岩の形、風景に残る地元名をガイドと一緒にたどります。" },
+    { title: "川辺の写真旅", price: negotiablePrice.ja, duration: "半日", bestFor: "写真好き", description: "川、岩、古い村道、やわらかな自然光の撮影ポイントを巡ります。" },
+    { title: "ヴィト川での釣り", price: negotiablePrice.ja, duration: "2時間", bestFor: "スロートラベル", description: "川を大切にしながら、実用的な案内とともに水辺の静かなリズムを楽しみます。" },
+    { title: "アグレン週末エスケープ", price: negotiablePrice.ja, duration: "2日", bestFor: "カップルと友人", description: "散策、ピクニック、手仕事、村の物語をたどる夕方のルートです。" },
+    { title: "ハーブと村の知恵", price: negotiablePrice.ja, duration: "90分", bestFor: "好奇心ある旅行者", description: "ハーブの見分け方、伝統的な使い方、責任ある採取を学びます。" },
+    { title: "学校向け発見の日", price: negotiablePrice.ja, duration: "1日", bestFor: "学生グループ", description: "地理、歴史、地元伝説、自然保護を結ぶフィールドルートです。" },
   ],
   galleryItems: [
     { title: "ヴィト川の峡谷", image: images.hero, alt: "日の出の川の峡谷と村の映画的な風景", size: "wide" },

@@ -1,4 +1,4 @@
-import { accommodationEn, images, prices } from "./shared";
+import { accommodationEn, images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const de: PageCopy = {
@@ -47,12 +47,12 @@ export const de: PageCopy = {
     { title: "Калето", tag: "Archäologie", image: images.kaleto, imageAlt: "Steinreste auf einer Anhöhe über Canyon und Fluss", description: "Ein Ort, verbunden mit alten Routen, befestigter Erinnerung und der langen Kontinuität des Lebens am Fluss." },
   ],
   experiencesList: [
-    { title: "Canyon-Spaziergang", price: prices[0], duration: "2-3 Stunden", bestFor: "Erstbesucher", description: "Geführte Blicke zum Vit, zu Felsformen und zu den lokalen Namen hinter der Landschaft." },
-    { title: "Foto-Reise am Fluss", price: prices[1], duration: "Halber Tag", bestFor: "Fotografen", description: "Ausgewählte Orte am Fluss, bei den Felsen, alten Dorfstraßen und weichem Naturlicht." },
-    { title: "Angeln am Vit", price: prices[2], duration: "2 Stunden", bestFor: "Langsames Reisen", description: "Ein ruhiger lokaler Rhythmus am Wasser mit praktischer Anleitung und Sorgfalt für den Fluss." },
-    { title: "Wochenendflucht nach Aglen", price: prices[3], duration: "2 Tage", bestFor: "Paare und Freunde", description: "Spaziergänge, Picknickzeit, Handwerk und eine Abendroute durch Dorfgeschichten." },
-    { title: "Kräuter und Dorfwissen", price: prices[4], duration: "90 Min.", bestFor: "Neugierige Reisende", description: "Kräuter erkennen, traditionelle Verwendung verstehen und verantwortungsvoll in der Landschaft sammeln." },
-    { title: "Entdeckungstag für Schulen", price: prices[5], duration: "1 Tag", bestFor: "Schulgruppen", description: "Eine Feldroute durch Geografie, Geschichte, lokale Legenden und Naturschutz." },
+    { title: "Canyon-Spaziergang", price: negotiablePrice.de, duration: "2-3 Stunden", bestFor: "Erstbesucher", description: "Geführte Blicke zum Vit, zu Felsformen und zu den lokalen Namen hinter der Landschaft." },
+    { title: "Foto-Reise am Fluss", price: negotiablePrice.de, duration: "Halber Tag", bestFor: "Fotografen", description: "Ausgewählte Orte am Fluss, bei den Felsen, alten Dorfstraßen und weichem Naturlicht." },
+    { title: "Angeln am Vit", price: negotiablePrice.de, duration: "2 Stunden", bestFor: "Langsames Reisen", description: "Ein ruhiger lokaler Rhythmus am Wasser mit praktischer Anleitung und Sorgfalt für den Fluss." },
+    { title: "Wochenendflucht nach Aglen", price: negotiablePrice.de, duration: "2 Tage", bestFor: "Paare und Freunde", description: "Spaziergänge, Picknickzeit, Handwerk und eine Abendroute durch Dorfgeschichten." },
+    { title: "Kräuter und Dorfwissen", price: negotiablePrice.de, duration: "90 Min.", bestFor: "Neugierige Reisende", description: "Kräuter erkennen, traditionelle Verwendung verstehen und verantwortungsvoll in der Landschaft sammeln." },
+    { title: "Entdeckungstag für Schulen", price: negotiablePrice.de, duration: "1 Tag", bestFor: "Schulgruppen", description: "Eine Feldroute durch Geografie, Geschichte, lokale Legenden und Naturschutz." },
   ],
   galleryItems: [
     { title: "Canyon des Vit", image: images.hero, alt: "Cinematischer Flusscanyon und Dorf bei Sonnenaufgang", size: "wide" },

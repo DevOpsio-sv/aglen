@@ -1,4 +1,4 @@
-import { accommodationEn, images, prices } from "./shared";
+import { accommodationEn, images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const es: PageCopy = {
@@ -47,12 +47,12 @@ export const es: PageCopy = {
     { title: "Калето", tag: "Arqueología", image: images.kaleto, imageAlt: "Restos de piedra en una colina sobre cañón y río", description: "Un lugar conectado con rutas antiguas, memoria fortificada y la larga continuidad de vida junto al río." },
   ],
   experiencesList: [
-    { title: "Caminata por el cañón", price: prices[0], duration: "2-3 horas", bestFor: "Primera visita", description: "Vistas guiadas hacia el Vit, formas de roca y los nombres locales detrás del paisaje." },
-    { title: "Viaje fotográfico del río", price: prices[1], duration: "Medio día", bestFor: "Fotógrafos", description: "Lugares seleccionados junto al río, las rocas, las calles antiguas y la luz natural suave." },
-    { title: "Pesca junto al Vit", price: prices[2], duration: "2 horas", bestFor: "Viaje lento", description: "Un ritmo local tranquilo junto al agua con orientación práctica y cuidado por el río." },
-    { title: "Escapada de fin de semana en Aglen", price: prices[3], duration: "2 días", bestFor: "Parejas y amigos", description: "Caminatas, picnic, artesanía y una ruta de tarde por historias del pueblo." },
-    { title: "Hierbas y saber del pueblo", price: prices[4], duration: "90 min.", bestFor: "Viajeros curiosos", description: "Reconocimiento de hierbas, usos tradicionales y recolección responsable." },
-    { title: "Día escolar de descubrimiento", price: prices[5], duration: "1 día", bestFor: "Grupos escolares", description: "Una ruta de campo por geografía, historia, leyendas locales y protección de la naturaleza." },
+    { title: "Caminata por el cañón", price: negotiablePrice.es, duration: "2-3 horas", bestFor: "Primera visita", description: "Vistas guiadas hacia el Vit, formas de roca y los nombres locales detrás del paisaje." },
+    { title: "Viaje fotográfico del río", price: negotiablePrice.es, duration: "Medio día", bestFor: "Fotógrafos", description: "Lugares seleccionados junto al río, las rocas, las calles antiguas y la luz natural suave." },
+    { title: "Pesca junto al Vit", price: negotiablePrice.es, duration: "2 horas", bestFor: "Viaje lento", description: "Un ritmo local tranquilo junto al agua con orientación práctica y cuidado por el río." },
+    { title: "Escapada de fin de semana en Aglen", price: negotiablePrice.es, duration: "2 días", bestFor: "Parejas y amigos", description: "Caminatas, picnic, artesanía y una ruta de tarde por historias del pueblo." },
+    { title: "Hierbas y saber del pueblo", price: negotiablePrice.es, duration: "90 min.", bestFor: "Viajeros curiosos", description: "Reconocimiento de hierbas, usos tradicionales y recolección responsable." },
+    { title: "Día escolar de descubrimiento", price: negotiablePrice.es, duration: "1 día", bestFor: "Grupos escolares", description: "Una ruta de campo por geografía, historia, leyendas locales y protección de la naturaleza." },
   ],
   galleryItems: [
     { title: "Cañón del río Vit", image: images.hero, alt: "Cañón fluvial cinematográfico y pueblo al amanecer", size: "wide" },

@@ -1,4 +1,4 @@
-import { images, prices } from "./shared";
+import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const el: PageCopy = {
@@ -47,12 +47,12 @@ export const el: PageCopy = {
     { title: "Калето", tag: "Αρχαιολογία", image: images.kaleto, imageAlt: "Πέτρινα κατάλοιπα πάνω από φαράγγι", description: "Μέρος συνδεδεμένο με παλιές διαδρομές, οχυρωμένη μνήμη και ζωή δίπλα στο ποτάμι." },
   ],
   experiencesList: [
-    { title: "Περίπατος στο φαράγγι", price: prices[0], duration: "2-3 ώρες", bestFor: "Πρώτη επίσκεψη", description: "Καθοδηγούμενες θέες προς τον Vit, βράχους και τοπικά ονόματα." },
-    { title: "Φωτογραφικό ταξίδι στο ποτάμι", price: prices[1], duration: "Μισή μέρα", bestFor: "Φωτογράφοι", description: "Επιλεγμένα σημεία γύρω από ποτάμι, βράχους και παλιούς δρόμους." },
-    { title: "Ψάρεμα στον Vit", price: prices[2], duration: "2 ώρες", bestFor: "Slow travel", description: "Ήρεμος τοπικός ρυθμός δίπλα στο νερό με πρακτικές οδηγίες." },
-    { title: "Σαββατοκύριακο στο Aglen", price: prices[3], duration: "2 μέρες", bestFor: "Ζευγάρια και φίλοι", description: "Περίπατοι, πικνίκ, χειροτεχνίες και βραδινές ιστορίες του χωριού." },
-    { title: "Βότανα και χωριάτικη γνώση", price: prices[4], duration: "90 λεπτά", bestFor: "Περίεργοι ταξιδιώτες", description: "Αναγνώριση βοτάνων, παραδοσιακή χρήση και υπεύθυνη συλλογή." },
-    { title: "Ημέρα ανακάλυψης για σχολεία", price: prices[5], duration: "1 μέρα", bestFor: "Σχολικές ομάδες", description: "Διαδρομή μέσα από γεωγραφία, ιστορία, θρύλους και φύση." },
+    { title: "Περίπατος στο φαράγγι", price: negotiablePrice.el, duration: "2-3 ώρες", bestFor: "Πρώτη επίσκεψη", description: "Καθοδηγούμενες θέες προς τον Vit, βράχους και τοπικά ονόματα." },
+    { title: "Φωτογραφικό ταξίδι στο ποτάμι", price: negotiablePrice.el, duration: "Μισή μέρα", bestFor: "Φωτογράφοι", description: "Επιλεγμένα σημεία γύρω από ποτάμι, βράχους και παλιούς δρόμους." },
+    { title: "Ψάρεμα στον Vit", price: negotiablePrice.el, duration: "2 ώρες", bestFor: "Slow travel", description: "Ήρεμος τοπικός ρυθμός δίπλα στο νερό με πρακτικές οδηγίες." },
+    { title: "Σαββατοκύριακο στο Aglen", price: negotiablePrice.el, duration: "2 μέρες", bestFor: "Ζευγάρια και φίλοι", description: "Περίπατοι, πικνίκ, χειροτεχνίες και βραδινές ιστορίες του χωριού." },
+    { title: "Βότανα και χωριάτικη γνώση", price: negotiablePrice.el, duration: "90 λεπτά", bestFor: "Περίεργοι ταξιδιώτες", description: "Αναγνώριση βοτάνων, παραδοσιακή χρήση και υπεύθυνη συλλογή." },
+    { title: "Ημέρα ανακάλυψης για σχολεία", price: negotiablePrice.el, duration: "1 μέρα", bestFor: "Σχολικές ομάδες", description: "Διαδρομή μέσα από γεωγραφία, ιστορία, θρύλους και φύση." },
   ],
   galleryItems: [
     { title: "Φαράγγι του Vit", image: images.hero, alt: "Φαράγγι ποταμού και χωριό στην ανατολή", size: "wide" },

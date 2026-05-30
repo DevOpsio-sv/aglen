@@ -1,4 +1,4 @@
-import { accommodationBg, images, prices } from "./shared";
+import { accommodationBg, images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const bg: PageCopy = {
@@ -123,12 +123,12 @@ export const bg: PageCopy = {
     { title: "Калето", tag: "Археология", image: images.kaleto, imageAlt: "Каменни останки на хълм над каньон и река", description: "Място, свързано със стари маршрути, укрепена памет и дългия живот край реката." },
   ],
   experiencesList: [
-    { title: "Каньонна разходка", price: prices[0], duration: "2-3 часа", bestFor: "Първо посещение", description: "Водени гледки към Вит, скални форми и местните имена зад пейзажа." },
-    { title: "Речно фото пътешествие", price: prices[1], duration: "Полуден", bestFor: "Фотографи", description: "Подбрани места около реката, скалите, старите улици и меката естествена светлина." },
-    { title: "Риболов край Вит", price: prices[2], duration: "2 часа", bestFor: "Бавно пътуване", description: "Тих местен ритъм край водата с практични насоки и грижа към реката." },
-    { title: "Уикенд бягство в Ъглен", price: prices[3], duration: "2 дни", bestFor: "Двойки и приятели", description: "Разходки, пикник, занаяти и вечерен маршрут през селски истории." },
-    { title: "Билки и селско знание", price: prices[4], duration: "90 мин.", bestFor: "Любопитни пътешественици", description: "Разпознаване на билки, традиционна употреба и отговорно събиране." },
-    { title: "Ученически ден за откриване", price: prices[5], duration: "1 ден", bestFor: "Ученически групи", description: "Полеви маршрут през география, история, местни легенди и природозащита." },
+    { title: "Каньонна разходка", price: negotiablePrice.bg, duration: "2-3 часа", bestFor: "Първо посещение", description: "Водени гледки към Вит, скални форми и местните имена зад пейзажа." },
+    { title: "Речно фото пътешествие", price: negotiablePrice.bg, duration: "Полуден", bestFor: "Фотографи", description: "Подбрани места около реката, скалите, старите улици и меката естествена светлина." },
+    { title: "Риболов край Вит", price: negotiablePrice.bg, duration: "2 часа", bestFor: "Бавно пътуване", description: "Тих местен ритъм край водата с практични насоки и грижа към реката." },
+    { title: "Уикенд бягство в Ъглен", price: negotiablePrice.bg, duration: "2 дни", bestFor: "Двойки и приятели", description: "Разходки, пикник, занаяти и вечерен маршрут през селски истории." },
+    { title: "Билки и селско знание", price: negotiablePrice.bg, duration: "90 мин.", bestFor: "Любопитни пътешественици", description: "Разпознаване на билки, традиционна употреба и отговорно събиране." },
+    { title: "Ученически ден за откриване", price: negotiablePrice.bg, duration: "1 ден", bestFor: "Ученически групи", description: "Полеви маршрут през география, история, местни легенди и природозащита." },
   ],
   galleryItems: [
     { title: "Каньонът на Вит", image: images.hero, alt: "Кинематографичен речен каньон и село при изгрев", size: "wide" },

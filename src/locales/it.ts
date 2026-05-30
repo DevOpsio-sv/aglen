@@ -1,4 +1,4 @@
-import { images, prices } from "./shared";
+import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const it: PageCopy = {
@@ -47,12 +47,12 @@ export const it: PageCopy = {
     { title: "Калето", tag: "Archeologia", image: images.kaleto, imageAlt: "Resti di pietra sopra canyon e fiume", description: "Un luogo legato ad antiche rotte, memoria fortificata e vita lungo il fiume." },
   ],
   experiencesList: [
-    { title: "Passeggiata nel canyon", price: prices[0], duration: "2-3 ore", bestFor: "Prima visita", description: "Viste guidate verso il Vit, forme rocciose e nomi locali del paesaggio." },
-    { title: "Viaggio fotografico sul fiume", price: prices[1], duration: "Mezza giornata", bestFor: "Fotografi", description: "Luoghi scelti intorno al fiume, alle rocce e alle vecchie strade." },
-    { title: "Pesca sul Vit", price: prices[2], duration: "2 ore", bestFor: "Viaggio lento", description: "Ritmo locale calmo sull'acqua con consigli pratici." },
-    { title: "Weekend ad Aglen", price: prices[3], duration: "2 giorni", bestFor: "Coppie e amici", description: "Passeggiate, picnic, artigianato e storie serali del villaggio." },
-    { title: "Erbe e sapere del villaggio", price: prices[4], duration: "90 min", bestFor: "Viaggiatori curiosi", description: "Riconoscere erbe, usi tradizionali e raccolta responsabile." },
-    { title: "Giornata scoperta per scuole", price: prices[5], duration: "1 giorno", bestFor: "Gruppi scolastici", description: "Un percorso tra geografia, storia, leggende locali e natura." },
+    { title: "Passeggiata nel canyon", price: negotiablePrice.it, duration: "2-3 ore", bestFor: "Prima visita", description: "Viste guidate verso il Vit, forme rocciose e nomi locali del paesaggio." },
+    { title: "Viaggio fotografico sul fiume", price: negotiablePrice.it, duration: "Mezza giornata", bestFor: "Fotografi", description: "Luoghi scelti intorno al fiume, alle rocce e alle vecchie strade." },
+    { title: "Pesca sul Vit", price: negotiablePrice.it, duration: "2 ore", bestFor: "Viaggio lento", description: "Ritmo locale calmo sull'acqua con consigli pratici." },
+    { title: "Weekend ad Aglen", price: negotiablePrice.it, duration: "2 giorni", bestFor: "Coppie e amici", description: "Passeggiate, picnic, artigianato e storie serali del villaggio." },
+    { title: "Erbe e sapere del villaggio", price: negotiablePrice.it, duration: "90 min", bestFor: "Viaggiatori curiosi", description: "Riconoscere erbe, usi tradizionali e raccolta responsabile." },
+    { title: "Giornata scoperta per scuole", price: negotiablePrice.it, duration: "1 giorno", bestFor: "Gruppi scolastici", description: "Un percorso tra geografia, storia, leggende locali e natura." },
   ],
   galleryItems: [
     { title: "Canyon del Vit", image: images.hero, alt: "Canyon fluviale e villaggio all'alba", size: "wide" },

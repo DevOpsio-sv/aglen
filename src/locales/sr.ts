@@ -1,4 +1,4 @@
-import { accommodationSr, images, prices } from "./shared";
+import { accommodationSr, images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const sr: PageCopy = {
@@ -47,12 +47,12 @@ export const sr: PageCopy = {
     { title: "Калето", tag: "Археологија", image: images.kaleto, imageAlt: "Камени остаци изнад кањона", description: "Место повезано са старим путевима, утврђеним памћењем и животом крај реке." },
   ],
   experiencesList: [
-    { title: "Кањонска шетња", price: prices[0], duration: "2-3 сата", bestFor: "Прва посета", description: "Вођени погледи ка Виту, стеновитим формама и локалним именима." },
-    { title: "Речно фото путовање", price: prices[1], duration: "Пола дана", bestFor: "Фотографи", description: "Изабрана места око реке, стена, старих улица и меке светлости." },
-    { title: "Риболов крај Вита", price: prices[2], duration: "2 сата", bestFor: "Споро путовање", description: "Тих локални ритам крај воде са практичним саветима." },
-    { title: "Викенд бег у Аглен", price: prices[3], duration: "2 дана", bestFor: "Парови и пријатељи", description: "Шетње, пикник, занати и вечерња рута кроз сеоске приче." },
-    { title: "Биље и сеоско знање", price: prices[4], duration: "90 мин.", bestFor: "Радознали путници", description: "Препознавање биља, традиционална употреба и одговорно сакупљање." },
-    { title: "Школски дан откривања", price: prices[5], duration: "1 дан", bestFor: "Школске групе", description: "Теренска рута кроз географију, историју, легенде и природу." },
+    { title: "Кањонска шетња", price: negotiablePrice.sr, duration: "2-3 сата", bestFor: "Прва посета", description: "Вођени погледи ка Виту, стеновитим формама и локалним именима." },
+    { title: "Речно фото путовање", price: negotiablePrice.sr, duration: "Пола дана", bestFor: "Фотографи", description: "Изабрана места око реке, стена, старих улица и меке светлости." },
+    { title: "Риболов крај Вита", price: negotiablePrice.sr, duration: "2 сата", bestFor: "Споро путовање", description: "Тих локални ритам крај воде са практичним саветима." },
+    { title: "Викенд бег у Аглен", price: negotiablePrice.sr, duration: "2 дана", bestFor: "Парови и пријатељи", description: "Шетње, пикник, занати и вечерња рута кроз сеоске приче." },
+    { title: "Биље и сеоско знање", price: negotiablePrice.sr, duration: "90 мин.", bestFor: "Радознали путници", description: "Препознавање биља, традиционална употреба и одговорно сакупљање." },
+    { title: "Школски дан откривања", price: negotiablePrice.sr, duration: "1 дан", bestFor: "Школске групе", description: "Теренска рута кроз географију, историју, легенде и природу." },
   ],
   galleryItems: [
     { title: "Кањон Вита", image: images.hero, alt: "Речни кањон и село у зору", size: "wide" },

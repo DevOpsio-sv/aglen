@@ -26,7 +26,21 @@ export const images = {
   kaleto: "/assets/aglen-kaleto-ruins.png",
 };
 
-export const prices = ["€25", "€40", "€10", "€60", "€20", "€35"];
+export const negotiablePrice: Record<LanguageCode, string> = {
+  bg: "По договаряне",
+  en: "By arrangement",
+  de: "Nach Vereinbarung",
+  fr: "À convenir",
+  es: "A convenir",
+  it: "Da concordare",
+  ro: "La cerere",
+  tr: "Anlaşmaya göre",
+  el: "Κατόπιν συνεννόησης",
+  pl: "Do uzgodnienia",
+  ru: "По договорённости",
+  ja: "応相談",
+  sr: "По договору",
+};
 
 export const accommodationBg: Accommodation[] = [
   { title: "Стаи за гости", type: "Настаняване в село", description: "Тихо настаняване в местен дом, близо до природата и реката.", image: images.church },

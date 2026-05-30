@@ -1,6 +1,7 @@
 import type { LanguageCode } from "./locales/types";
 import { contentByLanguage } from "./content";
-import { allLanguageCodes, buildRoutePath, DEFAULT_LANGUAGE, type RouteId } from "./routes";
+import { isLandingPageId, landingPagesById } from "./landingPages";
+import { allLanguageCodes, buildRoutePath, DEFAULT_LANGUAGE, type CoreRouteId, type RouteId } from "./routes";
 
 // ---------------------------------------------------------------------------
 // IMPORTANT: Update SITE_URL to your production domain before deploying.
@@ -132,6 +133,7 @@ type SEOConfig = {
   keywords: string;
   canonicalUrl: string;
   alternates: Array<{ lang: string; href: string }>;
+  ogLocaleAlternates: string[];
 };
 
 export type ImageSitemapEntry = {
@@ -140,7 +142,7 @@ export type ImageSitemapEntry = {
   caption: string;
 };
 
-const routeKeywordSuffix: Record<RouteId, string> = {
+const routeKeywordSuffix: Record<CoreRouteId, string> = {
   home: "Aglen village, Ъглен tourism, Vit River Bulgaria",
   pillars: "Aglen tourism pillars, hidden Bulgaria village, cultural tourism Bulgaria",
   attractions: "Aglen attractions, Vit River landmarks, rock arch Aglen, Kaleto ruins",
@@ -176,8 +178,9 @@ function absoluteAssetUrl(path: string): string {
 export function getSEOConfig(lang: LanguageCode, routeId: RouteId = "home"): SEOConfig {
   const base = seoMeta[lang];
   const copy = contentByLanguage[lang];
+  const landingPage = isLandingPageId(routeId) ? landingPagesById.get(routeId) : undefined;
 
-  const routeText: Record<RouteId, { title: string; description: string }> = {
+  const coreRouteText: Record<CoreRouteId, { title: string; description: string }> = {
     home: { title: base.title, description: base.description },
     pillars: {
       title: `${copy.about.title} | ${copy.brand.name}`,
@@ -264,23 +267,57 @@ export function getSEOConfig(lang: LanguageCode, routeId: RouteId = "home"): SEO
       description: copy.contact.text,
     },
   };
+  const routeText = landingPage
+    ? {
+        title: landingPage.title,
+        description: landingPage.metaDescription,
+      }
+    : coreRouteText[routeId as CoreRouteId];
+  const keywordSuffix = landingPage
+    ? [
+        ...landingPage.keywords,
+        ...landingPage.secondaryKeywords,
+        ...landingPage.bulgarianKeywords,
+      ].join(", ")
+    : routeKeywordSuffix[routeId as CoreRouteId];
 
   return {
-    title: routeText[routeId].title,
-    description: routeText[routeId].description,
+    title: routeText.title,
+    description: routeText.description,
     locale: base.locale,
-    keywords: `${base.keywords}, ${routeKeywordSuffix[routeId]}`,
+    keywords: `${base.keywords}, ${keywordSuffix}`,
     canonicalUrl: absoluteRouteUrl(lang, routeId),
     alternates: [
       { lang: "x-default", href: absoluteRouteUrl(DEFAULT_LANGUAGE, routeId) },
       ...allLanguageCodes.map((code) => ({ lang: code, href: absoluteRouteUrl(code, routeId) })),
     ],
+    ogLocaleAlternates: allLanguageCodes
+      .filter((code) => code !== lang)
+      .map((code) => seoMeta[code].locale),
   };
 }
 
 export function getRouteImageEntries(lang: LanguageCode, routeId: RouteId = "home"): ImageSitemapEntry[] {
   const copy = contentByLanguage[lang];
-  const entriesByRoute: Record<RouteId, ImageSitemapEntry[]> = {
+  const landingPage = isLandingPageId(routeId) ? landingPagesById.get(routeId) : undefined;
+  if (landingPage) {
+    return [
+      {
+        loc: absoluteAssetUrl(landingPage.image),
+        title: landingPage.h1,
+        caption: landingPage.imageAlt,
+      },
+      {
+        loc: OG_IMAGE,
+        title: copy.hero.title,
+        caption: copy.hero.imageAlt,
+      },
+    ].filter((entry, index, entries) =>
+      entries.findIndex((candidate) => candidate.loc === entry.loc) === index,
+    );
+  }
+
+  const entriesByRoute: Record<CoreRouteId, ImageSitemapEntry[]> = {
     home: [
       {
         loc: OG_IMAGE,
@@ -408,7 +445,7 @@ export function getRouteImageEntries(lang: LanguageCode, routeId: RouteId = "hom
   };
 
   const seen = new Set<string>();
-  return entriesByRoute[routeId].filter((entry) => {
+  return entriesByRoute[routeId as CoreRouteId].filter((entry) => {
     if (seen.has(entry.loc)) {
       return false;
     }
@@ -458,6 +495,17 @@ function setHreflangLinks(lang: LanguageCode, routeId: RouteId): void {
   });
 }
 
+function setOpenGraphLocaleAlternates(locales: string[]): void {
+  document.querySelectorAll('meta[property="og:locale:alternate"]').forEach((n) => n.remove());
+
+  locales.forEach((locale) => {
+    const meta = document.createElement("meta");
+    meta.setAttribute("property", "og:locale:alternate");
+    meta.setAttribute("content", locale);
+    document.head.appendChild(meta);
+  });
+}
+
 function injectJSONLD(data: object): void {
   let el = document.querySelector<HTMLScriptElement>('script[type="application/ld+json"]#site-jsonld');
   if (!el) {
@@ -473,6 +521,7 @@ function buildPageSpecificSchemas(lang: LanguageCode, routeId: RouteId, routeUrl
   const copy = contentByLanguage[lang];
   const meta = getSEOConfig(lang, routeId);
   const routeImages = getRouteImageEntries(lang, routeId);
+  const landingPage = isLandingPageId(routeId) ? landingPagesById.get(routeId) : undefined;
   const imageObjects = routeImages.map((image, index) => ({
     "@type": "ImageObject",
     "@id": `${routeUrl}#image-${index + 1}`,
@@ -481,7 +530,7 @@ function buildPageSpecificSchemas(lang: LanguageCode, routeId: RouteId, routeUrl
     caption: image.caption,
   }));
 
-  const isGuidePage = [
+  const isGuidePage = Boolean(landingPage) || [
     "pillars", "attractions", "activities", "fishing", "hiking", "caves", "vitRiver",
     "food", "nearby", "geo", "stay", "travelGuide", "seasonal", "trust", "editorial",
     "localSeo", "crawlerPolicy",
@@ -536,9 +585,9 @@ function buildPageSpecificSchemas(lang: LanguageCode, routeId: RouteId, routeUrl
 
   if (isGuidePage) {
     schemas.push({
-      "@type": "Article",
+      "@type": landingPage?.schemaType ?? "Article",
       "@id": `${routeUrl}#article`,
-      headline: meta.title,
+      headline: landingPage?.h1 ?? meta.title,
       description: meta.description,
       image: routeImages.map((image) => image.loc),
       author: {
@@ -550,6 +599,21 @@ function buildPageSpecificSchemas(lang: LanguageCode, routeId: RouteId, routeUrl
       datePublished: "2026-05-30",
       dateModified: "2026-05-30",
       inLanguage: lang,
+    });
+  }
+
+  if (landingPage?.faqs.length) {
+    schemas.push({
+      "@type": "FAQPage",
+      "@id": `${routeUrl}#faq`,
+      mainEntity: landingPage.faqs.map((faq) => ({
+        "@type": "Question",
+        name: faq.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: faq.answer,
+        },
+      })),
     });
   }
 
@@ -748,11 +812,6 @@ export function buildJSONLD(lang: LanguageCode, routeId: RouteId = "home"): obje
         applicationCategory: "TravelApplication",
         applicationSubCategory: "Augmented Reality Tourism",
         operatingSystem: "Android",
-        offers: {
-          "@type": "Offer",
-          price: "0",
-          priceCurrency: "USD",
-        },
         screenshot: OG_IMAGE,
         featureList: [
           "Augmented Reality (AR) overlay at real locations",
@@ -789,8 +848,6 @@ export function buildJSONLD(lang: LanguageCode, routeId: RouteId = "home"): obje
           longitude: 24.221,
         },
         openingHours: "Mo-Su 08:00-20:00",
-        priceRange: "€10–€60",
-        currenciesAccepted: "EUR",
         paymentAccepted: "Cash",
         hasOfferCatalog: {
           "@type": "OfferCatalog",
@@ -803,8 +860,6 @@ export function buildJSONLD(lang: LanguageCode, routeId: RouteId = "home"): obje
                 name: "Canyon Walk",
                 description: "Guided canyon walk along the Vit River with local storytelling. 2-3 hours.",
               },
-              price: "25",
-              priceCurrency: "EUR",
             },
             {
               "@type": "Offer",
@@ -813,8 +868,6 @@ export function buildJSONLD(lang: LanguageCode, routeId: RouteId = "home"): obje
                 name: "River Photo Journey",
                 description: "Half-day photography tour along the Vit River and rock formations.",
               },
-              price: "40",
-              priceCurrency: "EUR",
             },
             {
               "@type": "Offer",
@@ -823,8 +876,6 @@ export function buildJSONLD(lang: LanguageCode, routeId: RouteId = "home"): obje
                 name: "Fishing by the Vit",
                 description: "2-hour guided fishing experience on the Vit River.",
               },
-              price: "10",
-              priceCurrency: "EUR",
             },
             {
               "@type": "Offer",
@@ -833,8 +884,6 @@ export function buildJSONLD(lang: LanguageCode, routeId: RouteId = "home"): obje
                 name: "Aglen Weekend Escape",
                 description: "2-day package: walks, picnic, crafts, and village storytelling.",
               },
-              price: "60",
-              priceCurrency: "EUR",
             },
             {
               "@type": "Offer",
@@ -843,8 +892,6 @@ export function buildJSONLD(lang: LanguageCode, routeId: RouteId = "home"): obje
                 name: "Herbs & Village Knowledge",
                 description: "90-minute herb walk with traditional knowledge and responsible gathering.",
               },
-              price: "20",
-              priceCurrency: "EUR",
             },
             {
               "@type": "Offer",
@@ -853,8 +900,6 @@ export function buildJSONLD(lang: LanguageCode, routeId: RouteId = "home"): obje
                 name: "School Discovery Day",
                 description: "Full-day educational field trip through geography, history, and nature.",
               },
-              price: "35",
-              priceCurrency: "EUR",
             },
           ],
         },
@@ -894,7 +939,7 @@ export function buildJSONLD(lang: LanguageCode, routeId: RouteId = "home"): obje
             name: "What activities are available in Aglen?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Aglen offers canyon walks (€25, 2–3 hours), river photography tours (€40, half day), fishing by the Vit (€10, 2 hours), weekend escape packages (€60, 2 days), herb and village knowledge walks (€20, 90 min), and school discovery day trips (€35). All include local guidance.",
+              text: "Aglen offers canyon walks (2–3 hours), river photography tours (half day), fishing by the Vit (2 hours), weekend escape packages (2 days), herb and village knowledge walks (90 min), and school discovery day trips. All include local guidance and prices are by arrangement.",
             },
           },
           {
@@ -966,8 +1011,32 @@ function list(items: string[]): string {
 export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "home"): string {
   const copy = contentByLanguage[lang];
   const meta = getSEOConfig(lang, routeId);
+  const landingPage = isLandingPageId(routeId) ? landingPagesById.get(routeId) : undefined;
 
-  const sections: Record<RouteId, string> = {
+  if (landingPage) {
+    return `
+      <main id="static-seo-content" lang="${lang}">
+        <article>
+          <p>${escapeHtml(landingPage.category)}</p>
+          <h1>${escapeHtml(landingPage.h1)}</h1>
+          ${paragraph(landingPage.intro)}
+          ${landingPage.sections.map((section) => `
+            <h2>${escapeHtml(section.heading)}</h2>
+            ${paragraph(section.body)}
+          `).join("")}
+          <h2>Frequently Asked Questions</h2>
+          ${landingPage.faqs.map((faq) => `
+            <h3>${escapeHtml(faq.question)}</h3>
+            ${paragraph(faq.answer)}
+          `).join("")}
+          <h2>Related Aglen Guides</h2>
+          ${list(landingPage.internalLinks.map((link) => link.label))}
+        </article>
+      </main>
+    `;
+  }
+
+  const sections: Record<CoreRouteId, string> = {
     home: `
       <p>${escapeHtml(copy.hero.meta)}</p>
       <h1>${escapeHtml(copy.hero.title)}</h1>
@@ -1093,7 +1162,7 @@ export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "hom
         <p>${escapeHtml(copy.brand.name)} - ${escapeHtml(copy.brand.subtitle)}</p>
         <h1>${escapeHtml(meta.title)}</h1>
         ${paragraph(meta.description)}
-        ${sections[routeId]}
+        ${sections[routeId as CoreRouteId]}
       </article>
     </main>
   `;
@@ -1129,6 +1198,7 @@ export function updateDocumentSEO(lang: LanguageCode, routeId: RouteId = "home")
   setMeta("og:image:alt", "Aglen village — Vit River canyon, limestone cliffs and forest, Bulgaria", true);
   setMeta("og:image:type", "image/png", true);
   setMeta("og:locale", meta.locale, true);
+  setOpenGraphLocaleAlternates(meta.ogLocaleAlternates);
 
   // Twitter / X Cards
   setMeta("twitter:card", "summary_large_image");

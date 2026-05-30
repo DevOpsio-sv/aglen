@@ -115,6 +115,12 @@ function renderAlternateLinks(alternates) {
     .join("\n");
 }
 
+function renderOpenGraphLocaleAlternates(locales) {
+  return locales
+    .map((locale) => `    <meta property="og:locale:alternate" content="${escapeAttribute(locale)}" />`)
+    .join("\n");
+}
+
 function renderPageHtml(routePath) {
   const { language, routeId } = routes.resolveRoute(routePath);
   const pageSeo = seo.getSEOConfig(language, routeId);
@@ -133,9 +139,10 @@ function renderPageHtml(routePath) {
   html = replaceOrInsert(html, /<meta name="twitter:description" content="[^"]*" \/>/, `<meta name="twitter:description" content="${escapeAttribute(pageSeo.description)}" />`);
 
   html = html.replace(/\n\s*<link rel="alternate" hreflang="[^"]+" href="[^"]+" \/>\n?/g, "\n");
+  html = html.replace(/\n\s*<meta property="og:locale:alternate" content="[^"]+" \/>\n?/g, "\n");
   html = html.replace(
     "</head>",
-    `${renderAlternateLinks(pageSeo.alternates)}\n    <script type="application/ld+json" id="site-jsonld">${JSON.stringify(seo.buildJSONLD(language, routeId))}</script>\n  </head>`,
+    `${renderAlternateLinks(pageSeo.alternates)}\n${renderOpenGraphLocaleAlternates(pageSeo.ogLocaleAlternates)}\n    <script type="application/ld+json" id="site-jsonld">${JSON.stringify(seo.buildJSONLD(language, routeId))}</script>\n  </head>`,
   );
   html = html.replace('<div id="root"></div>', `${seo.renderStaticFallback(language, routeId)}\n    <div id="root"></div>`);
 
@@ -243,6 +250,13 @@ fs.writeFileSync(
     "",
     "## Important Hubs",
     `- Attractions: ${seo.SITE_URL}/en/attractions/`,
+    `- Visit Aglen: ${seo.SITE_URL}/en/visit-aglen/`,
+    `- Things to do: ${seo.SITE_URL}/en/things-to-do-in-aglen/`,
+    `- Nature around Aglen: ${seo.SITE_URL}/en/nature-around-aglen/`,
+    `- Accommodation: ${seo.SITE_URL}/en/accommodation-near-aglen/`,
+    `- Weekend itinerary: ${seo.SITE_URL}/en/weekend-in-aglen/`,
+    `- Route map: ${seo.SITE_URL}/en/aglen-route-map/`,
+    `- Answer hub: ${seo.SITE_URL}/en/aglen-answer-hub/`,
     `- Fishing: ${seo.SITE_URL}/en/activities/fishing-vit-river/`,
     `- Hiking: ${seo.SITE_URL}/en/activities/hiking-canyon-routes/`,
     `- Caves: ${seo.SITE_URL}/en/attractions/caves-rock-forms/`,
