@@ -1,10 +1,16 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { contentByLanguage, languages, type Accommodation, type LanguageCode, type TimelineItem } from "./content";
 
 export function App() {
   const [language, setLanguage] = useState<LanguageCode>("bg");
   const [selectedTimeline, setSelectedTimeline] = useState<TimelineItem | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const copy = contentByLanguage[language];
+
+  useEffect(() => {
+    document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileMenuOpen]);
 
   const navItems = useMemo(
     () => [
@@ -27,7 +33,7 @@ export function App() {
             <small>{copy.brand.subtitle}</small>
           </span>
         </a>
-        <nav>
+        <nav className="desktop-nav">
           {navItems.map(([label, href]) => (
             <a key={href} href={href}>
               {label}
@@ -51,7 +57,57 @@ export function App() {
             ))}
           </select>
         </label>
+        <button
+          className="hamburger"
+          type="button"
+          aria-label="Меню"
+          aria-expanded={mobileMenuOpen}
+          aria-controls="mobile-nav"
+          onClick={() => setMobileMenuOpen(true)}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
       </header>
+
+      {mobileMenuOpen && (
+        <>
+          <div className="mobile-menu-backdrop" aria-hidden="true" onClick={() => setMobileMenuOpen(false)} />
+          <nav id="mobile-nav" className="mobile-menu" aria-label="Навигация">
+            <button
+              className="mobile-menu-close"
+              type="button"
+              aria-label={copy.ui.modalCloseAria}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              ×
+            </button>
+            {navItems.map(([label, href]) => (
+              <a key={href} href={href} onClick={() => setMobileMenuOpen(false)}>
+                {label}
+              </a>
+            ))}
+            <div className="mobile-language">
+              <select
+                value={language}
+                onChange={(event) => {
+                  setSelectedTimeline(null);
+                  setLanguage(event.target.value as LanguageCode);
+                  setMobileMenuOpen(false);
+                }}
+                aria-label={copy.ui.languageSelectAria}
+              >
+                {languages.map((item) => (
+                  <option key={item.code} value={item.code}>
+                    {item.short} · {item.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </nav>
+        </>
+      )}
 
       <section id="home" className="hero">
         <img className="hero-image" src="/assets/aglen-hero-river-canyon.png" alt={copy.hero.imageAlt} />
