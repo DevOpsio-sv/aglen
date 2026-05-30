@@ -1,6 +1,5 @@
 name = "aglen"
 compatibility_date = "2026-05-29"
-pages_build_output_dir = "dist"
 
-[vars]
-SITE_NAME = "Aglen Tourism"
+[assets]
+directory = "./dist"
