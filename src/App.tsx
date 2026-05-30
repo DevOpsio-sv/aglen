@@ -140,14 +140,14 @@ export function App() {
   const guideLinks = useMemo(
     () => [
       { label: copy.landmarks.title, text: copy.landmarks.text, routeId: "attractions" },
-      { label: "Vit River guide", text: "River pools, canyon light, fishing, routes, and nature etiquette.", routeId: "vitRiver" },
-      { label: "Fishing by the Vit", text: copy.experiencesList[2]?.description ?? copy.experiences.text, routeId: "fishing" },
-      { label: "Hiking routes", text: "Short canyon walks, village routes, rock forms, and viewpoint planning.", routeId: "hiking" },
-      { label: "Caves and rock forms", text: copy.mysteries[1]?.description ?? copy.legends.text, routeId: "caves" },
+      { label: copy.guides.vitRiver.label, text: copy.guides.vitRiver.text, routeId: "vitRiver" },
+      { label: copy.guides.fishing.label, text: copy.guides.fishing.text, routeId: "fishing" },
+      { label: copy.guides.hiking.label, text: copy.guides.hiking.text, routeId: "hiking" },
+      { label: copy.guides.caves.label, text: copy.guides.caves.text, routeId: "caves" },
       { label: copy.stay.title, text: copy.stay.text, routeId: "stay" },
-      { label: "Food and local products", text: "Picnic planning, local products, host questions, and low-impact meals.", routeId: "food" },
-      { label: "Nearby destinations", text: "Connect Aglen with Lukovit, Lovech Province, cave landscapes, and river routes.", routeId: "nearby" },
-      { label: "Seasonal guide", text: "Monthly updates for routes, photography, weather, and quiet weekend planning.", routeId: "seasonal" },
+      { label: copy.guides.food.label, text: copy.guides.food.text, routeId: "food" },
+      { label: copy.guides.nearby.label, text: copy.guides.nearby.text, routeId: "nearby" },
+      { label: copy.guides.seasonal.label, text: copy.guides.seasonal.text, routeId: "seasonal" },
     ] satisfies Array<{ label: string; text: string; routeId: RouteId }>,
     [copy],
   );
@@ -514,13 +514,9 @@ export function App() {
 
       <section id="travel-guide" className="content-hub section-shell">
         <div className="section-heading reveal">
-          <p className="eyebrow">Travel guide hub</p>
-          <h2>Plan Aglen by interest, route, and nearby place</h2>
-          <p>
-            Dedicated guide pages connect the main destination story with visitor intent:
-            attractions, hiking, fishing, caves, the Vit River, accommodation, food,
-            seasonal updates, and nearby destinations.
-          </p>
+          <p className="eyebrow">{copy.hub.eyebrow}</p>
+          <h2>{copy.hub.title}</h2>
+          <p>{copy.hub.text}</p>
         </div>
         <div className="hub-grid">
           {[...guideLinks, ...landingPageLinks].map((link) => (

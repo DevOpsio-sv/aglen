@@ -144,6 +144,20 @@ export type PageCopy = {
     noteTwo: string;
     cta: string;
   };
+  hub: {
+    eyebrow: string;
+    title: string;
+    text: string;
+  };
+  guides: {
+    vitRiver: { label: string; text: string };
+    fishing: { label: string; text: string };
+    hiking: { label: string; text: string };
+    caves: { label: string; text: string };
+    food: { label: string; text: string };
+    nearby: { label: string; text: string };
+    seasonal: { label: string; text: string };
+  };
   highlights: Highlight[];
   timeline: TimelineItem[];
   mysteries: Mystery[];

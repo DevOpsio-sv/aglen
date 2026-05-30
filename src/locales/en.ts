@@ -47,6 +47,20 @@ export const en: PageCopy = {
     note: "Available for Android. iOS version coming soon.",
   },
   contact: { eyebrow: "Plan your visit", title: "Spend a weekend where the Vit keeps its secrets.", text: "Ask for routes, guided walks, photo spots, local stories, and practical visitor information.", notesTitle: "Visitor notes", noteOne: "Best for nature walks, photography, river viewpoints, caves, and local memory.", noteTwo: "Bring walking shoes, water, sun protection, and respect for private/local spaces.", cta: "Send Inquiry" },
+  hub: {
+    eyebrow: "Travel guide hub",
+    title: "Plan Aglen by interest, route, and nearby place",
+    text: "Dedicated guide pages connect the main destination story with visitor intent: attractions, hiking, fishing, caves, the Vit River, accommodation, food, seasonal updates, and nearby destinations.",
+  },
+  guides: {
+    vitRiver: { label: "Vit River guide", text: "River pools, canyon light, fishing, routes, and nature etiquette." },
+    fishing: { label: "Fishing by the Vit", text: "A quiet local rhythm by the water with practical guidance and care for the river." },
+    hiking: { label: "Hiking routes", text: "Short canyon walks, village routes, rock forms, and viewpoint planning." },
+    caves: { label: "Caves and rock forms", text: "The caves around the area belong to the older memory of the land: geological, human, and symbolic." },
+    food: { label: "Food and local products", text: "Picnic planning, local products, host questions, and low-impact meals." },
+    nearby: { label: "Nearby destinations", text: "Connect Aglen with Lukovit, Lovech Province, cave landscapes, and river routes." },
+    seasonal: { label: "Seasonal guide", text: "Monthly updates for routes, photography, weather, and quiet weekend planning." },
+  },
   highlights: [
     { label: "Hidden Bulgaria", value: "A quiet village on the Vit", detail: "For visitors who prefer discovery, river paths, cliffs, caves, and silence over crowded routes." },
     { label: "Nature", value: "River, limestone, forest", detail: "The landscape is shaped by the Vit River, natural rock forms, canyon views, and cave terrain." },

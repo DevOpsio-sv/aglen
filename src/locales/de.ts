@@ -21,6 +21,20 @@ export const de: PageCopy = {
   ar: { eyebrow: "AR-Abenteuer", title: "Sieh die Welt des Wächters", text: "Mit der Kamera deines Telefons erweckst du die verborgene Welt von Prohodna zum Leben. Die AR-Ebene enthüllt Geschichten, Zeichen und Figuren, die mit bloßem Auge unsichtbar sind, aber nur an den Orten, an denen sie geschehen sind.", steps: ["Lade Hidden Bulgaria Quests aus Google Play herunter", "Gehe zu einem markierten AR-Ort rund um Aglen", "Richte die Kamera aus und sieh die verborgene Welt"], cta: "Herunterladen und starten" },
   app: { eyebrow: "App herunterladen", title: "Hidden Bulgaria Quests", text: "Mobile App für Android. Finde die Missionen rund um Aglen und brich zu einem echten Abenteuer auf.", badge: "Bei Google Play herunterladen", note: "Verfügbar für Android. iOS-Version demnächst." },
   contact: { eyebrow: "Besuch planen", title: "Verbringe ein Wochenende dort, wo der Vit seine Geheimnisse bewahrt.", text: "Frage nach Routen, geführten Spaziergängen, Fotopunkten, lokalen Geschichten und praktischen Besucherinfos.", notesTitle: "Hinweise für Besucher", noteOne: "Ideal für Naturspaziergänge, Fotografie, Flussblicke, Höhlen und lokale Erinnerung.", noteTwo: "Bring bequeme Schuhe, Wasser, Sonnenschutz und Respekt für lokale Orte mit.", cta: "Anfrage senden" },
+  hub: {
+    eyebrow: "Reiseführer-Hub",
+    title: "Aglen nach Interesse, Route und nahegelegenen Orten planen",
+    text: "Gewidmete Führerseiten verbinden die Hauptgeschichte des Reiseziels mit den Besucherabsichten: Sehenswürdigkeiten, Wandern, Angeln, Höhlen, der Vit-Fluss, Unterkunft, Essen, saisonale Updates und nahegelegene Ziele.",
+  },
+  guides: {
+    vitRiver: { label: "Vit-Fluss-Führer", text: "Flussbecken, Canyonlicht, Angeln, Routen und Natur-Etikette." },
+    fishing: { label: "Angeln am Vit", text: "Ein ruhiger lokaler Rhythmus am Wasser mit praktischer Anleitung und Fürsorge für den Fluss." },
+    hiking: { label: "Wanderrouten", text: "Kurze Canyonwanderungen, Dorfrouten, Felsformen und Aussichtspunktplanung." },
+    caves: { label: "Höhlen und Felsformen", text: "Die Höhlen der Region gehören zum älteren Gedächtnis der Erde: geologisch, menschlich und symbolisch." },
+    food: { label: "Essen und lokale Produkte", text: "Picknickplanung, lokale Produkte, Fragen an den Gastgeber und umweltfreundliche Mahlzeiten." },
+    nearby: { label: "Nahegelegene Ziele", text: "Aglen mit Lukovit, Provinz Lovech, Höhlenlandschaften und Flussrouten verbinden." },
+    seasonal: { label: "Saisonführer", text: "Monatliche Updates zu Routen, Fotografie, Wetter und ruhiger Wochenendplanung." },
+  },
   highlights: [
     { label: "Verborgenes Bulgarien", value: "Ein stilles Dorf am Vit", detail: "Für Besucher, die Entdeckung, Flusswege, Felsen, Höhlen und Ruhe suchen." },
     { label: "Natur", value: "Fluss, Kalkstein, Wald", detail: "Die Landschaft wird vom Vit, natürlichen Felsformen, Canyonblicken und Höhlengelände geprägt." },

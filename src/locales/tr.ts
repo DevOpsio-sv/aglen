@@ -21,6 +21,20 @@ export const tr: PageCopy = {
   ar: { eyebrow: "AR macerası", title: "Koruyucu'nun dünyasına bak", text: "Telefonunuzun kamerasıyla Prohodna'nın gizli dünyasını canlandırın. AR katmanı çıplak gözle görünmeyen hikayeleri, işaretleri ve karakterleri, yalnızca gerçekleştiği yerlerde gösterir.", steps: ["Hidden Bulgaria Quests'i Google Play'den indirin", "Aglen çevresindeki işaretli bir AR yerine gidin", "Kamerayı doğrultun ve gizli dünyayı görün"], cta: "İndir ve başla" },
   app: { eyebrow: "Uygulamayı indir", title: "Hidden Bulgaria Quests", text: "Android için mobil uygulama. Aglen çevresindeki görevleri bulun ve gerçek bir maceraya çıkın.", badge: "Google Play'de mevcut", note: "Android için mevcut. iOS sürümü yakında." },
   contact: { eyebrow: "Ziyareti planla", title: "Vit'in sırlarını sakladığı yerde bir hafta sonu geçir.", text: "Rotalar, rehberli yürüyüşler, fotoğraf noktaları, yerel hikayeler ve pratik bilgiler için yazın.", notesTitle: "Ziyaretçi notları", noteOne: "Doğa yürüyüşleri, fotoğraf, nehir manzaraları, mağaralar ve yerel hafıza için uygundur.", noteTwo: "Rahat ayakkabı, su, güneş koruması ve yerel alanlara saygı getirin.", cta: "Talep gönder" },
+  hub: {
+    eyebrow: "Seyahat rehberi merkezi",
+    title: "Aglen'i ilgi alanı, güzergah ve yakın yere göre planla",
+    text: "Özel rehber sayfaları, destinasyonun ana hikayesini ziyaretçi niyetiyle bağlar: turistik yerler, yürüyüş, balıkçılık, mağaralar, Vit Nehri, konaklama, yiyecek, mevsimsel güncellemeler ve yakın destinasyonlar.",
+  },
+  guides: {
+    vitRiver: { label: "Vit Nehri rehberi", text: "Nehir havuzları, kanyon ışığı, balıkçılık, güzergahlar ve doğa görgü kuralları." },
+    fishing: { label: "Vit'te balıkçılık", text: "Pratik rehberlik ve nehre özen ile su kenarında sakin bir yerel ritim." },
+    hiking: { label: "Yürüyüş güzergahları", text: "Kısa kanyon yürüyüşleri, köy güzergahları, kaya oluşumları ve seyir yeri planlaması." },
+    caves: { label: "Mağaralar ve kaya oluşumları", text: "Bölgedeki mağaralar, jeolojik, insani ve sembolik olarak dünyanın daha eski belleğine aittir." },
+    food: { label: "Yiyecek ve yerel ürünler", text: "Piknik planlaması, yerel ürünler, ev sahibi soruları ve düşük etkili öğünler." },
+    nearby: { label: "Yakın destinasyonlar", text: "Aglen'i Lukovit, Lovech İli, mağara manzaraları ve nehir güzergahlarıyla bağla." },
+    seasonal: { label: "Mevsimsel rehber", text: "Güzergahlar, fotoğrafçılık, hava durumu ve sakin hafta sonu planlaması için aylık güncellemeler." },
+  },
   highlights: [
     { label: "Gizli Bulgaristan", value: "Vit kıyısında sakin köy", detail: "Keşif, nehir yolları, kayalar, mağaralar ve sessizlik isteyen ziyaretçiler için." },
     { label: "Doğa", value: "Nehir, kireçtaşı, orman", detail: "Manzara Vit Nehri, doğal kaya şekilleri, kanyon görünümleri ve mağara arazisiyle oluşur." },

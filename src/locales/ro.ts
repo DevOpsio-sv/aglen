@@ -21,6 +21,20 @@ export const ro: PageCopy = {
   ar: { eyebrow: "Aventură AR", title: "Privește lumea Gardianului", text: "Cu camera telefonului dai viață lumii ascunse din Prohodna. Stratul AR dezvăluie povești, semne și personaje invizibile cu ochiul liber, dar numai în locurile unde s-au petrecut.", steps: ["Descarcă Hidden Bulgaria Quests din Google Play", "Mergi la un loc AR marcat în jurul Aglen", "Îndreaptă camera și vezi lumea ascunsă"], cta: "Descarcă și începe" },
   app: { eyebrow: "Descarcă aplicația", title: "Hidden Bulgaria Quests", text: "Aplicație mobilă pentru Android. Găsește questurile din jurul Aglen și pornește într-o aventură reală.", badge: "Disponibil pe Google Play", note: "Disponibil pentru Android. Versiunea iOS va veni curând." },
   contact: { eyebrow: "Planifică vizita", title: "Petrece un weekend acolo unde Vit își păstrează secretele.", text: "Întreabă despre trasee, plimbări ghidate, locuri foto, povești locale și informații practice.", notesTitle: "Note pentru vizitatori", noteOne: "Potrivit pentru plimbări în natură, fotografie, priveliști spre râu, peșteri și memorie locală.", noteTwo: "Ia încălțăminte comodă, apă, protecție solară și respect pentru locurile locale.", cta: "Trimite solicitare" },
+  hub: {
+    eyebrow: "Hub ghid de călătorie",
+    title: "Planifică Aglen după interes, rută și loc apropiat",
+    text: "Paginile de ghid dedicate conectează povestea principală a destinației cu intenția vizitatorului: atracții, drumeții, pescuit, peșteri, râul Vit, cazare, mâncare, actualizări sezoniere și destinații apropiate.",
+  },
+  guides: {
+    vitRiver: { label: "Ghid râul Vit", text: "Bazine de râu, lumina canionului, pescuit, rute și etică în natură." },
+    fishing: { label: "Pescuit pe Vit", text: "Un ritm local liniștit lângă apă cu îndrumări practice și grijă față de râu." },
+    hiking: { label: "Rute de drumeție", text: "Plimbări scurte prin canion, rute prin sat, formațiuni stâncoase și planificarea punctelor de belvedere." },
+    caves: { label: "Peșteri și formațiuni stâncoase", text: "Peșterile din zonă aparțin memoriei mai vechi a pământului: geologică, umană și simbolică." },
+    food: { label: "Mâncare și produse locale", text: "Planificarea picnicului, produse locale, întrebări pentru gazdă și mese cu impact redus." },
+    nearby: { label: "Destinații apropiate", text: "Conectează Aglen cu Lukovit, județul Lovech, peisaje de peșteri și rute fluviale." },
+    seasonal: { label: "Ghid sezonier", text: "Actualizări lunare pentru rute, fotografie, vreme și planificarea unui weekend liniștit." },
+  },
   highlights: [
     { label: "Bulgaria ascunsă", value: "Un sat liniștit pe Vit", detail: "Pentru vizitatori care preferă descoperirea, potecile de râu, stâncile, peșterile și liniștea." },
     { label: "Natură", value: "Râu, calcar, pădure", detail: "Peisajul este modelat de râul Vit, forme de stâncă, vederi de canion și teren de peșteri." },

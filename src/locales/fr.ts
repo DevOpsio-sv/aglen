@@ -27,6 +27,20 @@ export const fr: PageCopy = {
   ar: { eyebrow: "Aventure AR", title: "Regardez le monde du Gardien", text: "Avec la caméra de votre téléphone, donnez vie au monde caché de Prohodna. La couche AR révèle des histoires, des signes et des personnages invisibles à l'oeil nu, mais seulement aux endroits où ils se sont produits.", steps: ["Téléchargez Hidden Bulgaria Quests sur Google Play", "Allez vers un lieu AR marqué autour d'Aglen", "Pointez la caméra et voyez le monde caché"], cta: "Télécharger et commencer" },
   app: { eyebrow: "Télécharger l'app", title: "Hidden Bulgaria Quests", text: "Application mobile pour Android. Trouvez les missions autour d'Aglen et partez pour une vraie aventure.", badge: "Télécharger sur Google Play", note: "Disponible sur Android. Version iOS bientôt." },
   contact: { eyebrow: "Planifier la visite", title: "Passez un week-end là où la Vit garde ses secrets.", text: "Demandez des itinéraires, promenades guidées, lieux photo, histoires locales et informations pratiques.", notesTitle: "Notes visiteurs", noteOne: "Idéal pour promenades nature, photographie, vues de rivière, grottes et mémoire locale.", noteTwo: "Prévoyez chaussures confortables, eau, protection solaire et respect des lieux.", cta: "Envoyer une demande" },
+  hub: {
+    eyebrow: "Hub du guide de voyage",
+    title: "Planifier Aglen par intérêt, itinéraire et lieu proche",
+    text: "Les pages de guides dédiées relient l'histoire principale de la destination avec l'intention du visiteur : attractions, randonnée, pêche, grottes, la rivière Vit, hébergement, nourriture, mises à jour saisonnières et destinations proches.",
+  },
+  guides: {
+    vitRiver: { label: "Guide de la rivière Vit", text: "Bassins fluviaux, lumière de canyon, pêche, itinéraires et étiquette naturelle." },
+    fishing: { label: "Pêche sur le Vit", text: "Un rythme local tranquille au bord de l'eau avec des conseils pratiques et le respect de la rivière." },
+    hiking: { label: "Itinéraires de randonnée", text: "Courtes promenades en canyon, itinéraires villageois, formations rocheuses et planification de points de vue." },
+    caves: { label: "Grottes et formations rocheuses", text: "Les grottes de la région appartiennent à la mémoire plus ancienne de la terre : géologique, humaine et symbolique." },
+    food: { label: "Nourriture et produits locaux", text: "Planification de pique-nique, produits locaux, questions aux hôtes et repas à faible impact." },
+    nearby: { label: "Destinations proches", text: "Relier Aglen avec Lukovit, la province de Lovech, les paysages de grottes et les itinéraires fluviaux." },
+    seasonal: { label: "Guide saisonnier", text: "Mises à jour mensuelles pour les itinéraires, la photographie, la météo et la planification de week-ends tranquilles." },
+  },
   highlights: [
     { label: "Bulgarie cachée", value: "Un village calme sur la Vit", detail: "Pour les visiteurs qui préfèrent découverte, sentiers de rivière, rochers, grottes et silence." },
     { label: "Nature", value: "Rivière, calcaire, forêt", detail: "Le paysage est façonné par la Vit, les formes rocheuses naturelles, les vues de canyon et le relief karstique." },

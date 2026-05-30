@@ -21,6 +21,20 @@ export const pl: PageCopy = {
   ar: { eyebrow: "Przygoda AR", title: "Spójrz na świat Strażnika", text: "Kamerą telefonu ożyw ukryty świat Prohodnej. Warstwa AR odsłania historie, znaki i postacie niewidoczne gołym okiem, ale tylko w miejscach, gdzie się wydarzyły.", steps: ["Pobierz Hidden Bulgaria Quests z Google Play", "Idź do oznaczonego miejsca AR wokół Aglen", "Skieruj kamerę i zobacz ukryty świat"], cta: "Pobierz i zacznij" },
   app: { eyebrow: "Pobierz aplikację", title: "Hidden Bulgaria Quests", text: "Aplikacja mobilna na Androida. Znajdź questy wokół Aglen i rusz w prawdziwą przygodę.", badge: "Dostępne w Google Play", note: "Dostępne na Androida. Wersja iOS wkrótce." },
   contact: { eyebrow: "Zaplanuj wizytę", title: "Spędź weekend tam, gdzie Vit strzeże swoich sekretów.", text: "Zapytaj o trasy, spacery z przewodnikiem, miejsca do zdjęć, lokalne historie i praktyczne informacje.", notesTitle: "Informacje dla odwiedzających", noteOne: "Dobre na spacery przyrodnicze, fotografię, widoki rzeki, jaskinie i lokalną pamięć.", noteTwo: "Weź wygodne buty, wodę, ochronę przeciwsłoneczną i szacunek dla miejsc.", cta: "Wyślij zapytanie" },
+  hub: {
+    eyebrow: "Centrum przewodnika turystycznego",
+    title: "Planuj Aglen według zainteresowań, trasy i pobliskich miejsc",
+    text: "Dedykowane strony przewodnika łączą główną historię destynacji z intencją odwiedzającego: atrakcje, wędrówki, wędkarstwo, jaskinie, rzeka Vit, zakwaterowanie, jedzenie, aktualizacje sezonowe i pobliskie destynacje.",
+  },
+  guides: {
+    vitRiver: { label: "Przewodnik po rzece Vit", text: "Baseny rzeczne, światło kanionu, wędkarstwo, trasy i etykieta w naturze." },
+    fishing: { label: "Wędkarstwo nad Vit", text: "Spokojny lokalny rytm przy wodzie z praktycznymi wskazówkami i troską o rzekę." },
+    hiking: { label: "Trasy piesze", text: "Krótkie spacery po kanionie, trasy wiejskie, formacje skalne i planowanie punktów widokowych." },
+    caves: { label: "Jaskinie i formacje skalne", text: "Jaskinie w okolicy należą do starszej pamięci ziemi: geologicznej, ludzkiej i symbolicznej." },
+    food: { label: "Jedzenie i lokalne produkty", text: "Planowanie pikniku, lokalne produkty, pytania do gospodarza i posiłki o niskim wpływie." },
+    nearby: { label: "Pobliskie destynacje", text: "Połącz Aglen z Lukovitem, prowincją Lovech, krajobrazami jaskiń i trasami rzecznymi." },
+    seasonal: { label: "Przewodnik sezonowy", text: "Miesięczne aktualizacje tras, fotografii, pogody i planowania spokojnego weekendu." },
+  },
   highlights: [
     { label: "Ukryta Bułgaria", value: "Cicha wieś nad Vit", detail: "Dla odwiedzających, którzy wybierają odkrywanie, rzeczne ścieżki, skały, jaskinie i ciszę." },
     { label: "Natura", value: "Rzeka, wapień, las", detail: "Krajobraz tworzą rzeka Vit, naturalne formy skalne, widoki kanionu i teren jaskiniowy." },
