@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "i18n:audit": "node scripts/i18n-audit.mjs",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "deploy:cloudflare": "npm run build && wrangler pages deploy dist --project-name aglen-tourism-site"
