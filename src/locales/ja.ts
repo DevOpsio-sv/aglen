@@ -36,13 +36,13 @@ export const ja: PageCopy = {
   mysteries: [
     { title: "川が視界から消える場所", tag: "隠れた道", image: images.hero, description: "ヴィト川は一度にすべてを見せません。曲がり角、影、崖が、散策を探す時間に変えます。" },
     { title: "洞窟の入口", tag: "石と静けさ", image: images.cave, description: "洞窟は土地の古い記憶に属しています。地質、人の営み、象徴が重なる場所です。" },
-    { title: "地元名を持つ岩", tag: "民話の風景", image: images.arch, description: "Дупката や Слончето のような名前が、風景を個人的なものにします。目印であり、同時に物語でもあります。" },
+    { title: "地元名を持つ岩", tag: "民話の風景", image: images.arch, description: "岩穴や象の岩のような名前が、風景を個人的なものにします。目印であり、同時に物語でもあります。" },
   ],
   placesList: [
-    { title: "Дупката", tag: "岩のアーチ", image: images.arch, imageAlt: "アグレン近くの川の上にある石灰岩の岩のアーチ", description: "ヴィト川の上にある自然の石のアーチ。ゆっくり歩き、静かに撮影し、隠れたルートへ入る感覚を味わえます。" },
-    { title: "Слончето", tag: "岩の形", image: images.hero, imageAlt: "アグレン近くの峡谷、川、石灰岩の崖", description: "川辺の遊び心ある岩の形が、普通の散策を小さな発見に変えます。" },
-    { title: "Червена стена", tag: "峡谷の眺め", image: images.aerial, imageAlt: "川と村を含む峡谷の空撮風景", description: "村の近くで、石灰岩、森、川の光が劇的に出会う場所です。" },
-    { title: "Рачков вир", tag: "川の淵", image: images.pool, imageAlt: "石灰岩の岸と森に囲まれた静かな川の淵", description: "水辺で休み、ピクニックし、ヴィト川のそばでゆっくりしたリズムを感じる自然の地点です。" },
+    { title: "岩穴", tag: "岩のアーチ", image: images.arch, imageAlt: "アグレン近くの川の上にある石灰岩の岩のアーチ", description: "ヴィト川の上にある自然の石のアーチ。ゆっくり歩き、静かに撮影し、隠れたルートへ入る感覚を味わえます。" },
+    { title: "象の岩", tag: "岩の形", image: images.hero, imageAlt: "アグレン近くの峡谷、川、石灰岩の崖", description: "川辺の遊び心ある岩の形が、普通の散策を小さな発見に変えます。" },
+    { title: "赤い壁", tag: "峡谷の眺め", image: images.aerial, imageAlt: "川と村を含む峡谷の空撮風景", description: "村の近くで、石灰岩、森、川の光が劇的に出会う場所です。" },
+    { title: "ザリガニの淵", tag: "川の淵", image: images.pool, imageAlt: "石灰岩の岸と森に囲まれた静かな川の淵", description: "水辺で休み、ピクニックし、ヴィト川のそばでゆっくりしたリズムを感じる自然の地点です。" },
     { title: "聖大天使ミカエル教会", tag: "村の記憶", image: images.church, imageAlt: "村の教会、石の道、緑の谷", description: "1888年に建てられた教会は、アグレンの物語にある人々の層を守っています。" },
     { title: "Калето", tag: "考古学", image: images.kaleto, imageAlt: "峡谷と川を見下ろす丘の上の石の遺構", description: "古いルート、防御の記憶、川辺で続いてきた暮らしと結びつく場所です。" },
   ],
@@ -63,7 +63,7 @@ export const ja: PageCopy = {
   mapStops: [
     { title: "村の中心", detail: "アグレンの人の尺度から始めます。道、教会、地元の記憶、方向感覚を感じる場所です。" },
     { title: "ヴィト川沿いの道", detail: "水をたどり、静かな眺め、曲がり角、写真に向く木陰へ進みます。" },
-    { title: "Дупката", detail: "自然の石の入口であり、この目的地の強い視覚的シンボルの一つです。" },
+    { title: "岩穴", detail: "自然の石の入口であり、この目的地の強い視覚的シンボルの一つです。" },
     { title: "洞窟と岩の形", detail: "より古い風景の層を、注意深く、地元の案内と地形への敬意をもって見つけます。" },
   ],
   accommodationList: accommodationEn,

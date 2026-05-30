@@ -62,13 +62,13 @@ export const en: PageCopy = {
   mysteries: [
     { title: "Where the River Disappears from View", tag: "Hidden routes", image: images.hero, description: "The Vit does not reveal everything at once. Bends, shadows, and cliff lines turn a short walk into a search." },
     { title: "The Cave Thresholds", tag: "Stone and silence", image: images.cave, description: "The caves belong to the older memory of the land: geological, human, and symbolic without exaggeration." },
-    { title: "Rock Shapes with Local Names", tag: "Folklore landscape", image: images.arch, description: "Names like Дупката and Слончето make the landscape feel personal: landmarks and stories at once." },
+    { title: "Rock Shapes with Local Names", tag: "Folklore landscape", image: images.arch, description: "Names like The Hole and The Elephant make the landscape feel personal: landmarks and stories at once." },
   ],
   placesList: [
-    { title: "Дупката", tag: "Rock arch", image: images.arch, imageAlt: "Limestone rock arch above the river near Aglen", description: "A natural stone arch above the Vit, made for slow walks, quiet photographs, and the feeling of entering a hidden route." },
-    { title: "Слончето", tag: "Rock figure", image: images.hero, imageAlt: "Canyon, river, and limestone cliffs near Aglen", description: "A playful riverside rock shape that turns a simple walk into a small act of discovery." },
-    { title: "Червена стена", tag: "Canyon view", image: images.aerial, imageAlt: "Aerial canyon landscape with river and village", description: "A dramatic meeting of limestone, forest, and river light close to the village." },
-    { title: "Рачков вир", tag: "River pool", image: images.pool, imageAlt: "Quiet river pool with limestone bank and forest", description: "A calm natural point for a pause by the water, a picnic, and a slower rhythm beside the Vit." },
+    { title: "The Hole", tag: "Rock arch", image: images.arch, imageAlt: "Limestone rock arch above the river near Aglen", description: "A natural stone arch above the Vit, made for slow walks, quiet photographs, and the feeling of entering a hidden route." },
+    { title: "The Elephant", tag: "Rock figure", image: images.hero, imageAlt: "Canyon, river, and limestone cliffs near Aglen", description: "A playful riverside rock shape that turns a simple walk into a small act of discovery." },
+    { title: "Red Wall", tag: "Canyon view", image: images.aerial, imageAlt: "Aerial canyon landscape with river and village", description: "A dramatic meeting of limestone, forest, and river light close to the village." },
+    { title: "Crayfish Pool", tag: "River pool", image: images.pool, imageAlt: "Quiet river pool with limestone bank and forest", description: "A calm natural point for a pause by the water, a picnic, and a slower rhythm beside the Vit." },
     { title: "St. Archangel Michael", tag: "Village memory", image: images.church, imageAlt: "Village church, stone lane, and green valley", description: "The village church, built in 1888, keeps the human layer of Aglen's story close to the landscape." },
     { title: "Калето", tag: "Archaeology", image: images.kaleto, imageAlt: "Stone ruins on a hilltop above canyon and river", description: "A place connected with older routes, fortified memory, and the long continuity of life around the river." },
   ],

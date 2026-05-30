@@ -36,13 +36,13 @@ export const pl: PageCopy = {
   mysteries: [
     { title: "Gdzie rzeka znika z widoku", tag: "Ukryte ścieżki", image: images.hero, description: "Vit nie pokazuje wszystkiego od razu. Zakręty, cienie i skały zmieniają spacer w poszukiwanie." },
     { title: "Progi jaskiń", tag: "Kamień i cisza", image: images.cave, description: "Jaskinie niosą starszą pamięć ziemi: geologiczną, ludzką i symboliczną." },
-    { title: "Skały z lokalnymi nazwami", tag: "Krajobraz folkloru", image: images.arch, description: "Nazwy jak Дупката i Слончето sprawiają, że krajobraz staje się osobisty." },
+    { title: "Skały z lokalnymi nazwami", tag: "Krajobraz folkloru", image: images.arch, description: "Nazwy jak Dziura i Słonik sprawiają, że krajobraz staje się osobisty." },
   ],
   placesList: [
-    { title: "Дупката", tag: "Skalny łuk", image: images.arch, imageAlt: "Wapienny łuk nad rzeką koło Aglen", description: "Naturalny kamienny łuk nad Vit, idealny na spokojny spacer i zdjęcia." },
-    { title: "Слончето", tag: "Forma skalna", image: images.hero, imageAlt: "Kanion, rzeka i wapienne skały koło Aglen", description: "Zabawna forma nad rzeką, która zmienia spacer w małe odkrycie." },
-    { title: "Червена стена", tag: "Widok kanionu", image: images.aerial, imageAlt: "Krajobraz kanionu z rzeką i wsią", description: "Dramatyczne spotkanie wapienia, lasu i światła rzeki." },
-    { title: "Рачков вир", tag: "Rzeczne rozlewisko", image: images.pool, imageAlt: "Spokojne rozlewisko z wapiennym brzegiem", description: "Naturalny punkt na przerwę przy wodzie." },
+    { title: "Dziura", tag: "Skalny łuk", image: images.arch, imageAlt: "Wapienny łuk nad rzeką koło Aglen", description: "Naturalny kamienny łuk nad Vit, idealny na spokojny spacer i zdjęcia." },
+    { title: "Słonik", tag: "Forma skalna", image: images.hero, imageAlt: "Kanion, rzeka i wapienne skały koło Aglen", description: "Zabawna forma nad rzeką, która zmienia spacer w małe odkrycie." },
+    { title: "Czerwona Ściana", tag: "Widok kanionu", image: images.aerial, imageAlt: "Krajobraz kanionu z rzeką i wsią", description: "Dramatyczne spotkanie wapienia, lasu i światła rzeki." },
+    { title: "Basen Raków", tag: "Rzeczne rozlewisko", image: images.pool, imageAlt: "Spokojne rozlewisko z wapiennym brzegiem", description: "Naturalny punkt na przerwę przy wodzie." },
     { title: "Św. Archanioł Michał", tag: "Pamięć wsi", image: images.church, imageAlt: "Wiejski kościół i zielona dolina", description: "Kościół z 1888 roku zachowuje ludzką warstwę historii Aglen." },
     { title: "Калето", tag: "Archeologia", image: images.kaleto, imageAlt: "Kamienne pozostałości nad kanionem", description: "Miejsce związane ze starymi trasami, obronną pamięcią i życiem przy rzece." },
   ],
@@ -63,7 +63,7 @@ export const pl: PageCopy = {
   mapStops: [
     { title: "Centrum wsi", detail: "Zacznij od ludzkiej skali Aglen: ulic, kościoła, lokalnej pamięci i orientacji." },
     { title: "Ścieżka nad Vit", detail: "Podążaj za wodą do spokojnych widoków, zakrętów i cienia." },
-    { title: "Дупката", detail: "Naturalny kamienny próg i jeden z mocnych symboli miejsca." },
+    { title: "Dziura", detail: "Naturalny kamienny próg i jeden z mocnych symboli miejsca." },
     { title: "Jaskinie i formy skalne", detail: "Odkrywaj starszą warstwę krajobrazu ostrożnie, z lokalnym przewodnikiem i szacunkiem." },
   ],
   accommodationList: [

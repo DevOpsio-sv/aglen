@@ -36,13 +36,13 @@ export const de: PageCopy = {
   mysteries: [
     { title: "Wo der Fluss aus dem Blick verschwindet", tag: "Verborgene Wege", image: images.hero, description: "Der Vit zeigt nicht alles auf einmal. Biegungen, Schatten und Felsen machen den Spaziergang zu einer Suche." },
     { title: "Die Schwellen der Höhlen", tag: "Stein und Stille", image: images.cave, description: "Die Höhlen tragen eine ältere Erinnerung der Landschaft: geologisch, menschlich und symbolisch." },
-    { title: "Felsen mit lokalen Namen", tag: "Folklore-Landschaft", image: images.arch, description: "Namen wie Дупката und Слончето machen die Landschaft persönlich. Sie sind Sehenswürdigkeiten und Geschichten zugleich." },
+    { title: "Felsen mit lokalen Namen", tag: "Folklore-Landschaft", image: images.arch, description: "Namen wie Das Loch und Das Elefantchen machen die Landschaft persönlich. Sie sind Sehenswürdigkeiten und Geschichten zugleich." },
   ],
   placesList: [
-    { title: "Дупката", tag: "Felsbogen", image: images.arch, imageAlt: "Kalkstein-Felsbogen über dem Fluss nahe Aglen", description: "Ein natürlicher Steinbogen über dem Vit, ideal für langsame Spaziergänge, ruhige Fotos und das Gefühl einer verborgenen Route." },
-    { title: "Слончето", tag: "Felsfigur", image: images.hero, imageAlt: "Canyon, Fluss und Kalksteinfelsen nahe Aglen", description: "Eine spielerische Felsform am Fluss, die einen einfachen Spaziergang in eine kleine Entdeckung verwandelt." },
-    { title: "Червена стена", tag: "Canyonblick", image: images.aerial, imageAlt: "Canyonlandschaft aus der Luft mit Fluss und Dorf", description: "Ein dramatisches Zusammentreffen von Kalkstein, Wald und Flusslicht nahe dem Dorf." },
-    { title: "Рачков вир", tag: "Flussbecken", image: images.pool, imageAlt: "Ruhiges Flussbecken mit Kalksteinufer und Wald", description: "Ein stiller Naturpunkt für eine Pause am Wasser, ein Picknick und einen langsameren Rhythmus am Vit." },
+    { title: "Das Loch", tag: "Felsbogen", image: images.arch, imageAlt: "Kalkstein-Felsbogen über dem Fluss nahe Aglen", description: "Ein natürlicher Steinbogen über dem Vit, ideal für langsame Spaziergänge, ruhige Fotos und das Gefühl einer verborgenen Route." },
+    { title: "Das Elefantchen", tag: "Felsfigur", image: images.hero, imageAlt: "Canyon, Fluss und Kalksteinfelsen nahe Aglen", description: "Eine spielerische Felsform am Fluss, die einen einfachen Spaziergang in eine kleine Entdeckung verwandelt." },
+    { title: "Rote Wand", tag: "Canyonblick", image: images.aerial, imageAlt: "Canyonlandschaft aus der Luft mit Fluss und Dorf", description: "Ein dramatisches Zusammentreffen von Kalkstein, Wald und Flusslicht nahe dem Dorf." },
+    { title: "Krebsbecken", tag: "Flussbecken", image: images.pool, imageAlt: "Ruhiges Flussbecken mit Kalksteinufer und Wald", description: "Ein stiller Naturpunkt für eine Pause am Wasser, ein Picknick und einen langsameren Rhythmus am Vit." },
     { title: "St. Erzengel Michael", tag: "Dorfgedächtnis", image: images.church, imageAlt: "Dorfkirche, Steingasse und grünes Tal", description: "Die 1888 erbaute Dorfkirche bewahrt die menschliche Schicht der Geschichte von Aglen." },
     { title: "Калето", tag: "Archäologie", image: images.kaleto, imageAlt: "Steinreste auf einer Anhöhe über Canyon und Fluss", description: "Ein Ort, verbunden mit alten Routen, befestigter Erinnerung und der langen Kontinuität des Lebens am Fluss." },
   ],
@@ -63,7 +63,7 @@ export const de: PageCopy = {
   mapStops: [
     { title: "Dorfzentrum", detail: "Beginne mit dem menschlichen Maßstab von Aglen: Straßen, Kirche, lokale Erinnerung und Orientierung." },
     { title: "Vit-Uferweg", detail: "Folge dem Wasser zu stillen Aussichtspunkten, Biegungen und schattigen Orten für Fotografie." },
-    { title: "Дупката", detail: "Eine natürliche Steinschwelle und eines der stärksten visuellen Symbole des Reiseziels." },
+    { title: "Das Loch", detail: "Eine natürliche Steinschwelle und eines der stärksten visuellen Symbole des Reiseziels." },
     { title: "Höhlen und Felsformen", detail: "Entdecke die ältere Landschaftsschicht mit Sorgfalt, lokaler Führung und Respekt vor dem Gelände." },
   ],
   accommodationList: accommodationEn,

@@ -42,13 +42,13 @@ export const fr: PageCopy = {
   mysteries: [
     { title: "Là où la rivière disparaît", tag: "Sentiers cachés", image: images.hero, description: "La Vit ne révèle pas tout d'un coup. Les virages, ombres et falaises transforment la promenade en recherche." },
     { title: "Les seuils des grottes", tag: "Pierre et silence", image: images.cave, description: "Les grottes portent une mémoire plus ancienne: géologique, humaine et symbolique." },
-    { title: "Rochers aux noms locaux", tag: "Paysage folklorique", image: images.arch, description: "Des noms comme Дупката et Слончето rendent le paysage personnel: repères et histoires à la fois." },
+    { title: "Rochers aux noms locaux", tag: "Paysage folklorique", image: images.arch, description: "Des noms comme Le Trou et L'Éléphant rendent le paysage personnel: repères et histoires à la fois." },
   ],
   placesList: [
-    { title: "Дупката", tag: "Arche rocheuse", image: images.arch, imageAlt: "Arche calcaire au-dessus de la rivière près d'Aglen", description: "Une arche naturelle au-dessus de la Vit, parfaite pour les marches lentes et les photos calmes." },
-    { title: "Слончето", tag: "Forme rocheuse", image: images.hero, imageAlt: "Canyon, rivière et falaises calcaires près d'Aglen", description: "Une forme ludique au bord de la rivière qui transforme la marche en petite découverte." },
-    { title: "Червена стена", tag: "Vue de canyon", image: images.aerial, imageAlt: "Paysage de canyon avec rivière et village", description: "Une rencontre dramatique entre calcaire, forêt et lumière de rivière." },
-    { title: "Рачков вир", tag: "Bassin de rivière", image: images.pool, imageAlt: "Bassin calme avec rive calcaire et forêt", description: "Un point naturel paisible pour une pause au bord de l'eau." },
+    { title: "Le Trou", tag: "Arche rocheuse", image: images.arch, imageAlt: "Arche calcaire au-dessus de la rivière près d'Aglen", description: "Une arche naturelle au-dessus de la Vit, parfaite pour les marches lentes et les photos calmes." },
+    { title: "L'Éléphant", tag: "Forme rocheuse", image: images.hero, imageAlt: "Canyon, rivière et falaises calcaires près d'Aglen", description: "Une forme ludique au bord de la rivière qui transforme la marche en petite découverte." },
+    { title: "Mur Rouge", tag: "Vue de canyon", image: images.aerial, imageAlt: "Paysage de canyon avec rivière et village", description: "Une rencontre dramatique entre calcaire, forêt et lumière de rivière." },
+    { title: "Bassin aux Écrevisses", tag: "Bassin de rivière", image: images.pool, imageAlt: "Bassin calme avec rive calcaire et forêt", description: "Un point naturel paisible pour une pause au bord de l'eau." },
     { title: "Saint Archange Michel", tag: "Mémoire villageoise", image: images.church, imageAlt: "Église de village, rue de pierre et vallée verte", description: "L'église de 1888 garde la couche humaine de l'histoire d'Aglen." },
     { title: "Калето", tag: "Archéologie", image: images.kaleto, imageAlt: "Vestiges de pierre sur une colline au-dessus du canyon", description: "Un lieu lié aux anciennes routes, à la mémoire fortifiée et à la vie près de la rivière." },
   ],
@@ -69,7 +69,7 @@ export const fr: PageCopy = {
   mapStops: [
     { title: "Centre du village", detail: "Commencez par l'échelle humaine d'Aglen: rues, église, mémoire locale et orientation." },
     { title: "Sentier de la Vit", detail: "Suivez l'eau vers les points de vue calmes, les virages et les coins d'ombre." },
-    { title: "Дупката", detail: "Un seuil naturel de pierre et l'un des symboles visuels forts du lieu." },
+    { title: "Le Trou", detail: "Un seuil naturel de pierre et l'un des symboles visuels forts du lieu." },
     { title: "Grottes et rochers", detail: "Découvrez la couche ancienne du paysage avec soin, guide local et respect du terrain." },
   ],
   accommodationList: [

@@ -36,13 +36,13 @@ export const es: PageCopy = {
   mysteries: [
     { title: "Donde el río desaparece de la vista", tag: "Rutas ocultas", image: images.hero, description: "El Vit no revela todo de una vez. Curvas, sombras y líneas de roca convierten el paseo en una búsqueda." },
     { title: "Los umbrales de las cuevas", tag: "Piedra y silencio", image: images.cave, description: "Las cuevas pertenecen a una memoria más antigua de la tierra: geológica, humana y simbólica." },
-    { title: "Rocas con nombres locales", tag: "Paisaje de folclore", image: images.arch, description: "Nombres como Дупката y Слончето hacen que el paisaje se sienta personal: puntos de referencia e historias a la vez." },
+    { title: "Rocas con nombres locales", tag: "Paisaje de folclore", image: images.arch, description: "Nombres como El Agujero y El Elefante hacen que el paisaje se sienta personal: puntos de referencia e historias a la vez." },
   ],
   placesList: [
-    { title: "Дупката", tag: "Arco de roca", image: images.arch, imageAlt: "Arco de roca caliza sobre el río cerca de Aglen", description: "Un arco natural de piedra sobre el Vit, pensado para caminatas lentas, fotos tranquilas y la sensación de entrar en una ruta escondida." },
-    { title: "Слончето", tag: "Figura de roca", image: images.hero, imageAlt: "Cañón, río y acantilados calizos cerca de Aglen", description: "Una forma juguetona junto al río que convierte una caminata sencilla en un pequeño descubrimiento." },
-    { title: "Червена стена", tag: "Vista de cañón", image: images.aerial, imageAlt: "Paisaje de cañón con río y pueblo visto desde arriba", description: "Un encuentro dramático de caliza, bosque y luz de río cerca del pueblo." },
-    { title: "Рачков вир", tag: "Poza del río", image: images.pool, imageAlt: "Poza tranquila del río con orilla caliza y bosque", description: "Un punto natural sereno para pausar junto al agua, hacer picnic y bajar el ritmo al lado del Vit." },
+    { title: "El Agujero", tag: "Arco de roca", image: images.arch, imageAlt: "Arco de roca caliza sobre el río cerca de Aglen", description: "Un arco natural de piedra sobre el Vit, pensado para caminatas lentas, fotos tranquilas y la sensación de entrar en una ruta escondida." },
+    { title: "El Elefante", tag: "Figura de roca", image: images.hero, imageAlt: "Cañón, río y acantilados calizos cerca de Aglen", description: "Una forma juguetona junto al río que convierte una caminata sencilla en un pequeño descubrimiento." },
+    { title: "Pared Roja", tag: "Vista de cañón", image: images.aerial, imageAlt: "Paisaje de cañón con río y pueblo visto desde arriba", description: "Un encuentro dramático de caliza, bosque y luz de río cerca del pueblo." },
+    { title: "Poza de los Cangrejos", tag: "Poza del río", image: images.pool, imageAlt: "Poza tranquila del río con orilla caliza y bosque", description: "Un punto natural sereno para pausar junto al agua, hacer picnic y bajar el ritmo al lado del Vit." },
     { title: "San Arcángel Miguel", tag: "Memoria del pueblo", image: images.church, imageAlt: "Iglesia del pueblo, calle de piedra y valle verde", description: "La iglesia de 1888 conserva la capa humana de la historia de Aglen." },
     { title: "Калето", tag: "Arqueología", image: images.kaleto, imageAlt: "Restos de piedra en una colina sobre cañón y río", description: "Un lugar conectado con rutas antiguas, memoria fortificada y la larga continuidad de vida junto al río." },
   ],
@@ -63,7 +63,7 @@ export const es: PageCopy = {
   mapStops: [
     { title: "Centro del pueblo", detail: "Empieza por la escala humana de Aglen: calles, iglesia, memoria local y orientación." },
     { title: "Camino del Vit", detail: "Sigue el agua hacia miradores tranquilos, curvas y lugares de sombra para fotografiar." },
-    { title: "Dupkata", detail: "Un umbral natural de piedra y uno de los símbolos visuales más fuertes del destino." },
+    { title: "El Agujero", detail: "Un umbral natural de piedra y uno de los símbolos visuales más fuertes del destino." },
     { title: "Cuevas y formas de roca", detail: "Descubre la capa más antigua del paisaje con cuidado, guía local y respeto por el terreno." },
   ],
   accommodationList: accommodationEn,

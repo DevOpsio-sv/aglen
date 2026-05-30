@@ -36,13 +36,13 @@ export const tr: PageCopy = {
   mysteries: [
     { title: "Nehrin gözden kaybolduğu yer", tag: "Gizli yollar", image: images.hero, description: "Vit her şeyi bir anda göstermez. Kıvrımlar, gölgeler ve kayalar yürüyüşü arayışa dönüştürür." },
     { title: "Mağara eşikleri", tag: "Taş ve sessizlik", image: images.cave, description: "Mağaralar daha eski bir hafızayı taşır: jeolojik, insani ve sembolik." },
-    { title: "Yerel adları olan kayalar", tag: "Folklor manzarası", image: images.arch, description: "Дупката ve Слончето gibi adlar manzarayı kişisel kılar." },
+    { title: "Yerel adları olan kayalar", tag: "Folklor manzarası", image: images.arch, description: "Çukur ve Fil gibi adlar manzarayı kişisel kılar." },
   ],
   placesList: [
-    { title: "Дупката", tag: "Kaya kemeri", image: images.arch, imageAlt: "Aglen yakınında nehir üstünde kireçtaşı kemer", description: "Vit üzerinde doğal bir taş kemer; yavaş yürüyüş ve sakin fotoğraflar için." },
-    { title: "Слончето", tag: "Kaya şekli", image: images.hero, imageAlt: "Aglen yakınında kanyon, nehir ve kireçtaşı kayalıkları", description: "Nehir kıyısındaki oyunlu kaya şekli yürüyüşü küçük bir keşfe çevirir." },
-    { title: "Червена стена", tag: "Kanyon görünümü", image: images.aerial, imageAlt: "Nehir ve köy içeren kanyon manzarası", description: "Kireçtaşı, orman ve nehir ışığının dramatik buluşması." },
-    { title: "Рачков вир", tag: "Nehir havuzu", image: images.pool, imageAlt: "Kireçtaşı kıyılı sakin nehir havuzu", description: "Su kenarında sakin bir mola noktası." },
+    { title: "Çukur", tag: "Kaya kemeri", image: images.arch, imageAlt: "Aglen yakınında nehir üstünde kireçtaşı kemer", description: "Vit üzerinde doğal bir taş kemer; yavaş yürüyüş ve sakin fotoğraflar için." },
+    { title: "Fil", tag: "Kaya şekli", image: images.hero, imageAlt: "Aglen yakınında kanyon, nehir ve kireçtaşı kayalıkları", description: "Nehir kıyısındaki oyunlu kaya şekli yürüyüşü küçük bir keşfe çevirir." },
+    { title: "Kırmızı Duvar", tag: "Kanyon görünümü", image: images.aerial, imageAlt: "Nehir ve köy içeren kanyon manzarası", description: "Kireçtaşı, orman ve nehir ışığının dramatik buluşması." },
+    { title: "Kerevit Havuzu", tag: "Nehir havuzu", image: images.pool, imageAlt: "Kireçtaşı kıyılı sakin nehir havuzu", description: "Su kenarında sakin bir mola noktası." },
     { title: "Aziz Başmelek Mihail", tag: "Köy hafızası", image: images.church, imageAlt: "Köy kilisesi ve yeşil vadi", description: "1888 tarihli kilise Aglen hikayesinin insani katmanını korur." },
     { title: "Калето", tag: "Arkeoloji", image: images.kaleto, imageAlt: "Kanyon üzerindeki taş kalıntılar", description: "Eski rotalar, savunma hafızası ve nehir yaşamıyla bağlantılı bir yer." },
   ],
@@ -63,7 +63,7 @@ export const tr: PageCopy = {
   mapStops: [
     { title: "Köy merkezi", detail: "Aglen'in insan ölçeğinden başlayın: sokaklar, kilise, yerel hafıza ve yön bulma." },
     { title: "Vit yolu", detail: "Suyu takip ederek sakin manzaralara, kıvrımlara ve gölgeli noktalara gidin." },
-    { title: "Дупката", detail: "Doğal taş eşiği ve destinasyonun güçlü görsel sembollerinden biri." },
+    { title: "Çukur", detail: "Doğal taş eşiği ve destinasyonun güçlü görsel sembollerinden biri." },
     { title: "Mağaralar ve kaya şekilleri", detail: "Eski manzara katmanını dikkatle, yerel rehberle ve saygıyla keşfedin." },
   ],
   accommodationList: [

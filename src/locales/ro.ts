@@ -36,13 +36,13 @@ export const ro: PageCopy = {
   mysteries: [
     { title: "Unde râul dispare din vedere", tag: "Poteci ascunse", image: images.hero, description: "Vit nu arată totul deodată. Coturile, umbrele și stâncile transformă plimbarea în căutare." },
     { title: "Pragurile peșterilor", tag: "Piatră și liniște", image: images.cave, description: "Peșterile poartă o memorie mai veche: geologică, umană și simbolică." },
-    { title: "Stânci cu nume locale", tag: "Peisaj folcloric", image: images.arch, description: "Nume ca Дупката și Слончето fac peisajul personal: repere și povești deodată." },
+    { title: "Stânci cu nume locale", tag: "Peisaj folcloric", image: images.arch, description: "Nume ca Gaura și Elefantul fac peisajul personal: repere și povești deodată." },
   ],
   placesList: [
-    { title: "Дупката", tag: "Arcă de stâncă", image: images.arch, imageAlt: "Arcă de calcar deasupra râului lângă Aglen", description: "O arcă naturală deasupra râului Vit, ideală pentru plimbări lente și fotografii calme." },
-    { title: "Слончето", tag: "Formă de stâncă", image: images.hero, imageAlt: "Canion, râu și stânci calcaroase lângă Aglen", description: "O formă jucăușă lângă râu care transformă plimbarea într-o mică descoperire." },
-    { title: "Червена стена", tag: "Vedere de canion", image: images.aerial, imageAlt: "Peisaj de canion cu râu și sat", description: "O întâlnire dramatică între calcar, pădure și lumina râului." },
-    { title: "Рачков вир", tag: "Bulboană de râu", image: images.pool, imageAlt: "Bulboană liniștită cu mal calcaros și pădure", description: "Un loc natural calm pentru pauză lângă apă." },
+    { title: "Gaura", tag: "Arcă de stâncă", image: images.arch, imageAlt: "Arcă de calcar deasupra râului lângă Aglen", description: "O arcă naturală deasupra râului Vit, ideală pentru plimbări lente și fotografii calme." },
+    { title: "Elefantul", tag: "Formă de stâncă", image: images.hero, imageAlt: "Canion, râu și stânci calcaroase lângă Aglen", description: "O formă jucăușă lângă râu care transformă plimbarea într-o mică descoperire." },
+    { title: "Peretele Roșu", tag: "Vedere de canion", image: images.aerial, imageAlt: "Peisaj de canion cu râu și sat", description: "O întâlnire dramatică între calcar, pădure și lumina râului." },
+    { title: "Bazinul Racilor", tag: "Bulboană de râu", image: images.pool, imageAlt: "Bulboană liniștită cu mal calcaros și pădure", description: "Un loc natural calm pentru pauză lângă apă." },
     { title: "Sf. Arhanghel Mihail", tag: "Memoria satului", image: images.church, imageAlt: "Biserică de sat și vale verde", description: "Biserica din 1888 păstrează stratul uman al poveștii Aglen." },
     { title: "Калето", tag: "Arheologie", image: images.kaleto, imageAlt: "Vestigii de piatră deasupra canionului", description: "Un loc legat de rute vechi, memorie fortificată și viață lângă râu." },
   ],
@@ -63,7 +63,7 @@ export const ro: PageCopy = {
   mapStops: [
     { title: "Centrul satului", detail: "Începe cu scara umană a Aglen: străzi, biserică, memorie locală și orientare." },
     { title: "Poteca de pe Vit", detail: "Urmează apa spre priveliști calme, coturi și locuri umbrite." },
-    { title: "Дупката", detail: "Un prag natural de piatră și unul dintre simbolurile vizuale ale destinației." },
+    { title: "Gaura", detail: "Un prag natural de piatră și unul dintre simbolurile vizuale ale destinației." },
     { title: "Peșteri și forme de stâncă", detail: "Descoperă stratul vechi al peisajului cu grijă, ghid local și respect." },
   ],
   accommodationList: [

@@ -36,13 +36,13 @@ export const it: PageCopy = {
   mysteries: [
     { title: "Dove il fiume scompare alla vista", tag: "Percorsi nascosti", image: images.hero, description: "Il Vit non rivela tutto subito. Curve, ombre e rocce trasformano la passeggiata in ricerca." },
     { title: "Le soglie delle grotte", tag: "Pietra e silenzio", image: images.cave, description: "Le grotte custodiscono una memoria più antica: geologica, umana e simbolica." },
-    { title: "Rocce con nomi locali", tag: "Paesaggio folclorico", image: images.arch, description: "Nomi come Дупката e Слончето rendono il paesaggio personale: luoghi e storie insieme." },
+    { title: "Rocce con nomi locali", tag: "Paesaggio folclorico", image: images.arch, description: "Nomi come Il Buco e L'Elefantino rendono il paesaggio personale: luoghi e storie insieme." },
   ],
   placesList: [
-    { title: "Дупката", tag: "Arco roccioso", image: images.arch, imageAlt: "Arco calcareo sopra il fiume vicino ad Aglen", description: "Un arco naturale sopra il Vit, perfetto per camminate lente e fotografie tranquille." },
-    { title: "Слончето", tag: "Figura rocciosa", image: images.hero, imageAlt: "Canyon, fiume e scogliere calcaree vicino ad Aglen", description: "Una forma giocosa vicino al fiume che trasforma la passeggiata in una piccola scoperta." },
-    { title: "Червена стена", tag: "Vista canyon", image: images.aerial, imageAlt: "Paesaggio di canyon con fiume e villaggio", description: "Un incontro scenografico tra calcare, bosco e luce del fiume." },
-    { title: "Рачков вир", tag: "Pozza del fiume", image: images.pool, imageAlt: "Pozza tranquilla con riva calcarea e bosco", description: "Un punto naturale calmo per una pausa accanto all'acqua." },
+    { title: "Il Buco", tag: "Arco roccioso", image: images.arch, imageAlt: "Arco calcareo sopra il fiume vicino ad Aglen", description: "Un arco naturale sopra il Vit, perfetto per camminate lente e fotografie tranquille." },
+    { title: "L'Elefantino", tag: "Figura rocciosa", image: images.hero, imageAlt: "Canyon, fiume e scogliere calcaree vicino ad Aglen", description: "Una forma giocosa vicino al fiume che trasforma la passeggiata in una piccola scoperta." },
+    { title: "Muro Rosso", tag: "Vista canyon", image: images.aerial, imageAlt: "Paesaggio di canyon con fiume e villaggio", description: "Un incontro scenografico tra calcare, bosco e luce del fiume." },
+    { title: "Pozza dei Gamberi di Fiume", tag: "Pozza del fiume", image: images.pool, imageAlt: "Pozza tranquilla con riva calcarea e bosco", description: "Un punto naturale calmo per una pausa accanto all'acqua." },
     { title: "San Michele Arcangelo", tag: "Memoria del villaggio", image: images.church, imageAlt: "Chiesa del villaggio e valle verde", description: "La chiesa del 1888 conserva lo strato umano della storia di Aglen." },
     { title: "Калето", tag: "Archeologia", image: images.kaleto, imageAlt: "Resti di pietra sopra canyon e fiume", description: "Un luogo legato ad antiche rotte, memoria fortificata e vita lungo il fiume." },
   ],
@@ -63,7 +63,7 @@ export const it: PageCopy = {
   mapStops: [
     { title: "Centro del villaggio", detail: "Inizia dalla scala umana di Aglen: strade, chiesa, memoria locale e orientamento." },
     { title: "Sentiero del Vit", detail: "Segui l'acqua verso punti panoramici, curve e luoghi ombreggiati." },
-    { title: "Дупката", detail: "Una soglia naturale di pietra e uno dei simboli visivi del luogo." },
+    { title: "Il Buco", detail: "Una soglia naturale di pietra e uno dei simboli visivi del luogo." },
     { title: "Grotte e forme rocciose", detail: "Scopri lo strato antico del paesaggio con cura, guida locale e rispetto." },
   ],
   accommodationList: [
