@@ -299,22 +299,52 @@ export function App() {
         </div>
       </section>
 
-      <section id="app" className="app-section section-shell">
-        <div className="section-heading reveal">
-          <p className="eyebrow">{copy.app.eyebrow}</p>
-          <h2>{copy.app.title}</h2>
-          <p>{copy.app.text}</p>
-        </div>
-        <div className="app-download reveal">
-          <a
-            className="button primary app-badge"
-            href="https://play.google.com/store/apps/details?id=com.hiddenBulgaria.quests"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {copy.app.badge}
-          </a>
-          <p className="app-note">{copy.app.note}</p>
+      <section id="app" className="app-section">
+        <div className="app-panel section-shell reveal">
+          <div className="app-copy">
+            <p className="eyebrow">{copy.app.eyebrow}</p>
+            <h2>{copy.app.title}</h2>
+            <p>{copy.app.text}</p>
+            <div className="app-download">
+              <a
+                className="app-store-badge"
+                href="https://play.google.com/store/apps/details?id=com.hiddenBulgaria.quests"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span className="play-icon" aria-hidden="true" />
+                <span>{copy.app.badge}</span>
+              </a>
+              <p className="app-note">{copy.app.note}</p>
+            </div>
+            <ul className="app-highlights" aria-label={copy.app.eyebrow}>
+              {copy.ar.steps.map((step) => (
+                <li key={step}>{step}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="app-showcase" aria-hidden="true">
+            <div className="app-glow" />
+            <div className="phone-mockup">
+              <div className="phone-speaker" />
+              <div className="phone-screen">
+                <div className="phone-map">
+                  <span className="map-line one" />
+                  <span className="map-line two" />
+                  <span className="map-line three" />
+                  <span className="quest-pin main" />
+                  <span className="quest-pin secondary" />
+                  <span className="quest-pin tertiary" />
+                </div>
+                <div className="phone-card">
+                  <span>{copy.quests.eyebrow}</span>
+                  <strong>{copy.ar.title}</strong>
+                  <small>{copy.quests.cta}</small>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
