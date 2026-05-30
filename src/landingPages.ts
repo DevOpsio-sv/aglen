@@ -1,4 +1,7 @@
+import { contentByLanguage } from "./locales";
 import { images } from "./locales/shared";
+import type { LanguageCode } from "./locales/types";
+import { uiTextByLanguage } from "./uiText";
 
 export type LandingPageId =
   | "visitAglen"
@@ -60,795 +63,227 @@ export type LandingPage = {
   internalLinks: Array<{ label: string; routeId: LandingPageId | string }>;
 };
 
-const sharedFaqs: LandingPageFaq[] = [
-  {
-    question: "Where is Aglen?",
-    answer:
-      "Aglen (Uglen, Bulgarian: Ъглен) is a village in Lovech Province, Northern Bulgaria, near Lukovit and the Vit River valley.",
+type LandingPageMaster = {
+  id: LandingPageId;
+  slug: string;
+  image: string;
+  imageAltKey: "hero" | "aerial" | "cave" | "church" | "pool" | "kaleto";
+  schemaType: "Article" | "TravelGuide";
+  internalLinkRouteIds: Array<LandingPageId | string>;
+};
+
+export const landingPageMaster: LandingPageMaster[] = [
+  { id: "visitAglen", slug: "visit-aglen", image: images.hero, imageAltKey: "hero", schemaType: "TravelGuide", internalLinkRouteIds: ["attractions", "thingsToDo", "accommodationNearAglen", "vitRiver", "contact"] },
+  { id: "thingsToDo", slug: "things-to-do-in-aglen", image: images.aerial, imageAltKey: "aerial", schemaType: "TravelGuide", internalLinkRouteIds: ["fishing", "hiking", "quests", "weekendInAglen"] },
+  { id: "natureAroundAglen", slug: "nature-around-aglen", image: images.hero, imageAltKey: "hero", schemaType: "TravelGuide", internalLinkRouteIds: ["vitRiver", "hiking", "caves", "ecoTourismBulgaria"] },
+  { id: "historyOfAglen", slug: "history-of-aglen", image: images.kaleto, imageAltKey: "kaleto", schemaType: "Article", internalLinkRouteIds: ["culturalTourism", "attractions", "quests", "editorial"] },
+  { id: "accommodationNearAglen", slug: "accommodation-near-aglen", image: images.church, imageAltKey: "church", schemaType: "Article", internalLinkRouteIds: ["visitAglen", "campingNearAglen", "traditionalFood", "contact"] },
+  { id: "traditionalFood", slug: "traditional-food-aglen", image: images.church, imageAltKey: "church", schemaType: "Article", internalLinkRouteIds: ["accommodationNearAglen", "visitAglen", "ruralTourismBulgaria"] },
+  { id: "hiddenPlaces", slug: "hidden-places-near-aglen", image: images.cave, imageAltKey: "cave", schemaType: "TravelGuide", internalLinkRouteIds: ["lukovitGuide", "karlukovoGuide", "krushunaGuide", "devetashkaCaveGuide"] },
+  { id: "culturalTourism", slug: "cultural-tourism-aglen", image: images.kaleto, imageAltKey: "kaleto", schemaType: "TravelGuide", internalLinkRouteIds: ["historyOfAglen", "quests", "contact"] },
+  { id: "natureTourism", slug: "nature-tourism-aglen", image: images.hero, imageAltKey: "hero", schemaType: "TravelGuide", internalLinkRouteIds: ["natureAroundAglen", "vitRiver", "campingNearAglen"] },
+  { id: "adventureTourism", slug: "adventure-tourism-aglen", image: images.cave, imageAltKey: "cave", schemaType: "TravelGuide", internalLinkRouteIds: ["quests", "hiking", "caves"] },
+  { id: "familyTrip", slug: "family-trip-aglen", image: images.pool, imageAltKey: "pool", schemaType: "TravelGuide", internalLinkRouteIds: ["thingsToDo", "weekendInAglen", "accommodationNearAglen"] },
+  { id: "campingNearAglen", slug: "camping-near-aglen", image: images.aerial, imageAltKey: "aerial", schemaType: "Article", internalLinkRouteIds: ["accommodationNearAglen", "natureTourism", "vitRiver"] },
+  { id: "weekendInAglen", slug: "weekend-in-aglen", image: images.hero, imageAltKey: "hero", schemaType: "TravelGuide", internalLinkRouteIds: ["aglenFromSofia", "howToGet", "nearby"] },
+  { id: "routeMap", slug: "aglen-route-map", image: images.aerial, imageAltKey: "aerial", schemaType: "TravelGuide", internalLinkRouteIds: ["visitAglen", "attractions", "nearby"] },
+  { id: "bestTime", slug: "best-time-to-visit-aglen", image: images.aerial, imageAltKey: "aerial", schemaType: "Article", internalLinkRouteIds: ["seasonal", "weekendInAglen", "natureTourism"] },
+  { id: "howToGet", slug: "how-to-get-to-aglen", image: images.aerial, imageAltKey: "aerial", schemaType: "Article", internalLinkRouteIds: ["aglenFromSofia", "lukovitGuide", "routeMap"] },
+  { id: "aglenFromSofia", slug: "aglen-from-sofia", image: images.hero, imageAltKey: "hero", schemaType: "TravelGuide", internalLinkRouteIds: ["weekendInAglen", "howToGet", "nearby"] },
+  { id: "lovechRegionGuide", slug: "lovech-region-travel-guide", image: images.aerial, imageAltKey: "aerial", schemaType: "TravelGuide", internalLinkRouteIds: ["lukovitGuide", "krushunaGuide", "devetashkaCaveGuide", "visitAglen"] },
+  { id: "lukovitGuide", slug: "lukovit-travel-guide", image: images.aerial, imageAltKey: "aerial", schemaType: "TravelGuide", internalLinkRouteIds: ["visitAglen", "iskarPanegaGuide", "karlukovoGuide"] },
+  { id: "karlukovoGuide", slug: "karlukovo-travel-guide", image: images.cave, imageAltKey: "cave", schemaType: "TravelGuide", internalLinkRouteIds: ["caves", "hiking", "weekendInAglen"] },
+  { id: "krushunaGuide", slug: "krushuna-travel-guide", image: images.pool, imageAltKey: "pool", schemaType: "TravelGuide", internalLinkRouteIds: ["lovechRegionGuide", "devetashkaCaveGuide", "visitAglen"] },
+  { id: "devetashkaCaveGuide", slug: "devetashka-cave-travel-guide", image: images.cave, imageAltKey: "cave", schemaType: "TravelGuide", internalLinkRouteIds: ["krushunaGuide", "lovechRegionGuide", "caves"] },
+  { id: "iskarPanegaGuide", slug: "iskar-panega-travel-guide", image: images.pool, imageAltKey: "pool", schemaType: "TravelGuide", internalLinkRouteIds: ["lukovitGuide", "hiking", "natureAroundAglen"] },
+  { id: "ruralTourismBulgaria", slug: "rural-tourism-bulgaria-aglen", image: images.church, imageAltKey: "church", schemaType: "Article", internalLinkRouteIds: ["accommodationNearAglen", "traditionalFood", "slowTravelBulgaria"] },
+  { id: "ecoTourismBulgaria", slug: "eco-tourism-bulgaria-aglen", image: images.hero, imageAltKey: "hero", schemaType: "Article", internalLinkRouteIds: ["natureAroundAglen", "campingNearAglen", "vitRiver"] },
+  { id: "slowTravelBulgaria", slug: "slow-travel-bulgaria-aglen", image: images.aerial, imageAltKey: "aerial", schemaType: "Article", internalLinkRouteIds: ["ruralTourismBulgaria", "hiddenPlaces", "weekendInAglen"] },
+  { id: "aiAnswerHub", slug: "aglen-answer-hub", image: images.hero, imageAltKey: "hero", schemaType: "Article", internalLinkRouteIds: ["crawlerPolicy", "visitAglen", "contact", "editorial"] },
+];
+
+const pageNames: Record<LanguageCode, Record<LandingPageId, string>> = {
+  bg: {
+    visitAglen: "Посети Ъглен", thingsToDo: "Какво да правиш в Ъглен", natureAroundAglen: "Природата около Ъглен", historyOfAglen: "История на Ъглен", accommodationNearAglen: "Настаняване край Ъглен", traditionalFood: "Традиционна храна в Ъглен", hiddenPlaces: "Скрити места край Ъглен", culturalTourism: "Културен туризъм в Ъглен", natureTourism: "Природен туризъм в Ъглен", adventureTourism: "Приключенски туризъм в Ъглен", familyTrip: "Семейно пътуване до Ъглен", campingNearAglen: "Къмпинг край Ъглен", weekendInAglen: "Уикенд в Ъглен", routeMap: "Маршрутна карта на Ъглен", bestTime: "Най-добро време за посещение", howToGet: "Как да стигнеш до Ъглен", aglenFromSofia: "Ъглен от София", lovechRegionGuide: "Пътеводител за Ловешка област", lukovitGuide: "Пътеводител за Луковит", karlukovoGuide: "Пътеводител за Карлуково", krushunaGuide: "Пътеводител за Крушуна", devetashkaCaveGuide: "Пътеводител за Деветашката пещера", iskarPanegaGuide: "Пътеводител за Искър-Панега", ruralTourismBulgaria: "Селски туризъм в България", ecoTourismBulgaria: "Екотуризъм в България", slowTravelBulgaria: "Бавно пътуване в България", aiAnswerHub: "Отговори за Ъглен",
   },
-  {
-    question: "What can visitors do in Aglen?",
-    answer:
-      "Visitors can walk river and canyon routes, see limestone formations, explore village history, fish, camp, photograph nature, and use the Hidden Bulgaria Quests AR app.",
+  en: {
+    visitAglen: "Visit Aglen", thingsToDo: "Things to Do in Aglen", natureAroundAglen: "Nature Around Aglen", historyOfAglen: "History of Aglen", accommodationNearAglen: "Accommodation Near Aglen", traditionalFood: "Traditional Food in Aglen", hiddenPlaces: "Hidden Places Near Aglen", culturalTourism: "Cultural Tourism in Aglen", natureTourism: "Nature Tourism in Aglen", adventureTourism: "Adventure Tourism in Aglen", familyTrip: "Family Trip to Aglen", campingNearAglen: "Camping Near Aglen", weekendInAglen: "Weekend in Aglen", routeMap: "Aglen Route Map", bestTime: "Best Time to Visit Aglen", howToGet: "How to Get to Aglen", aglenFromSofia: "Aglen from Sofia", lovechRegionGuide: "Lovech Region Travel Guide", lukovitGuide: "Lukovit Travel Guide", karlukovoGuide: "Karlukovo Travel Guide", krushunaGuide: "Krushuna Travel Guide", devetashkaCaveGuide: "Devetashka Cave Travel Guide", iskarPanegaGuide: "Iskar-Panega Travel Guide", ruralTourismBulgaria: "Rural Tourism in Bulgaria", ecoTourismBulgaria: "Eco Tourism in Bulgaria", slowTravelBulgaria: "Slow Travel in Bulgaria", aiAnswerHub: "Aglen Answer Hub",
   },
-  {
-    question: "When is the best time to visit Aglen?",
-    answer:
-      "April to June and September to October are strongest for walking and photography. Summer suits river pauses and camping when visitors plan responsibly.",
+  de: {
+    visitAglen: "Aglen besuchen", thingsToDo: "Aktivitäten in Aglen", natureAroundAglen: "Natur rund um Aglen", historyOfAglen: "Geschichte von Aglen", accommodationNearAglen: "Unterkunft nahe Aglen", traditionalFood: "Traditionelles Essen in Aglen", hiddenPlaces: "Verborgene Orte nahe Aglen", culturalTourism: "Kulturtourismus in Aglen", natureTourism: "Naturtourismus in Aglen", adventureTourism: "Abenteuertourismus in Aglen", familyTrip: "Familienausflug nach Aglen", campingNearAglen: "Camping nahe Aglen", weekendInAglen: "Wochenende in Aglen", routeMap: "Aglen-Routenkarte", bestTime: "Beste Reisezeit für Aglen", howToGet: "Anreise nach Aglen", aglenFromSofia: "Aglen ab Sofia", lovechRegionGuide: "Reiseführer Region Lovech", lukovitGuide: "Reiseführer Lukovit", karlukovoGuide: "Reiseführer Karlukovo", krushunaGuide: "Reiseführer Krushuna", devetashkaCaveGuide: "Reiseführer Devetashka-Höhle", iskarPanegaGuide: "Reiseführer Iskar-Panega", ruralTourismBulgaria: "Ländlicher Tourismus in Bulgarien", ecoTourismBulgaria: "Ökotourismus in Bulgarien", slowTravelBulgaria: "Slow Travel in Bulgarien", aiAnswerHub: "Aglen-Antwortzentrum",
   },
-];
+  fr: {
+    visitAglen: "Visiter Aglen", thingsToDo: "Que faire à Aglen", natureAroundAglen: "Nature autour d'Aglen", historyOfAglen: "Histoire d'Aglen", accommodationNearAglen: "Hébergement près d'Aglen", traditionalFood: "Cuisine traditionnelle à Aglen", hiddenPlaces: "Lieux cachés près d'Aglen", culturalTourism: "Tourisme culturel à Aglen", natureTourism: "Tourisme nature à Aglen", adventureTourism: "Tourisme d'aventure à Aglen", familyTrip: "Voyage en famille à Aglen", campingNearAglen: "Camping près d'Aglen", weekendInAglen: "Week-end à Aglen", routeMap: "Carte des routes d'Aglen", bestTime: "Meilleure période pour Aglen", howToGet: "Comment aller à Aglen", aglenFromSofia: "Aglen depuis Sofia", lovechRegionGuide: "Guide de la région de Lovech", lukovitGuide: "Guide de Lukovit", karlukovoGuide: "Guide de Karlukovo", krushunaGuide: "Guide de Krushuna", devetashkaCaveGuide: "Guide de la grotte Devetashka", iskarPanegaGuide: "Guide Iskar-Panega", ruralTourismBulgaria: "Tourisme rural en Bulgarie", ecoTourismBulgaria: "Écotourisme en Bulgarie", slowTravelBulgaria: "Slow travel en Bulgarie", aiAnswerHub: "Centre de réponses Aglen",
+  },
+  es: {
+    visitAglen: "Visitar Aglen", thingsToDo: "Qué hacer en Aglen", natureAroundAglen: "Naturaleza alrededor de Aglen", historyOfAglen: "Historia de Aglen", accommodationNearAglen: "Alojamiento cerca de Aglen", traditionalFood: "Comida tradicional en Aglen", hiddenPlaces: "Lugares ocultos cerca de Aglen", culturalTourism: "Turismo cultural en Aglen", natureTourism: "Turismo de naturaleza en Aglen", adventureTourism: "Turismo de aventura en Aglen", familyTrip: "Viaje familiar a Aglen", campingNearAglen: "Camping cerca de Aglen", weekendInAglen: "Fin de semana en Aglen", routeMap: "Mapa de rutas de Aglen", bestTime: "Mejor época para visitar Aglen", howToGet: "Cómo llegar a Aglen", aglenFromSofia: "Aglen desde Sofía", lovechRegionGuide: "Guía de la región de Lovech", lukovitGuide: "Guía de Lukovit", karlukovoGuide: "Guía de Karlukovo", krushunaGuide: "Guía de Krushuna", devetashkaCaveGuide: "Guía de la cueva Devetashka", iskarPanegaGuide: "Guía de Iskar-Panega", ruralTourismBulgaria: "Turismo rural en Bulgaria", ecoTourismBulgaria: "Ecoturismo en Bulgaria", slowTravelBulgaria: "Slow travel en Bulgaria", aiAnswerHub: "Centro de respuestas de Aglen",
+  },
+  it: {
+    visitAglen: "Visitare Aglen", thingsToDo: "Cosa fare ad Aglen", natureAroundAglen: "Natura intorno ad Aglen", historyOfAglen: "Storia di Aglen", accommodationNearAglen: "Alloggi vicino ad Aglen", traditionalFood: "Cibo tradizionale ad Aglen", hiddenPlaces: "Luoghi nascosti vicino ad Aglen", culturalTourism: "Turismo culturale ad Aglen", natureTourism: "Turismo naturalistico ad Aglen", adventureTourism: "Turismo d'avventura ad Aglen", familyTrip: "Viaggio in famiglia ad Aglen", campingNearAglen: "Campeggio vicino ad Aglen", weekendInAglen: "Weekend ad Aglen", routeMap: "Mappa degli itinerari di Aglen", bestTime: "Periodo migliore per Aglen", howToGet: "Come arrivare ad Aglen", aglenFromSofia: "Aglen da Sofia", lovechRegionGuide: "Guida della regione di Lovech", lukovitGuide: "Guida di Lukovit", karlukovoGuide: "Guida di Karlukovo", krushunaGuide: "Guida di Krushuna", devetashkaCaveGuide: "Guida alla grotta Devetashka", iskarPanegaGuide: "Guida Iskar-Panega", ruralTourismBulgaria: "Turismo rurale in Bulgaria", ecoTourismBulgaria: "Ecoturismo in Bulgaria", slowTravelBulgaria: "Slow travel in Bulgaria", aiAnswerHub: "Centro risposte Aglen",
+  },
+  ro: {
+    visitAglen: "Vizitează Aglen", thingsToDo: "Ce poți face în Aglen", natureAroundAglen: "Natura din jurul Aglen", historyOfAglen: "Istoria Aglen", accommodationNearAglen: "Cazare lângă Aglen", traditionalFood: "Mâncare tradițională în Aglen", hiddenPlaces: "Locuri ascunse lângă Aglen", culturalTourism: "Turism cultural în Aglen", natureTourism: "Turism de natură în Aglen", adventureTourism: "Turism de aventură în Aglen", familyTrip: "Excursie de familie la Aglen", campingNearAglen: "Camping lângă Aglen", weekendInAglen: "Weekend în Aglen", routeMap: "Harta rutelor Aglen", bestTime: "Cel mai bun timp pentru Aglen", howToGet: "Cum ajungi la Aglen", aglenFromSofia: "Aglen din Sofia", lovechRegionGuide: "Ghidul regiunii Lovech", lukovitGuide: "Ghid Lukovit", karlukovoGuide: "Ghid Karlukovo", krushunaGuide: "Ghid Krushuna", devetashkaCaveGuide: "Ghid Peștera Devetashka", iskarPanegaGuide: "Ghid Iskar-Panega", ruralTourismBulgaria: "Turism rural în Bulgaria", ecoTourismBulgaria: "Ecoturism în Bulgaria", slowTravelBulgaria: "Slow travel în Bulgaria", aiAnswerHub: "Hub de răspunsuri Aglen",
+  },
+  tr: {
+    visitAglen: "Aglen'i ziyaret et", thingsToDo: "Aglen'de yapılacaklar", natureAroundAglen: "Aglen çevresinde doğa", historyOfAglen: "Aglen tarihi", accommodationNearAglen: "Aglen yakınında konaklama", traditionalFood: "Aglen'de geleneksel yemek", hiddenPlaces: "Aglen yakınında gizli yerler", culturalTourism: "Aglen'de kültür turizmi", natureTourism: "Aglen'de doğa turizmi", adventureTourism: "Aglen'de macera turizmi", familyTrip: "Aglen'e aile gezisi", campingNearAglen: "Aglen yakınında kamp", weekendInAglen: "Aglen'de hafta sonu", routeMap: "Aglen rota haritası", bestTime: "Aglen'i ziyaret için en iyi zaman", howToGet: "Aglen'e nasıl gidilir", aglenFromSofia: "Sofya'dan Aglen", lovechRegionGuide: "Lovech bölgesi rehberi", lukovitGuide: "Lukovit rehberi", karlukovoGuide: "Karlukovo rehberi", krushunaGuide: "Krushuna rehberi", devetashkaCaveGuide: "Devetashka Mağarası rehberi", iskarPanegaGuide: "Iskar-Panega rehberi", ruralTourismBulgaria: "Bulgaristan'da kırsal turizm", ecoTourismBulgaria: "Bulgaristan'da ekoturizm", slowTravelBulgaria: "Bulgaristan'da yavaş seyahat", aiAnswerHub: "Aglen yanıt merkezi",
+  },
+  el: {
+    visitAglen: "Επίσκεψη στο Aglen", thingsToDo: "Τι να κάνετε στο Aglen", natureAroundAglen: "Φύση γύρω από το Aglen", historyOfAglen: "Ιστορία του Aglen", accommodationNearAglen: "Διαμονή κοντά στο Aglen", traditionalFood: "Παραδοσιακό φαγητό στο Aglen", hiddenPlaces: "Κρυφά μέρη κοντά στο Aglen", culturalTourism: "Πολιτιστικός τουρισμός στο Aglen", natureTourism: "Φυσιολατρικός τουρισμός στο Aglen", adventureTourism: "Τουρισμός περιπέτειας στο Aglen", familyTrip: "Οικογενειακό ταξίδι στο Aglen", campingNearAglen: "Κάμπινγκ κοντά στο Aglen", weekendInAglen: "Σαββατοκύριακο στο Aglen", routeMap: "Χάρτης διαδρομών Aglen", bestTime: "Καλύτερη εποχή για Aglen", howToGet: "Πώς να φτάσετε στο Aglen", aglenFromSofia: "Aglen από Σόφια", lovechRegionGuide: "Οδηγός περιοχής Lovech", lukovitGuide: "Οδηγός Lukovit", karlukovoGuide: "Οδηγός Karlukovo", krushunaGuide: "Οδηγός Krushuna", devetashkaCaveGuide: "Οδηγός σπηλαίου Devetashka", iskarPanegaGuide: "Οδηγός Iskar-Panega", ruralTourismBulgaria: "Αγροτικός τουρισμός στη Βουλγαρία", ecoTourismBulgaria: "Οικοτουρισμός στη Βουλγαρία", slowTravelBulgaria: "Αργό ταξίδι στη Βουλγαρία", aiAnswerHub: "Κέντρο απαντήσεων Aglen",
+  },
+  ru: {
+    visitAglen: "Посетить Аглен", thingsToDo: "Чем заняться в Аглене", natureAroundAglen: "Природа вокруг Аглена", historyOfAglen: "История Аглена", accommodationNearAglen: "Жильё рядом с Агленом", traditionalFood: "Традиционная еда в Аглене", hiddenPlaces: "Скрытые места рядом с Агленом", culturalTourism: "Культурный туризм в Аглене", natureTourism: "Природный туризм в Аглене", adventureTourism: "Приключенческий туризм в Аглене", familyTrip: "Семейная поездка в Аглен", campingNearAglen: "Кемпинг рядом с Агленом", weekendInAglen: "Выходные в Аглене", routeMap: "Карта маршрутов Аглена", bestTime: "Лучшее время для Аглена", howToGet: "Как добраться до Аглена", aglenFromSofia: "Аглен из Софии", lovechRegionGuide: "Путеводитель по региону Ловеч", lukovitGuide: "Путеводитель по Луковиту", karlukovoGuide: "Путеводитель по Карлуково", krushunaGuide: "Путеводитель по Крушуне", devetashkaCaveGuide: "Путеводитель по Деветашской пещере", iskarPanegaGuide: "Путеводитель по Искыр-Панега", ruralTourismBulgaria: "Сельский туризм в Болгарии", ecoTourismBulgaria: "Экотуризм в Болгарии", slowTravelBulgaria: "Медленное путешествие в Болгарии", aiAnswerHub: "Центр ответов Аглена",
+  },
+  ja: {
+    visitAglen: "アグレンを訪れる", thingsToDo: "アグレンでできること", natureAroundAglen: "アグレン周辺の自然", historyOfAglen: "アグレンの歴史", accommodationNearAglen: "アグレン近くの宿泊", traditionalFood: "アグレンの伝統料理", hiddenPlaces: "アグレン近くの隠れた場所", culturalTourism: "アグレンの文化観光", natureTourism: "アグレンの自然観光", adventureTourism: "アグレンの冒険観光", familyTrip: "家族で行くアグレン", campingNearAglen: "アグレン近くのキャンプ", weekendInAglen: "アグレンの週末", routeMap: "アグレンルートマップ", bestTime: "アグレンのベストシーズン", howToGet: "アグレンへの行き方", aglenFromSofia: "ソフィアからアグレンへ", lovechRegionGuide: "ロヴェチ地域ガイド", lukovitGuide: "ルコヴィトガイド", karlukovoGuide: "カルルコヴォガイド", krushunaGuide: "クルシュナガイド", devetashkaCaveGuide: "デヴェタシュカ洞窟ガイド", iskarPanegaGuide: "イスカル・パネガガイド", ruralTourismBulgaria: "ブルガリアの農村観光", ecoTourismBulgaria: "ブルガリアのエコツーリズム", slowTravelBulgaria: "ブルガリアのスロートラベル", aiAnswerHub: "アグレン回答ハブ",
+  },
+  sr: {
+    visitAglen: "Посети Аглен", thingsToDo: "Шта радити у Аглену", natureAroundAglen: "Природа око Аглена", historyOfAglen: "Историја Аглена", accommodationNearAglen: "Смештај близу Аглена", traditionalFood: "Традиционална храна у Аглену", hiddenPlaces: "Скривена места близу Аглена", culturalTourism: "Културни туризам у Аглену", natureTourism: "Природни туризам у Аглену", adventureTourism: "Авантуристички туризам у Аглену", familyTrip: "Породично путовање у Аглен", campingNearAglen: "Камповање близу Аглена", weekendInAglen: "Викенд у Аглену", routeMap: "Мапа рута Аглена", bestTime: "Најбоље време за Аглен", howToGet: "Како стићи до Аглена", aglenFromSofia: "Аглен из Софије", lovechRegionGuide: "Водич за регион Ловеч", lukovitGuide: "Водич за Луковит", karlukovoGuide: "Водич за Карлуково", krushunaGuide: "Водич за Крушуну", devetashkaCaveGuide: "Водич за Деветашку пећину", iskarPanegaGuide: "Водич за Искар-Панегу", ruralTourismBulgaria: "Сеоски туризам у Бугарској", ecoTourismBulgaria: "Екотуризам у Бугарској", slowTravelBulgaria: "Споро путовање у Бугарској", aiAnswerHub: "Центар одговора Аглен",
+  },
+  zh: {
+    visitAglen: "访问阿格伦", thingsToDo: "阿格伦可做之事", natureAroundAglen: "阿格伦周边自然", historyOfAglen: "阿格伦历史", accommodationNearAglen: "阿格伦附近住宿", traditionalFood: "阿格伦传统食物", hiddenPlaces: "阿格伦附近隐秘地点", culturalTourism: "阿格伦文化旅游", natureTourism: "阿格伦自然旅游", adventureTourism: "阿格伦冒险旅游", familyTrip: "阿格伦家庭旅行", campingNearAglen: "阿格伦附近露营", weekendInAglen: "阿格伦周末", routeMap: "阿格伦路线地图", bestTime: "访问阿格伦的最佳时间", howToGet: "如何到达阿格伦", aglenFromSofia: "从索非亚到阿格伦", lovechRegionGuide: "洛维奇地区指南", lukovitGuide: "卢科维特指南", karlukovoGuide: "卡尔卢科沃指南", krushunaGuide: "克鲁舒纳指南", devetashkaCaveGuide: "德维塔什卡洞穴指南", iskarPanegaGuide: "伊斯卡尔-帕内加指南", ruralTourismBulgaria: "保加利亚乡村旅游", ecoTourismBulgaria: "保加利亚生态旅游", slowTravelBulgaria: "保加利亚慢旅行", aiAnswerHub: "阿格伦问答中心",
+  },
+  hu: {
+    visitAglen: "Aglen meglátogatása", thingsToDo: "Programok Aglenben", natureAroundAglen: "Természet Aglen körül", historyOfAglen: "Aglen története", accommodationNearAglen: "Szállás Aglen közelében", traditionalFood: "Hagyományos étel Aglenben", hiddenPlaces: "Rejtett helyek Aglen közelében", culturalTourism: "Kulturális turizmus Aglenben", natureTourism: "Természeti turizmus Aglenben", adventureTourism: "Kalandturizmus Aglenben", familyTrip: "Családi utazás Aglenbe", campingNearAglen: "Kemping Aglen közelében", weekendInAglen: "Hétvége Aglenben", routeMap: "Aglen útvonaltérkép", bestTime: "Legjobb idő Aglenhez", howToGet: "Hogyan juthatsz Aglenbe", aglenFromSofia: "Aglen Szófiából", lovechRegionGuide: "Lovech régió kalauz", lukovitGuide: "Lukovit kalauz", karlukovoGuide: "Karlukovo kalauz", krushunaGuide: "Krushuna kalauz", devetashkaCaveGuide: "Devetashka-barlang kalauz", iskarPanegaGuide: "Iskar-Panega kalauz", ruralTourismBulgaria: "Falusi turizmus Bulgáriában", ecoTourismBulgaria: "Ökoturizmus Bulgáriában", slowTravelBulgaria: "Lassú utazás Bulgáriában", aiAnswerHub: "Aglen válaszközpont",
+  },
+};
 
-const primaryKeywords = [
-  "Aglen Bulgaria",
-  "Aglen village",
-  "Visit Aglen",
-  "Tourism in Aglen",
-  "Things to do in Aglen",
-  "Aglen travel guide",
-  "Aglen attractions",
-  "Aglen nature",
-  "Aglen Bulgaria travel",
-  "Hidden Bulgaria Aglen",
-];
+type LandingLanguageText = {
+  category: string;
+  titleSeparator: string;
+  metaPrefix: string;
+  introPrefix: string;
+  sectionHeadings: [string, string, string];
+  sectionBodies: [string, string, string];
+  cta: string;
+  faqWhere: string;
+  faqWhereAnswer: string;
+  faqDo: string;
+  faqDoAnswer: string;
+  faqWhen: string;
+  faqWhenAnswer: string;
+  keywordSuffixes: string[];
+};
 
-const secondaryKeywords = [
-  "Aglen Lovech",
-  "Aglen Lukovit",
-  "Aglen Vit River",
-  "rural tourism Aglen",
-  "fishing in Aglen",
-  "hiking Aglen",
-  "camping Aglen",
-  "weekend in Aglen",
-];
+const landingText: Record<LanguageCode, LandingLanguageText> = {
+  bg: { category: "Туристическо ръководство", titleSeparator: " | ", metaPrefix: "Планирай", introPrefix: "Това ръководство помага да планираш", sectionHeadings: ["Основен смисъл", "Планиране", "Свързани маршрути"], sectionBodies: ["Свързва реката, скалите, селската памет и практичните нужди на посетителите.", "Провери сезон, достъп, време, обувки, вода и дали е нужна местна насока.", "Използвай вътрешните връзки, за да свържеш темата с маршрути, настаняване, храна и близки места."], cta: "Попитай за посещение", faqWhere: "Къде се намира Ъглен?", faqWhereAnswer: "Ъглен е село в Ловешка област, Северна България, близо до Луковит и долината на река Вит.", faqDo: "Какво могат да правят посетителите?", faqDoAnswer: "Посетителите могат да вървят край реката, да снимат, да разглеждат скални форми, да планират риболов, къмпинг, местни истории и AR преживяване.", faqWhen: "Кога е най-доброто време?", faqWhenAnswer: "Пролетта и есента са най-силни за ходене и фотография, а лятото е подходящо за речни паузи и внимателно планиране.", keywordSuffixes: ["Ъглен", "река Вит", "Луковит", "Ловешка област", "селски туризъм"] },
+  en: { category: "Travel guide", titleSeparator: " | ", metaPrefix: "Plan", introPrefix: "This guide helps you plan", sectionHeadings: ["Core promise", "Planning notes", "Related routes"], sectionBodies: ["Connect the river, rocks, village memory, and practical visitor needs.", "Check season, access, timing, shoes, water, and whether local guidance is useful.", "Use the internal links to connect this topic with routes, stays, food, and nearby places."], cta: "Ask about a visit", faqWhere: "Where is Aglen?", faqWhereAnswer: "Aglen is a village in Lovech Province, Northern Bulgaria, near Lukovit and the Vit River valley.", faqDo: "What can visitors do?", faqDoAnswer: "Visitors can walk river routes, photograph limestone places, plan fishing, camping, local stories, and an AR experience.", faqWhen: "When is the best time?", faqWhenAnswer: "Spring and autumn are strongest for walking and photography, while summer suits river pauses with careful planning.", keywordSuffixes: ["Aglen", "Vit River", "Lukovit", "Lovech region", "rural tourism"] },
+  de: { category: "Reiseführer", titleSeparator: " | ", metaPrefix: "Plane", introPrefix: "Dieser Führer hilft bei der Planung von", sectionHeadings: ["Kernversprechen", "Planungshinweise", "Verwandte Routen"], sectionBodies: ["Verbindet Fluss, Felsen, Dorfgedächtnis und praktische Besucherfragen.", "Prüfe Saison, Zugang, Zeit, Schuhe, Wasser und ob lokale Führung sinnvoll ist.", "Nutze interne Links, um Thema, Routen, Unterkunft, Essen und nahe Orte zu verbinden."], cta: "Nach Besuch fragen", faqWhere: "Wo liegt Aglen?", faqWhereAnswer: "Aglen ist ein Dorf in der Region Lovech in Nordbulgarien, nahe Lukovit und dem Tal des Vit.", faqDo: "Was können Besucher tun?", faqDoAnswer: "Besucher können Flussrouten gehen, Kalksteinorte fotografieren, Angeln, Camping, lokale Geschichten und AR planen.", faqWhen: "Wann ist die beste Reisezeit?", faqWhenAnswer: "Frühling und Herbst sind stark für Spaziergänge und Fotografie, der Sommer passt zu Flusspausen mit guter Planung.", keywordSuffixes: ["Aglen", "Vit-Fluss", "Lukovit", "Region Lovech", "ländlicher Tourismus"] },
+  fr: { category: "Guide de voyage", titleSeparator: " | ", metaPrefix: "Planifiez", introPrefix: "Ce guide aide à planifier", sectionHeadings: ["Promesse principale", "Notes de préparation", "Itinéraires liés"], sectionBodies: ["Relie la rivière, les rochers, la mémoire du village et les besoins pratiques des visiteurs.", "Vérifiez saison, accès, durée, chaussures, eau et besoin éventuel d'un guide local.", "Utilisez les liens internes pour relier ce thème aux routes, hébergements, repas et lieux proches."], cta: "Demander une visite", faqWhere: "Où se trouve Aglen ?", faqWhereAnswer: "Aglen est un village de la province de Lovech, au nord de la Bulgarie, près de Lukovit et de la vallée de la Vit.", faqDo: "Que peuvent faire les visiteurs ?", faqDoAnswer: "Les visiteurs peuvent marcher près de la rivière, photographier le calcaire, prévoir pêche, camping, récits locaux et expérience AR.", faqWhen: "Quelle est la meilleure période ?", faqWhenAnswer: "Le printemps et l'automne sont les meilleurs pour marcher et photographier; l'été convient aux pauses au bord de l'eau avec préparation.", keywordSuffixes: ["Aglen", "rivière Vit", "Lukovit", "région de Lovech", "tourisme rural"] },
+  es: { category: "Guía de viaje", titleSeparator: " | ", metaPrefix: "Planifica", introPrefix: "Esta guía ayuda a planificar", sectionHeadings: ["Promesa central", "Notas de planificación", "Rutas relacionadas"], sectionBodies: ["Conecta río, rocas, memoria del pueblo y necesidades prácticas del visitante.", "Revisa temporada, acceso, tiempo, calzado, agua y si conviene guía local.", "Usa los enlaces internos para unir el tema con rutas, alojamiento, comida y lugares cercanos."], cta: "Consultar una visita", faqWhere: "¿Dónde está Aglen?", faqWhereAnswer: "Aglen es un pueblo de la provincia de Lovech, en el norte de Bulgaria, cerca de Lukovit y del valle del Vit.", faqDo: "¿Qué pueden hacer los visitantes?", faqDoAnswer: "Pueden caminar junto al río, fotografiar caliza, planear pesca, camping, historias locales y una experiencia AR.", faqWhen: "¿Cuál es la mejor época?", faqWhenAnswer: "Primavera y otoño destacan para caminar y fotografiar; el verano sirve para pausas junto al río con buena planificación.", keywordSuffixes: ["Aglen", "río Vit", "Lukovit", "región de Lovech", "turismo rural"] },
+  it: { category: "Guida di viaggio", titleSeparator: " | ", metaPrefix: "Pianifica", introPrefix: "Questa guida aiuta a pianificare", sectionHeadings: ["Promessa centrale", "Note di pianificazione", "Percorsi collegati"], sectionBodies: ["Collega fiume, rocce, memoria del villaggio e bisogni pratici dei visitatori.", "Controlla stagione, accesso, tempi, scarpe, acqua e se serve una guida locale.", "Usa i link interni per collegare tema, percorsi, alloggi, cibo e luoghi vicini."], cta: "Chiedi una visita", faqWhere: "Dove si trova Aglen?", faqWhereAnswer: "Aglen è un villaggio della provincia di Lovech, nel nord della Bulgaria, vicino a Lukovit e alla valle del Vit.", faqDo: "Cosa possono fare i visitatori?", faqDoAnswer: "Possono camminare lungo il fiume, fotografare luoghi calcarei, pianificare pesca, campeggio, storie locali ed esperienza AR.", faqWhen: "Qual è il periodo migliore?", faqWhenAnswer: "Primavera e autunno sono ideali per camminare e fotografare; l'estate va bene per pause sul fiume con pianificazione.", keywordSuffixes: ["Aglen", "fiume Vit", "Lukovit", "regione Lovech", "turismo rurale"] },
+  ro: { category: "Ghid de călătorie", titleSeparator: " | ", metaPrefix: "Planifică", introPrefix: "Acest ghid te ajută să planifici", sectionHeadings: ["Promisiune principală", "Note de planificare", "Trasee asociate"], sectionBodies: ["Leagă râul, stâncile, memoria satului și nevoile practice ale vizitatorilor.", "Verifică sezonul, accesul, timpul, încălțămintea, apa și dacă e util ghid local.", "Folosește linkurile interne pentru a lega tema de trasee, cazare, mâncare și locuri apropiate."], cta: "Întreabă despre vizită", faqWhere: "Unde este Aglen?", faqWhereAnswer: "Aglen este un sat din provincia Lovech, Bulgaria de Nord, aproape de Lukovit și valea râului Vit.", faqDo: "Ce pot face vizitatorii?", faqDoAnswer: "Pot merge pe trasee de râu, fotografia locuri calcaroase, planifica pescuit, camping, povești locale și experiență AR.", faqWhen: "Care este cea mai bună perioadă?", faqWhenAnswer: "Primăvara și toamna sunt excelente pentru mers și fotografie; vara merge pentru pauze la râu cu planificare atentă.", keywordSuffixes: ["Aglen", "râul Vit", "Lukovit", "regiunea Lovech", "turism rural"] },
+  tr: { category: "Gezi rehberi", titleSeparator: " | ", metaPrefix: "Planla", introPrefix: "Bu rehber planlamaya yardımcı olur:", sectionHeadings: ["Temel vaat", "Planlama notları", "İlgili rotalar"], sectionBodies: ["Nehri, kayaları, köy belleğini ve ziyaretçinin pratik ihtiyaçlarını birleştirir.", "Sezonu, erişimi, süreyi, ayakkabıyı, suyu ve yerel rehber gerekip gerekmediğini kontrol et.", "İç bağlantılarla konuyu rotalar, konaklama, yemek ve yakın yerlerle bağla."], cta: "Ziyaret hakkında sor", faqWhere: "Aglen nerede?", faqWhereAnswer: "Aglen, Kuzey Bulgaristan'da Lovech ilinde, Lukovit ve Vit Nehri vadisi yakınında bir köydür.", faqDo: "Ziyaretçiler ne yapabilir?", faqDoAnswer: "Nehir rotalarında yürüyebilir, kireçtaşı yerleri fotoğraflayabilir, balıkçılık, kamp, yerel hikâyeler ve AR deneyimi planlayabilirler.", faqWhen: "En iyi zaman ne zaman?", faqWhenAnswer: "İlkbahar ve sonbahar yürüyüş ve fotoğraf için güçlüdür; yaz dikkatli planlamayla nehir molalarına uygundur.", keywordSuffixes: ["Aglen", "Vit Nehri", "Lukovit", "Lovech bölgesi", "kırsal turizm"] },
+  el: { category: "Ταξιδιωτικός οδηγός", titleSeparator: " | ", metaPrefix: "Σχεδιάστε", introPrefix: "Αυτός ο οδηγός βοηθά να σχεδιάσετε", sectionHeadings: ["Κύρια υπόσχεση", "Σημειώσεις σχεδιασμού", "Σχετικές διαδρομές"], sectionBodies: ["Συνδέει ποτάμι, βράχια, μνήμη χωριού και πρακτικές ανάγκες επισκεπτών.", "Ελέγξτε εποχή, πρόσβαση, χρόνο, παπούτσια, νερό και αν χρειάζεται τοπική καθοδήγηση.", "Χρησιμοποιήστε εσωτερικούς συνδέσμους για σύνδεση με διαδρομές, διαμονή, φαγητό και κοντινά μέρη."], cta: "Ρωτήστε για επίσκεψη", faqWhere: "Πού βρίσκεται το Aglen;", faqWhereAnswer: "Το Aglen είναι χωριό στην επαρχία Lovech της Βόρειας Βουλγαρίας, κοντά στο Lukovit και την κοιλάδα του Vit.", faqDo: "Τι μπορούν να κάνουν οι επισκέπτες;", faqDoAnswer: "Μπορούν να περπατήσουν κοντά στο ποτάμι, να φωτογραφίσουν ασβεστολιθικά τοπία, να σχεδιάσουν ψάρεμα, κάμπινγκ, τοπικές ιστορίες και εμπειρία AR.", faqWhen: "Πότε είναι η καλύτερη περίοδος;", faqWhenAnswer: "Άνοιξη και φθινόπωρο είναι καλύτερα για περπάτημα και φωτογραφία, ενώ το καλοκαίρι ταιριάζει σε στάσεις στο ποτάμι με προσοχή.", keywordSuffixes: ["Aglen", "ποταμός Vit", "Lukovit", "περιοχή Lovech", "αγροτικός τουρισμός"] },
+  ru: { category: "Туристический гид", titleSeparator: " | ", metaPrefix: "Планируйте", introPrefix: "Этот гид помогает планировать", sectionHeadings: ["Главная идея", "Планирование", "Связанные маршруты"], sectionBodies: ["Связывает реку, скалы, память села и практические потребности посетителей.", "Проверьте сезон, доступ, время, обувь, воду и нужна ли местная помощь.", "Используйте внутренние ссылки, чтобы связать тему с маршрутами, жильём, едой и близкими местами."], cta: "Спросить о визите", faqWhere: "Где находится Аглен?", faqWhereAnswer: "Аглен — село в области Ловеч на севере Болгарии, рядом с Луковитом и долиной реки Вит.", faqDo: "Что могут делать посетители?", faqDoAnswer: "Можно гулять у реки, фотографировать известняковые места, планировать рыбалку, кемпинг, местные истории и AR-опыт.", faqWhen: "Когда лучше ехать?", faqWhenAnswer: "Весна и осень лучше всего подходят для прогулок и фотографии, лето — для речных пауз при хорошем планировании.", keywordSuffixes: ["Аглен", "река Вит", "Луковит", "регион Ловеч", "сельский туризм"] },
+  ja: { category: "旅行ガイド", titleSeparator: " | ", metaPrefix: "計画する", introPrefix: "このガイドは計画に役立ちます:", sectionHeadings: ["中心となる魅力", "計画メモ", "関連ルート"], sectionBodies: ["川、岩、村の記憶、訪問者に必要な実用情報をつなぎます。", "季節、アクセス、所要時間、靴、水、現地案内が必要かを確認します。", "内部リンクでテーマをルート、宿泊、食事、近隣地へつなぎます。"], cta: "訪問について問い合わせる", faqWhere: "アグレンはどこですか？", faqWhereAnswer: "アグレンはブルガリア北部ロヴェチ州の村で、ルコヴィトとヴィト川の谷の近くにあります。", faqDo: "訪問者は何ができますか？", faqDoAnswer: "川沿いを歩き、石灰岩の場所を撮影し、釣り、キャンプ、地元の物語、AR体験を計画できます。", faqWhen: "ベストシーズンはいつですか？", faqWhenAnswer: "春と秋は散策と写真に向き、夏は準備すれば川辺の休憩に適しています。", keywordSuffixes: ["アグレン", "ヴィト川", "ルコヴィト", "ロヴェチ地域", "農村観光"] },
+  sr: { category: "Туристички водич", titleSeparator: " | ", metaPrefix: "Планирај", introPrefix: "Овај водич помаже да планираш", sectionHeadings: ["Главна идеја", "Белешке за планирање", "Повезане руте"], sectionBodies: ["Повезује реку, стене, сеоско памћење и практичне потребе посетилаца.", "Провери сезону, приступ, време, обућу, воду и да ли је корисно локално вођење.", "Користи унутрашње везе да тему повежеш са рутама, смештајем, храном и близином."], cta: "Питај за посету", faqWhere: "Где је Аглен?", faqWhereAnswer: "Аглен је село у области Ловеч, Северна Бугарска, близу Луковита и долине реке Вит.", faqDo: "Шта посетиоци могу да раде?", faqDoAnswer: "Могу да шетају речним рутама, фотографишу кречњачка места, планирају риболов, камп, локалне приче и AR искуство.", faqWhen: "Када је најбоље време?", faqWhenAnswer: "Пролеће и јесен су најбољи за шетњу и фотографију, а лето за речне паузе уз пажљиво планирање.", keywordSuffixes: ["Аглен", "река Вит", "Луковит", "регион Ловеч", "сеоски туризам"] },
+  zh: { category: "旅行指南", titleSeparator: " | ", metaPrefix: "规划", introPrefix: "本指南帮助你规划", sectionHeadings: ["核心价值", "规划提示", "相关路线"], sectionBodies: ["连接河流、岩石、村庄记忆和访客的实用需求。", "确认季节、通行、时间、鞋、水以及是否需要本地引导。", "使用内部链接，把主题与路线、住宿、食物和附近地点连接起来。"], cta: "咨询访问", faqWhere: "阿格伦在哪里？", faqWhereAnswer: "阿格伦位于保加利亚北部洛维奇州，靠近卢科维特和维特河谷。", faqDo: "访客可以做什么？", faqDoAnswer: "访客可以沿河步行、拍摄石灰岩景观、规划钓鱼、露营、地方故事和 AR 体验。", faqWhen: "什么时候最好？", faqWhenAnswer: "春季和秋季最适合步行与摄影；夏季适合河边停留，但需要周密规划。", keywordSuffixes: ["阿格伦", "维特河", "卢科维特", "洛维奇地区", "乡村旅游"] },
+  hu: { category: "Utazási kalauz", titleSeparator: " | ", metaPrefix: "Tervezd meg", introPrefix: "Ez a kalauz segít megtervezni", sectionHeadings: ["Fő ígéret", "Tervezési jegyzetek", "Kapcsolódó útvonalak"], sectionBodies: ["Összekapcsolja a folyót, sziklákat, falusi emlékezetet és a látogatók gyakorlati igényeit.", "Ellenőrizd az évszakot, hozzáférést, időt, cipőt, vizet és hogy kell-e helyi vezetés.", "Használd a belső linkeket, hogy a témát útvonalakkal, szállással, étellel és közeli helyekkel kösd össze."], cta: "Kérdezz a látogatásról", faqWhere: "Hol van Aglen?", faqWhereAnswer: "Aglen falu Észak-Bulgáriában, Lovech tartományban, Lukovit és a Vit folyó völgye közelében.", faqDo: "Mit tehetnek a látogatók?", faqDoAnswer: "Sétálhatnak folyóparti útvonalakon, fotózhatnak mészkőhelyeket, tervezhetnek horgászatot, kempinget, helyi történeteket és AR-élményt.", faqWhen: "Mikor a legjobb?", faqWhenAnswer: "Tavasz és ősz a legerősebb sétához és fotózáshoz; nyáron a folyóparti pihenés jó gondos tervezéssel.", keywordSuffixes: ["Aglen", "Vit folyó", "Lukovit", "Lovech régió", "falusi turizmus"] },
+};
 
-const bgKeywords = [
-  "Ъглен",
-  "село Ъглен",
-  "туризъм в Ъглен",
-  "забележителности Ъглен",
-  "река Вит Ъглен",
-  "Луковит Ъглен",
-  "селски туризъм България",
-  "екотуризъм България",
-];
+function imageAlt(lang: LanguageCode, key: LandingPageMaster["imageAltKey"]): string {
+  const copy = contentByLanguage[lang];
+  const byKey: Record<LandingPageMaster["imageAltKey"], string> = {
+    hero: copy.hero.imageAlt,
+    aerial: copy.galleryItems[3]?.alt ?? copy.landmarks.aria,
+    cave: copy.galleryItems[2]?.alt ?? copy.guides.caves.text,
+    church: copy.placesList[4]?.imageAlt ?? copy.stay.title,
+    pool: copy.placesList[3]?.imageAlt ?? copy.guides.vitRiver.text,
+    kaleto: copy.placesList[5]?.imageAlt ?? copy.about.title,
+  };
 
-function landingPage(page: Omit<LandingPage, "sectionId" | "keywords" | "secondaryKeywords" | "bulgarianKeywords"> & Partial<Pick<LandingPage, "keywords" | "secondaryKeywords" | "bulgarianKeywords">>): LandingPage {
+  return byKey[key];
+}
+
+function routeLabel(lang: LanguageCode, routeId: LandingPageId | string): string {
+  const copy = contentByLanguage[lang];
+  const ui = uiTextByLanguage[lang];
+
+  if (routeId in pageNames[lang]) {
+    return pageNames[lang][routeId as LandingPageId];
+  }
+
+  const coreLabels: Record<string, string> = {
+    home: copy.nav.home,
+    pillars: copy.about.title,
+    attractions: copy.landmarks.title,
+    activities: copy.experiences.title,
+    fishing: copy.guides.fishing.label,
+    hiking: copy.guides.hiking.label,
+    caves: copy.guides.caves.label,
+    vitRiver: copy.guides.vitRiver.label,
+    food: copy.guides.food.label,
+    nearby: copy.guides.nearby.label,
+    geo: copy.landmarks.aria,
+    stay: copy.nav.stay,
+    quests: copy.nav.quests,
+    app: copy.app.title,
+    travelGuide: copy.hub.title,
+    seasonal: copy.guides.seasonal.label,
+    events: ui.trustLinks.find((link) => link.routeId === "events")?.label ?? copy.hub.eyebrow,
+    trust: ui.trustLinks.find((link) => link.routeId === "trust")?.label ?? copy.brand.name,
+    editorial: ui.trustLinks.find((link) => link.routeId === "editorial")?.label ?? copy.sourceNotes[0],
+    localSeo: ui.trustLinks.find((link) => link.routeId === "localSeo")?.label ?? copy.landmarks.aria,
+    crawlerPolicy: ui.trustLinks.find((link) => link.routeId === "crawlerPolicy")?.label ?? copy.hub.eyebrow,
+    contact: copy.contact.cta,
+  };
+
+  return coreLabels[routeId] ?? copy.brand.name;
+}
+
+function buildLandingPage(lang: LanguageCode, page: LandingPageMaster): LandingPage {
+  const copy = contentByLanguage[lang];
+  const text = landingText[lang];
+  const h1 = pageNames[lang][page.id];
+  const category = text.category;
+  const location = copy.hero.meta;
+  const title = `${h1}${text.titleSeparator}${copy.brand.name}`;
+  const metaDescription = `${text.metaPrefix} ${h1.toLocaleLowerCase()}: ${copy.landmarks.text}`;
+  const intro = `${text.introPrefix} ${h1.toLocaleLowerCase()} — ${location}. ${copy.hub.text}`;
+  const linkedLabels = page.internalLinkRouteIds.map((routeId) => routeLabel(lang, routeId));
+
   return {
+    id: page.id,
+    slug: page.slug,
     sectionId: "seo-guide",
-    keywords: [...primaryKeywords, ...(page.keywords ?? [])],
-    secondaryKeywords: [...secondaryKeywords, ...(page.secondaryKeywords ?? [])],
-    bulgarianKeywords: [...bgKeywords, ...(page.bulgarianKeywords ?? [])],
-    ...page,
+    category,
+    title,
+    metaDescription,
+    h1,
+    intro,
+    keywords: [h1, copy.brand.name, copy.landmarks.title, ...text.keywordSuffixes],
+    secondaryKeywords: [copy.guides.vitRiver.label, copy.guides.hiking.label, copy.guides.nearby.label],
+    bulgarianKeywords: lang === "bg" ? ["Ъглен", "село Ъглен", "река Вит", "Луковит"] : [copy.brand.name, h1],
+    image: page.image,
+    imageAlt: imageAlt(lang, page.imageAltKey),
+    ctaLabel: text.cta,
+    schemaType: page.schemaType,
+    sections: [
+      { heading: text.sectionHeadings[0], body: `${h1}: ${text.sectionBodies[0]} ${copy.about.text}` },
+      { heading: text.sectionHeadings[1], body: `${text.sectionBodies[1]} ${copy.contact.noteTwo}` },
+      { heading: text.sectionHeadings[2], body: `${text.sectionBodies[2]} ${linkedLabels.join(", ")}.` },
+    ],
+    faqs: [
+      { question: text.faqWhere, answer: text.faqWhereAnswer },
+      { question: text.faqDo, answer: text.faqDoAnswer },
+      { question: text.faqWhen, answer: text.faqWhenAnswer },
+    ],
+    internalLinks: page.internalLinkRouteIds.map((routeId) => ({ label: routeLabel(lang, routeId), routeId })),
   };
 }
 
-export const landingPages: LandingPage[] = [
-  landingPage({
-    id: "visitAglen",
-    slug: "visit-aglen",
-    category: "Pillar guide",
-    title: "Visit Aglen, Bulgaria | Complete Travel Guide",
-    metaDescription:
-      "Plan your trip to Aglen with attractions, nature, routes, AR quests, accommodation, food, fishing, and weekend ideas.",
-    h1: "Visit Aglen, Bulgaria",
-    intro:
-      "Use this guide as the main entry point for Aglen: a quiet rural destination in Lovech Province with the Vit River, limestone cliffs, village memory, and Hidden Bulgaria Quests.",
-    image: images.hero,
-    imageAlt: "Vit River canyon landscape near Aglen, Bulgaria",
-    ctaLabel: "Plan my Aglen weekend",
-    schemaType: "TravelGuide",
-    sections: [
-      { heading: "Why Visit", body: "Aglen is strongest for visitors who want slow travel, nature, photography, village stories, and routes away from crowded Bulgarian itineraries." },
-      { heading: "Top Attractions", body: "Start with the Vit River, Dupkata, Sloncheto, Chervena Stena, Rachkov Vir, St. Archangel Michael Church, and Kaleto." },
-      { heading: "Practical Planning", body: "Most visits work best as a day trip from Lukovit or a two-day weekend from Sofia, Pleven, or Lovech with clear route planning." },
-    ],
-    faqs: sharedFaqs,
-    internalLinks: [
-      { label: "Attractions in Aglen", routeId: "attractions" },
-      { label: "Things to do", routeId: "thingsToDo" },
-      { label: "Accommodation", routeId: "accommodationNearAglen" },
-      { label: "Vit River", routeId: "vitRiver" },
-      { label: "Contact", routeId: "contact" },
-    ],
-  }),
-  landingPage({
-    id: "thingsToDo",
-    slug: "things-to-do-in-aglen",
-    category: "Activity pillar",
-    title: "Things To Do in Aglen | Nature, Fishing, AR Quests and Culture",
-    metaDescription:
-      "The complete list of things to do in Aglen for families, nature lovers, anglers, campers, photographers, and weekend travelers.",
-    h1: "Things To Do In Aglen",
-    intro:
-      "Aglen works best as a compact activity base: walk, photograph, fish, camp, follow local stories, and connect the village with nearby Lovech-region routes.",
-    image: images.aerial,
-    imageAlt: "Aerial view of the Vit River corridor near Aglen",
-    ctaLabel: "Ask about a guided walk",
-    schemaType: "TravelGuide",
-    sections: [
-      { heading: "Top Activities", body: "Plan canyon walks, short hikes, river photography, fishing guidance, herb walks, AR quests, and picnic stops." },
-      { heading: "By Traveler Type", body: "Families should choose short routes and picnic planning; photographers should prioritize morning and autumn light; anglers should ask about local etiquette and access." },
-      { heading: "Seasonal Ideas", body: "Spring and autumn suit walking, summer suits river pauses and camping, and winter works for quiet village discovery." },
-    ],
-    faqs: sharedFaqs,
-    internalLinks: [
-      { label: "Fishing in Aglen", routeId: "fishing" },
-      { label: "Hiking around Aglen", routeId: "hiking" },
-      { label: "AR Adventure", routeId: "quests" },
-      { label: "Weekend itinerary", routeId: "weekendInAglen" },
-    ],
-  }),
-  landingPage({
-    id: "natureAroundAglen",
-    slug: "nature-around-aglen",
-    category: "Nature pillar",
-    title: "Nature Around Aglen | Vit River, Canyons, Caves and Forests",
-    metaDescription:
-      "A nature guide to Aglen's river valley, limestone cliffs, caves, wildlife, and quiet rural landscapes.",
-    h1: "Nature Around Aglen",
-    intro:
-      "The natural identity of Aglen comes from the Vit River valley, limestone formations, river pools, cave thresholds, forest edges, and a quiet rural landscape.",
-    image: images.hero,
-    imageAlt: "Limestone canyon and Vit River landscape near Aglen",
-    ctaLabel: "Plan a nature route",
-    schemaType: "TravelGuide",
-    sections: [
-      { heading: "Landscape", body: "Aglen combines river bends, rock forms, forest shade, and open village views in a small area that rewards slow observation." },
-      { heading: "Responsible Travel", body: "Stay on practical paths, respect private land, avoid damaging cave or river habitats, and keep fishing and camping low-impact." },
-      { heading: "Photo And Wildlife Notes", body: "The best visual moments often come from river light, cliff shadows, seasonal plants, birds, and the contrast between stone and water." },
-    ],
-    faqs: sharedFaqs,
-    internalLinks: [
-      { label: "Vit River guide", routeId: "vitRiver" },
-      { label: "Hiking routes", routeId: "hiking" },
-      { label: "Caves and rock forms", routeId: "caves" },
-      { label: "Eco tourism", routeId: "ecoTourismBulgaria" },
-    ],
-  }),
-  landingPage({
-    id: "historyOfAglen",
-    slug: "history-of-aglen",
-    category: "Cultural pillar",
-    title: "History of Aglen | Village Memory, Kaleto and Local Legends",
-    metaDescription:
-      "Explore Aglen's history, local memory, archaeological traces, church heritage, and village stories.",
-    h1: "History of Aglen",
-    intro:
-      "Aglen's history should be told with care: local memory, archaeological traces, church heritage, older routes, folklore names, and the unusual identity of the village name.",
-    image: images.kaleto,
-    imageAlt: "Stone ruins and hilltop landscape connected with Kaleto near Aglen",
-    ctaLabel: "Book a guided story walk",
-    schemaType: "Article",
-    sections: [
-      { heading: "Kaleto And Older Routes", body: "Kaleto gives Aglen a strong historical anchor, but claims should stay grounded in visible remains, local memory, and cited sources." },
-      { heading: "Church And Village Memory", body: "St. Archangel Michael Church and village stories connect the destination with everyday continuity, family memory, and local identity." },
-      { heading: "Legends As Local Memory", body: "Folklore and migration stories should be presented as local memory unless supported by stronger documentation." },
-    ],
-    faqs: [
-      ...sharedFaqs,
-      { question: "Is every Aglen legend proven history?", answer: "No. Folklore should be marked as local memory unless it is supported by reliable sources or visible evidence." },
-    ],
-    internalLinks: [
-      { label: "Cultural tourism", routeId: "culturalTourism" },
-      { label: "Attractions", routeId: "attractions" },
-      { label: "Hidden Bulgaria Quests", routeId: "quests" },
-      { label: "Editorial policy", routeId: "editorial" },
-    ],
-  }),
-  landingPage({
-    id: "accommodationNearAglen",
-    slug: "accommodation-near-aglen",
-    category: "Conversion page",
-    title: "Accommodation Near Aglen | Guest Rooms, Camping and Villas",
-    metaDescription:
-      "Find quiet stays near Aglen for rural tourism, weekend trips, family travel, and nature escapes.",
-    h1: "Accommodation Near Aglen",
-    intro:
-      "Accommodation content should convert without overpromising: guest rooms, camping options, villa-style stays, availability questions, and practical weekend planning.",
-    image: images.church,
-    imageAlt: "Village street and church context for stays near Aglen",
-    ctaLabel: "Check accommodation",
-    schemaType: "Article",
-    sections: [
-      { heading: "Where To Stay", body: "Position stays by visitor intent: quiet village rooms, camping near nature routes, and small-group villa escapes." },
-      { heading: "Booking Tips", body: "Ask for dates, group size, language, transport, interests, food needs, and whether the trip includes fishing, hiking, or AR quests." },
-      { heading: "Trust Notes", body: "Use real photos, transparent pricing, cancellation notes, host expectations, and clear contact options." },
-    ],
-    faqs: sharedFaqs,
-    internalLinks: [
-      { label: "Visit Aglen", routeId: "visitAglen" },
-      { label: "Camping near Aglen", routeId: "campingNearAglen" },
-      { label: "Food near Aglen", routeId: "traditionalFood" },
-      { label: "Contact", routeId: "contact" },
-    ],
-  }),
-  landingPage({
-    id: "traditionalFood",
-    slug: "traditional-food-aglen",
-    category: "Food guide",
-    title: "Traditional Food Near Aglen | Rural Bulgarian Flavors",
-    metaDescription:
-      "Discover traditional food, seasonal produce, picnic ideas, and local culinary experiences around Aglen.",
-    h1: "Traditional Food in Aglen",
-    intro:
-      "Food pages should focus on realistic rural travel: seasonal products, picnic planning, nearby restaurants, home-style flavors, and respectful guest expectations.",
-    image: images.church,
-    imageAlt: "Village setting for food and picnic planning near Aglen",
-    ctaLabel: "Ask about local food",
-    schemaType: "Article",
-    sections: [
-      { heading: "Local Flavors", body: "Frame food around seasonal produce, simple village meals, herbs, preserves, bread, dairy, and picnic-friendly planning." },
-      { heading: "Nearby Options", body: "Where Aglen itself has limited formal restaurants, guide visitors toward nearby towns and host-arranged meals." },
-      { heading: "Picnic Ideas", body: "Connect food content with river pauses, family routes, and low-waste rural travel." },
-    ],
-    faqs: sharedFaqs,
-    internalLinks: [
-      { label: "Accommodation", routeId: "accommodationNearAglen" },
-      { label: "Visit Aglen", routeId: "visitAglen" },
-      { label: "Rural tourism", routeId: "ruralTourismBulgaria" },
-    ],
-  }),
-  landingPage({
-    id: "hiddenPlaces",
-    slug: "hidden-places-near-aglen",
-    category: "Discovery guide",
-    title: "Hidden Places Near Aglen | Secret Nature and Village Routes",
-    metaDescription:
-      "Find quiet, lesser-known places near Aglen for slow travel, photography, nature walks, and cultural discovery.",
-    h1: "Hidden Places Near Aglen",
-    intro:
-      "Hidden-place content should help visitors discover without damaging sensitive places: clear access notes, responsible behavior, and nearby route ideas.",
-    image: images.cave,
-    imageAlt: "Cave threshold and limestone landscape near Aglen",
-    ctaLabel: "Request a hidden route",
-    schemaType: "TravelGuide",
-    sections: [
-      { heading: "Local Places", body: "Use local names, rock forms, river bends, church context, Kaleto, and cave thresholds as discovery anchors." },
-      { heading: "Responsible Access", body: "Do not expose unsafe or private locations without guidance. Use visitor-ready places first." },
-      { heading: "Nearby Villages", body: "Connect Aglen with Lukovit, Karlukovo, Krushuna, Devetashka Cave, and Iskar-Panega when building weekend routes." },
-    ],
-    faqs: sharedFaqs,
-    internalLinks: [
-      { label: "Lukovit", routeId: "lukovitGuide" },
-      { label: "Karlukovo", routeId: "karlukovoGuide" },
-      { label: "Krushuna", routeId: "krushunaGuide" },
-      { label: "Devetashka Cave", routeId: "devetashkaCaveGuide" },
-    ],
-  }),
-  landingPage({
-    id: "culturalTourism",
-    slug: "cultural-tourism-aglen",
-    category: "Tourism landing page",
-    title: "Cultural Tourism in Aglen | Church, Kaleto, Legends and AR Stories",
-    metaDescription:
-      "Discover cultural tourism in Aglen through the village church, Kaleto, local memory, legends, and AR storytelling.",
-    h1: "Cultural Tourism in Aglen",
-    intro:
-      "Cultural tourism in Aglen should combine visible heritage, responsible storytelling, local voices, and AR layers that make village memory easier to explore.",
-    image: images.kaleto,
-    imageAlt: "Kaleto ruins and cultural landscape near Aglen",
-    ctaLabel: "Book a guided story walk",
-    schemaType: "TravelGuide",
-    sections: [
-      { heading: "Core Promise", body: "Church, Kaleto, village memory, legends, and AR storytelling create a cultural route that is intimate rather than museum-like." },
-      { heading: "E-E-A-T Notes", body: "Name sources, mark uncertain folklore, show last updated dates, and explain how local knowledge was checked." },
-      { heading: "Best Visitors", body: "Culture travelers, school groups, photographers, slow travelers, and families who like stories with places." },
-    ],
-    faqs: sharedFaqs,
-    internalLinks: [
-      { label: "History of Aglen", routeId: "historyOfAglen" },
-      { label: "Hidden Bulgaria Quests", routeId: "quests" },
-      { label: "School trips", routeId: "contact" },
-    ],
-  }),
-  landingPage({
-    id: "natureTourism",
-    slug: "nature-tourism-aglen",
-    category: "Tourism landing page",
-    title: "Nature Tourism in Aglen | Vit River, Limestone Cliffs and Forest",
-    metaDescription:
-      "Plan nature tourism in Aglen around the Vit River, limestone cliffs, forest edges, caves, and quiet landscapes.",
-    h1: "Nature Tourism in Aglen",
-    intro:
-      "Nature tourism is Aglen's broadest growth opportunity because it connects river walks, limestone scenery, photography, birding, camping, and low-impact travel.",
-    image: images.hero,
-    imageAlt: "Nature tourism landscape with river and limestone cliffs near Aglen",
-    ctaLabel: "Plan a nature route",
-    schemaType: "TravelGuide",
-    sections: [
-      { heading: "Core Promise", body: "Vit River, limestone cliffs, forest, caves, and quiet landscapes make Aglen a nature-first destination." },
-      { heading: "Route Planning", body: "Build routes by time, difficulty, season, weather, and visitor type rather than selling one generic trail." },
-      { heading: "Responsible Nature Notes", body: "Every route should include safety, access, waste, river, camping, and wildlife guidance." },
-    ],
-    faqs: sharedFaqs,
-    internalLinks: [
-      { label: "Nature around Aglen", routeId: "natureAroundAglen" },
-      { label: "Vit River", routeId: "vitRiver" },
-      { label: "Camping", routeId: "campingNearAglen" },
-    ],
-  }),
-  landingPage({
-    id: "adventureTourism",
-    slug: "adventure-tourism-aglen",
-    category: "Tourism landing page",
-    title: "Adventure Tourism in Aglen | AR Quests, Canyons and Cave Routes",
-    metaDescription:
-      "Explore adventure tourism in Aglen with AR quests, canyon walks, cave routes, and photo exploration.",
-    h1: "Adventure Tourism in Aglen",
-    intro:
-      "Adventure in Aglen should stay accessible: AR quests, canyon walks, cave thresholds, photo exploration, and guided routes with realistic safety notes.",
-    image: images.cave,
-    imageAlt: "Cave and limestone route for adventure tourism near Aglen",
-    ctaLabel: "Start the AR quest",
-    schemaType: "TravelGuide",
-    sections: [
-      { heading: "Core Promise", body: "AR quests, canyon walks, cave routes, and photo exploration give Aglen an adventure angle without needing extreme sports." },
-      { heading: "Safety Positioning", body: "Adventure pages should state route difficulty, terrain, footwear, weather, river caution, and when local guidance is recommended." },
-      { heading: "Digital Layer", body: "Hidden Bulgaria Quests turns real locations into a story-led route and gives the destination a unique reason to visit." },
-    ],
-    faqs: sharedFaqs,
-    internalLinks: [
-      { label: "Hidden Bulgaria Quests", routeId: "quests" },
-      { label: "Hiking", routeId: "hiking" },
-      { label: "Caves", routeId: "caves" },
-    ],
-  }),
-  landingPage({
-    id: "familyTrip",
-    slug: "family-trip-aglen",
-    category: "Tourism landing page",
-    title: "Family Trip to Aglen | Short Walks, Picnics and Village Stories",
-    metaDescription:
-      "Plan a family trip to Aglen with short walks, safe picnic planning, educational stories, and easy weekend ideas.",
-    h1: "Family Trip to Aglen",
-    intro:
-      "Aglen can be positioned as a quiet family nature destination with short walks, picnic stops, village stories, and easy day-trip planning.",
-    image: images.pool,
-    imageAlt: "Quiet river pool suitable for family route planning near Aglen",
-    ctaLabel: "Plan a family weekend",
-    schemaType: "TravelGuide",
-    sections: [
-      { heading: "Core Promise", body: "Short walks, safe picnic planning, educational stories, and AR quests make Aglen approachable for families." },
-      { heading: "Planning Notes", body: "Give families route length, shade, water, toilets, parking, food, and weather guidance before they arrive." },
-      { heading: "Educational Layer", body: "Use rocks, river, church, Kaleto, herbs, and local names to turn the visit into a discovery day." },
-    ],
-    faqs: [
-      ...sharedFaqs,
-      { question: "Is Aglen good for families?", answer: "Yes. Aglen is best positioned as a quiet family nature destination with short walks, picnic stops, village stories, and easy day-trip planning." },
-    ],
-    internalLinks: [
-      { label: "Things to do", routeId: "thingsToDo" },
-      { label: "Weekend itinerary", routeId: "weekendInAglen" },
-      { label: "Accommodation", routeId: "accommodationNearAglen" },
-    ],
-  }),
-  landingPage({
-    id: "campingNearAglen",
-    slug: "camping-near-aglen",
-    category: "Tourism landing page",
-    title: "Camping Near Aglen | Vit River Access and Responsible Camping",
-    metaDescription:
-      "Plan camping near Aglen with tent stays, river access, responsible camping notes, and route ideas.",
-    h1: "Camping Near Aglen",
-    intro:
-      "Camping content should be practical and responsible: where to ask, how to prepare, what to avoid, and how to combine camping with river and canyon routes.",
-    image: images.aerial,
-    imageAlt: "Open landscape and river corridor for camping near Aglen",
-    ctaLabel: "Check camping availability",
-    schemaType: "Article",
-    sections: [
-      { heading: "Core Promise", body: "Tent stays, river access, quiet landscapes, and route ideas can make Aglen a low-impact camping base." },
-      { heading: "Responsible Camping", body: "Explain waste, fire, noise, private land, river safety, and when visitors should ask for local permission." },
-      { heading: "What To Bring", body: "Walking shoes, water, light, insect protection, layered clothing, charging options, and food planning are essential." },
-    ],
-    faqs: sharedFaqs,
-    internalLinks: [
-      { label: "Accommodation", routeId: "accommodationNearAglen" },
-      { label: "Nature tourism", routeId: "natureTourism" },
-      { label: "Vit River", routeId: "vitRiver" },
-    ],
-  }),
-  landingPage({
-    id: "weekendInAglen",
-    slug: "weekend-in-aglen",
-    category: "Itinerary",
-    title: "Weekend in Aglen | Two-Day Itinerary from Sofia, Pleven and Lovech",
-    metaDescription:
-      "Plan a two-day weekend in Aglen from Sofia, Pleven, Lovech, and Lukovit with nature, food, walks, and AR quests.",
-    h1: "Weekend in Aglen",
-    intro:
-      "The weekend page should convert high-intent visitors into route requests by combining arrival, walks, food, accommodation, nearby trips, and contact CTAs.",
-    image: images.hero,
-    imageAlt: "Weekend travel landscape around Aglen and the Vit River",
-    ctaLabel: "Request weekend plan",
-    schemaType: "TravelGuide",
-    sections: [
-      { heading: "Day One", body: "Arrive via Lukovit, orient in the village, take a river or canyon walk, visit church/Kaleto context, and finish with a quiet evening." },
-      { heading: "Day Two", body: "Choose fishing, AR quests, a photo route, or a nearby day trip to Karlukovo, Iskar-Panega, Krushuna, or Devetashka Cave." },
-      { heading: "From Major Cities", body: "Create variants for Sofia, Pleven, Lovech, and Lukovit with realistic drive-time, meal, and accommodation planning." },
-    ],
-    faqs: sharedFaqs,
-    internalLinks: [
-      { label: "Aglen from Sofia", routeId: "aglenFromSofia" },
-      { label: "How to get to Aglen", routeId: "howToGet" },
-      { label: "Nearby destinations", routeId: "nearby" },
-    ],
-  }),
-  landingPage({
-    id: "routeMap",
-    slug: "aglen-route-map",
-    category: "Route planning",
-    title: "Aglen Route Map | River, Rocks, Village and Nearby Places",
-    metaDescription:
-      "Use the Aglen route map to connect the village center, Vit River, rock formations, caves, Kaleto, and nearby destinations.",
-    h1: "Aglen Route Map",
-    intro:
-      "The route-map page acts as the internal linking spine between attractions, activities, geo pages, FAQ answers, and booking/contact CTAs.",
-    image: images.aerial,
-    imageAlt: "Aerial route map context for Aglen and the Vit River valley",
-    ctaLabel: "Build my route",
-    schemaType: "TravelGuide",
-    sections: [
-      { heading: "Core Stops", body: "Village center, Vit River path, Dupkata, Sloncheto, Chervena Stena, Rachkov Vir, church, Kaleto, and AR quest points." },
-      { heading: "Nearby Clusters", body: "Route Aglen together with Lukovit, Karlukovo, Iskar-Panega, Krushuna, Devetashka Cave, and Lovech-region pages." },
-      { heading: "Internal Linking Role", body: "Every attraction and activity page should link back to this route map and the main Visit Aglen pillar." },
-    ],
-    faqs: sharedFaqs,
-    internalLinks: [
-      { label: "Visit Aglen", routeId: "visitAglen" },
-      { label: "Attractions", routeId: "attractions" },
-      { label: "Nearby destinations", routeId: "nearby" },
-    ],
-  }),
-  landingPage({
-    id: "bestTime",
-    slug: "best-time-to-visit-aglen",
-    category: "Practical info",
-    title: "Best Time to Visit Aglen | Seasons, Weather and Route Ideas",
-    metaDescription:
-      "Find the best time to visit Aglen for walking, photography, river pauses, camping, fishing, and quiet rural travel.",
-    h1: "Best Time to Visit Aglen",
-    intro:
-      "This page should answer seasonal intent clearly and link visitors toward the right route, activity, and contact option.",
-    image: images.aerial,
-    imageAlt: "Seasonal aerial landscape around Aglen and the Vit River",
-    ctaLabel: "Choose my season",
-    schemaType: "Article",
-    sections: [
-      { heading: "Spring", body: "April to June is strongest for walking, green landscapes, river light, flowers, and moderate temperatures." },
-      { heading: "Summer", body: "Summer suits river pauses and camping, but visitors need shade, water, heat planning, and responsible access." },
-      { heading: "Autumn And Winter", body: "September and October are excellent for photography and walks. Winter is quieter and works best for short village-focused visits." },
-    ],
-    faqs: sharedFaqs,
-    internalLinks: [
-      { label: "Seasonal guide", routeId: "seasonal" },
-      { label: "Weekend in Aglen", routeId: "weekendInAglen" },
-      { label: "Nature tourism", routeId: "natureTourism" },
-    ],
-  }),
-  landingPage({
-    id: "howToGet",
-    slug: "how-to-get-to-aglen",
-    category: "Practical info",
-    title: "How to Get to Aglen | Routes from Lukovit, Lovech, Pleven and Sofia",
-    metaDescription:
-      "Plan how to get to Aglen from Lukovit, Lovech, Pleven, and Sofia with route ideas and practical visitor notes.",
-    h1: "How to Get to Aglen",
-    intro:
-      "How-to-get-there content captures high-intent visitors and should be honest about transport, route planning, parking, and the value of local guidance.",
-    image: images.aerial,
-    imageAlt: "Road and river valley context for reaching Aglen",
-    ctaLabel: "Ask for directions",
-    schemaType: "Article",
-    sections: [
-      { heading: "Nearest Town", body: "Lukovit is the strongest route modifier and should be connected clearly to Aglen, Iskar-Panega, and Karlukovo." },
-      { heading: "From Sofia And Pleven", body: "Use Aglen as a weekend or day-trip add-on for travelers who already search for Northern Bulgaria hidden places." },
-      { heading: "Arrival Notes", body: "Visitors should confirm road conditions, meeting points, local access, and route difficulty before walking toward river or rock areas." },
-    ],
-    faqs: sharedFaqs,
-    internalLinks: [
-      { label: "Aglen from Sofia", routeId: "aglenFromSofia" },
-      { label: "Lukovit guide", routeId: "lukovitGuide" },
-      { label: "Route map", routeId: "routeMap" },
-    ],
-  }),
-  landingPage({
-    id: "aglenFromSofia",
-    slug: "aglen-from-sofia",
-    category: "Geo route",
-    title: "Aglen from Sofia | Weekend Route to a Hidden Bulgaria Village",
-    metaDescription:
-      "Plan Aglen from Sofia as a weekend route with Lukovit, the Vit River, limestone landscapes, and nearby Northern Bulgaria stops.",
-    h1: "Aglen from Sofia",
-    intro:
-      "This route page should capture Sofia weekend intent and make Aglen the quiet base or add-on for a Northern Bulgaria trip.",
-    image: images.hero,
-    imageAlt: "Hidden Bulgaria weekend landscape near Aglen",
-    ctaLabel: "Request Sofia weekend plan",
-    schemaType: "TravelGuide",
-    sections: [
-      { heading: "Why It Works", body: "Aglen gives Sofia travelers a different weekend: river, limestone, village stories, AR quests, and nearby cave routes." },
-      { heading: "Suggested Structure", body: "Travel through Lukovit, visit Aglen's river and rock points, stay nearby, then add Iskar-Panega, Karlukovo, or Devetashka Cave." },
-      { heading: "Conversion Notes", body: "Ask for group size, transport, arrival time, language, walking ability, and whether visitors want fishing, family, or photo routes." },
-    ],
-    faqs: sharedFaqs,
-    internalLinks: [
-      { label: "Weekend in Aglen", routeId: "weekendInAglen" },
-      { label: "How to get to Aglen", routeId: "howToGet" },
-      { label: "Nearby destinations", routeId: "nearby" },
-    ],
-  }),
-  landingPage({
-    id: "lovechRegionGuide",
-    slug: "lovech-region-travel-guide",
-    category: "Geo page",
-    title: "Lovech Region Travel Guide | Aglen, Lukovit, Caves and Waterfalls",
-    metaDescription:
-      "Use Aglen as part of a Lovech region travel route with Lukovit, Krushuna, Devetashka Cave, Karlukovo, and Iskar-Panega.",
-    h1: "Lovech Region Travel Guide",
-    intro:
-      "The regional page builds authority beyond branded Aglen demand and connects the village with stronger regional search clusters.",
-    image: images.aerial,
-    imageAlt: "Northern Bulgaria landscape for Lovech region travel planning",
-    ctaLabel: "Build a Lovech route",
-    schemaType: "TravelGuide",
-    sections: [
-      { heading: "Aglen's Role", body: "Aglen adds quiet rural tourism, river routes, and AR storytelling to Lovech-region itineraries dominated by caves and waterfalls." },
-      { heading: "Nearby Demand", body: "Lukovit, Karlukovo, Krushuna, Devetashka Cave, and Iskar-Panega pages should all link back into Aglen routes." },
-      { heading: "Authority Strategy", body: "Use original photos, practical access notes, maps, and seasonal updates to compete with thin regional listings." },
-    ],
-    faqs: sharedFaqs,
-    internalLinks: [
-      { label: "Lukovit", routeId: "lukovitGuide" },
-      { label: "Krushuna", routeId: "krushunaGuide" },
-      { label: "Devetashka Cave", routeId: "devetashkaCaveGuide" },
-      { label: "Aglen", routeId: "visitAglen" },
-    ],
-  }),
-  landingPage({
-    id: "lukovitGuide",
-    slug: "lukovit-travel-guide",
-    category: "Geo page",
-    title: "Lukovit Travel Guide | Aglen, Iskar-Panega and Karlukovo Routes",
-    metaDescription:
-      "Plan a Lukovit-area trip with Aglen, Iskar-Panega, Karlukovo, cave landscapes, river routes, and weekend ideas.",
-    h1: "Lukovit Travel Guide",
-    intro:
-      "Lukovit is the nearest high-intent town modifier for Aglen and should be used as a practical route-planning bridge.",
-    image: images.aerial,
-    imageAlt: "River and limestone route planning near Lukovit and Aglen",
-    ctaLabel: "Plan a Lukovit route",
-    schemaType: "TravelGuide",
-    sections: [
-      { heading: "Why Lukovit Matters", body: "Many travelers know Lukovit or Iskar-Panega before they know Aglen, so the page should route that demand toward the village." },
-      { heading: "Nearby Pairings", body: "Connect Lukovit with Aglen, Iskar-Panega, Karlukovo, Prohodna, and weekend nature itineraries." },
-      { heading: "Visitor Intent", body: "Answer drive routes, day-trip combinations, family plans, photo stops, and quiet nature alternatives." },
-    ],
-    faqs: sharedFaqs,
-    internalLinks: [
-      { label: "Aglen", routeId: "visitAglen" },
-      { label: "Iskar-Panega", routeId: "iskarPanegaGuide" },
-      { label: "Karlukovo", routeId: "karlukovoGuide" },
-    ],
-  }),
-  landingPage({
-    id: "karlukovoGuide",
-    slug: "karlukovo-travel-guide",
-    category: "Geo page",
-    title: "Karlukovo Travel Guide | Caves, Karst Routes and Aglen Weekend Ideas",
-    metaDescription:
-      "Connect Karlukovo cave tourism with Aglen, hiking routes, limestone landscapes, and Northern Bulgaria weekend itineraries.",
-    h1: "Karlukovo Travel Guide",
-    intro:
-      "Karlukovo brings cave and karst demand. Aglen can be positioned as a quieter nearby route with river, rock, and village-story value.",
-    image: images.cave,
-    imageAlt: "Cave and limestone landscape connected with Karlukovo and Aglen routes",
-    ctaLabel: "Add Aglen to this route",
-    schemaType: "TravelGuide",
-    sections: [
-      { heading: "Cave Tourism Cluster", body: "Use Karlukovo to connect Prohodna-style cave intent with Aglen's caves, rock forms, hiking, and weekend itinerary content." },
-      { heading: "Route Pairing", body: "A strong weekend pairs cave landscapes with Aglen's river valley, AR quest, and slow village stay." },
-      { heading: "Content Gap", body: "Most cave pages are attraction-only. Aglen can win with practical routes, safety notes, food, stay, and local story layers." },
-    ],
-    faqs: sharedFaqs,
-    internalLinks: [
-      { label: "Caves around Aglen", routeId: "caves" },
-      { label: "Hiking", routeId: "hiking" },
-      { label: "Weekend in Aglen", routeId: "weekendInAglen" },
-    ],
-  }),
-  landingPage({
-    id: "krushunaGuide",
-    slug: "krushuna-travel-guide",
-    category: "Geo page",
-    title: "Krushuna Travel Guide | Waterfalls, Lovech Region and Aglen Routes",
-    metaDescription:
-      "Pair Krushuna waterfall demand with Aglen, Devetashka Cave, Lovech region routes, and quiet rural weekend ideas.",
-    h1: "Krushuna Travel Guide",
-    intro:
-      "Krushuna has established waterfall demand. This page helps route visitors from that demand toward Aglen as a quieter rural add-on.",
-    image: images.pool,
-    imageAlt: "Water and limestone landscape for Krushuna and Aglen route planning",
-    ctaLabel: "Plan a Krushuna and Aglen route",
-    schemaType: "TravelGuide",
-    sections: [
-      { heading: "Weekend Pairing", body: "Krushuna, Devetashka Cave, Lovech, Lukovit, and Aglen can form a richer Lovech-region itinerary." },
-      { heading: "Aglen Advantage", body: "Aglen adds AR storytelling, village memory, river routes, and quiet stays to more famous nature stops." },
-      { heading: "Practical Content", body: "Include route order, drive logic, meal planning, walking difficulty, and where Aglen fits best." },
-    ],
-    faqs: sharedFaqs,
-    internalLinks: [
-      { label: "Lovech region", routeId: "lovechRegionGuide" },
-      { label: "Devetashka Cave", routeId: "devetashkaCaveGuide" },
-      { label: "Aglen", routeId: "visitAglen" },
-    ],
-  }),
-  landingPage({
-    id: "devetashkaCaveGuide",
-    slug: "devetashka-cave-travel-guide",
-    category: "Geo page",
-    title: "Devetashka Cave Travel Guide | Add Aglen to a Lovech Region Route",
-    metaDescription:
-      "Use Devetashka Cave demand to plan a wider Lovech region trip with Krushuna, Lukovit, Aglen caves, and rural tourism.",
-    h1: "Devetashka Cave Travel Guide",
-    intro:
-      "Devetashka Cave is a major attraction page opportunity that can route travelers toward Aglen's quieter cave, river, and village experiences.",
-    image: images.cave,
-    imageAlt: "Cave-inspired landscape for Devetashka and Aglen route planning",
-    ctaLabel: "Extend the cave route",
-    schemaType: "TravelGuide",
-    sections: [
-      { heading: "Route Strategy", body: "Connect Devetashka Cave with Krushuna, Lovech region travel, Aglen caves, and weekend itineraries." },
-      { heading: "Why Add Aglen", body: "Aglen adds slow travel, river scenery, AR quests, local history, and accommodation inquiry paths." },
-      { heading: "Search Advantage", body: "A practical route page can rank for nearby attraction combinations that thin destination pages often miss." },
-    ],
-    faqs: sharedFaqs,
-    internalLinks: [
-      { label: "Krushuna", routeId: "krushunaGuide" },
-      { label: "Lovech region", routeId: "lovechRegionGuide" },
-      { label: "Aglen caves", routeId: "caves" },
-    ],
-  }),
-  landingPage({
-    id: "iskarPanegaGuide",
-    slug: "iskar-panega-travel-guide",
-    category: "Geo page",
-    title: "Iskar-Panega Travel Guide | Blue-Water Trail and Aglen Nature Routes",
-    metaDescription:
-      "Connect Iskar-Panega trail demand near Lukovit with Aglen nature routes, hiking, photography, and weekend plans.",
-    h1: "Iskar-Panega Travel Guide",
-    intro:
-      "Iskar-Panega captures trail and blue-water nature demand near Lukovit. Aglen should be the quieter nearby extension.",
-    image: images.pool,
-    imageAlt: "Blue-water river mood for Iskar-Panega and Aglen route planning",
-    ctaLabel: "Combine Iskar-Panega with Aglen",
-    schemaType: "TravelGuide",
-    sections: [
-      { heading: "Nearby Nature Demand", body: "Searchers for Iskar-Panega often want accessible nature, photography, and day-trip planning." },
-      { heading: "Aglen Connection", body: "Link trail intent to Aglen's Vit River, canyon walks, fishing, camping, and nature tourism pages." },
-      { heading: "Itinerary Role", body: "Use Aglen as a quieter second stop or overnight base in a Lukovit-area weekend." },
-    ],
-    faqs: sharedFaqs,
-    internalLinks: [
-      { label: "Lukovit", routeId: "lukovitGuide" },
-      { label: "Hiking", routeId: "hiking" },
-      { label: "Nature around Aglen", routeId: "natureAroundAglen" },
-    ],
-  }),
-  landingPage({
-    id: "ruralTourismBulgaria",
-    slug: "rural-tourism-bulgaria-aglen",
-    category: "Topic page",
-    title: "Rural Tourism in Bulgaria | Aglen as a Quiet Village Destination",
-    metaDescription:
-      "Explore rural tourism in Bulgaria through Aglen: village stays, local stories, nature routes, food, and slow weekend travel.",
-    h1: "Rural Tourism in Bulgaria",
-    intro:
-      "This topic page positions Aglen inside broader rural Bulgaria demand while keeping the promise grounded in real village-scale experiences.",
-    image: images.church,
-    imageAlt: "Village landscape for rural tourism in Bulgaria",
-    ctaLabel: "Plan a rural weekend",
-    schemaType: "Article",
-    sections: [
-      { heading: "Why Aglen Fits", body: "Aglen offers quiet stays, local memory, river routes, food questions, and slower travel rather than mass tourism." },
-      { heading: "Trust Signals", body: "Use real photos, transparent contact paths, route difficulty, source notes, and local review to build confidence." },
-      { heading: "Content Angle", body: "Connect rural tourism with family trips, school discovery days, food, accommodation, and responsible visitor behavior." },
-    ],
-    faqs: sharedFaqs,
-    internalLinks: [
-      { label: "Accommodation", routeId: "accommodationNearAglen" },
-      { label: "Traditional food", routeId: "traditionalFood" },
-      { label: "Slow travel", routeId: "slowTravelBulgaria" },
-    ],
-  }),
-  landingPage({
-    id: "ecoTourismBulgaria",
-    slug: "eco-tourism-bulgaria-aglen",
-    category: "Topic page",
-    title: "Eco Tourism in Bulgaria | Aglen, Vit River and Responsible Travel",
-    metaDescription:
-      "Plan eco tourism in Bulgaria through Aglen with river walks, limestone nature, camping notes, wildlife care, and responsible travel rules.",
-    h1: "Eco Tourism in Bulgaria",
-    intro:
-      "Eco-tourism content should help Aglen grow without harming the river, caves, wildlife, private land, or local rhythm.",
-    image: images.hero,
-    imageAlt: "Eco tourism landscape with river and limestone near Aglen",
-    ctaLabel: "Plan a responsible nature route",
-    schemaType: "Article",
-    sections: [
-      { heading: "Aglen's Eco Promise", body: "The Vit River, limestone cliffs, forest edges, birds, herbs, and quiet walking routes create a strong eco-tourism foundation." },
-      { heading: "Responsible Rules", body: "Avoid litter, protect cave and river habitats, ask before crossing private spaces, keep noise low, and camp only where appropriate." },
-      { heading: "Visitor Education", body: "Every eco page should include safety, access, source notes, image credits, and contact details for corrections." },
-    ],
-    faqs: sharedFaqs,
-    internalLinks: [
-      { label: "Nature around Aglen", routeId: "natureAroundAglen" },
-      { label: "Camping near Aglen", routeId: "campingNearAglen" },
-      { label: "Vit River", routeId: "vitRiver" },
-    ],
-  }),
-  landingPage({
-    id: "slowTravelBulgaria",
-    slug: "slow-travel-bulgaria-aglen",
-    category: "Topic page",
-    title: "Slow Travel in Bulgaria | Aglen and the Vit River Valley",
-    metaDescription:
-      "Discover slow travel in Bulgaria through Aglen: river light, village stories, local routes, food, photography, and quiet weekends.",
-    h1: "Slow Travel in Bulgaria",
-    intro:
-      "Slow travel is Aglen's most natural positioning: fewer attractions rushed in one day, more time with the river, village, stories, and nearby landscapes.",
-    image: images.aerial,
-    imageAlt: "Slow travel landscape in the Vit River valley near Aglen",
-    ctaLabel: "Build a slow route",
-    schemaType: "Article",
-    sections: [
-      { heading: "Why Slow Travel Works", body: "Aglen rewards visitors who pause: river bends, rock names, quiet church context, Kaleto, photo light, and local conversations." },
-      { heading: "Suggested Rhythm", body: "Choose one main walk, one food or picnic moment, one story route, and one nearby stop instead of overloading the day." },
-      { heading: "Internal Links", body: "Slow travel should connect to rural tourism, accommodation, food, weekend itineraries, and hidden places." },
-    ],
-    faqs: sharedFaqs,
-    internalLinks: [
-      { label: "Rural tourism", routeId: "ruralTourismBulgaria" },
-      { label: "Hidden places", routeId: "hiddenPlaces" },
-      { label: "Weekend in Aglen", routeId: "weekendInAglen" },
-    ],
-  }),
-  landingPage({
-    id: "aiAnswerHub",
-    slug: "aglen-answer-hub",
-    category: "AI search hub",
-    title: "Aglen Answer Hub | FAQ for Visitors, Search and AI Assistants",
-    metaDescription:
-      "Concise, cited answers about where Aglen is, what to do, best time to visit, how to get there, where to stay, and nearby attractions.",
-    h1: "Aglen Answer Hub",
-    intro:
-      "This answer hub supports AI search, featured snippets, and visitors who need direct answers before choosing a route or contacting Aglen Tourism.",
-    image: images.hero,
-    imageAlt: "Aglen answer hub landscape with river and limestone cliffs",
-    ctaLabel: "Ask a visitor question",
-    schemaType: "Article",
-    sections: [
-      { heading: "Entity Answers", body: "Answer where Aglen is, what it is famous for, best time to visit, things to do, how to get there, where to stay, and nearby attractions." },
-      { heading: "AI Search Notes", body: "Use clean headings, concise summaries, source notes, FAQ schema, Wikidata/OpenStreetMap consistency, and canonical guide URLs." },
-      { heading: "Crawler Guidance", body: "The crawler policy and llms.txt-style guidance should point assistants toward canonical pages, not scraped fragments." },
-    ],
-    faqs: [
-      ...sharedFaqs,
-      { question: "What is Aglen famous for?", answer: "Aglen is known for its unusual Bulgarian name beginning with Ъ, the Vit River valley, limestone formations, caves, village memory, and Hidden Bulgaria Quests." },
-      { question: "How do I book a route or experience?", answer: "Use the contact page with date, group size, language, interests, transport needs, and whether you want a guided walk, accommodation, fishing, or AR support." },
-    ],
-    internalLinks: [
-      { label: "Crawler policy", routeId: "crawlerPolicy" },
-      { label: "Visit Aglen", routeId: "visitAglen" },
-      { label: "FAQ and contact", routeId: "contact" },
-      { label: "Editorial policy", routeId: "editorial" },
-    ],
-  }),
-];
+export function getLandingPages(lang: LanguageCode): LandingPage[] {
+  return landingPageMaster.map((page) => buildLandingPage(lang, page));
+}
 
+export function getLandingPage(lang: LanguageCode, routeId: LandingPageId): LandingPage | undefined {
+  const page = landingPageMaster.find((candidate) => candidate.id === routeId);
+  return page ? buildLandingPage(lang, page) : undefined;
+}
+
+export const landingPages: LandingPage[] = getLandingPages("bg");
 export const landingPagesById = new Map(landingPages.map((page) => [page.id, page]));
 
 export function isLandingPageId(routeId: string): routeId is LandingPageId {
-  return landingPagesById.has(routeId as LandingPageId);
+  return landingPageMaster.some((page) => page.id === routeId);
 }

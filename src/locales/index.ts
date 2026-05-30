@@ -4,13 +4,14 @@ import { el } from "./el";
 import { en } from "./en";
 import { es } from "./es";
 import { fr } from "./fr";
+import { hu } from "./hu";
 import { it } from "./it";
 import { ja } from "./ja";
-import { pl } from "./pl";
 import { ro } from "./ro";
 import { ru } from "./ru";
 import { sr } from "./sr";
 import { tr } from "./tr";
+import { zh } from "./zh";
 import type { LanguageCode, PageCopy } from "./types";
 
 export { languages } from "./shared";
@@ -27,12 +28,6 @@ export type {
   TimelineItem,
 } from "./types";
 
-const built: Record<LanguageCode, PageCopy> = { bg, en, de, fr, es, it, ro, tr, el, pl, ru, ja, sr };
-
-for (const lang of ["de", "ru", "ja", "es"] as LanguageCode[]) {
-  if (built[lang].quests.features.length === 0) {
-    built[lang].quests.features = built.en.quests.features;
-  }
-}
+const built: Record<LanguageCode, PageCopy> = { bg, en, de, fr, es, it, ro, tr, el, ru, ja, sr, zh, hu };
 
 export const contentByLanguage = built;

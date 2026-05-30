@@ -130,13 +130,17 @@ function renderPageHtml(routePath) {
   html = html.replace(/<title>[\s\S]*?<\/title>/, `<title>${escapeText(pageSeo.title)}</title>`);
   html = replaceOrInsert(html, /<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${escapeAttribute(pageSeo.description)}" />`);
   html = replaceOrInsert(html, /<meta name="keywords" content="[^"]*" \/>/, `<meta name="keywords" content="${escapeAttribute(pageSeo.keywords)}" />`);
+  html = replaceOrInsert(html, /<meta name="author" content="[^"]*" \/>/, `<meta name="author" content="${escapeAttribute(pageSeo.author)}" />`);
   html = replaceOrInsert(html, /<link rel="canonical" href="[^"]*" \/>/, `<link rel="canonical" href="${escapeAttribute(pageSeo.canonicalUrl)}" />`);
+  html = replaceOrInsert(html, /<meta property="og:site_name" content="[^"]*" \/>/, `<meta property="og:site_name" content="${escapeAttribute(pageSeo.siteName)}" />`);
   html = replaceOrInsert(html, /<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${escapeAttribute(pageSeo.canonicalUrl)}" />`);
   html = replaceOrInsert(html, /<meta property="og:title" content="[^"]*" \/>/, `<meta property="og:title" content="${escapeAttribute(pageSeo.title)}" />`);
   html = replaceOrInsert(html, /<meta property="og:description" content="[^"]*" \/>/, `<meta property="og:description" content="${escapeAttribute(pageSeo.description)}" />`);
+  html = replaceOrInsert(html, /<meta property="og:image:alt" content="[^"]*" \/>/, `<meta property="og:image:alt" content="${escapeAttribute(pageSeo.imageAlt)}" />`);
   html = replaceOrInsert(html, /<meta property="og:locale" content="[^"]*" \/>/, `<meta property="og:locale" content="${escapeAttribute(pageSeo.locale)}" />`);
   html = replaceOrInsert(html, /<meta name="twitter:title" content="[^"]*" \/>/, `<meta name="twitter:title" content="${escapeAttribute(pageSeo.title)}" />`);
   html = replaceOrInsert(html, /<meta name="twitter:description" content="[^"]*" \/>/, `<meta name="twitter:description" content="${escapeAttribute(pageSeo.description)}" />`);
+  html = replaceOrInsert(html, /<meta name="twitter:image:alt" content="[^"]*" \/>/, `<meta name="twitter:image:alt" content="${escapeAttribute(pageSeo.imageAlt)}" />`);
 
   html = html.replace(/\n\s*<link rel="alternate" hreflang="[^"]+" href="[^"]+" \/>\n?/g, "\n");
   html = html.replace(/\n\s*<meta property="og:locale:alternate" content="[^"]+" \/>\n?/g, "\n");

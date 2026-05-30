@@ -10,10 +10,11 @@ export const languages: { code: LanguageCode; label: string; short: string }[] =
   { code: "ro", label: "Română", short: "RO" },
   { code: "tr", label: "Türkçe", short: "TR" },
   { code: "el", label: "Ελληνικά", short: "EL" },
-  { code: "pl", label: "Polski", short: "PL" },
   { code: "ru", label: "Русский", short: "RU" },
   { code: "ja", label: "日本語", short: "JA" },
   { code: "sr", label: "Српски", short: "SR" },
+  { code: "zh", label: "中文", short: "ZH" },
+  { code: "hu", label: "Magyar", short: "HU" },
 ];
 
 export const images = {
@@ -36,10 +37,11 @@ export const negotiablePrice: Record<LanguageCode, string> = {
   ro: "La cerere",
   tr: "Anlaşmaya göre",
   el: "Κατόπιν συνεννόησης",
-  pl: "Do uzgodnienia",
   ru: "По договорённости",
   ja: "応相談",
   sr: "По договору",
+  zh: "可协商",
+  hu: "Megegyezés szerint",
 };
 
 export const accommodationBg: Accommodation[] = [

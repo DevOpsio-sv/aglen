@@ -1,4 +1,4 @@
-export type LanguageCode = "bg" | "en" | "de" | "fr" | "es" | "it" | "ro" | "tr" | "el" | "pl" | "ru" | "ja" | "sr";
+export type LanguageCode = "bg" | "en" | "de" | "fr" | "es" | "it" | "ro" | "tr" | "el" | "ru" | "ja" | "sr" | "zh" | "hu";
 
 export type Highlight = {
   label: string;

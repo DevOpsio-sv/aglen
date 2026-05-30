@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 import { contentByLanguage, languages, type Accommodation, type LanguageCode, type TimelineItem } from "./content";
-import { isLandingPageId, landingPages, landingPagesById } from "./landingPages";
+import { getLandingPage, getLandingPages, isLandingPageId } from "./landingPages";
 import { buildRoutePath, getStaticRoute, resolveRoute, type RouteId, type ResolvedRoute } from "./routes";
 import { updateDocumentSEO } from "./seo";
+import { uiTextByLanguage } from "./uiText";
 
 export function App() {
   const [pageRoute, setPageRoute] = useState<ResolvedRoute>(() =>
@@ -15,8 +16,9 @@ export function App() {
   const timelineCloseRef = useRef<HTMLButtonElement | null>(null);
   const { language, routeId } = pageRoute;
   const copy = contentByLanguage[language];
+  const localizedUi = uiTextByLanguage[language];
   const currentRoute = getStaticRoute(routeId);
-  const currentLandingPage = isLandingPageId(routeId) ? landingPagesById.get(routeId) : undefined;
+  const currentLandingPage = isLandingPageId(routeId) ? getLandingPage(language, routeId) : undefined;
   const selectedLanguage = languages.find((item) => item.code === language) ?? languages[0];
 
   const navigateTo = (nextRoute: ResolvedRoute, replace = false) => {
@@ -153,24 +155,18 @@ export function App() {
   );
 
   const trustLinks = useMemo(
-    () => [
-      { label: "About this guide", routeId: "trust" },
-      { label: "Editorial policy", routeId: "editorial" },
-      { label: "Local presence checklist", routeId: "localSeo" },
-      { label: "Crawler policy", routeId: "crawlerPolicy" },
-      { label: "Events and updates", routeId: "events" },
-    ] satisfies Array<{ label: string; routeId: RouteId }>,
-    [],
+    () => localizedUi.trustLinks.map((link) => ({ ...link, routeId: link.routeId as RouteId })),
+    [localizedUi],
   );
 
   const landingPageLinks = useMemo(
-    () => landingPages.map((page) => ({
+    () => getLandingPages(language).map((page) => ({
       label: page.h1,
       text: page.metaDescription,
       routeId: page.id,
       category: page.category,
     })),
-    [],
+    [language],
   );
 
   return (
@@ -257,7 +253,7 @@ export function App() {
       {mobileMenuOpen && (
         <>
           <div className="mobile-menu-backdrop" aria-hidden="true" onClick={() => setMobileMenuOpen(false)} />
-          <nav id="mobile-nav" className="mobile-menu" aria-label="Навигация">
+          <nav id="mobile-nav" className="mobile-menu" aria-label={localizedUi.aria.mobileNav}>
             <button
               className="mobile-menu-close"
               type="button"
@@ -336,7 +332,7 @@ export function App() {
                     {currentLandingPage.ctaLabel}
                   </a>
                   <a className="button ghost" href={routeHref("routeMap")} onClick={(event) => handleRouteClick(event, "routeMap")}>
-                    View route map
+                    {localizedUi.landing.routeMap}
                   </a>
                 </div>
               </div>
@@ -354,8 +350,8 @@ export function App() {
 
             <div className="seo-faq-links">
               <div className="seo-faq">
-                <p className="eyebrow">Visitor answers</p>
-                <h2>FAQ</h2>
+                <p className="eyebrow">{localizedUi.landing.visitorAnswers}</p>
+                <h2>{localizedUi.landing.visitorAnswers}</h2>
                 {currentLandingPage.faqs.map((faq) => (
                   <details key={faq.question}>
                     <summary>{faq.question}</summary>
@@ -363,9 +359,9 @@ export function App() {
                   </details>
                 ))}
               </div>
-              <aside className="seo-related" aria-label="Related Aglen guides">
-                <p className="eyebrow">Internal links</p>
-                <h2>Related guides</h2>
+              <aside className="seo-related" aria-label={localizedUi.landing.relatedGuidesAria}>
+                <p className="eyebrow">{localizedUi.landing.internalLinks}</p>
+                <h2>{localizedUi.landing.relatedGuides}</h2>
                 {currentLandingPage.internalLinks.map((link) => (
                   <a
                     href={routeHref(link.routeId as RouteId)}
@@ -702,7 +698,7 @@ export function App() {
           {copy.sourceNotes.map((note) => (
             <span key={note}>{note}</span>
           ))}
-          <nav className="footer-links" aria-label="Trust and policy pages">
+          <nav className="footer-links" aria-label={localizedUi.aria.footerPolicy}>
             {trustLinks.map((link) => (
               <a
                 href={routeHref(link.routeId)}

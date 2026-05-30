@@ -1,353 +1,409 @@
 import fs from "node:fs";
 import path from "node:path";
+import { createRequire } from "node:module";
 import ts from "typescript";
 
 const rootDir = process.cwd();
 const localesDir = path.join(rootDir, "src", "locales");
+const distDir = path.join(rootDir, "dist");
 const reportsDir = path.join(rootDir, "reports");
 const reportPath = path.join(reportsDir, "i18n-bg-audit.md");
-const sourceLanguage = "bg";
-const ignoredLocaleModules = new Set(["index", "shared", "types"]);
-const ignoredTextPathPatterns = [
-  /^experiencesList\.\d+\.price$/,
-  /^galleryItems\.\d+\.size$/,
+const nodeRequire = createRequire(import.meta.url);
+const moduleCache = new Map();
+
+const expectedLanguages = ["bg", "en", "de", "fr", "es", "it", "ro", "tr", "el", "ru", "ja", "sr", "zh", "hu"];
+const expectedLocaleCodes = {
+  bg: "bg_BG",
+  en: "en_US",
+  de: "de_DE",
+  fr: "fr_FR",
+  es: "es_ES",
+  it: "it_IT",
+  ro: "ro_RO",
+  tr: "tr_TR",
+  el: "el_GR",
+  ru: "ru_RU",
+  ja: "ja_JP",
+  sr: "sr_RS",
+  zh: "zh_CN",
+  hu: "hu_HU",
+};
+
+const englishPhrasesForBg = [
+  "Visit Aglen",
+  "Things to Do",
+  "Nature Around",
+  "History of Aglen",
+  "Accommodation Near",
+  "Traditional Food",
+  "Hidden Places",
+  "Cultural Tourism",
+  "Nature Tourism",
+  "Adventure Tourism",
+  "Family Trip",
+  "Camping Near",
+  "Weekend in Aglen",
+  "Route Map",
+  "Best Time",
+  "How to Get",
+  "Travel Guide",
+  "Visitor answers",
+  "Internal links",
+  "Related guides",
+  "Trust and policy pages",
+  "About this guide",
+  "Editorial policy",
+  "Local presence checklist",
+  "Crawler policy",
+  "Events and updates",
+  "Frequently Asked Questions",
+  "Aglen Experiences",
+  "Nature travelers",
+  "Cultural travelers",
+  "Guided routes",
+  "Aglen village",
+  "Vit River canyon",
+  "limestone cliffs",
+  "forest, Bulgaria",
+  "Vit River Canyon",
 ];
-const allowedSameAsSourcePathPatterns = [
-  /^app\.title$/,
-  /^brand\.name$/,
-  /^hero\.title$/,
-  /^nav\.quests$/,
-  /^ui\.(modalCloseAria|mobileMenuAria)$/,
-  /^highlights\.1\.label$/,
-  /^placesList\.\d+\.title$/,
-  /^placesList\.5\.tag$/,
-  /^experiencesList\.\d+\.duration$/,
-  /^experiencesList\.\d+\.bestFor$/,
-  /^mapStops\.2\.title$/,
-  /^accommodationList\.2\.(title|type)$/,
+
+const bulgarianPhrasesForForeign = [
+  "Посети Ъглен",
+  "Какво да правиш",
+  "Природата около",
+  "История на Ъглен",
+  "Настаняване край",
+  "Традиционна храна",
+  "Скрити места",
+  "Културен туризъм",
+  "Природен туризъм",
+  "Приключенски туризъм",
+  "Семейно пътуване",
+  "Къмпинг край",
+  "Уикенд в Ъглен",
+  "Маршрутна карта",
+  "Най-добро време",
+  "Как да стигнеш",
+  "Пътеводител",
+  "Отговори за посетители",
+  "Вътрешни връзки",
+  "Свързани ръководства",
+  "Страници за доверие",
+  "За този пътеводител",
+  "Редакционна политика",
+  "Политика за обхождане",
+  "Събития и актуализации",
+  "Планирай",
+  "Това ръководство",
+  "Основен смисъл",
+  "Планиране",
+  "Свързани маршрути",
+  "Къде се намира",
+  "Какво могат",
+  "Кога е най-доброто",
 ];
 
-function readSource(filePath) {
-  return fs.readFileSync(filePath, "utf8");
+const allowlistedProperTerms = [
+  "Aglen",
+  "Ъглен",
+  "Uglen",
+  "Hidden Bulgaria Quests",
+  "Google Play",
+  "Android",
+  "AR",
+  "Vit",
+  "Вит",
+  "Lukovit",
+  "Луковит",
+  "Lovech",
+  "Ловеч",
+  "Дупката",
+  "Слончето",
+  "Червена стена",
+  "Рачков вир",
+  "Калето",
+  "Prohodna",
+  "DevOpsio",
+  "Schema.org",
+];
+
+const issues = [];
+const sections = [];
+
+function addIssue(category, message) {
+  issues.push({ category, message });
 }
 
-function parseSource(filePath) {
-  return ts.createSourceFile(filePath, readSource(filePath), ts.ScriptTarget.Latest, true);
+function resolveSourceModule(specifier, fromFile) {
+  if (!specifier.startsWith(".")) return specifier;
+  const basePath = path.resolve(path.dirname(fromFile), specifier);
+  const candidates = [basePath, `${basePath}.ts`, `${basePath}.tsx`, `${basePath}.js`, `${basePath}.mjs`, path.join(basePath, "index.ts")];
+  const match = candidates.find((candidate) => fs.existsSync(candidate) && fs.statSync(candidate).isFile());
+  if (!match) throw new Error(`Cannot resolve ${specifier} from ${fromFile}`);
+  return match;
 }
 
-function collectExportedConsts(filePath) {
-  const sourceFile = parseSource(filePath);
-  const exports = new Map();
+function loadSourceModule(filePath) {
+  if (!filePath.startsWith(rootDir)) return nodeRequire(filePath);
+  const resolvedPath = resolveSourceModule(filePath, path.join(rootDir, "scripts", "i18n-audit.mjs"));
+  if (moduleCache.has(resolvedPath)) return moduleCache.get(resolvedPath).exports;
 
-  sourceFile.forEachChild((node) => {
-    if (!ts.isVariableStatement(node)) return;
-
-    const isExported = node.modifiers?.some((modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword);
-    if (!isExported) return;
-
-    for (const declaration of node.declarationList.declarations) {
-      if (ts.isIdentifier(declaration.name) && declaration.initializer) {
-        exports.set(declaration.name.text, declaration.initializer);
-      }
-    }
-  });
-
-  return exports;
+  const source = fs.readFileSync(resolvedPath, "utf8");
+  const module = { exports: {} };
+  moduleCache.set(resolvedPath, module);
+  const output = ts.transpileModule(source, {
+    compilerOptions: {
+      esModuleInterop: true,
+      jsx: ts.JsxEmit.ReactJSX,
+      module: ts.ModuleKind.CommonJS,
+      target: ts.ScriptTarget.ES2020,
+    },
+    fileName: resolvedPath,
+  }).outputText;
+  const localRequire = (specifier) => {
+    if (specifier.endsWith(".css")) return {};
+    const target = resolveSourceModule(specifier, resolvedPath);
+    if (path.isAbsolute(target) && target.startsWith(rootDir)) return loadSourceModule(target);
+    return nodeRequire(target);
+  };
+  const runner = new Function("exports", "require", "module", "__filename", "__dirname", output);
+  runner(module.exports, localRequire, module, resolvedPath, path.dirname(resolvedPath));
+  return module.exports;
 }
 
-function nodeToRef(node) {
-  if (ts.isIdentifier(node)) return node.text;
-  if (ts.isPropertyAccessExpression(node)) return `${nodeToRef(node.expression)}.${node.name.text}`;
-  if (ts.isElementAccessExpression(node)) return `${nodeToRef(node.expression)}[${node.argumentExpression.getText()}]`;
-  return node.getText();
-}
-
-function getPropertyName(name) {
-  if (ts.isIdentifier(name) || ts.isStringLiteral(name) || ts.isNumericLiteral(name)) {
-    return name.text;
-  }
-
-  return name.getText();
-}
-
-function evaluateNode(node, context, seen = new Set()) {
-  if (ts.isAsExpression(node) || ts.isSatisfiesExpression?.(node)) {
-    return evaluateNode(node.expression, context, seen);
-  }
-
-  if (ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node)) {
-    return { kind: "text", value: node.text };
-  }
-
-  if (ts.isIdentifier(node)) {
-    const referenced = context.get(node.text);
-    if (!referenced) return { kind: "ref", value: node.text };
-    if (seen.has(node.text)) return { kind: "ref", value: node.text };
-
-    return evaluateNode(referenced, context, new Set([...seen, node.text]));
-  }
-
-  if (ts.isElementAccessExpression(node)) {
-    const target = evaluateNode(node.expression, context, seen);
-    const index = ts.isNumericLiteral(node.argumentExpression)
-      ? Number(node.argumentExpression.text)
-      : Number.NaN;
-
-    if (target.kind === "array" && Number.isInteger(index)) {
-      return target.items[index] ?? { kind: "ref", value: nodeToRef(node) };
-    }
-
-    return { kind: "ref", value: nodeToRef(node) };
-  }
-
-  if (ts.isArrayLiteralExpression(node)) {
-    return {
-      kind: "array",
-      items: node.elements.map((element) => evaluateNode(element, context, seen)),
-    };
-  }
-
-  if (ts.isObjectLiteralExpression(node)) {
-    const entries = new Map();
-
-    for (const property of node.properties) {
-      if (!ts.isPropertyAssignment(property)) continue;
-      entries.set(getPropertyName(property.name), evaluateNode(property.initializer, context, seen));
-    }
-
-    return { kind: "object", entries };
-  }
-
-  return { kind: "ref", value: nodeToRef(node) };
-}
-
-function flattenText(value, currentPath = [], rows = []) {
-  if (value.kind === "text") {
-    rows.push({ path: currentPath.join("."), value: value.value });
+function flattenStrings(value, prefix = "", rows = []) {
+  if (typeof value === "string") {
+    rows.push({ path: prefix, value });
     return rows;
   }
-
-  if (value.kind === "array") {
-    value.items.forEach((item, index) => flattenText(item, [...currentPath, String(index)], rows));
+  if (Array.isArray(value)) {
+    value.forEach((item, index) => flattenStrings(item, `${prefix}.${index}`, rows));
     return rows;
   }
-
-  if (value.kind === "object") {
-    for (const [key, item] of value.entries) {
-      flattenText(item, [...currentPath, key], rows);
-    }
+  if (value && typeof value === "object") {
+    Object.entries(value).forEach(([key, item]) => flattenStrings(item, prefix ? `${prefix}.${key}` : key, rows));
   }
-
   return rows;
 }
 
-function getAtPath(value, dottedPath) {
-  return dottedPath.split(".").reduce((current, segment) => {
-    if (!current) return undefined;
-    if (current.kind === "object") return current.entries.get(segment);
-    if (current.kind === "array") return current.items[Number(segment)];
-    return undefined;
-  }, value);
+function normalizedForContamination(value) {
+  let next = value;
+  for (const term of allowlistedProperTerms) {
+    next = next.split(term).join("");
+  }
+  return next;
 }
 
-function markdownEscape(value) {
-  return value.replaceAll("|", "\\|").replaceAll("\n", " ");
+function checkContamination(kind, lang, context, value) {
+  const haystack = normalizedForContamination(String(value));
+  if (lang === "bg") {
+    for (const phrase of englishPhrasesForBg) {
+      if (haystack.includes(phrase)) addIssue(kind, `${context}: English phrase "${phrase}" found in Bulgarian content.`);
+    }
+    return;
+  }
+
+  for (const phrase of bulgarianPhrasesForForeign) {
+    if (haystack.includes(phrase)) addIssue(kind, `${context}: Bulgarian phrase "${phrase}" found in ${lang} content.`);
+  }
 }
 
-function isText(value) {
-  return value?.kind === "text";
+function checkNoPolish(kind, context, value) {
+  if (/\bpl\b|pl_PL|Polski|Polish/i.test(String(value))) {
+    addIssue(kind, `${context}: Polish locale reference found.`);
+  }
 }
 
-function shouldAuditPath(dottedPath) {
-  return !ignoredTextPathPatterns.some((pattern) => pattern.test(dottedPath));
+function validateSourceFiles() {
+  const localeFiles = fs.readdirSync(localesDir).filter((file) => file.endsWith(".ts")).map((file) => path.basename(file, ".ts"));
+  const content = [
+    ["src/locales/types.ts", fs.readFileSync(path.join(localesDir, "types.ts"), "utf8")],
+    ["src/locales/shared.ts", fs.readFileSync(path.join(localesDir, "shared.ts"), "utf8")],
+    ["src/locales/index.ts", fs.readFileSync(path.join(localesDir, "index.ts"), "utf8")],
+    ["src/landingPages.ts", fs.readFileSync(path.join(rootDir, "src", "landingPages.ts"), "utf8")],
+    ["src/seo.ts", fs.readFileSync(path.join(rootDir, "src", "seo.ts"), "utf8")],
+    ["index.html", fs.readFileSync(path.join(rootDir, "index.html"), "utf8")],
+  ];
+
+  for (const lang of expectedLanguages) {
+    if (!localeFiles.includes(lang)) addIssue("source", `Missing locale file src/locales/${lang}.ts.`);
+  }
+  if (localeFiles.includes("pl")) addIssue("source", "Polish locale file src/locales/pl.ts still exists.");
+
+  for (const [file, text] of content) {
+    checkNoPolish("source", file, text);
+    if (file.startsWith("src/")) {
+      for (const lang of ["zh", "hu"]) {
+        if (!text.includes(lang)) addIssue("source", `${file} does not mention required locale ${lang}.`);
+      }
+    }
+  }
 }
 
-function canMatchSource(dottedPath) {
-  return allowedSameAsSourcePathPatterns.some((pattern) => pattern.test(dottedPath));
-}
+function validateRuntimeData(routes, seo, landing) {
+  const content = loadSourceModule(path.join(rootDir, "src", "content.ts"));
+  const ui = loadSourceModule(path.join(rootDir, "src", "uiText.ts"));
+  const languageCodes = routes.allLanguageCodes;
 
-function weightedLength(value) {
-  const cjkChars = value.match(/[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}]/gu)?.length ?? 0;
-  return value.length + cjkChars;
-}
+  if (JSON.stringify(languageCodes) !== JSON.stringify(expectedLanguages)) {
+    addIssue("source", `Runtime languages are ${languageCodes.join(", ")}; expected ${expectedLanguages.join(", ")}.`);
+  }
+  if (languageCodes.includes("pl")) addIssue("source", "Runtime language list still includes pl.");
 
-function compareLocale(language, sourceRows, sourcePaths, localeValue) {
-  const localeRows = flattenText(localeValue).filter((row) => shouldAuditPath(row.path));
-  const missing = [];
-  const nonText = [];
-  const sameAsBulgarian = [];
-  const likelyTooShort = [];
-
-  for (const sourceRow of sourceRows) {
-    const localeNode = getAtPath(localeValue, sourceRow.path);
-
-    if (!localeNode) {
-      missing.push(sourceRow);
+  for (const lang of expectedLanguages) {
+    const copy = content.contentByLanguage[lang];
+    if (!copy) {
+      addIssue("source", `contentByLanguage missing ${lang}.`);
       continue;
     }
-
-    if (!isText(localeNode)) {
-      nonText.push({ ...sourceRow, actual: localeNode.kind });
-      continue;
+    if (!ui.uiTextByLanguage[lang]) addIssue("source", `uiTextByLanguage missing ${lang}.`);
+    if (!Array.isArray(copy.quests.features) || copy.quests.features.length === 0) {
+      addIssue("source", `${lang} has no localized quest features.`);
     }
-
-    const targetValue = localeNode.value.trim();
-    const sourceValue = sourceRow.value.trim();
-
-    if (targetValue === sourceValue && !canMatchSource(sourceRow.path)) {
-      sameAsBulgarian.push({ ...sourceRow, current: targetValue });
-    }
-
-    if (sourceValue.length > 120 && weightedLength(targetValue) < sourceValue.length * 0.45) {
-      likelyTooShort.push({ ...sourceRow, current: targetValue });
+    for (const row of flattenStrings(copy)) {
+      checkNoPolish("source", `${lang}.${row.path}`, row.value);
     }
   }
 
-  const extra = localeRows.filter((row) => !sourcePaths.has(row.path));
-
-  return {
-    language,
-    totalTextNodes: localeRows.length,
-    missing,
-    nonText,
-    sameAsBulgarian,
-    likelyTooShort,
-    extra,
-  };
-}
-
-function formatIssueRows(rows, includeCurrent = false) {
-  if (rows.length === 0) return "_None._\n";
-
-  const header = includeCurrent
-    ? "| Path | Bulgarian source | Current value |\n| --- | --- | --- |"
-    : "| Path | Bulgarian source |\n| --- | --- |";
-  const body = rows
-    .map((row) => includeCurrent
-      ? `| \`${row.path}\` | ${markdownEscape(row.value)} | ${markdownEscape(row.current ?? row.actual ?? "")} |`
-      : `| \`${row.path}\` | ${markdownEscape(row.value)} |`)
-    .join("\n");
-
-  return `${header}\n${body}\n`;
-}
-
-function formatLocaleRows(rows) {
-  if (rows.length === 0) return "_None._\n";
-
-  const body = rows
-    .map((row) => `| \`${row.path}\` | ${markdownEscape(row.value)} |`)
-    .join("\n");
-
-  return `| Path | Current value |\n| --- | --- |\n${body}\n`;
-}
-
-function buildReport(sourceRows, comparisons) {
-  const generatedAt = new Date().toISOString();
-  const report = [];
-
-  report.push("# Bulgarian Copy Audit");
-  report.push("");
-  report.push(`Generated: ${generatedAt}`);
-  report.push(`Source of truth: \`src/locales/${sourceLanguage}.ts\``);
-  report.push("");
-  report.push("## How To Use This");
-  report.push("");
-  report.push("1. Review the Bulgarian source checklist below for spelling, tone, and factual accuracy.");
-  report.push("2. Update each non-Bulgarian locale at the same object path as the Bulgarian source.");
-  report.push("3. Use the per-language sections as the update brief: each row shows the Bulgarian source and the current target value that needs review.");
-  report.push("4. Run `npm run i18n:audit` again until every locale has zero missing paths and no stale Bulgarian text.");
-  report.push("5. Run `npm run build` before publishing.");
-  report.push("");
-  report.push("## Summary");
-  report.push("");
-  report.push("| Language | Text nodes | Missing | Non-text at BG path | Same as BG | Likely too short | Extra |");
-  report.push("| --- | ---: | ---: | ---: | ---: | ---: | ---: |");
-
-  for (const comparison of comparisons) {
-    report.push(`| ${comparison.language} | ${comparison.totalTextNodes} | ${comparison.missing.length} | ${comparison.nonText.length} | ${comparison.sameAsBulgarian.length} | ${comparison.likelyTooShort.length} | ${comparison.extra.length} |`);
+  for (const lang of expectedLanguages) {
+    const pages = landing.getLandingPages(lang);
+    if (pages.length !== landing.landingPageMaster.length) {
+      addIssue("route parity", `${lang} landing page count ${pages.length} does not match master ${landing.landingPageMaster.length}.`);
+    }
+    for (const page of pages) {
+      checkContamination("source", lang, `${lang}.${page.id}`, JSON.stringify(page));
+      if (!page.h1 || !page.title || !page.metaDescription || !page.intro) {
+        addIssue("source", `${lang}.${page.id} missing required localized landing text.`);
+      }
+      const master = landing.landingPageMaster.find((candidate) => candidate.id === page.id);
+      if (!master) addIssue("source", `${lang}.${page.id} missing Bulgarian master entry.`);
+      if (master && page.slug !== master.slug) addIssue("route parity", `${lang}.${page.id} slug changed from master.`);
+      if (master && page.image !== master.image) addIssue("route parity", `${lang}.${page.id} image changed from master.`);
+      if (master && page.schemaType !== master.schemaType) addIssue("route parity", `${lang}.${page.id} schema type changed from master.`);
+      const linkIds = page.internalLinks.map((link) => link.routeId).join("|");
+      const masterLinkIds = master?.internalLinkRouteIds.join("|");
+      if (master && linkIds !== masterLinkIds) addIssue("route parity", `${lang}.${page.id} internal route IDs changed from master.`);
+    }
   }
 
-  report.push("");
-  report.push("## Bulgarian Source Checklist");
-  report.push("");
-  report.push(`Total Bulgarian text nodes: ${sourceRows.length}`);
-  report.push("");
-  report.push("| Path | Bulgarian text |");
-  report.push("| --- | --- |");
-
-  for (const row of sourceRows) {
-    report.push(`| \`${row.path}\` | ${markdownEscape(row.value)} |`);
+  const expectedPathCount = routes.staticRoutes.length * expectedLanguages.length;
+  const paths = routes.getAllStaticRoutePaths();
+  if (paths.length !== expectedPathCount) addIssue("route parity", `Expected ${expectedPathCount} static paths, got ${paths.length}.`);
+  for (const lang of expectedLanguages) {
+    for (const route of routes.staticRoutes) {
+      const routePath = routes.buildRoutePath(lang, route.id);
+      if (!paths.includes(routePath)) addIssue("route parity", `Missing route path ${routePath}.`);
+    }
   }
+  if (paths.some((routePath) => routePath.startsWith("/pl/"))) addIssue("route parity", "Generated route list includes /pl/.");
 
-  for (const comparison of comparisons) {
-    report.push("");
-    report.push(`## ${comparison.language.toUpperCase()} Update Checklist`);
-    report.push("");
-    report.push("### Missing Bulgarian Paths");
-    report.push("");
-    report.push(formatIssueRows(comparison.missing));
-    report.push("### Non-Text Values Where Bulgarian Has Text");
-    report.push("");
-    report.push(formatIssueRows(comparison.nonText, true));
-    report.push("### Same As Bulgarian");
-    report.push("");
-    report.push(formatIssueRows(comparison.sameAsBulgarian, true));
-    report.push("### Likely Too Short");
-    report.push("");
-    report.push(formatIssueRows(comparison.likelyTooShort, true));
-    report.push("### Extra Target-Language Paths");
-    report.push("");
-    report.push(formatLocaleRows(comparison.extra));
+  for (const lang of expectedLanguages) {
+    for (const route of routes.staticRoutes) {
+      const meta = seo.getSEOConfig(lang, route.id);
+      checkNoPolish("metadata", `${lang}.${route.id}`, JSON.stringify(meta));
+      checkContamination("metadata", lang, `${lang}.${route.id}`, `${meta.title} ${meta.description} ${meta.keywords}`);
+      if (meta.locale !== expectedLocaleCodes[lang]) {
+        addIssue("metadata", `${lang}.${route.id} locale ${meta.locale} does not match ${expectedLocaleCodes[lang]}.`);
+      }
+      if (!meta.alternates.some((alternate) => alternate.lang === "zh") || !meta.alternates.some((alternate) => alternate.lang === "hu")) {
+        addIssue("metadata", `${lang}.${route.id} alternates missing zh or hu.`);
+      }
+      if (meta.alternates.some((alternate) => alternate.lang === "pl") || meta.ogLocaleAlternates.includes("pl_PL")) {
+        addIssue("metadata", `${lang}.${route.id} metadata still includes Polish alternate.`);
+      }
+
+      const jsonld = JSON.stringify(seo.buildJSONLD(lang, route.id));
+      checkNoPolish("JSON-LD", `${lang}.${route.id}`, jsonld);
+      checkContamination("JSON-LD", lang, `${lang}.${route.id}`, jsonld);
+    }
   }
-
-  return `${report.join("\n")}\n`;
 }
 
-const sharedContext = collectExportedConsts(path.join(localesDir, "shared.ts"));
-const localeFiles = fs
-  .readdirSync(localesDir)
-  .filter((file) => file.endsWith(".ts"))
-  .map((file) => path.basename(file, ".ts"))
-  .filter((name) => !ignoredLocaleModules.has(name))
-  .sort((a, b) => (a === sourceLanguage ? -1 : b === sourceLanguage ? 1 : a.localeCompare(b)));
-
-const locales = new Map();
-
-for (const language of localeFiles) {
-  const localeExports = collectExportedConsts(path.join(localesDir, `${language}.ts`));
-  const localeNode = localeExports.get(language);
-
-  if (!localeNode) {
-    throw new Error(`No exported const named "${language}" found in src/locales/${language}.ts`);
+function validateGeneratedHtml(routes) {
+  if (!fs.existsSync(distDir)) {
+    sections.push("Generated HTML validation skipped because `dist/` does not exist yet.");
+    return;
   }
 
-  locales.set(language, evaluateNode(localeNode, new Map([...sharedContext, ...localeExports])));
+  for (const lang of expectedLanguages) {
+    const langDir = path.join(distDir, lang);
+    if (!fs.existsSync(langDir)) addIssue("generated HTML", `Missing generated locale folder dist/${lang}.`);
+    const sitemapPath = path.join(distDir, `sitemap-${lang}.xml`);
+    if (!fs.existsSync(sitemapPath)) addIssue("generated HTML", `Missing sitemap-${lang}.xml.`);
+  }
+  if (fs.existsSync(path.join(distDir, "pl"))) addIssue("generated HTML", "Generated dist/pl folder exists.");
+  if (fs.existsSync(path.join(distDir, "sitemap-pl.xml"))) addIssue("generated HTML", "Generated sitemap-pl.xml exists.");
+
+  for (const lang of expectedLanguages) {
+    for (const route of routes.staticRoutes) {
+      const outputPath = path.join(distDir, routes.buildRoutePath(lang, route.id).replace(/^\/+/, ""), "index.html");
+      if (!fs.existsSync(outputPath)) {
+        addIssue("generated HTML", `Missing generated page ${path.relative(rootDir, outputPath)}.`);
+        continue;
+      }
+      const html = fs.readFileSync(outputPath, "utf8");
+      checkNoPolish("generated HTML", path.relative(rootDir, outputPath), html);
+      checkContamination("generated HTML", lang, path.relative(rootDir, outputPath), html);
+      if (!html.includes(`/${lang}/`)) addIssue("generated HTML", `${path.relative(rootDir, outputPath)} does not include its locale route.`);
+    }
+  }
 }
 
-const sourceValue = locales.get(sourceLanguage);
-const sourceRows = flattenText(sourceValue).filter((row) => shouldAuditPath(row.path));
-const sourcePaths = new Set(sourceRows.map((row) => row.path));
-const comparisons = [...locales.entries()]
-  .filter(([language]) => language !== sourceLanguage)
-  .map(([language, localeValue]) => compareLocale(language, sourceRows, sourcePaths, localeValue));
+function buildReport() {
+  const lines = [
+    "# Multilingual Bulgarian-Source Audit",
+    "",
+    `Generated: ${new Date().toISOString()}`,
+    `Expected locales: ${expectedLanguages.map((lang) => `\`${lang}\``).join(", ")}`,
+    "",
+    "## Checks",
+    "",
+    "- Source validation: locale files, type/list/index parity, no Polish references, zh/hu presence.",
+    "- Route parity validation: every locale has every route and landing pages preserve Bulgarian master structure.",
+    "- Metadata validation: titles, descriptions, keywords, hreflang, Open Graph locale codes.",
+    "- JSON-LD validation: structured data human-readable fields and locale coverage.",
+    "- Generated HTML contamination validation: static pages and sitemaps when `dist/` exists.",
+    "",
+    "## Notes",
+    "",
+    ...sections.map((section) => `- ${section}`),
+    ...(sections.length ? [""] : []),
+    "## Issues",
+    "",
+  ];
+
+  if (issues.length === 0) {
+    lines.push("_None._");
+  } else {
+    lines.push("| Category | Issue |");
+    lines.push("| --- | --- |");
+    for (const issue of issues) {
+      lines.push(`| ${issue.category} | ${issue.message.replaceAll("|", "\\|")} |`);
+    }
+  }
+
+  lines.push("");
+  lines.push("## Summary");
+  lines.push("");
+  lines.push(`Total issues: ${issues.length}`);
+  return `${lines.join("\n")}\n`;
+}
+
+validateSourceFiles();
+const routes = loadSourceModule(path.join(rootDir, "src", "routes.ts"));
+const seo = loadSourceModule(path.join(rootDir, "src", "seo.ts"));
+const landing = loadSourceModule(path.join(rootDir, "src", "landingPages.ts"));
+validateRuntimeData(routes, seo, landing);
+validateGeneratedHtml(routes);
 
 fs.mkdirSync(reportsDir, { recursive: true });
-fs.writeFileSync(reportPath, buildReport(sourceRows, comparisons));
+fs.writeFileSync(reportPath, buildReport());
 
-const issueCount = comparisons.reduce(
-  (total, comparison) => total
-    + comparison.missing.length
-    + comparison.nonText.length
-    + comparison.sameAsBulgarian.length
-    + comparison.likelyTooShort.length
-    + comparison.extra.length,
-  0,
-);
-
-console.log(`Audited ${sourceRows.length} Bulgarian text nodes across ${comparisons.length} target locales.`);
+console.log(`i18n audit checked ${expectedLanguages.length} locales and ${routes.staticRoutes.length} routes.`);
 console.log(`Report written to ${path.relative(rootDir, reportPath)}`);
 
-if (issueCount > 0) {
-  console.log(`Found ${issueCount} translation issues that need review.`);
+if (issues.length > 0) {
+  console.log(`Found ${issues.length} multilingual issues.`);
   process.exitCode = 1;
 }
