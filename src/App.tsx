@@ -1,8 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { contentByLanguage, languages, type Accommodation, type LanguageCode, type TimelineItem } from "./content";
+import { updateDocumentSEO } from "./seo";
 
 export function App() {
-  const [language, setLanguage] = useState<LanguageCode>("bg");
+  const [language, setLanguage] = useState<LanguageCode>(() => {
+    const params = new URLSearchParams(window.location.search);
+    const urlLang = params.get("lang") as LanguageCode | null;
+    return urlLang && languages.some((l) => l.code === urlLang) ? urlLang : "bg";
+  });
   const [selectedTimeline, setSelectedTimeline] = useState<TimelineItem | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
@@ -13,10 +18,13 @@ export function App() {
     setSelectedTimeline(null);
     setLanguage(nextLanguage);
     setLanguageMenuOpen(false);
+    const url = nextLanguage === "bg" ? "/" : `/?lang=${nextLanguage}`;
+    history.replaceState(null, "", url);
   };
 
   useEffect(() => {
     document.documentElement.lang = language;
+    updateDocumentSEO(language);
   }, [language]);
 
   useEffect(() => {
@@ -163,7 +171,7 @@ export function App() {
       )}
 
       <section id="home" className="hero">
-        <img className="hero-image" src="/assets/aglen-hero-river-canyon.png" alt={copy.hero.imageAlt} />
+        <img className="hero-image" src="/assets/aglen-hero-river-canyon.png" alt={copy.hero.imageAlt} fetchPriority="high" decoding="async" />
         <div className="hero-overlay" aria-hidden="true" />
         <div className="hero-copy section-shell reveal">
           <p className="eyebrow">{copy.hero.meta}</p>

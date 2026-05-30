@@ -1,0 +1,65 @@
+{
+  "name": "Aglen — Hidden Bulgaria Quests",
+  "short_name": "Aglen",
+  "description": "Explore Aglen, Bulgaria's only village starting with Ъ. Limestone canyons, caves, Vit River & the Hidden Bulgaria Quests AR adventure.",
+  "start_url": "/?source=pwa",
+  "id": "/?source=pwa",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0e1c14",
+  "theme_color": "#20392f",
+  "lang": "bg",
+  "dir": "ltr",
+  "scope": "/",
+  "categories": ["travel", "tourism", "entertainment", "education"],
+  "icons": [
+    {
+      "src": "/assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/assets/aglen-hero-river-canyon.png",
+      "type": "image/png",
+      "label": "Aglen — Vit River Canyon at sunrise"
+    },
+    {
+      "src": "/assets/aglen-aerial-river.png",
+      "type": "image/png",
+      "label": "Aerial view of Aglen village and canyon"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Landmarks",
+      "short_name": "Landmarks",
+      "description": "Explore Aglen's natural landmarks",
+      "url": "/#landmarks",
+      "icons": [{ "src": "/assets/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Hidden Bulgaria Quests",
+      "short_name": "AR Quests",
+      "description": "Download the AR adventure app",
+      "url": "/#app",
+      "icons": [{ "src": "/assets/icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.hiddenBulgaria.quests",
+      "id": "com.hiddenBulgaria.quests"
+    }
+  ],
+  "prefer_related_applications": false
+}
