@@ -18,6 +18,6 @@ export const placeExperienceLinks: Record<PlaceId, PlaceExperienceLink[]> = {
     { kind: "activity", id: "photoTour" },
     { kind: "activity", id: "fishing" },
   ],
-  "st-archangel-michael": [{ kind: "activity", id: "weekendEscape" }],
-  kaleto: [{ kind: "quest", id: "story" }],
+  "st-archangel-michael": [{ kind: "quest", id: "story" }],
+  kaleto: [{ kind: "quest", id: "gps" }],
 };
