@@ -2,7 +2,7 @@ import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const fr: PageCopy = {
-  nav: { home: "Accueil", about: "À propos d'Aglen", landmarks: "Sites", stay: "Séjour", quests: "Hidden Bulgaria Quests" },
+  nav: { home: "Accueil", about: "Aglen", landmarks: "À voir", stay: "Séjour", quests: "Quêtes AR" },
   ui: { languageLabel: "Langue", languageSelectAria: "Choisir la langue", modalCloseAria: "Fermer", mobileMenuAria: "Menu" },
   brand: { name: "Aglen", subtitle: "Village au bord de la rivière Vit" },
   hero: { meta: "Nord de la Bulgarie · rivière Vit · près de Lukovit", title: "AGLEN", subtitle: "Le trésor caché de la rivière Vit", lede: "Là où falaises calcaires, forêts calmes, grottes et légendes de village se rencontrent.", primary: "Explorer Aglen", secondary: "Télécharger l'app", cue: "Découvrir la vallée", imageAlt: "Vue cinématographique d'un canyon fluvial et d'un paysage de village inspirés d'Aglen" },
@@ -10,7 +10,7 @@ export const fr: PageCopy = {
   about: { eyebrow: "Histoire et mémoire locale", title: "Des couches de temps au bord de la rivière", text: "Aglen n'est pas seulement un point sur la carte. Son récit rassemble grottes, sentiers de rivière, anciens itinéraires, mémoire villageoise et un nom rare." },
   legends: { eyebrow: "Légendes et mystères d'Aglen", title: "Certains lieux se découvrent lentement.", text: "Les histoires les plus fortes ici sont discrètes. Elles vivent dans les noms locaux, les seuils des grottes, les formes rocheuses et les méandres de la rivière." },
   landmarks: { eyebrow: "Lieux à découvrir", title: "Canyon, rivière, grottes et silence rural", text: "Une destination compacte avec un mélange rare de nature et d'histoires locales. La meilleure visite est lente: marcher, écouter, photographier et laisser place à la découverte.", aria: "Étapes autour d'Aglen" },
-  experiences: { eyebrow: "Choisissez votre week-end à Aglen", title: "Des moments guidés, pas une liste touristique", text: "Les excursions sont conçues comme des expériences claires: assez courtes pour un week-end, assez personnelles pour sembler locales.", cta: "Demander l'itinéraire" },
+  experiences: { eyebrow: "Expériences", title: "Des moments guidés, pas une liste touristique", text: "Les excursions sont conçues comme des expériences claires: assez courtes pour un week-end, assez personnelles pour sembler locales.", cta: "Demander l'itinéraire" },
   gallery: { eyebrow: "Galerie immersive", title: "Un lieu raconté par la lumière de la rivière et la pierre", aria: "Galerie d'Aglen" },
   stay: { eyebrow: "Séjourner à Aglen", title: "Se reposer près de la rivière", text: "Aglen propose des hébergements calmes au cœur de la nature. Pour les disponibilités et réservations, contactez-nous." },
   quests: {

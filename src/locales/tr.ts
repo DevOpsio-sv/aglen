@@ -2,7 +2,7 @@ import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const tr: PageCopy = {
-  nav: { home: "Ana sayfa", about: "Aglen hakkında", landmarks: "Yerler", stay: "Konaklama", quests: "Hidden Bulgaria Quests" },
+  nav: { home: "Ana sayfa", about: "Aglen", landmarks: "Görülecekler", stay: "Konaklama", quests: "AR görevleri" },
   ui: { languageLabel: "Dil", languageSelectAria: "Dil seç", modalCloseAria: "Kapat", mobileMenuAria: "Menü" },
   brand: { name: "Aglen", subtitle: "Vit Nehri kıyısında köy" },
   hero: { meta: "Kuzey Bulgaristan · Vit Nehri · Lukovit yakınında", title: "AGLEN", subtitle: "Vit Nehri'nin gizli hazinesi", lede: "Kireçtaşı kayalıkları, sessiz ormanlar, mağaralar ve köy efsanelerinin buluştuğu yer.", primary: "Aglen'i keşfet", secondary: "Uygulamayı indir", cue: "Vadiyi keşfet", imageAlt: "Aglen'den esinlenen nehir kanyonu ve köy manzarası" },
@@ -10,7 +10,7 @@ export const tr: PageCopy = {
   about: { eyebrow: "Tarih ve yerel hafıza", title: "Nehir kenarında zaman katmanları", text: "Aglen haritadaki bir nokta değil. Hikayesi mağaraları, nehir yollarını, eski rotaları, köy hafızasını ve nadir adını bir araya getirir." },
   legends: { eyebrow: "Aglen efsaneleri ve sırları", title: "Bazı yerler yavaş keşfedilir.", text: "Buradaki en güçlü hikayeler sessizdir. Yerel adlarda, mağara eşiklerinde, kaya şekillerinde ve nehrin kıvrımlarında yaşarlar." },
   landmarks: { eyebrow: "Keşfedilecek yerler", title: "Kanyon, nehir, mağaralar ve köy sessizliği", text: "Doğa ve yerel hikayelerin nadir birleşimi. En iyi ziyaret yavaştır: yürü, dinle, fotoğraf çek ve keşfe alan bırak.", aria: "Aglen çevresindeki rota durakları" },
-  experiences: { eyebrow: "Aglen hafta sonunu seç", title: "Turist listesi değil, rehberli anlar", text: "Hafta sonu için kısa, yerel hissettirecek kadar kişisel ziyaret deneyimleri.", cta: "Bu rotayı sor" },
+  experiences: { eyebrow: "Deneyimler", title: "Turist listesi değil, rehberli anlar", text: "Hafta sonu için kısa, yerel hissettirecek kadar kişisel ziyaret deneyimleri.", cta: "Bu rotayı sor" },
   gallery: { eyebrow: "Sürükleyici galeri", title: "Nehir ışığı ve taşla anlatılan bir yer", aria: "Aglen galerisi" },
   stay: { eyebrow: "Aglen'de konaklama", title: "Nehre yakın dinlen", text: "Aglen doğa içinde sakin konaklama seçenekleri sunar. Uygunluk ve rezervasyon için iletişime geçin." },
   quests: { eyebrow: "Bulgaristan'da türünün ilki", title: "Aglen yakınında gerçek bir AR macerası", text: "Hidden Bulgaria Quests sizi gerçek yerlere götürür - telefonunuzla gizli bir 3D dünya görür, bilmeceler çözer ve Koruyucu'nun izlerini takip edersiniz. Simülasyon değil. Müze değil. Gerçek bir canlı macera.", cta: "İndir ve başla", features: [

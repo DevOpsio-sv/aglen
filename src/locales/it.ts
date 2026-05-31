@@ -2,7 +2,7 @@ import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const it: PageCopy = {
-  nav: { home: "Home", about: "Su Aglen", landmarks: "Attrazioni", stay: "Soggiorno", quests: "Hidden Bulgaria Quests" },
+  nav: { home: "Home", about: "Aglen", landmarks: "Da vedere", stay: "Dormire", quests: "Missioni AR" },
   ui: { languageLabel: "Lingua", languageSelectAria: "Seleziona lingua", modalCloseAria: "Chiudi", mobileMenuAria: "Menu" },
   brand: { name: "Aglen", subtitle: "Villaggio presso il fiume Vit" },
   hero: { meta: "Bulgaria del Nord · fiume Vit · vicino a Lukovit", title: "AGLEN", subtitle: "Il tesoro nascosto del fiume Vit", lede: "Dove scogliere calcaree, boschi silenziosi, grotte e leggende del villaggio si incontrano.", primary: "Esplora Aglen", secondary: "Scarica l'app", cue: "Scopri la valle", imageAlt: "Vista cinematografica di un canyon fluviale e paesaggio rurale ispirati ad Aglen" },
@@ -10,7 +10,7 @@ export const it: PageCopy = {
   about: { eyebrow: "Storia e memoria locale", title: "Strati di tempo accanto al fiume", text: "Aglen non è solo un punto sulla mappa. La sua storia raccoglie grotte, sentieri lungo il fiume, antiche rotte, memoria del villaggio e un nome raro." },
   legends: { eyebrow: "Leggende e misteri di Aglen", title: "Alcuni luoghi si scoprono lentamente.", text: "Le storie più forti qui sono silenziose. Vivono nei nomi locali, negli ingressi delle grotte, nelle forme rocciose e nelle curve del fiume." },
   landmarks: { eyebrow: "Luoghi da scoprire", title: "Canyon, fiume, grotte e silenzio rurale", text: "Una destinazione compatta con una rara combinazione di natura e storie locali. La visita migliore è lenta: cammina, ascolta, fotografa e lascia spazio alla scoperta.", aria: "Tappe intorno ad Aglen" },
-  experiences: { eyebrow: "Scegli il tuo weekend ad Aglen", title: "Momenti guidati, non una lista turistica", text: "Le escursioni sono modellate come esperienze chiare: abbastanza brevi per un weekend, abbastanza personali da sembrare locali.", cta: "Chiedi il percorso" },
+  experiences: { eyebrow: "Esperienze", title: "Momenti guidati, non una lista turistica", text: "Le escursioni sono modellate come esperienze chiare: abbastanza brevi per un weekend, abbastanza personali da sembrare locali.", cta: "Chiedi il percorso" },
   gallery: { eyebrow: "Galleria immersiva", title: "Un luogo raccontato dalla luce del fiume e dalla pietra", aria: "Galleria di Aglen" },
   stay: { eyebrow: "Soggiornare ad Aglen", title: "Riposa vicino al fiume", text: "Aglen offre sistemazioni tranquille immerse nella natura. Per disponibilità e prenotazioni, contattaci." },
   quests: { eyebrow: "Primo nel suo genere in Bulgaria", title: "Una vera avventura AR vicino ad Aglen", text: "Hidden Bulgaria Quests ti porta in luoghi reali - con il telefono vedi un mondo 3D nascosto, risolvi enigmi e segui le tracce del Guardiano. Non una simulazione. Non un museo. Una vera avventura dal vivo.", cta: "Scarica e inizia", features: [

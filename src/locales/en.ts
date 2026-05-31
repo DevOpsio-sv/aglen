@@ -2,7 +2,7 @@ import { accommodationEn, images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const en: PageCopy = {
-  nav: { home: "Home", about: "About Aglen", landmarks: "Landmarks", stay: "Stay", quests: "Hidden Bulgaria Quests" },
+  nav: { home: "Home", about: "About Aglen", landmarks: "Places", stay: "Stay", quests: "AR Quests" },
   ui: { languageLabel: "Language", languageSelectAria: "Select language", modalCloseAria: "Close", mobileMenuAria: "Menu" },
   brand: { name: "Aglen", subtitle: "Village by the Vit River" },
   hero: { meta: "Northern Bulgaria · Vit River · Near Lukovit", title: "AGLEN", subtitle: "The Hidden Treasure of the Vit River", lede: "Where limestone cliffs, quiet forests, caves, and village legends meet.", primary: "Explore Aglen", secondary: "Download the App", cue: "Discover the valley", imageAlt: "Cinematic view of a river canyon and village landscape inspired by Aglen" },
@@ -10,7 +10,7 @@ export const en: PageCopy = {
   about: { eyebrow: "History and local memory", title: "Layers of time beside the river", text: "Aglen is not only a point on the map. Its story gathers caves, river paths, older routes, village memory, and the rare name that stays with visitors." },
   legends: { eyebrow: "Legends & Mysteries of Aglen", title: "Some places are found slowly.", text: "The strongest stories here are not loud. They live in local names, cave thresholds, unusual rock forms, and the way the river disappears around a bend." },
   landmarks: { eyebrow: "Places to Explore", title: "Canyon, river, caves, and village silence", text: "A compact destination with a rare mix of natural landmarks and local stories. The best visit is unhurried: walk, listen, photograph, and leave space for discovery.", aria: "Route stops around Aglen" },
-  experiences: { eyebrow: "Choose your Aglen weekend", title: "Guided moments, not tourist checklists", text: "The excursions are shaped as clear experiences: short enough for a weekend, personal enough to feel local.", cta: "Ask about the route" },
+  experiences: { eyebrow: "Experiences", title: "Guided moments, not tourist checklists", text: "The excursions are shaped as clear experiences: short enough for a weekend, personal enough to feel local.", cta: "Ask about the route" },
   gallery: { eyebrow: "Immersive Gallery", title: "A place told through river light and stone", aria: "Aglen gallery" },
   stay: {
     eyebrow: "Stay in Aglen",

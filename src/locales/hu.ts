@@ -2,7 +2,7 @@ import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const hu: PageCopy = {
-  nav: { home: "Kezdőlap", about: "Aglenről", landmarks: "Látnivalók", stay: "Szállás", quests: "Hidden Bulgaria Quests" },
+  nav: { home: "Kezdőlap", about: "Aglen", landmarks: "Látnivalók", stay: "Szállás", quests: "AR-küldetések" },
   ui: { languageLabel: "Nyelv", languageSelectAria: "Nyelv kiválasztása", modalCloseAria: "Bezárás", mobileMenuAria: "Menü" },
   brand: { name: "Aglen", subtitle: "Falu a Vit folyónál" },
   hero: { meta: "Észak-Bulgária · Vit folyó · Lukovit közelében", title: "AGLEN", subtitle: "A Vit folyó rejtett kincse", lede: "Ahol mészkősziklák, csendes erdők, barlangok és falusi legendák találkoznak.", primary: "Fedezd fel Aglent", secondary: "Alkalmazás letöltése", cue: "Fedezd fel a völgyet", imageAlt: "Aglen ihlette folyókanyon és falusi táj" },
@@ -10,7 +10,7 @@ export const hu: PageCopy = {
   about: { eyebrow: "Történelem és helyi emlékezet", title: "Időrétegek a folyó mellett", text: "Aglen nem pusztán pont a térképen. Története barlangokat, folyóparti ösvényeket, régi útvonalakat, falusi emlékezetet és ritka nevet kapcsol össze." },
   legends: { eyebrow: "Aglen legendái és rejtélyei", title: "Vannak helyek, amelyeket lassan találunk meg.", text: "A legerősebb történetek itt csendesek. Helyi nevekben, barlangküszöbökben, különös sziklaformákban és folyókanyarokban élnek." },
   landmarks: { eyebrow: "Felfedezhető helyek", title: "Kanyon, folyó, barlangok és falusi csend", text: "Kompakt úti cél ritka természetes látnivalókkal és helyi történetekkel. A legjobb látogatás lassú: séta, figyelem, fotózás és tér a felfedezésnek.", aria: "Útvonalpontok Aglen körül" },
-  experiences: { eyebrow: "Válaszd ki az agleni hétvégédet", title: "Vezetett pillanatok, nem turistalista", text: "A programok tiszta élményekként épülnek fel: elég rövidek egy hétvégéhez, elég személyesek a helyi hangulathoz.", cta: "Kérdezz az útvonalról" },
+  experiences: { eyebrow: "Élmények", title: "Vezetett pillanatok, nem turistalista", text: "A programok tiszta élményekként épülnek fel: elég rövidek egy hétvégéhez, elég személyesek a helyi hangulathoz.", cta: "Kérdezz az útvonalról" },
   gallery: { eyebrow: "Immerzív galéria", title: "Egy hely folyófénnyel és kővel elmesélve", aria: "Aglen galéria" },
   stay: { eyebrow: "Szállás Aglenben", title: "Pihenj közel a folyóhoz", text: "Aglen csendes, természetközeli szálláslehetőségeket kínál. Elérhetőségért és foglalásért keress minket." },
   quests: {

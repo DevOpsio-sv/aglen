@@ -2,7 +2,7 @@ import { accommodationBg, images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const bg: PageCopy = {
-  nav: { home: "Начало", about: "За Ъглен", landmarks: "Забележителности", stay: "Настаняване", quests: "Hidden Bulgaria Quests" },
+  nav: { home: "Начало", about: "За Ъглен", landmarks: "Места", stay: "Нощувки", quests: "AR куестове" },
   ui: { languageLabel: "Език", languageSelectAria: "Избор на език", modalCloseAria: "Затвори", mobileMenuAria: "Меню" },
   brand: { name: "Ъглен", subtitle: "Село до река Вит" },
   hero: {
@@ -33,7 +33,7 @@ export const bg: PageCopy = {
     aria: "Маршрутни точки около Ъглен",
   },
   experiences: {
-    eyebrow: "Избери своя уикенд в Ъглен",
+    eyebrow: "Преживявания",
     title: "Преживей Ъглен по своя начин",
     text: "Избери разходка, фотографско приключение, риболов или уикенд сред природата и открий най-доброто от района.",
     cta: "Запитай за маршрута",

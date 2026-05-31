@@ -2,7 +2,7 @@ import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const zh: PageCopy = {
-  nav: { home: "首页", about: "关于阿格伦", landmarks: "景点", stay: "住宿", quests: "Hidden Bulgaria Quests" },
+  nav: { home: "首页", about: "阿格伦", landmarks: "看点", stay: "住宿", quests: "AR任务" },
   ui: { languageLabel: "语言", languageSelectAria: "选择语言", modalCloseAria: "关闭", mobileMenuAria: "菜单" },
   brand: { name: "阿格伦", subtitle: "维特河畔村庄" },
   hero: { meta: "保加利亚北部 · 维特河 · 卢科维特附近", title: "AGLEN", subtitle: "维特河畔的隐秘宝藏", lede: "石灰岩峭壁、安静森林、洞穴和村庄传说在这里相遇。", primary: "探索阿格伦", secondary: "下载应用", cue: "发现河谷", imageAlt: "受阿格伦启发的河谷峡谷和乡村景观" },
@@ -10,7 +10,7 @@ export const zh: PageCopy = {
   about: { eyebrow: "历史与地方记忆", title: "河畔层叠的时间", text: "阿格伦不只是地图上的一个点。它的故事连接洞穴、河边小路、古老路线、村庄记忆和令人难忘的名字。" },
   legends: { eyebrow: "阿格伦的传说与谜团", title: "有些地方需要慢慢发现。", text: "这里最有力量的故事并不喧闹。它们藏在地名、洞穴入口、奇特岩形和河流转弯处。" },
   landmarks: { eyebrow: "可探索的地点", title: "峡谷、河流、洞穴与村庄宁静", text: "一个紧凑目的地，融合自然地标和地方故事。最好的访问方式是放慢脚步：行走、聆听、拍照，并为发现留出空间。", aria: "阿格伦周边路线点" },
-  experiences: { eyebrow: "选择你的阿格伦周末", title: "有引导的体验，而不是观光清单", text: "这些活动被设计成清晰的体验：适合周末，也足够贴近当地。", cta: "咨询路线" },
+  experiences: { eyebrow: "体验", title: "有引导的体验，而不是观光清单", text: "这些活动被设计成清晰的体验：适合周末，也足够贴近当地。", cta: "咨询路线" },
   gallery: { eyebrow: "沉浸式图库", title: "由河光与岩石讲述的地方", aria: "阿格伦图库" },
   stay: { eyebrow: "在阿格伦住宿", title: "在河边休息", text: "阿格伦提供安静、亲近自然的住宿选择。请联系我们确认空房与预订。" },
   quests: {

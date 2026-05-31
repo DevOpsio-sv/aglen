@@ -2,7 +2,7 @@ import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const ro: PageCopy = {
-  nav: { home: "Acasă", about: "Despre Aglen", landmarks: "Locuri", stay: "Cazare", quests: "Hidden Bulgaria Quests" },
+  nav: { home: "Acasă", about: "Aglen", landmarks: "De văzut", stay: "Cazare", quests: "Misiuni AR" },
   ui: { languageLabel: "Limbă", languageSelectAria: "Selectează limba", modalCloseAria: "Închide", mobileMenuAria: "Meniu" },
   brand: { name: "Aglen", subtitle: "Sat lângă râul Vit" },
   hero: { meta: "Bulgaria de Nord · râul Vit · lângă Lukovit", title: "AGLEN", subtitle: "Comoara ascunsă a râului Vit", lede: "Locul unde stâncile de calcar, pădurile liniștite, peșterile și legendele satului se întâlnesc.", primary: "Explorează Aglen", secondary: "Descarcă aplicația", cue: "Descoperă valea", imageAlt: "Vedere cinematică a unui canion de râu și peisaj rural inspirat de Aglen" },
@@ -10,7 +10,7 @@ export const ro: PageCopy = {
   about: { eyebrow: "Istorie și memorie locală", title: "Straturi de timp lângă râu", text: "Aglen nu este doar un punct pe hartă. Povestea lui adună peșteri, poteci de râu, rute vechi, memorie sătească și un nume rar." },
   legends: { eyebrow: "Legende și mistere din Aglen", title: "Unele locuri se descoperă încet.", text: "Cele mai puternice povești de aici sunt tăcute. Trăiesc în nume locale, praguri de peșteri, forme de stâncă și coturi ale râului." },
   landmarks: { eyebrow: "Locuri de descoperit", title: "Canion, râu, peșteri și liniște de sat", text: "O destinație compactă cu o combinație rară de natură și povești locale. Cea mai bună vizită este lentă: mergi, ascultă, fotografiază și lasă loc descoperirii.", aria: "Puncte de traseu în jurul Aglen" },
-  experiences: { eyebrow: "Alege weekendul tău în Aglen", title: "Momente ghidate, nu liste turistice", text: "Experiențe clare pentru vizitatori: destul de scurte pentru un weekend, destul de personale pentru a simți locul.", cta: "Cere acest traseu" },
+  experiences: { eyebrow: "Experiențe", title: "Momente ghidate, nu liste turistice", text: "Experiențe clare pentru vizitatori: destul de scurte pentru un weekend, destul de personale pentru a simți locul.", cta: "Cere acest traseu" },
   gallery: { eyebrow: "Galerie imersivă", title: "Un loc povestit prin lumina râului și piatră", aria: "Galeria Aglen" },
   stay: { eyebrow: "Cazare în Aglen", title: "Odihnă aproape de râu", text: "Aglen oferă opțiuni liniștite de cazare în natură. Pentru disponibilitate și rezervări, contactează-ne." },
   quests: { eyebrow: "Primul de acest fel în Bulgaria", title: "O aventură AR reală lângă Aglen", text: "Hidden Bulgaria Quests te duce în locuri reale - cu telefonul vezi o lume 3D ascunsă, rezolvi enigme și urmezi urmele Gardianului. Nu este simulare. Nu este muzeu. Este o aventură reală live.", cta: "Descarcă și începe", features: [
