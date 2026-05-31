@@ -30,7 +30,7 @@ function ChevronDownIcon() {
   );
 }
 
-function useFallbackImage(event: SyntheticEvent<HTMLImageElement>) {
+function handleImageError(event: SyntheticEvent<HTMLImageElement>) {
   const image = event.currentTarget;
   if (image.dataset.fallbackApplied === "true") return;
   image.dataset.fallbackApplied = "true";
@@ -58,6 +58,8 @@ export function App() {
   const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
   const timelineDialogRef = useRef<HTMLElement | null>(null);
   const timelineCloseRef = useRef<HTMLButtonElement | null>(null);
+  const languageSwitchRef = useRef<HTMLDivElement | null>(null);
+  const languageTriggerRef = useRef<HTMLButtonElement | null>(null);
   const { language, routeId } = pageRoute;
   const copy = contentByLanguage[language];
   const localizedUi = uiTextByLanguage[language];
@@ -140,7 +142,41 @@ export function App() {
     window.requestAnimationFrame(() => {
       target.scrollIntoView({ block: "start" });
     });
-  }, [currentRoute.sectionId]);
+  }, [currentRoute.sectionId, routeId]);
+
+  useEffect(() => {
+    let observer: IntersectionObserver | undefined;
+    const animationFrame = window.requestAnimationFrame(() => {
+      const revealElements = Array.from(document.querySelectorAll<HTMLElement>(".reveal"));
+      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      if (prefersReducedMotion) {
+        revealElements.forEach((element) => element.classList.add("revealed"));
+        return;
+      }
+
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add("revealed");
+            observer?.unobserve(entry.target);
+          });
+        },
+        { threshold: 0.12 },
+      );
+
+      revealElements.forEach((element) => {
+        if (element.classList.contains("revealed")) return;
+        observer?.observe(element);
+      });
+    });
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+      observer?.disconnect();
+    };
+  }, [routeId]);
 
   useEffect(() => {
     document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
@@ -153,6 +189,42 @@ export function App() {
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [mobileMenuOpen]);
+
+  useEffect(() => {
+    if (!languageMenuOpen || !languageSwitchRef.current) return;
+    const languageSwitch = languageSwitchRef.current;
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setLanguageMenuOpen(false);
+        languageTriggerRef.current?.focus();
+        return;
+      }
+
+      if (e.key !== "Tab") return;
+
+      const focusable = Array.from(
+        languageSwitch.querySelectorAll<HTMLButtonElement>(".language-popover button:not([disabled])"),
+      );
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (!first || !last) return;
+
+      if (document.activeElement === languageTriggerRef.current) {
+        e.preventDefault();
+        (e.shiftKey ? last : first).focus();
+      } else if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+
+    languageSwitch.addEventListener("keydown", onKey);
+    return () => languageSwitch.removeEventListener("keydown", onKey);
+  }, [languageMenuOpen]);
 
   useEffect(() => {
     if (!selectedTimeline) return;
@@ -265,8 +337,10 @@ export function App() {
   const gatewayPlaceLabel = (link: PlaceExperienceLink) =>
     (gatewayPlaceLabelsByKey.get(gatewayKey(link)) ?? []).join(", ");
 
+  const appUrl = `https://unlockingbulgaria.com/${language}/`;
+
   return (
-    <main lang={language}>
+    <main>
       <header className="site-header" aria-label={copy.nav.home}>
         <a
           className="brand"
@@ -293,6 +367,7 @@ export function App() {
           ))}
         </nav>
         <div
+          ref={languageSwitchRef}
           className={`language-switch ${languageMenuOpen ? "open" : ""}`}
           onBlur={(event) => {
             const nextTarget = event.relatedTarget;
@@ -303,6 +378,7 @@ export function App() {
         >
           <span id="language-switch-label" className="language-switch-label">{copy.ui.languageLabel}</span>
           <button
+            ref={languageTriggerRef}
             className="language-trigger"
             type="button"
             aria-label={`${copy.ui.languageSelectAria}: ${selectedLanguage.label}`}
@@ -339,7 +415,7 @@ export function App() {
           )}
         </div>
         <button
-          className="hamburger"
+          className={`hamburger${mobileMenuOpen ? " hamburger--open" : ""}`}
           type="button"
           aria-label={copy.ui.mobileMenuAria}
           aria-expanded={mobileMenuOpen}
@@ -416,7 +492,7 @@ export function App() {
                   </a>
                 </div>
               </div>
-              <img src={currentLandingPage.image || fallbackImage} alt={currentLandingPage.imageAlt} width="1200" height="900" loading="eager" decoding="async" onError={useFallbackImage} />
+              <img src={currentLandingPage.image || fallbackImage} alt={currentLandingPage.imageAlt} width="1200" height="900" loading="eager" decoding="async" onError={handleImageError} />
             </div>
 
             <div className="seo-section-grid">
@@ -460,7 +536,7 @@ export function App() {
       {!currentLandingPage && (
         <>
       <section id="home" className="hero">
-        <img className="hero-image" src="/assets/aglen-hero-river-canyon.png" alt={copy.hero.imageAlt} width="1200" height="630" fetchPriority="high" decoding="async" onError={useFallbackImage} />
+        <img className="hero-image" src="/assets/aglen-hero-river-canyon.png" alt={copy.hero.imageAlt} width="1200" height="630" fetchPriority="high" decoding="async" onError={handleImageError} />
         <div className="hero-overlay" aria-hidden="true" />
         <div className="hero-copy section-shell reveal">
           <p className="eyebrow">{copy.hero.meta}</p>
@@ -519,7 +595,7 @@ export function App() {
           <div className="mystery-grid">
             {copy.mysteries.map((item) => (
               <article className="mystery-card reveal" key={item.title}>
-                <img src={item.image || fallbackImage} alt={`${item.title} - ${item.description}`} width="1200" height="900" loading="lazy" decoding="async" onError={useFallbackImage} />
+                <img src={item.image || fallbackImage} alt={`${item.title} - ${item.description}`} width="1200" height="900" loading="lazy" decoding="async" onError={handleImageError} />
                 <div>
                   <p>{item.tag}</p>
                   <h3>{item.title}</h3>
@@ -569,7 +645,7 @@ export function App() {
 
             return (
               <article className="place-card reveal" key={place.id}>
-                <img src={place.image || fallbackImage} alt={place.imageAlt} width="1200" height="900" loading="lazy" decoding="async" onError={useFallbackImage} />
+                <img src={place.image || fallbackImage} alt={place.imageAlt} width="1200" height="900" loading="lazy" decoding="async" onError={handleImageError} />
                 <div>
                   <p>{place.tag}</p>
                   <h3>{place.title}</h3>
@@ -602,7 +678,7 @@ export function App() {
         <div className="gallery-grid" aria-label={copy.gallery.aria}>
           {copy.galleryItems.map((item) => (
             <figure className={`gallery-item ${item.size} reveal`} key={item.title}>
-              <img src={item.image || fallbackImage} alt={item.alt} width="1200" height="900" loading="lazy" decoding="async" onError={useFallbackImage} />
+              <img src={item.image || fallbackImage} alt={item.alt} width="1200" height="900" loading="lazy" decoding="async" onError={handleImageError} />
               <figcaption>{item.title}</figcaption>
             </figure>
           ))}
@@ -698,7 +774,7 @@ export function App() {
         <div className="place-grid">
           {copy.accommodationList.map((item: Accommodation) => (
             <article className="place-card reveal" key={item.title}>
-              <img src={item.image || fallbackImage} alt={`${item.title} - ${item.description}`} width="1200" height="900" loading="lazy" decoding="async" onError={useFallbackImage} />
+              <img src={item.image || fallbackImage} alt={`${item.title} - ${item.description}`} width="1200" height="900" loading="lazy" decoding="async" onError={handleImageError} />
               <div>
                 <p>{item.type}</p>
                 <h3>{item.title}</h3>
@@ -776,19 +852,17 @@ export function App() {
             <p>{copy.app.text}</p>
             <div className="app-download">
               <a
-                className="app-store-badge"
-                href={appSiteUrl}
+                className="button primary app-cta"
+                href={appUrl}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <span className="play-icon" aria-hidden="true" />
                 <span>{copy.app.badge}</span>
               </a>
-              <p className="app-note">{copy.app.note}</p>
             </div>
             <ul className="app-highlights" aria-label={copy.app.eyebrow}>
-              {copy.ar.steps.map((step) => (
-                <li key={step}>{step}</li>
+              {copy.quests.features.slice(0, 3).map((feature) => (
+                <li key={feature.id}>{feature.title}</li>
               ))}
             </ul>
           </div>
