@@ -2,7 +2,7 @@ import { accommodationBg, images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const bg: PageCopy = {
-  nav: { home: "Начало", about: "За Ъглен", landmarks: "Места", stay: "Нощувки", quests: "AR куестове" },
+  nav: { home: "Начало", about: "За Ъглен", landmarks: "Места", stay: "Нощувки", quests: "AR мисии" },
   ui: { languageLabel: "Език", languageSelectAria: "Избор на език", modalCloseAria: "Затвори", mobileMenuAria: "Меню" },
   brand: { name: "Ъглен", subtitle: "Село до река Вит" },
   hero: {
