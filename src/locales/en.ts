@@ -20,7 +20,7 @@ export const en: PageCopy = {
   quests: {
     eyebrow: "First of its kind in Bulgaria",
     title: "A real AR adventure near Aglen",
-    text: "Hidden Bulgaria Quests takes you to real places - with your phone you see a hidden 3D world, solve riddles, and follow the Guardian's trail. Not a simulation. Not a museum. A real live adventure.",
+    text: "unlockingbulgaria takes you to real places - with your phone you see a hidden 3D world, solve riddles, and follow the Guardian's trail. Not a simulation. Not a museum. A real live adventure.",
     cta: "Download and start",
     features: [
       { id: "ar", title: "Augmented Reality (AR)", text: "What is hidden in these places? Point the camera and see the hidden world come alive before your eyes." },
@@ -33,7 +33,7 @@ export const en: PageCopy = {
     title: "See the Guardian's World",
     text: "With your phone camera, bring the hidden world of Prohodna to life. The AR layer reveals stories, signs, and characters invisible to the naked eye, but only in the places where they happened.",
     steps: [
-      "Download Hidden Bulgaria Quests from Google Play",
+      "Open unlockingbulgaria.com/bg/",
       "Go to a marked AR place around Aglen",
       "Point your camera and see the hidden world",
     ],
@@ -41,10 +41,10 @@ export const en: PageCopy = {
   },
   app: {
     eyebrow: "Download the App",
-    title: "Hidden Bulgaria Quests",
+    title: "unlockingbulgaria",
     text: "A mobile app for Android. Find the missions around Aglen and set off on a real adventure.",
-    badge: "Get it on Google Play",
-    note: "Available for Android. iOS version coming soon.",
+    badge: "Open unlockingbulgaria.com",
+    note: "The official app website is unlockingbulgaria.com/bg/.",
   },
   contact: { eyebrow: "Plan your visit", title: "Spend a weekend where the Vit keeps its secrets.", text: "Ask for routes, guided walks, photo spots, local stories, and practical visitor information.", notesTitle: "Visitor notes", noteOne: "Best for nature walks, photography, river viewpoints, caves, and local memory.", noteTwo: "Bring walking shoes, water, sun protection, and respect for private/local spaces.", cta: "Send Inquiry" },
   hub: {
@@ -62,7 +62,7 @@ export const en: PageCopy = {
     seasonal: { label: "Seasonal guide", text: "Monthly updates for routes, photography, weather, and quiet weekend planning." },
   },
   highlights: [
-    { label: "Hidden Bulgaria", value: "A quiet village on the Vit", detail: "For visitors who prefer discovery, river paths, cliffs, caves, and silence over crowded routes." },
+    { label: "Unlocking Bulgaria", value: "A quiet village on the Vit", detail: "For visitors who prefer discovery, river paths, cliffs, caves, and silence over crowded routes." },
     { label: "Nature", value: "River, limestone, forest", detail: "The landscape is shaped by the Vit River, natural rock forms, canyon views, and cave terrain." },
     { label: "Identity", value: "The rare name Aglen", detail: "Known as the only Bulgarian village beginning with the letter Ъ." },
   ],

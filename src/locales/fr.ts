@@ -16,7 +16,7 @@ export const fr: PageCopy = {
   quests: {
     eyebrow: "Une première en Bulgarie",
     title: "Une vraie aventure AR près d'Aglen",
-    text: "Hidden Bulgaria Quests vous mène vers des lieux réels - avec votre téléphone, vous voyez un monde 3D caché, résolvez des énigmes et suivez les traces du Gardien. Pas une simulation. Pas un musée. Une vraie aventure vivante.",
+    text: "unlockingbulgaria vous mène vers des lieux réels - avec votre téléphone, vous voyez un monde 3D caché, résolvez des énigmes et suivez les traces du Gardien. Pas une simulation. Pas un musée. Une vraie aventure vivante.",
     cta: "Télécharger et commencer",
     features: [
       { id: "ar", title: "Réalité augmentée (AR)", text: "Qu'est-ce qui se cache dans ces lieux ? Pointez la caméra et voyez le monde caché prendre vie sous vos yeux." },
@@ -24,8 +24,8 @@ export const fr: PageCopy = {
       { id: "story", title: "L'histoire autrement", text: "Qui est le Gardien ? Que protègent les anciens signes ? Révélez les légendes de la grotte Prohodna à travers un jeu." },
     ],
   },
-  ar: { eyebrow: "Aventure AR", title: "Regardez le monde du Gardien", text: "Avec la caméra de votre téléphone, donnez vie au monde caché de Prohodna. La couche AR révèle des histoires, des signes et des personnages invisibles à l'oeil nu, mais seulement aux endroits où ils se sont produits.", steps: ["Téléchargez Hidden Bulgaria Quests sur Google Play", "Allez vers un lieu AR marqué autour d'Aglen", "Pointez la caméra et voyez le monde caché"], cta: "Télécharger et commencer" },
-  app: { eyebrow: "Télécharger l'app", title: "Hidden Bulgaria Quests", text: "Application mobile pour Android. Trouvez les missions autour d'Aglen et partez pour une vraie aventure.", badge: "Télécharger sur Google Play", note: "Disponible sur Android. Version iOS bientôt." },
+  ar: { eyebrow: "Aventure AR", title: "Regardez le monde du Gardien", text: "Avec la caméra de votre téléphone, donnez vie au monde caché de Prohodna. La couche AR révèle des histoires, des signes et des personnages invisibles à l'oeil nu, mais seulement aux endroits où ils se sont produits.", steps: ["Ouvrez unlockingbulgaria.com/bg/", "Allez vers un lieu AR marqué autour d'Aglen", "Pointez la caméra et voyez le monde caché"], cta: "Télécharger et commencer" },
+  app: { eyebrow: "Télécharger l'app", title: "unlockingbulgaria", text: "Application mobile pour Android. Trouvez les missions autour d'Aglen et partez pour une vraie aventure.", badge: "Ouvrir unlockingbulgaria.com", note: "Le site officiel de l'app est unlockingbulgaria.com/bg/." },
   contact: { eyebrow: "Planifier la visite", title: "Passez un week-end là où la Vit garde ses secrets.", text: "Demandez des itinéraires, promenades guidées, lieux photo, histoires locales et informations pratiques.", notesTitle: "Notes visiteurs", noteOne: "Idéal pour promenades nature, photographie, vues de rivière, grottes et mémoire locale.", noteTwo: "Prévoyez chaussures confortables, eau, protection solaire et respect des lieux.", cta: "Envoyer une demande" },
   hub: {
     eyebrow: "Hub du guide de voyage",

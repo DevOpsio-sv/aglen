@@ -54,7 +54,7 @@ const coreRoutes: StaticRoute[] = [
   { id: "nearby", slug: "nearby-destinations", sectionId: "travel-guide" },
   { id: "geo", slug: "location", sectionId: "location" },
   { id: "stay", slug: "stay", sectionId: "stay" },
-  { id: "quests", slug: "hidden-bulgaria-quests", sectionId: "quests" },
+  { id: "quests", slug: "unlockingbulgaria", sectionId: "quests" },
   { id: "app", slug: "app", sectionId: "app" },
   { id: "travelGuide", slug: "travel-guide", sectionId: "travel-guide" },
   { id: "seasonal", slug: "travel-guide/seasonal-guide", sectionId: "travel-guide" },

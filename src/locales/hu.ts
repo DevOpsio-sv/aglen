@@ -16,7 +16,7 @@ export const hu: PageCopy = {
   quests: {
     eyebrow: "Első a maga nemében Bulgáriában",
     title: "Valódi AR-kaland Aglen közelében",
-    text: "A Hidden Bulgaria Quests valódi helyekre vezet: telefonoddal rejtett 3D világot látsz, rejtvényeket oldasz meg, és követed az Őrző nyomait. Nem szimuláció. Nem múzeum. Valódi élő kaland.",
+    text: "Az unlockingbulgaria valódi helyekre vezet: telefonoddal rejtett 3D világot látsz, rejtvényeket oldasz meg, és követed az Őrző nyomait. Nem szimuláció. Nem múzeum. Valódi élő kaland.",
     cta: "Letöltés és kezdés",
     features: [
       { id: "ar", title: "Kiterjesztett valóság (AR)", text: "Mi rejtőzik ezeken a helyeken? Irányítsd a kamerát, és nézd, ahogy a rejtett világ életre kel a szemeid előtt." },
@@ -24,8 +24,8 @@ export const hu: PageCopy = {
       { id: "story", title: "Másképp elmesélt történelem", text: "Ki az Őrző? Mit védenek az ősi jelek? Tárd fel Prohodna barlang legendáit egy játékon keresztül." },
     ],
   },
-  ar: { eyebrow: "AR-kaland", title: "Lásd az Őrző világát", text: "Telefonod kamerájával életre keltheted Prohodna rejtett világát. Az AR-réteg történeteket, jeleket és szereplőket mutat meg ott, ahol a történetek helyszíne van.", steps: ["Töltsd le a Hidden Bulgaria Quests alkalmazást a Google Playről", "Menj egy jelölt AR-helyre Aglen körül", "Irányítsd a kamerát, és lásd a rejtett világot"], cta: "Letöltés és kezdés" },
-  app: { eyebrow: "Alkalmazás letöltése", title: "Hidden Bulgaria Quests", text: "Androidos mobilalkalmazás. Találd meg a küldetéseket Aglen körül, és indulj valódi kalandra.", badge: "Letöltés a Google Playről", note: "Androidon elérhető. iOS-verzió hamarosan." },
+  ar: { eyebrow: "AR-kaland", title: "Lásd az Őrző világát", text: "Telefonod kamerájával életre keltheted Prohodna rejtett világát. Az AR-réteg történeteket, jeleket és szereplőket mutat meg ott, ahol a történetek helyszíne van.", steps: ["Nyisd meg az unlockingbulgaria.com/bg/ oldalt", "Menj egy jelölt AR-helyre Aglen körül", "Irányítsd a kamerát, és lásd a rejtett világot"], cta: "Letöltés és kezdés" },
+  app: { eyebrow: "Alkalmazás letöltése", title: "unlockingbulgaria", text: "Androidos mobilalkalmazás. Találd meg a küldetéseket Aglen körül, és indulj valódi kalandra.", badge: "unlockingbulgaria.com megnyitása", note: "Az alkalmazás hivatalos webhelye: unlockingbulgaria.com/bg/." },
   contact: { eyebrow: "Látogatás tervezése", title: "Tölts el egy hétvégét ott, ahol a Vit őrzi a titkait.", text: "Kérdezz útvonalakról, vezetett sétákról, fotóhelyekről, helyi történetekről és gyakorlati látogatói információkról.", notesTitle: "Látogatói jegyzetek", noteOne: "Ideális természetjáráshoz, fotózáshoz, folyókilátásokhoz, barlangokhoz és helyi emlékezethez.", noteTwo: "Hozz kényelmes cipőt, vizet, napvédelmet és tiszteletet a helyi terek iránt.", cta: "Érdeklődés küldése" },
   hub: { eyebrow: "Utazási kalauz központ", title: "Tervezd Aglent érdeklődés, útvonal és közeli hely szerint", text: "A tematikus kalauzok a célpont fő történetét kapcsolják össze a látogatói szándékkal: látnivalók, túrázás, horgászat, barlangok, Vit folyó, szállás, étel, szezonális frissítések és közeli célpontok." },
   guides: {

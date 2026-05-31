@@ -16,7 +16,7 @@ export const zh: PageCopy = {
   quests: {
     eyebrow: "保加利亚首创体验",
     title: "阿格伦附近的真实 AR 冒险",
-    text: "Hidden Bulgaria Quests 会带你到真实地点。用手机看到隐藏的 3D 世界，解开谜题，追随守护者的线索。这不是模拟，也不是博物馆，而是真实现场冒险。",
+    text: "unlockingbulgaria 会带你到真实地点。用手机看到隐藏的 3D 世界，解开谜题，追随守护者的线索。这不是模拟，也不是博物馆，而是真实现场冒险。",
     cta: "下载并开始",
     features: [
       { id: "ar", title: "增强现实 (AR)", text: "这些地方隐藏着什么？将摄像头对准，看隐藏世界在眼前出现。" },
@@ -24,8 +24,8 @@ export const zh: PageCopy = {
       { id: "story", title: "换一种方式讲历史", text: "守护者是谁？古老符号守护着什么？通过游戏揭开普罗霍德纳洞穴的传说。" },
     ],
   },
-  ar: { eyebrow: "AR 冒险", title: "看见守护者的世界", text: "用手机摄像头唤醒普罗霍德纳的隐藏世界。AR 图层只在故事发生的地点展示肉眼看不见的符号、角色和传说。", steps: ["从 Google Play 下载 Hidden Bulgaria Quests", "前往阿格伦周边标记的 AR 地点", "举起摄像头，看见隐藏世界"], cta: "下载并开始" },
-  app: { eyebrow: "下载应用", title: "Hidden Bulgaria Quests", text: "适用于 Android 的移动应用。在阿格伦周边寻找任务，开始真实冒险。", badge: "在 Google Play 获取", note: "Android 可用。iOS 版本即将推出。" },
+  ar: { eyebrow: "AR 冒险", title: "看见守护者的世界", text: "用手机摄像头唤醒普罗霍德纳的隐藏世界。AR 图层只在故事发生的地点展示肉眼看不见的符号、角色和传说。", steps: ["打开 unlockingbulgaria.com/bg/", "前往阿格伦周边标记的 AR 地点", "举起摄像头，看见隐藏世界"], cta: "下载并开始" },
+  app: { eyebrow: "下载应用", title: "unlockingbulgaria", text: "适用于 Android 的移动应用。在阿格伦周边寻找任务，开始真实冒险。", badge: "打开 unlockingbulgaria.com", note: "应用官方网站是 unlockingbulgaria.com/bg/。" },
   contact: { eyebrow: "规划访问", title: "在维特河守护秘密的地方度过周末。", text: "咨询路线、导览步行、拍照地点、地方故事和实用访客信息。", notesTitle: "访客提示", noteOne: "适合自然步行、摄影、河景、洞穴和地方记忆。", noteTwo: "请带舒适鞋、水、防晒用品，并尊重当地空间。", cta: "发送咨询" },
   hub: { eyebrow: "旅行指南中心", title: "按兴趣、路线和附近地点规划阿格伦", text: "专题指南把目的地故事与访客意图连接起来：景点、徒步、钓鱼、洞穴、维特河、住宿、食物、季节更新和周边目的地。" },
   guides: {

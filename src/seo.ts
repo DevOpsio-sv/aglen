@@ -8,7 +8,7 @@ export const SITE_URL = "https://xn--c1aerj5d.com";
 const OG_IMAGE = `${SITE_URL}/assets/aglen-hero-river-canyon.png`;
 const OG_IMAGE_WIDTH = "1200";
 const OG_IMAGE_HEIGHT = "630";
-const APP_PLAY_URL = "https://play.google.com/store/apps/details?id=com.hiddenBulgaria.quests";
+const APP_SITE_URL = "https://unlockingbulgaria.com/bg/";
 
 function placeById(copy: PageCopy, placeId: PlaceId) {
   return copy.placesList.find((place) => place.id === placeId);
@@ -331,12 +331,12 @@ export function buildJSONLD(lang: LanguageCode, routeId: RouteId = "home"): obje
         "@type": "Organization",
         "@id": `${SITE_URL}/#organization`,
         name: seoText.organizationName,
-        alternateName: [copy.brand.name, "Hidden Bulgaria Quests"],
+        alternateName: [copy.brand.name, "unlockingbulgaria"],
         url: SITE_URL,
         logo: { "@type": "ImageObject", url: OG_IMAGE, width: 1200, height: 630 },
         contactPoint: { "@type": "ContactPoint", contactType: copy.contact.cta, email: "info.aglen@gmail.com", availableLanguage: languages.map((language) => language.label) },
         address: { "@type": "PostalAddress", streetAddress: "село Ъглен", addressLocality: "Ъглен", addressRegion: "Lovech", postalCode: "5562", addressCountry: "BG" },
-        sameAs: [APP_PLAY_URL],
+        sameAs: [APP_SITE_URL],
       },
       {
         "@type": "WebSite",
@@ -381,12 +381,12 @@ export function buildJSONLD(lang: LanguageCode, routeId: RouteId = "home"): obje
       },
       {
         "@type": "MobileApplication",
-        "@id": `${SITE_URL}/#hidden-bulgaria-quests`,
-        name: "Hidden Bulgaria Quests",
-        alternateName: "Hidden Bulgaria Quests AR",
+        "@id": `${SITE_URL}/#unlockingbulgaria`,
+        name: "unlockingbulgaria",
+        alternateName: "unlockingbulgaria AR",
         description: copy.app.text,
-        url: APP_PLAY_URL,
-        downloadUrl: APP_PLAY_URL,
+        url: APP_SITE_URL,
+        downloadUrl: APP_SITE_URL,
         applicationCategory: "TravelApplication",
         applicationSubCategory: "Augmented Reality Tourism",
         operatingSystem: "Android",
@@ -614,7 +614,7 @@ export function updateDocumentSEO(lang: LanguageCode, routeId: RouteId = "home")
   setMeta("og:locale", meta.locale, true);
   setOpenGraphLocaleAlternates(meta.ogLocaleAlternates);
   setMeta("twitter:card", "summary_large_image");
-  setMeta("twitter:site", "@hiddenBulgaria");
+  setMeta("twitter:site", "@unlockingbulgaria");
   setMeta("twitter:title", meta.title);
   setMeta("twitter:description", meta.description);
   setMeta("twitter:image", meta.imageUrl);

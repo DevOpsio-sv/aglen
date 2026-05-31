@@ -1,7 +1,7 @@
 {
-  "name": "Aglen — Hidden Bulgaria Quests",
+  "name": "Aglen — unlockingbulgaria",
   "short_name": "Aglen",
-  "description": "Explore Aglen, Bulgaria's only village starting with Ъ. Limestone canyons, caves, Vit River & the Hidden Bulgaria Quests AR adventure.",
+  "description": "Explore Aglen, Bulgaria's only village starting with Ъ. Limestone canyons, caves, Vit River & the unlockingbulgaria AR adventure.",
   "start_url": "/?source=pwa",
   "id": "/?source=pwa",
   "display": "standalone",
@@ -47,7 +47,7 @@
       "icons": [{ "src": "/assets/favicon.svg", "sizes": "any" }]
     },
     {
-      "name": "Hidden Bulgaria Quests",
+      "name": "unlockingbulgaria",
       "short_name": "AR Quests",
       "description": "Download the AR adventure app",
       "url": "/#app",
@@ -57,8 +57,8 @@
   "related_applications": [
     {
       "platform": "play",
-      "url": "https://play.google.com/store/apps/details?id=com.hiddenBulgaria.quests",
-      "id": "com.hiddenBulgaria.quests"
+      "url": "https://unlockingbulgaria.com/bg/",
+      "id": "unlockingbulgaria"
     }
   ],
   "prefer_related_applications": false

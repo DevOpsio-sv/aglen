@@ -7,6 +7,7 @@ import { updateDocumentSEO } from "./seo";
 import { uiTextByLanguage } from "./uiText";
 
 const fallbackImage = "/assets/aglen-hero-river-canyon.png";
+const appSiteUrl = "https://unlockingbulgaria.com/bg/";
 
 function LanguageIcon() {
   return (
@@ -776,7 +777,7 @@ export function App() {
             <div className="app-download">
               <a
                 className="app-store-badge"
-                href="https://play.google.com/store/apps/details?id=com.hiddenBulgaria.quests"
+                href={appSiteUrl}
                 target="_blank"
                 rel="noopener noreferrer"
               >
