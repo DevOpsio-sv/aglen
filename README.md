@@ -4,7 +4,7 @@ A premium tourism website for **Aglen (Ъглен), Bulgaria**. It is designed t
 
 The platform serves as the primary digital entry point for visitors exploring Aglen and acts as a gateway to future tourism products, guided experiences, and interactive regional initiatives.
 
-The website also introduces the first of its kind AR travel-adventure mobile application, which transforms the real historical places and landmarks into educational digital experience.
+The website also introduces the first of its kind AR travel-adventure mobile app, which transforms the real historical places and landmarks into educational digital experience, following a game-like storyline.
 
 ---
 
