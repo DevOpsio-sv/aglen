@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type MouseEvent, type SyntheticEvent } from "react";
 import { contentByLanguage, languages, type Accommodation, type LanguageCode, type TimelineItem } from "./content";
 import { getLandingPage, getLandingPages, isLandingPageId } from "./landingPages";
-import { placeLinks } from "./placeLinks";
+import { placeExperienceLinks, type PlaceExperienceLink } from "./placeLinks";
 import { buildRoutePath, getStaticRoute, resolveRoute, type RouteId, type ResolvedRoute } from "./routes";
 import { updateDocumentSEO } from "./seo";
 import { uiTextByLanguage } from "./uiText";
@@ -36,6 +36,14 @@ function useFallbackImage(event: SyntheticEvent<HTMLImageElement>) {
   image.src = fallbackImage;
 }
 
+function gatewayRouteId(link: PlaceExperienceLink): RouteId {
+  return link.kind === "activity" ? "activities" : "quests";
+}
+
+function gatewayTargetId(link: PlaceExperienceLink): string {
+  return link.kind === "activity" ? `experience-${link.id}` : `quest-${link.id}`;
+}
+
 export function App() {
   const [pageRoute, setPageRoute] = useState<ResolvedRoute>(() =>
     resolveRoute(window.location.pathname, window.location.search),
@@ -52,8 +60,8 @@ export function App() {
   const currentLandingPage = isLandingPageId(routeId) ? getLandingPage(language, routeId) : undefined;
   const selectedLanguage = languages.find((item) => item.code === language) ?? languages[0];
 
-  const navigateTo = (nextRoute: ResolvedRoute, replace = false) => {
-    const url = buildRoutePath(nextRoute.language, nextRoute.routeId);
+  const navigateTo = (nextRoute: ResolvedRoute, replace = false, hash = "") => {
+    const url = `${buildRoutePath(nextRoute.language, nextRoute.routeId)}${hash}`;
     setSelectedTimeline(null);
     setLanguageMenuOpen(false);
     setMobileMenuOpen(false);
@@ -77,6 +85,22 @@ export function App() {
 
     event.preventDefault();
     navigateTo({ language, routeId: nextRouteId });
+  };
+
+  const handleGatewayClick = (event: MouseEvent<HTMLAnchorElement>, link: PlaceExperienceLink) => {
+    if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+      return;
+    }
+
+    event.preventDefault();
+    const targetId = gatewayTargetId(link);
+    navigateTo({ language, routeId: gatewayRouteId(link) }, false, `#${targetId}`);
+
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        document.getElementById(targetId)?.scrollIntoView({ block: "start" });
+      });
+    });
   };
 
   const changeLanguage = (nextLanguage: LanguageCode) => {
@@ -104,7 +128,8 @@ export function App() {
   }, []);
 
   useEffect(() => {
-    const target = document.getElementById(currentRoute.sectionId);
+    const hashTarget = window.location.hash ? decodeURIComponent(window.location.hash.slice(1)) : "";
+    const target = document.getElementById(hashTarget) ?? document.getElementById(currentRoute.sectionId);
     if (!target) return;
 
     window.requestAnimationFrame(() => {
@@ -200,13 +225,20 @@ export function App() {
     [language],
   );
 
-  const routeLabels = useMemo(() => {
-    return new Map<RouteId, string>([
-      ...navItems.map(([label, routeId]) => [routeId, label] as [RouteId, string]),
-      ...guideLinks.map(({ label, routeId }) => [routeId, label] as [RouteId, string]),
-      ...landingPageLinks.map(({ label, routeId }) => [routeId, label] as [RouteId, string]),
-    ]);
-  }, [guideLinks, landingPageLinks, navItems]);
+  const experienceById = useMemo(
+    () => new Map(copy.experiencesList.map((experience) => [experience.id, experience] as const)),
+    [copy.experiencesList],
+  );
+
+  const questFeatureById = useMemo(
+    () => new Map(copy.quests.features.map((feature) => [feature.id, feature] as const)),
+    [copy.quests.features],
+  );
+
+  const gatewayLabel = (link: PlaceExperienceLink) =>
+    link.kind === "activity"
+      ? experienceById.get(link.id)?.title ?? link.id
+      : questFeatureById.get(link.id)?.title ?? link.id;
 
   return (
     <main lang={language}>
@@ -508,7 +540,7 @@ export function App() {
         </div>
         <div className="place-grid">
           {copy.placesList.map((place) => {
-            const linkedRouteIds = placeLinks[place.id];
+            const gatewayLinks = placeExperienceLinks[place.id];
 
             return (
               <article className="place-card reveal" key={place.id}>
@@ -517,15 +549,15 @@ export function App() {
                   <p>{place.tag}</p>
                   <h3>{place.title}</h3>
                   <span>{place.description}</span>
-                  {linkedRouteIds.length > 0 && (
+                  {gatewayLinks.length > 0 && (
                     <nav className="place-card-links" aria-label={place.title}>
-                      {linkedRouteIds.map((linkedRouteId) => (
+                      {gatewayLinks.map((link) => (
                         <a
-                          href={routeHref(linkedRouteId)}
-                          key={linkedRouteId}
-                          onClick={(event) => handleRouteClick(event, linkedRouteId)}
+                          href={`${routeHref(gatewayRouteId(link))}#${gatewayTargetId(link)}`}
+                          key={`${link.kind}-${link.id}`}
+                          onClick={(event) => handleGatewayClick(event, link)}
                         >
-                          {routeLabels.get(linkedRouteId) ?? getStaticRoute(linkedRouteId).slug}
+                          {gatewayLabel(link)}
                         </a>
                       ))}
                     </nav>
@@ -602,7 +634,7 @@ export function App() {
         </div>
         <div className="experience-grid">
           {copy.experiencesList.map((experience) => (
-            <article className="experience-card reveal" key={experience.title}>
+            <article className="experience-card reveal" id={`experience-${experience.id}`} key={experience.id}>
               <div>
                 <p>
                   {experience.duration} · {experience.bestFor}
@@ -657,7 +689,7 @@ export function App() {
           </div>
           <div className="quests-features">
             {copy.quests.features.map((f, i) => (
-              <article className="quest-feature reveal" key={f.title}>
+              <article className="quest-feature reveal" id={`quest-${f.id}`} key={f.id}>
                 <span className="quest-feature-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
                 <h3>{f.title}</h3>
                 <p>{f.text}</p>

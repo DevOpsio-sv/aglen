@@ -788,6 +788,17 @@ h3 {
   transform: translateY(-5px);
 }
 
+.experience-card,
+.quest-feature {
+  scroll-margin-top: 6rem;
+}
+
+.experience-card:target,
+.quest-feature:target {
+  border-color: rgba(197, 154, 69, 0.62);
+  box-shadow: 0 30px 74px rgba(197, 154, 69, 0.18);
+}
+
 .place-card img {
   display: block;
   aspect-ratio: 4 / 3;
