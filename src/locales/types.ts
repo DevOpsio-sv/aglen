@@ -7,6 +7,8 @@ export type Highlight = {
 };
 
 export type PlaceId = "dupkata" | "sloncheto" | "chervena-stena" | "rachkov-vir" | "st-archangel-michael" | "kaleto";
+export type ExperienceId = "canyon-walk" | "river-photo-journey" | "vit-fishing" | "aglen-weekend" | "herbs-village-knowledge" | "school-discovery-day";
+export type QuestId = "augmented-reality" | "gps-missions" | "living-history";
 
 export type Place = {
   id: PlaceId;
@@ -18,11 +20,18 @@ export type Place = {
 };
 
 export type Experience = {
+  id: ExperienceId;
   title: string;
   price: string;
   duration: string;
   description: string;
   bestFor: string;
+};
+
+export type QuestFeature = {
+  id: QuestId;
+  title: string;
+  text: string;
 };
 
 export type Mystery = {
@@ -122,7 +131,7 @@ export type PageCopy = {
     title: string;
     text: string;
     cta: string;
-    features: Array<{ title: string; text: string }>;
+    features: QuestFeature[];
   };
   ar: {
     eyebrow: string;

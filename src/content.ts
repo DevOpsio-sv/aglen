@@ -2,6 +2,7 @@ export { contentByLanguage, languages } from "./locales";
 export type {
   Accommodation,
   Experience,
+  ExperienceId,
   GalleryItem,
   Highlight,
   LanguageCode,
@@ -10,5 +11,7 @@ export type {
   PageCopy,
   Place,
   PlaceId,
+  QuestFeature,
+  QuestId,
   TimelineItem,
 } from "./locales";
