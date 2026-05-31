@@ -179,6 +179,8 @@ for (const routePath of staticRoutePaths) {
 
 fs.writeFileSync(templatePath, renderPageHtml(routes.buildRoutePath("bg", "home")));
 
+const LASTMOD = new Date().toISOString().split("T")[0];
+
 function renderSitemapUrl(language, routeId) {
   const pageSeo = seo.getSEOConfig(language, routeId);
   const alternates = pageSeo.alternates
@@ -197,6 +199,7 @@ function renderSitemapUrl(language, routeId) {
   return [
     "  <url>",
     `    <loc>${escapeXml(pageSeo.canonicalUrl)}</loc>`,
+    `    <lastmod>${LASTMOD}</lastmod>`,
     alternates,
     images,
     "  </url>",
@@ -236,10 +239,7 @@ fs.writeFileSync(
   `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapIndexEntries}\n</sitemapindex>\n`,
 );
 
-fs.writeFileSync(
-  path.join(distDir, "robots.txt"),
-  `User-agent: *\nAllow: /\nSitemap: ${seo.SITE_URL}/sitemap.xml\n`,
-);
+// robots.txt is copied from public/robots.txt by Vite; no overwrite needed here.
 
 fs.writeFileSync(
   path.join(distDir, "llms.txt"),
