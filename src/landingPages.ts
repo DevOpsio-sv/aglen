@@ -1,6 +1,6 @@
 import { contentByLanguage } from "./locales";
 import { images } from "./locales/shared";
-import type { LanguageCode, PageCopy } from "./locales/types";
+import type { LanguageCode, PageCopy, PlaceId } from "./locales/types";
 import { uiTextByLanguage } from "./uiText";
 
 export type LandingPageId =
@@ -196,13 +196,14 @@ const landingText: Record<LanguageCode, LandingLanguageText> = {
 
 function imageAlt(lang: LanguageCode, key: LandingPageMaster["imageAltKey"]): string {
   const copy = contentByLanguage[lang];
+  const placeAlt = (placeId: PlaceId) => copy.placesList.find((place) => place.id === placeId)?.imageAlt;
   const byKey: Record<LandingPageMaster["imageAltKey"], string> = {
     hero: copy.hero.imageAlt,
     aerial: copy.galleryItems[3]?.alt ?? copy.landmarks.aria,
     cave: copy.galleryItems[2]?.alt ?? copy.guides.caves.text,
-    church: copy.placesList[4]?.imageAlt ?? copy.stay.title,
-    pool: copy.placesList[3]?.imageAlt ?? copy.guides.vitRiver.text,
-    kaleto: copy.placesList[5]?.imageAlt ?? copy.about.title,
+    church: placeAlt("st-archangel-michael") ?? copy.stay.title,
+    pool: placeAlt("rachkov-vir") ?? copy.guides.vitRiver.text,
+    kaleto: placeAlt("kaleto") ?? copy.about.title,
   };
 
   return byKey[key];

@@ -6,7 +6,10 @@ export type Highlight = {
   detail: string;
 };
 
+export type PlaceId = "dupkata" | "sloncheto" | "chervena-stena" | "rachkov-vir" | "st-archangel-michael" | "kaleto";
+
 export type Place = {
+  id: PlaceId;
   title: string;
   description: string;
   tag: string;

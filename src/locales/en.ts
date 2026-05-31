@@ -79,12 +79,12 @@ export const en: PageCopy = {
     { title: "Rocks with local names", tag: "Folklore landscape", image: images.arch, description: "Names like Дупката and Слончето make the landscape personal. They are landmarks and stories at the same time." },
   ],
   placesList: [
-    { title: "Дупката", tag: "Rock arch", image: images.arch, imageAlt: "Limestone rock arch above the river near Aglen", description: "A natural stone arch above the Vit, made for slow walks, quiet photos, and the feeling of a hidden route." },
-    { title: "Слончето", tag: "Rock figure", image: images.hero, imageAlt: "Canyon, river, and limestone cliffs near Aglen", description: "A playful riverside form that turns an ordinary walk into a small discovery." },
-    { title: "Червена стена", tag: "Canyon view", image: images.aerial, imageAlt: "Canyon landscape with river and village", description: "A dramatic meeting of limestone, forest, and river light near the village." },
-    { title: "Рачков вир", tag: "River pool", image: images.pool, imageAlt: "Quiet river pool with limestone bank and forest", description: "A calm natural point for a pause by the water, a picnic, and a slower rhythm beside the Vit." },
-    { title: "St. Archangel Michael", tag: "Village memory", image: images.church, imageAlt: "Village church, stone lane, and green valley", description: "The village church, built in 1888, keeps the human layer of Aglen's story close to the landscape." },
-    { title: "Калето", tag: "Archaeology", image: images.kaleto, imageAlt: "Stone remains on a hill above canyon and river", description: "A place connected with old routes, fortified memory, and the long life beside the river." },
+    { id: "dupkata", title: "Дупката", tag: "Rock arch", image: images.arch, imageAlt: "Limestone rock arch above the river near Aglen", description: "A natural stone arch above the Vit, made for slow walks, quiet photos, and the feeling of a hidden route." },
+    { id: "sloncheto", title: "Слончето", tag: "Rock figure", image: images.hero, imageAlt: "Canyon, river, and limestone cliffs near Aglen", description: "A playful riverside form that turns an ordinary walk into a small discovery." },
+    { id: "chervena-stena", title: "Червена стена", tag: "Canyon view", image: images.aerial, imageAlt: "Canyon landscape with river and village", description: "A dramatic meeting of limestone, forest, and river light near the village." },
+    { id: "rachkov-vir", title: "Рачков вир", tag: "River pool", image: images.pool, imageAlt: "Quiet river pool with limestone bank and forest", description: "A calm natural point for a pause by the water, a picnic, and a slower rhythm beside the Vit." },
+    { id: "st-archangel-michael", title: "St. Archangel Michael", tag: "Village memory", image: images.church, imageAlt: "Village church, stone lane, and green valley", description: "The village church, built in 1888, keeps the human layer of Aglen's story close to the landscape." },
+    { id: "kaleto", title: "Калето", tag: "Archaeology", image: images.kaleto, imageAlt: "Stone remains on a hill above canyon and river", description: "A place connected with old routes, fortified memory, and the long life beside the river." },
   ],
   experiencesList: [
     { title: "Canyon Walk", price: negotiablePrice.en, duration: "2-3 hours", bestFor: "First-time visitors", description: "Guided views toward the Vit, rock forms, and the local names behind the landscape." },

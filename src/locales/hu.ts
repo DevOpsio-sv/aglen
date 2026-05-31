@@ -55,12 +55,12 @@ export const hu: PageCopy = {
     { title: "Helyi nevű sziklák", tag: "Folklór táj", image: images.arch, description: "Az olyan nevek, mint Дупката és Слончето személyessé teszik a tájat. Egyszerre látnivalók és történetek." },
   ],
   placesList: [
-    { title: "Дупката", tag: "Sziklaív", image: images.arch, imageAlt: "Mészkő sziklaív a folyó fölött Aglen közelében", description: "Természetes kőív a Vit fölött, lassú sétákhoz, csendes fotókhoz és rejtett útvonalérzethez." },
-    { title: "Слончето", tag: "Sziklaalak", image: images.hero, imageAlt: "Kanyon, folyó és mészkősziklák Aglen közelében", description: "Játékos folyóparti forma, amely egy egyszerű sétát kis felfedezéssé tesz." },
-    { title: "Червена стена", tag: "Kanyonkilátás", image: images.aerial, imageAlt: "Kanyontáj folyóval és faluval", description: "Mészkő, erdő és folyófény drámai találkozása a falu közelében." },
-    { title: "Рачков вир", tag: "Folyómedence", image: images.pool, imageAlt: "Csendes folyómedence mészkőparttal és erdővel", description: "Nyugodt természeti pont vízparti pihenéshez, piknikhez és lassabb ritmushoz a Vit mellett." },
-    { title: "Szent Mihály arkangyal templom", tag: "Falusi emlékezet", image: images.church, imageAlt: "Falusi templom, kőutca és zöld völgy", description: "Az 1888-ban épült templom Aglen történetének emberi rétegét őrzi." },
-    { title: "Калето", tag: "Régészet", image: images.kaleto, imageAlt: "Kőmaradványok dombon, kanyon és folyó fölött", description: "Régi útvonalakhoz, erődített emlékezethez és a folyó melletti hosszú élethez kapcsolódó hely." },
+    { id: "dupkata", title: "Дупката", tag: "Sziklaív", image: images.arch, imageAlt: "Mészkő sziklaív a folyó fölött Aglen közelében", description: "Természetes kőív a Vit fölött, lassú sétákhoz, csendes fotókhoz és rejtett útvonalérzethez." },
+    { id: "sloncheto", title: "Слончето", tag: "Sziklaalak", image: images.hero, imageAlt: "Kanyon, folyó és mészkősziklák Aglen közelében", description: "Játékos folyóparti forma, amely egy egyszerű sétát kis felfedezéssé tesz." },
+    { id: "chervena-stena", title: "Червена стена", tag: "Kanyonkilátás", image: images.aerial, imageAlt: "Kanyontáj folyóval és faluval", description: "Mészkő, erdő és folyófény drámai találkozása a falu közelében." },
+    { id: "rachkov-vir", title: "Рачков вир", tag: "Folyómedence", image: images.pool, imageAlt: "Csendes folyómedence mészkőparttal és erdővel", description: "Nyugodt természeti pont vízparti pihenéshez, piknikhez és lassabb ritmushoz a Vit mellett." },
+    { id: "st-archangel-michael", title: "Szent Mihály arkangyal templom", tag: "Falusi emlékezet", image: images.church, imageAlt: "Falusi templom, kőutca és zöld völgy", description: "Az 1888-ban épült templom Aglen történetének emberi rétegét őrzi." },
+    { id: "kaleto", title: "Калето", tag: "Régészet", image: images.kaleto, imageAlt: "Kőmaradványok dombon, kanyon és folyó fölött", description: "Régi útvonalakhoz, erődített emlékezethez és a folyó melletti hosszú élethez kapcsolódó hely." },
   ],
   experiencesList: [
     { title: "Kanyonséta", price: negotiablePrice.hu, duration: "2-3 óra", bestFor: "Első látogatás", description: "Vezetett kilátások a Vitre, sziklaformákra és a táj mögötti helyi nevekre." },

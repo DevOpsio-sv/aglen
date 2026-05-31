@@ -1,6 +1,6 @@
 import { contentByLanguage, languages } from "./content";
 import { getLandingPage, isLandingPageId } from "./landingPages";
-import type { LanguageCode } from "./locales/types";
+import type { LanguageCode, PageCopy, PlaceId } from "./locales/types";
 import { allLanguageCodes, buildRoutePath, DEFAULT_LANGUAGE, type CoreRouteId, type RouteId } from "./routes";
 import { uiTextByLanguage } from "./uiText";
 
@@ -9,6 +9,10 @@ const OG_IMAGE = `${SITE_URL}/assets/aglen-hero-river-canyon.png`;
 const OG_IMAGE_WIDTH = "1200";
 const OG_IMAGE_HEIGHT = "630";
 const APP_PLAY_URL = "https://play.google.com/store/apps/details?id=com.hiddenBulgaria.quests";
+
+function placeById(copy: PageCopy, placeId: PlaceId) {
+  return copy.placesList.find((place) => place.id === placeId);
+}
 
 const localeCodes: Record<LanguageCode, string> = {
   bg: "bg_BG",
@@ -178,9 +182,9 @@ function routeImages(lang: LanguageCode, routeId: RouteId): ImageSitemapEntry[] 
 
   const text = routeText(lang, routeId);
   const gallery = copy.galleryItems;
-  const pool = copy.placesList[3];
+  const pool = placeById(copy, "rachkov-vir");
   const cave = copy.mysteries[1];
-  const church = copy.placesList[4];
+  const church = placeById(copy, "st-archangel-michael");
   const byRoute: Record<CoreRouteId, ImageSitemapEntry[]> = {
     home: [{ loc: OG_IMAGE, title: copy.hero.title, caption: copy.hero.imageAlt }, ...gallery.map((item) => ({ loc: absoluteAssetUrl(item.image), title: item.title, caption: item.alt }))],
     pillars: copy.mysteries.map((item) => ({ loc: absoluteAssetUrl(item.image), title: item.title, caption: item.description })),
@@ -499,7 +503,7 @@ export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "hom
     fishing: [copy.guides.fishing.text, copy.experiencesList[2]?.description ?? copy.experiences.text],
     hiking: [copy.guides.hiking.text, ...copy.mapStops.map((stop) => `${stop.title}: ${stop.detail}`)],
     caves: [copy.guides.caves.text, ...copy.mysteries.map((item) => `${item.title}: ${item.description}`)],
-    vitRiver: [copy.guides.vitRiver.text, copy.placesList[3]?.description ?? copy.landmarks.text],
+    vitRiver: [copy.guides.vitRiver.text, placeById(copy, "rachkov-vir")?.description ?? copy.landmarks.text],
     food: [copy.guides.food.text],
     nearby: [copy.guides.nearby.text],
     geo: copy.mapStops.map((stop) => `${stop.title}: ${stop.detail}`),

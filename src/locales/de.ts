@@ -53,12 +53,12 @@ export const de: PageCopy = {
     { title: "Felsen mit lokalen Namen", tag: "Folklore-Landschaft", image: images.arch, description: "Namen wie Дупката und Слончето machen die Landschaft persönlich. Sie sind Sehenswürdigkeiten und Geschichten zugleich." },
   ],
   placesList: [
-    { title: "Дупката", tag: "Felsbogen", image: images.arch, imageAlt: "Kalkstein-Felsbogen über dem Fluss nahe Aglen", description: "Ein natürlicher Steinbogen über dem Vit, geschaffen für langsame Spaziergänge, ruhige Fotos und das Gefühl einer verborgenen Route." },
-    { title: "Слончето", tag: "Felsfigur", image: images.hero, imageAlt: "Canyon, Fluss und Kalksteinfelsen nahe Aglen", description: "Eine spielerische Form am Fluss, die einen gewöhnlichen Spaziergang in eine kleine Entdeckung verwandelt." },
-    { title: "Червена стена", tag: "Canyonblick", image: images.aerial, imageAlt: "Canyonlandschaft mit Fluss und Dorf", description: "Ein dramatisches Zusammentreffen von Kalkstein, Wald und Flusslicht nahe dem Dorf." },
-    { title: "Рачков вир", tag: "Flussbecken", image: images.pool, imageAlt: "Ruhiges Flussbecken mit Kalksteinufer und Wald", description: "Ein stiller Naturpunkt für eine Pause am Wasser, ein Picknick und einen langsameren Rhythmus am Vit." },
-    { title: "St. Erzengel Michael", tag: "Dorfgedächtnis", image: images.church, imageAlt: "Dorfkirche, Steingasse und grünes Tal", description: "Die 1888 erbaute Dorfkirche bewahrt die menschliche Schicht der Geschichte von Aglen." },
-    { title: "Калето", tag: "Archäologie", image: images.kaleto, imageAlt: "Steinreste auf einer Anhöhe über Canyon und Fluss", description: "Ein Ort, verbunden mit alten Routen, befestigter Erinnerung und der langen Kontinuität des Lebens am Fluss." },
+    { id: "dupkata", title: "Дупката", tag: "Felsbogen", image: images.arch, imageAlt: "Kalkstein-Felsbogen über dem Fluss nahe Aglen", description: "Ein natürlicher Steinbogen über dem Vit, geschaffen für langsame Spaziergänge, ruhige Fotos und das Gefühl einer verborgenen Route." },
+    { id: "sloncheto", title: "Слончето", tag: "Felsfigur", image: images.hero, imageAlt: "Canyon, Fluss und Kalksteinfelsen nahe Aglen", description: "Eine spielerische Form am Fluss, die einen gewöhnlichen Spaziergang in eine kleine Entdeckung verwandelt." },
+    { id: "chervena-stena", title: "Червена стена", tag: "Canyonblick", image: images.aerial, imageAlt: "Canyonlandschaft mit Fluss und Dorf", description: "Ein dramatisches Zusammentreffen von Kalkstein, Wald und Flusslicht nahe dem Dorf." },
+    { id: "rachkov-vir", title: "Рачков вир", tag: "Flussbecken", image: images.pool, imageAlt: "Ruhiges Flussbecken mit Kalksteinufer und Wald", description: "Ein stiller Naturpunkt für eine Pause am Wasser, ein Picknick und einen langsameren Rhythmus am Vit." },
+    { id: "st-archangel-michael", title: "St. Erzengel Michael", tag: "Dorfgedächtnis", image: images.church, imageAlt: "Dorfkirche, Steingasse und grünes Tal", description: "Die 1888 erbaute Dorfkirche bewahrt die menschliche Schicht der Geschichte von Aglen." },
+    { id: "kaleto", title: "Калето", tag: "Archäologie", image: images.kaleto, imageAlt: "Steinreste auf einer Anhöhe über Canyon und Fluss", description: "Ein Ort, verbunden mit alten Routen, befestigter Erinnerung und der langen Kontinuität des Lebens am Fluss." },
   ],
   experiencesList: [
     { title: "Canyon-Spaziergang", price: negotiablePrice.de, duration: "2-3 Stunden", bestFor: "Erstbesucher", description: "Geführte Blicke zum Vit, zu Felsformen und zu den lokalen Namen hinter der Landschaft." },

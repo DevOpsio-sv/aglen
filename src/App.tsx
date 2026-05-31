@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type MouseEvent, type SyntheticEvent } from "react";
 import { contentByLanguage, languages, type Accommodation, type LanguageCode, type TimelineItem } from "./content";
 import { getLandingPage, getLandingPages, isLandingPageId } from "./landingPages";
+import { placeLinks } from "./placeLinks";
 import { buildRoutePath, getStaticRoute, resolveRoute, type RouteId, type ResolvedRoute } from "./routes";
 import { updateDocumentSEO } from "./seo";
 import { uiTextByLanguage } from "./uiText";
@@ -198,6 +199,14 @@ export function App() {
     })),
     [language],
   );
+
+  const routeLabels = useMemo(() => {
+    return new Map<RouteId, string>([
+      ...navItems.map(([label, routeId]) => [routeId, label] as [RouteId, string]),
+      ...guideLinks.map(({ label, routeId }) => [routeId, label] as [RouteId, string]),
+      ...landingPageLinks.map(({ label, routeId }) => [routeId, label] as [RouteId, string]),
+    ]);
+  }, [guideLinks, landingPageLinks, navItems]);
 
   return (
     <main lang={language}>
@@ -498,16 +507,33 @@ export function App() {
           <p>{copy.landmarks.text}</p>
         </div>
         <div className="place-grid">
-          {copy.placesList.map((place) => (
-            <article className="place-card reveal" key={place.title}>
-              <img src={place.image || fallbackImage} alt={place.imageAlt} width="1200" height="900" loading="lazy" decoding="async" onError={useFallbackImage} />
-              <div>
-                <p>{place.tag}</p>
-                <h3>{place.title}</h3>
-                <span>{place.description}</span>
-              </div>
-            </article>
-          ))}
+          {copy.placesList.map((place) => {
+            const linkedRouteIds = placeLinks[place.id];
+
+            return (
+              <article className="place-card reveal" key={place.id}>
+                <img src={place.image || fallbackImage} alt={place.imageAlt} width="1200" height="900" loading="lazy" decoding="async" onError={useFallbackImage} />
+                <div>
+                  <p>{place.tag}</p>
+                  <h3>{place.title}</h3>
+                  <span>{place.description}</span>
+                  {linkedRouteIds.length > 0 && (
+                    <nav className="place-card-links" aria-label={place.title}>
+                      {linkedRouteIds.map((linkedRouteId) => (
+                        <a
+                          href={routeHref(linkedRouteId)}
+                          key={linkedRouteId}
+                          onClick={(event) => handleRouteClick(event, linkedRouteId)}
+                        >
+                          {routeLabels.get(linkedRouteId) ?? getStaticRoute(linkedRouteId).slug}
+                        </a>
+                      ))}
+                    </nav>
+                  )}
+                </div>
+              </article>
+            );
+          })}
         </div>
       </section>
 
@@ -584,7 +610,7 @@ export function App() {
                 <h3>{experience.title}</h3>
                 <span>{experience.description}</span>
               </div>
-              <strong>{experience.price}</strong>
+              <strong className="experience-card-price">{experience.price}</strong>
               <a
                 href={routeHref("contact")}
                 aria-label={`${copy.experiences.cta}: ${experience.title}`}

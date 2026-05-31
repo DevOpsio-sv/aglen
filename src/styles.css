@@ -793,8 +793,31 @@ h3 {
   aspect-ratio: 4 / 3;
 }
 
-.place-card div {
+.place-card > div {
   padding: 1.1rem;
+}
+
+.place-card-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.place-card-links a {
+  border: 1px solid rgba(15, 47, 36, 0.14);
+  border-radius: 999px;
+  padding: 0.45rem 0.7rem;
+  color: var(--forest-deep);
+  background: rgba(15, 47, 36, 0.06);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.place-card-links a:hover {
+  border-color: rgba(197, 154, 69, 0.45);
+  color: var(--forest);
 }
 
 .experience-card {

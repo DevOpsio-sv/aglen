@@ -53,12 +53,12 @@ export const it: PageCopy = {
     { title: "Rocce con nomi locali", tag: "Paesaggio folclorico", image: images.arch, description: "Nomi come Дупката e Слончето rendono il paesaggio personale. Sono attrazioni e storie allo stesso tempo." },
   ],
   placesList: [
-    { title: "Дупката", tag: "Arco roccioso", image: images.arch, imageAlt: "Arco calcareo sopra il fiume vicino ad Aglen", description: "Un arco naturale di pietra sopra il Vit, creato per camminate lente, fotografie tranquille e la sensazione di un percorso nascosto." },
-    { title: "Слончето", tag: "Figura rocciosa", image: images.hero, imageAlt: "Canyon, fiume e scogliere calcaree vicino ad Aglen", description: "Una forma giocosa lungo il fiume che trasforma una passeggiata ordinaria in una piccola scoperta." },
-    { title: "Червена стена", tag: "Vista canyon", image: images.aerial, imageAlt: "Paesaggio di canyon con fiume e villaggio", description: "Un incontro drammatico tra calcare, bosco e luce del fiume vicino al villaggio." },
-    { title: "Рачков вир", tag: "Pozza del fiume", image: images.pool, imageAlt: "Pozza tranquilla con riva calcarea e bosco", description: "Un punto naturale calmo per una pausa accanto all'acqua, un picnic e un ritmo più lento vicino al Vit." },
-    { title: "San Michele Arcangelo", tag: "Memoria del villaggio", image: images.church, imageAlt: "Chiesa del villaggio e valle verde", description: "La chiesa del 1888 conserva lo strato umano della storia di Aglen." },
-    { title: "Калето", tag: "Archeologia", image: images.kaleto, imageAlt: "Resti di pietra sopra canyon e fiume", description: "Un luogo legato ad antiche rotte, memoria fortificata e vita lungo il fiume." },
+    { id: "dupkata", title: "Дупката", tag: "Arco roccioso", image: images.arch, imageAlt: "Arco calcareo sopra il fiume vicino ad Aglen", description: "Un arco naturale di pietra sopra il Vit, creato per camminate lente, fotografie tranquille e la sensazione di un percorso nascosto." },
+    { id: "sloncheto", title: "Слончето", tag: "Figura rocciosa", image: images.hero, imageAlt: "Canyon, fiume e scogliere calcaree vicino ad Aglen", description: "Una forma giocosa lungo il fiume che trasforma una passeggiata ordinaria in una piccola scoperta." },
+    { id: "chervena-stena", title: "Червена стена", tag: "Vista canyon", image: images.aerial, imageAlt: "Paesaggio di canyon con fiume e villaggio", description: "Un incontro drammatico tra calcare, bosco e luce del fiume vicino al villaggio." },
+    { id: "rachkov-vir", title: "Рачков вир", tag: "Pozza del fiume", image: images.pool, imageAlt: "Pozza tranquilla con riva calcarea e bosco", description: "Un punto naturale calmo per una pausa accanto all'acqua, un picnic e un ritmo più lento vicino al Vit." },
+    { id: "st-archangel-michael", title: "San Michele Arcangelo", tag: "Memoria del villaggio", image: images.church, imageAlt: "Chiesa del villaggio e valle verde", description: "La chiesa del 1888 conserva lo strato umano della storia di Aglen." },
+    { id: "kaleto", title: "Калето", tag: "Archeologia", image: images.kaleto, imageAlt: "Resti di pietra sopra canyon e fiume", description: "Un luogo legato ad antiche rotte, memoria fortificata e vita lungo il fiume." },
   ],
   experiencesList: [
     { title: "Passeggiata nel canyon", price: negotiablePrice.it, duration: "2-3 ore", bestFor: "Prima visita", description: "Viste guidate verso il Vit, forme rocciose e nomi locali del paesaggio." },

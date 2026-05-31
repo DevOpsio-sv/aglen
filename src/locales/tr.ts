@@ -53,12 +53,12 @@ export const tr: PageCopy = {
     { title: "Yerel adları olan kayalar", tag: "Folklor manzarası", image: images.arch, description: "Дупката ve Слончето gibi adlar manzarayı kişisel kılar. Bunlar aynı anda hem görülecek yerler hem de hikayelerdir." },
   ],
   placesList: [
-    { title: "Дупката", tag: "Kaya kemeri", image: images.arch, imageAlt: "Aglen yakınında nehir üstünde kireçtaşı kemer", description: "Vit üzerinde doğal bir taş kemer; yavaş yürüyüşler, sakin fotoğraflar ve gizli bir rota hissi için." },
-    { title: "Слончето", tag: "Kaya şekli", image: images.hero, imageAlt: "Aglen yakınında kanyon, nehir ve kireçtaşı kayalıkları", description: "Nehir kıyısındaki oyunlu şekil, sıradan yürüyüşü küçük bir keşfe çevirir." },
-    { title: "Червена стена", tag: "Kanyon görünümü", image: images.aerial, imageAlt: "Nehir ve köy içeren kanyon manzarası", description: "Köyün yakınında kireçtaşı, orman ve nehir ışığının dramatik buluşması." },
-    { title: "Рачков вир", tag: "Nehir havuzu", image: images.pool, imageAlt: "Kireçtaşı kıyılı ve ormanlı sakin nehir havuzu", description: "Su kenarında mola, piknik ve Vit yanında daha yavaş bir ritim için sakin bir doğal nokta." },
-    { title: "Aziz Başmelek Mihail", tag: "Köy hafızası", image: images.church, imageAlt: "Köy kilisesi ve yeşil vadi", description: "1888 tarihli kilise Aglen hikayesinin insani katmanını korur." },
-    { title: "Калето", tag: "Arkeoloji", image: images.kaleto, imageAlt: "Kanyon üzerindeki taş kalıntılar", description: "Eski rotalar, savunma hafızası ve nehir yaşamıyla bağlantılı bir yer." },
+    { id: "dupkata", title: "Дупката", tag: "Kaya kemeri", image: images.arch, imageAlt: "Aglen yakınında nehir üstünde kireçtaşı kemer", description: "Vit üzerinde doğal bir taş kemer; yavaş yürüyüşler, sakin fotoğraflar ve gizli bir rota hissi için." },
+    { id: "sloncheto", title: "Слончето", tag: "Kaya şekli", image: images.hero, imageAlt: "Aglen yakınında kanyon, nehir ve kireçtaşı kayalıkları", description: "Nehir kıyısındaki oyunlu şekil, sıradan yürüyüşü küçük bir keşfe çevirir." },
+    { id: "chervena-stena", title: "Червена стена", tag: "Kanyon görünümü", image: images.aerial, imageAlt: "Nehir ve köy içeren kanyon manzarası", description: "Köyün yakınında kireçtaşı, orman ve nehir ışığının dramatik buluşması." },
+    { id: "rachkov-vir", title: "Рачков вир", tag: "Nehir havuzu", image: images.pool, imageAlt: "Kireçtaşı kıyılı ve ormanlı sakin nehir havuzu", description: "Su kenarında mola, piknik ve Vit yanında daha yavaş bir ritim için sakin bir doğal nokta." },
+    { id: "st-archangel-michael", title: "Aziz Başmelek Mihail", tag: "Köy hafızası", image: images.church, imageAlt: "Köy kilisesi ve yeşil vadi", description: "1888 tarihli kilise Aglen hikayesinin insani katmanını korur." },
+    { id: "kaleto", title: "Калето", tag: "Arkeoloji", image: images.kaleto, imageAlt: "Kanyon üzerindeki taş kalıntılar", description: "Eski rotalar, savunma hafızası ve nehir yaşamıyla bağlantılı bir yer." },
   ],
   experiencesList: [
     { title: "Kanyon yürüyüşü", price: negotiablePrice.tr, duration: "2-3 saat", bestFor: "İlk ziyaret", description: "Vit'e, kaya şekillerine ve yerel adlara rehberli bakış." },

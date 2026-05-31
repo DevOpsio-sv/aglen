@@ -9,5 +9,6 @@ export type {
   Mystery,
   PageCopy,
   Place,
+  PlaceId,
   TimelineItem,
 } from "./locales";
