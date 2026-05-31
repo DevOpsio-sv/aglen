@@ -19,9 +19,9 @@ export const fr: PageCopy = {
     text: "Hidden Bulgaria Quests vous mène vers des lieux réels - avec votre téléphone, vous voyez un monde 3D caché, résolvez des énigmes et suivez les traces du Gardien. Pas une simulation. Pas un musée. Une vraie aventure vivante.",
     cta: "Télécharger et commencer",
     features: [
-      { id: "ar", title: "Réalité augmentée (AR)", text: "Pointez la caméra vers un lieu marqué et voyez le monde caché prendre vie sous vos yeux: personnages 3D, signes et histoires." },
-      { id: "gps", title: "Missions GPS en direct", text: "Les voyages vous mènent vers de vrais sites autour d'Aglen. Chaque lieu cache l'indice suivant." },
-      { id: "story", title: "L'histoire autrement", text: "Les légendes de la grotte de Prohodna prennent vie comme un jeu. Le Gardien, la grotte, les signes anciens: tout est relié dans une seule expérience." },
+      { id: "ar", title: "Réalité augmentée (AR)", text: "Qu'est-ce qui se cache dans ces lieux ? Pointez la caméra et voyez le monde caché prendre vie sous vos yeux." },
+      { id: "gps", title: "Missions GPS en direct", text: "Quel lieu cache l'indice suivant ? Suivez la mission GPS jusqu'aux vrais sites autour d'Aglen." },
+      { id: "story", title: "L'histoire autrement", text: "Qui est le Gardien ? Que protègent les anciens signes ? Révélez les légendes de la grotte Prohodna à travers un jeu." },
     ],
   },
   ar: { eyebrow: "Aventure AR", title: "Regardez le monde du Gardien", text: "Avec la caméra de votre téléphone, donnez vie au monde caché de Prohodna. La couche AR révèle des histoires, des signes et des personnages invisibles à l'oeil nu, mais seulement aux endroits où ils se sont produits.", steps: ["Téléchargez Hidden Bulgaria Quests sur Google Play", "Allez vers un lieu AR marqué autour d'Aglen", "Pointez la caméra et voyez le monde caché"], cta: "Télécharger et commencer" },

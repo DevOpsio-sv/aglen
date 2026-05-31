@@ -14,9 +14,9 @@ export const es: PageCopy = {
   gallery: { eyebrow: "Galería inmersiva", title: "Un lugar contado con luz de río y piedra", aria: "Galería de Aglen" },
   stay: { eyebrow: "Alojamiento en Aglen", title: "Descansa cerca del río", text: "Aglen ofrece opciones de alojamiento tranquilas rodeadas de naturaleza. Para disponibilidad y reservas, contáctanos." },
   quests: { eyebrow: "El primero de su tipo en Bulgaria", title: "Una aventura AR real cerca de Aglen", text: "Hidden Bulgaria Quests te lleva a lugares reales - con tu teléfono ves un mundo 3D oculto, resuelves acertijos y sigues las huellas del Guardián. No es una simulación. No es un museo. Es una aventura real en vivo.", cta: "Descargar y empezar", features: [
-    { id: "ar", title: "Realidad Aumentada (AR)", text: "Apunta la cámara a un lugar marcado y ve cómo el mundo oculto cobra vida ante tus ojos: personajes 3D, señales e historias." },
-    { id: "gps", title: "Misiones GPS en vivo", text: "Los viajes te llevan a lugares reales alrededor de Aglen. Cada lugar esconde la siguiente pista." },
-    { id: "story", title: "Historia contada de otra manera", text: "Las leyendas de la cueva Prohodna cobran vida como un juego. El Guardián, la cueva, los signos antiguos: todo está conectado en una experiencia." },
+    { id: "ar", title: "Realidad Aumentada (AR)", text: "¿Qué se esconde en estos lugares? Apunta la cámara y ve cómo el mundo oculto cobra vida ante tus ojos." },
+    { id: "gps", title: "Misiones GPS en vivo", text: "¿Qué lugar esconde la siguiente pista? Sigue la misión GPS hasta los lugares reales alrededor de Aglen." },
+    { id: "story", title: "Historia contada de otra manera", text: "¿Quién es el Guardián? ¿Qué protegen los signos antiguos? Descubre las leyendas de la cueva Prohodna a través del juego." },
   ] },
   ar: { eyebrow: "Aventura AR", title: "Mira el mundo del Guardián", text: "Con la cámara de tu teléfono, da vida al mundo oculto de Prohodna. La capa AR revela historias, señales y personajes invisibles a simple vista, pero solo en los lugares donde ocurrieron.", steps: ["Descarga Hidden Bulgaria Quests de Google Play", "Ve a un lugar AR marcado alrededor de Aglen", "Apunta la cámara y ve el mundo oculto"], cta: "Descargar y empezar" },
   app: { eyebrow: "Descargar la app", title: "Hidden Bulgaria Quests", text: "Aplicación móvil para Android. Encuentra las misiones alrededor de Aglen y emprende una aventura real.", badge: "Descargar desde Google Play", note: "Disponible para Android. Versión iOS próximamente." },

@@ -150,7 +150,9 @@ The platform is designed to meet modern web standards:
 
 ## Maintained By
 
-**DevOpsio - devopsio.co**
+**DevOpsio**
+
+Website: [https://devopsio.co](https://devopsio.co)
 
 Cloud Architecture • DevOps • Platform Engineering • Digital Experience Delivery
 

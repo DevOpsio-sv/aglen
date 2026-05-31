@@ -19,9 +19,9 @@ export const hu: PageCopy = {
     text: "A Hidden Bulgaria Quests valódi helyekre vezet: telefonoddal rejtett 3D világot látsz, rejtvényeket oldasz meg, és követed az Őrző nyomait. Nem szimuláció. Nem múzeum. Valódi élő kaland.",
     cta: "Letöltés és kezdés",
     features: [
-      { id: "ar", title: "Kiterjesztett valóság (AR)", text: "Irányítsd a kamerát egy jelölt helyre, és a rejtett világ életre kel: 3D szereplők, jelek és történetek." },
-      { id: "gps", title: "Élő GPS-küldetések", text: "Az utak Aglen valódi látnivalóihoz vezetnek. Minden hely új nyomot rejt." },
-      { id: "story", title: "Másképp elmesélt történelem", text: "Prohodna barlang legendái játékká válnak. Az Őrző, a barlang és az ősi jelek egy élménnyé kapcsolódnak." },
+      { id: "ar", title: "Kiterjesztett valóság (AR)", text: "Mi rejtőzik ezeken a helyeken? Irányítsd a kamerát, és nézd, ahogy a rejtett világ életre kel a szemeid előtt." },
+      { id: "gps", title: "Élő GPS-küldetések", text: "Melyik hely rejti a következő nyomot? Kövesd a GPS-küldetést Aglen valódi látnivalóihoz." },
+      { id: "story", title: "Másképp elmesélt történelem", text: "Ki az Őrző? Mit védenek az ősi jelek? Tárd fel Prohodna barlang legendáit egy játékon keresztül." },
     ],
   },
   ar: { eyebrow: "AR-kaland", title: "Lásd az Őrző világát", text: "Telefonod kamerájával életre keltheted Prohodna rejtett világát. Az AR-réteg történeteket, jeleket és szereplőket mutat meg ott, ahol a történetek helyszíne van.", steps: ["Töltsd le a Hidden Bulgaria Quests alkalmazást a Google Playről", "Menj egy jelölt AR-helyre Aglen körül", "Irányítsd a kamerát, és lásd a rejtett világot"], cta: "Letöltés és kezdés" },

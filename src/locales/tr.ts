@@ -14,9 +14,9 @@ export const tr: PageCopy = {
   gallery: { eyebrow: "Sürükleyici galeri", title: "Nehir ışığı ve taşla anlatılan bir yer", aria: "Aglen galerisi" },
   stay: { eyebrow: "Aglen'de konaklama", title: "Nehre yakın dinlen", text: "Aglen doğa içinde sakin konaklama seçenekleri sunar. Uygunluk ve rezervasyon için iletişime geçin." },
   quests: { eyebrow: "Bulgaristan'da türünün ilki", title: "Aglen yakınında gerçek bir AR macerası", text: "Hidden Bulgaria Quests sizi gerçek yerlere götürür - telefonunuzla gizli bir 3D dünya görür, bilmeceler çözer ve Koruyucu'nun izlerini takip edersiniz. Simülasyon değil. Müze değil. Gerçek bir canlı macera.", cta: "İndir ve başla", features: [
-    { id: "ar", title: "Artırılmış Gerçeklik (AR)", text: "Kamerayı işaretli bir yere doğrultun ve gizli dünyanın gözlerinizin önünde canlandığını görün: 3D karakterler, işaretler ve hikayeler." },
-    { id: "gps", title: "Canlı GPS görevleri", text: "Yolculuklar sizi Aglen çevresindeki gerçek noktalara götürür. Her yer bir sonraki ipucunu saklar." },
-    { id: "story", title: "Tarih farklı anlatılır", text: "Prohodna Mağarası'nın efsaneleri oyun olarak canlanır. Koruyucu, mağara, eski işaretler - hepsi tek bir deneyimde bağlantılıdır." },
+    { id: "ar", title: "Artırılmış Gerçeklik (AR)", text: "Bu yerlerde ne gizli? Kamerayı doğrult ve gizli dünyanın gözlerinin önünde canlandığını gör." },
+    { id: "gps", title: "Canlı GPS görevleri", text: "Hangi yer bir sonraki ipucunu saklıyor? GPS görevini takip ederek Aglen çevresindeki gerçek noktalara ulaş." },
+    { id: "story", title: "Tarih farklı anlatılır", text: "Koruyucu kim? Eski işaretler neyi koruyor? Prohodna Mağarası'nın efsanelerini bir oyun aracılığıyla keşfet." },
   ] },
   ar: { eyebrow: "AR macerası", title: "Koruyucu'nun dünyasına bak", text: "Telefonunuzun kamerasıyla Prohodna'nın gizli dünyasını canlandırın. AR katmanı çıplak gözle görünmeyen hikayeleri, işaretleri ve karakterleri, yalnızca gerçekleştiği yerlerde gösterir.", steps: ["Hidden Bulgaria Quests'i Google Play'den indirin", "Aglen çevresindeki işaretli bir AR yerine gidin", "Kamerayı doğrultun ve gizli dünyayı görün"], cta: "İndir ve başla" },
   app: { eyebrow: "Uygulamayı indir", title: "Hidden Bulgaria Quests", text: "Android için mobil uygulama. Aglen çevresindeki görevleri bulun ve gerçek bir maceraya çıkın.", badge: "Google Play'de mevcut", note: "Android için mevcut. iOS sürümü yakında." },

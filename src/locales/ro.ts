@@ -14,9 +14,9 @@ export const ro: PageCopy = {
   gallery: { eyebrow: "Galerie imersivă", title: "Un loc povestit prin lumina râului și piatră", aria: "Galeria Aglen" },
   stay: { eyebrow: "Cazare în Aglen", title: "Odihnă aproape de râu", text: "Aglen oferă opțiuni liniștite de cazare în natură. Pentru disponibilitate și rezervări, contactează-ne." },
   quests: { eyebrow: "Primul de acest fel în Bulgaria", title: "O aventură AR reală lângă Aglen", text: "Hidden Bulgaria Quests te duce în locuri reale - cu telefonul vezi o lume 3D ascunsă, rezolvi enigme și urmezi urmele Gardianului. Nu este simulare. Nu este muzeu. Este o aventură reală live.", cta: "Descarcă și începe", features: [
-    { id: "ar", title: "Realitate augmentată (AR)", text: "Îndreaptă camera spre un loc marcat și vezi cum lumea ascunsă prinde viață în fața ochilor: personaje 3D, semne și povești." },
-    { id: "gps", title: "Misiuni GPS live", text: "Călătoriile te conduc la repere reale din jurul Aglen. Fiecare loc ascunde următorul indiciu." },
-    { id: "story", title: "Istorie spusă altfel", text: "Legendele peșterii Prohodna prind viață ca joc. Gardianul, peștera, semnele vechi - totul este legat într-o singură experiență." },
+    { id: "ar", title: "Realitate augmentată (AR)", text: "Ce se ascunde în aceste locuri? Îndreaptă camera și vezi cum lumea ascunsă prinde viață în fața ochilor tăi." },
+    { id: "gps", title: "Misiuni GPS live", text: "Ce loc ascunde următorul indiciu? Urmează misiunea GPS până la reperele reale din jurul Aglen." },
+    { id: "story", title: "Istorie spusă altfel", text: "Cine este Gardianul? Ce protejează semnele vechi? Dezvăluie legendele peșterii Prohodna printr-un joc." },
   ] },
   ar: { eyebrow: "Aventură AR", title: "Privește lumea Gardianului", text: "Cu camera telefonului dai viață lumii ascunse din Prohodna. Stratul AR dezvăluie povești, semne și personaje invizibile cu ochiul liber, dar numai în locurile unde s-au petrecut.", steps: ["Descarcă Hidden Bulgaria Quests din Google Play", "Mergi la un loc AR marcat în jurul Aglen", "Îndreaptă camera și vezi lumea ascunsă"], cta: "Descarcă și începe" },
   app: { eyebrow: "Descarcă aplicația", title: "Hidden Bulgaria Quests", text: "Aplicație mobilă pentru Android. Găsește questurile din jurul Aglen și pornește într-o aventură reală.", badge: "Disponibil pe Google Play", note: "Disponibil pentru Android. Versiunea iOS va veni curând." },

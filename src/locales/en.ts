@@ -23,9 +23,9 @@ export const en: PageCopy = {
     text: "Hidden Bulgaria Quests takes you to real places - with your phone you see a hidden 3D world, solve riddles, and follow the Guardian's trail. Not a simulation. Not a museum. A real live adventure.",
     cta: "Download and start",
     features: [
-      { id: "ar", title: "Augmented Reality (AR)", text: "Point the camera at a marked place and see the hidden world come alive before your eyes - 3D characters, signs, and stories." },
-      { id: "gps", title: "Live GPS missions", text: "The journeys lead you to real landmarks around Aglen. Every place hides the next clue." },
-      { id: "story", title: "History, told differently", text: "The legends of Prohodna Cave come alive as a game. The Guardian, the cave, the ancient signs - everything is connected in one experience." },
+      { id: "ar", title: "Augmented Reality (AR)", text: "What is hidden in these places? Point the camera and see the hidden world come alive before your eyes." },
+      { id: "gps", title: "Live GPS missions", text: "Which place hides the next clue? Follow the GPS mission to the real landmarks around Aglen." },
+      { id: "story", title: "History, told differently", text: "Who is the Guardian? What do the ancient signs protect? Reveal the legends of Prohodna Cave through a game." },
     ],
   },
   ar: {
