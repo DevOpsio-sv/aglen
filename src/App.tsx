@@ -7,7 +7,6 @@ import { updateDocumentSEO } from "./seo";
 import { uiTextByLanguage } from "./uiText";
 
 const fallbackImage = "/assets/aglen-hero-river-canyon.png";
-const appSiteUrl = "https://unlockingbulgaria.com/bg/";
 
 function LanguageIcon() {
   return (
