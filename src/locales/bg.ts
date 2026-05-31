@@ -145,7 +145,7 @@ export const bg: PageCopy = {
     { id: "schoolDay", title: "Ученически ден за откриване", price: negotiablePrice.bg, duration: "1 ден", bestFor: "Ученически групи", description: "Образователно преживяване, което съчетава природа, история и местни легенди." },
   ],
   galleryItems: [
-    { title: "Каньонът на Вит", image: images.hero, alt: "Кинематографичен речен каньон и село при изгрев", size: "wide" },
+    { title: "Каньонът на Вит", image: images.riverSunset, alt: "Река Вит при залез със скали, дървета и каменист бряг", size: "wide" },
     { title: "Каменната арка", image: images.arch, alt: "Естествена варовикова арка над реката", size: "standard" },
     { title: "Пещерна светлина", image: images.cave, alt: "Пещерен вход с гледка към река и скали", size: "tall" },
     { title: "Над скритата долина", image: images.aerial, alt: "Въздушна гледка към река, скали и село", size: "wide" },

@@ -1545,198 +1545,72 @@ h3 {
 .app-showcase {
   position: relative;
   display: grid;
-  min-height: 520px;
+  min-height: 440px;
   place-items: center;
-  perspective: 1200px;
 }
 
-.ub-product-card {
+.ub-banner-card {
   position: relative;
-  width: min(100%, 610px);
-  min-height: 430px;
-  overflow: hidden;
-  border: 1px solid rgba(226, 200, 121, 0.28);
-  border-radius: 34px;
-  padding: clamp(1.1rem, 2.5vw, 1.6rem);
-  background:
-    radial-gradient(circle at 78% 22%, rgba(226, 200, 121, 0.18), transparent 16rem),
-    radial-gradient(circle at 56% 58%, rgba(31, 111, 122, 0.18), transparent 20rem),
-    linear-gradient(145deg, rgba(4, 8, 18, 0.98), rgba(8, 15, 31, 0.96) 58%, rgba(3, 8, 14, 0.98));
-  box-shadow:
-    0 36px 90px rgba(0, 0, 0, 0.46),
-    0 0 0 10px rgba(226, 200, 121, 0.035),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  transform: rotateY(-7deg) rotateX(2deg);
-}
-
-.ub-product-card::before,
-.ub-product-card::after {
-  position: absolute;
-  pointer-events: none;
-  content: "";
-}
-
-.ub-product-card::before {
-  inset: 0;
-  background:
-    linear-gradient(rgba(226, 200, 121, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(226, 200, 121, 0.035) 1px, transparent 1px);
-  background-size: 54px 54px;
-  mask-image: radial-gradient(circle at 62% 48%, black, transparent 72%);
-}
-
-.ub-product-card::after {
-  right: -5rem;
-  bottom: -5rem;
-  width: 18rem;
-  height: 18rem;
-  border: 1px solid rgba(226, 200, 121, 0.18);
-  border-radius: 50%;
-  background:
-    radial-gradient(circle, rgba(226, 200, 121, 0.1), transparent 62%),
-    url("/assets/aglen-aerial-river.png") center / cover;
-  opacity: 0.34;
-  filter: saturate(0.65);
-}
-
-.ub-product-nav,
-.ub-logo-lockup,
-.ub-product-hero,
-.ub-domain-card {
-  position: relative;
-  z-index: 1;
-}
-
-.ub-product-nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.65rem;
-  color: rgba(247, 242, 231, 0.64);
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.ub-product-nav span:first-child {
-  color: var(--gold-soft);
-}
-
-.ub-logo-lockup {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-top: clamp(1.7rem, 4vw, 2.7rem);
-  padding-bottom: 1.35rem;
-  border-bottom: 1px solid rgba(226, 200, 121, 0.28);
-}
-
-.ub-crest {
-  position: relative;
-  display: grid;
-  width: clamp(74px, 10vw, 104px);
-  height: clamp(74px, 10vw, 104px);
-  place-items: center;
-  border: 1px solid rgba(226, 200, 121, 0.82);
-  border-radius: 50%;
-  color: var(--gold-soft);
-  background:
-    radial-gradient(circle, rgba(226, 200, 121, 0.12), transparent 58%),
-    rgba(2, 7, 17, 0.9);
-  box-shadow:
-    0 0 0 7px rgba(226, 200, 121, 0.08),
-    inset 0 0 0 7px rgba(226, 200, 121, 0.1);
-  font-family: Cinzel, Georgia, serif;
-  font-size: clamp(1.15rem, 2vw, 1.55rem);
-  font-weight: 800;
-}
-
-.ub-crest::before,
-.ub-crest::after {
-  position: absolute;
-  width: 132%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(226, 200, 121, 0.72), transparent);
-  content: "";
-}
-
-.ub-crest::after {
-  transform: rotate(90deg);
-}
-
-.ub-logo-lockup strong {
-  display: block;
-  color: var(--gold-soft);
-  font-family: Cinzel, Georgia, serif;
-  font-size: clamp(1.9rem, 5vw, 3.8rem);
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  line-height: 0.96;
-  text-transform: uppercase;
-}
-
-.ub-logo-lockup small,
-.ub-domain-card span,
-.ub-domain-card small {
-  display: block;
-  color: rgba(226, 200, 121, 0.78);
-  font-size: 0.68rem;
-  font-weight: 900;
-  letter-spacing: 0.38em;
-  text-transform: uppercase;
-}
-
-.ub-product-hero {
-  max-width: 430px;
-  margin-top: clamp(2rem, 5vw, 3.6rem);
-}
-
-.ub-product-hero p {
+  width: min(100%, 680px);
   margin: 0;
-  color: #fff7df;
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: clamp(2.7rem, 7vw, 5.4rem);
-  line-height: 0.9;
-  letter-spacing: -0.04em;
-}
-
-.ub-product-hero em {
-  display: block;
-  margin-top: 0.85rem;
-  color: var(--gold-soft);
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: clamp(1.7rem, 4vw, 3rem);
-  line-height: 1;
-}
-
-.ub-domain-card {
-  width: min(260px, 54%);
-  margin: 1.8rem 0 0 auto;
-  border: 1px solid rgba(226, 200, 121, 0.24);
-  border-radius: 24px;
-  padding: 1.15rem;
-  background: rgba(4, 8, 18, 0.74);
+  overflow: hidden;
+  border: 1px solid rgba(226, 200, 121, 0.26);
+  border-radius: 28px;
+  background: #06101f;
   box-shadow:
-    0 22px 54px rgba(0, 0, 0, 0.34),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(16px);
+    0 36px 90px rgba(0, 0, 0, 0.42),
+    0 0 0 10px rgba(226, 200, 121, 0.035);
 }
 
-.ub-domain-card strong {
+.ub-banner-card::before {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(7, 26, 20, 0.16), transparent 42%),
+    linear-gradient(180deg, transparent 58%, rgba(7, 26, 20, 0.22));
+  content: "";
+}
+
+.ub-banner-card img {
   display: block;
-  margin: 0.55rem 0 1rem;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1024 / 550;
+  object-fit: cover;
+}
+
+.ub-banner-card figcaption {
+  position: absolute;
+  right: clamp(0.8rem, 3vw, 1.35rem);
+  bottom: clamp(0.8rem, 3vw, 1.35rem);
+  z-index: 2;
+  width: min(260px, calc(100% - 1.6rem));
+  border: 1px solid rgba(226, 200, 121, 0.26);
+  border-radius: 20px;
+  padding: 0.95rem 1rem;
+  background: rgba(6, 16, 31, 0.74);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.34);
+  backdrop-filter: blur(14px);
+}
+
+.ub-banner-card figcaption span {
+  display: block;
+  color: var(--gold-soft);
+  font-size: 0.66rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.ub-banner-card figcaption strong {
+  display: block;
+  margin-top: 0.35rem;
   color: #fff7df;
   font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 1.35rem;
-  line-height: 1.08;
-}
-
-.ub-domain-card small {
-  border-top: 1px solid rgba(226, 200, 121, 0.3);
-  padding-top: 0.75rem;
-  letter-spacing: 0.04em;
-  text-transform: none;
+  font-size: clamp(1.15rem, 2.2vw, 1.55rem);
+  line-height: 1.05;
 }
 
 .reveal {
@@ -1975,11 +1849,7 @@ h3 {
   }
 
   .app-showcase {
-    min-height: 480px;
-  }
-
-  .ub-product-card {
-    transform: none;
+    min-height: auto;
   }
 
   .mystery-card,
@@ -2091,23 +1961,20 @@ h3 {
     min-height: auto;
   }
 
-  .ub-product-card {
-    min-height: 0;
-    border-radius: 24px;
+  .ub-banner-card {
+    border-radius: 20px;
   }
 
-  .ub-product-nav span:not(:first-child) {
-    display: none;
+  .ub-banner-card img {
+    min-height: 300px;
+    object-position: center;
   }
 
-  .ub-logo-lockup {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .ub-domain-card {
-    width: 100%;
-    margin-left: 0;
+  .ub-banner-card figcaption {
+    right: 0.7rem;
+    bottom: 0.7rem;
+    left: 0.7rem;
+    width: auto;
   }
 }
 

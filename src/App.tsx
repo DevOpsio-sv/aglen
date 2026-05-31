@@ -6,7 +6,7 @@ import { buildRoutePath, getStaticRoute, resolveRoute, type RouteId, type Resolv
 import { updateDocumentSEO } from "./seo";
 import { uiTextByLanguage } from "./uiText";
 
-const fallbackImage = "/assets/aglen-hero-river-canyon.png";
+const fallbackImage = "/assets/aglen-vit-river-sunset.png";
 
 function LanguageIcon() {
   return (
@@ -535,7 +535,7 @@ export function App() {
       {!currentLandingPage && (
         <>
       <section id="home" className="hero">
-        <img className="hero-image" src="/assets/aglen-hero-river-canyon.png" alt={copy.hero.imageAlt} width="1200" height="630" fetchPriority="high" decoding="async" onError={handleImageError} />
+        <img className="hero-image" src="/assets/aglen-vit-river-sunset.png" alt={copy.hero.imageAlt} width="1200" height="630" fetchPriority="high" decoding="async" onError={handleImageError} />
         <div className="hero-overlay" aria-hidden="true" />
         <div className="hero-copy section-shell reveal">
           <p className="eyebrow">{copy.hero.meta}</p>
@@ -867,33 +867,20 @@ export function App() {
           </div>
 
           <div className="app-showcase" aria-hidden="true">
-            <div className="ub-product-card">
-              <div className="ub-product-nav">
-                <span>Official product website</span>
-                <span>Domains</span>
-                <span>Timeline</span>
-                <span>Download</span>
-              </div>
-              <div className="ub-logo-lockup">
-                <div className="ub-crest">
-                  <span>UB</span>
-                </div>
-                <div>
-                  <strong>Unlocking Bulgaria</strong>
-                  <small>Hidden AR live quests</small>
-                </div>
-              </div>
-              <div className="ub-product-hero">
-                <p>1345 Years.</p>
-                <p>One Name Survived.</p>
-                <em>How?</em>
-              </div>
-              <div className="ub-domain-card">
-                <span>Domain of the name</span>
+            <figure className="ub-banner-card">
+              <img
+                src="/assets/unlocking-bulgaria-quest-banner.svg"
+                alt=""
+                width="1024"
+                height="550"
+                loading="lazy"
+                decoding="async"
+              />
+              <figcaption>
+                <span>{copy.quests.eyebrow}</span>
                 <strong>{copy.quests.features[0]?.title}</strong>
-                <small>{copy.quests.features.length} seals discovered</small>
-              </div>
-            </div>
+              </figcaption>
+            </figure>
           </div>
         </div>
       </section>

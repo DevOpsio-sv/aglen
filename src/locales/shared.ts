@@ -20,9 +20,11 @@ export const languages: { code: LanguageCode; label: string; short: string }[] =
 export const images = {
   hero: "/assets/aglen-hero-river-canyon.png",
   arch: "/assets/aglen-rock-arch.png",
-  cave: "/assets/aglen-cave-mystery.png",
+  cave: "/assets/aglen-cave-window-view.png",
   aerial: "/assets/aglen-aerial-river.png",
   pool: "/assets/aglen-river-pool.png",
+  riverSunset: "/assets/aglen-vit-river-sunset.png",
+  nearbyRetreat: "/assets/lukovit-aglen-river-retreat.png",
   church: "/assets/aglen-village-church.png",
   kaleto: "/assets/aglen-kaleto-ruins.png",
 };

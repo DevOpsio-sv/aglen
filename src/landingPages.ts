@@ -67,7 +67,7 @@ type LandingPageMaster = {
   id: LandingPageId;
   slug: string;
   image: string;
-  imageAltKey: "hero" | "aerial" | "cave" | "church" | "pool" | "kaleto";
+  imageAltKey: "hero" | "aerial" | "cave" | "church" | "pool" | "nearbyRetreat" | "kaleto";
   schemaType: "Article" | "TravelGuide";
   internalLinkRouteIds: Array<LandingPageId | string>;
 };
@@ -92,7 +92,7 @@ export const landingPageMaster: LandingPageMaster[] = [
   { id: "historyOfAglen", slug: "history-of-aglen", image: images.kaleto, imageAltKey: "kaleto", schemaType: "Article", internalLinkRouteIds: ["culturalTourism", "attractions", "quests", "editorial"] },
   { id: "accommodationNearAglen", slug: "accommodation-near-aglen", image: images.church, imageAltKey: "church", schemaType: "Article", internalLinkRouteIds: ["visitAglen", "campingNearAglen", "traditionalFood", "contact"] },
   { id: "traditionalFood", slug: "traditional-food-aglen", image: images.church, imageAltKey: "church", schemaType: "Article", internalLinkRouteIds: ["accommodationNearAglen", "visitAglen", "ruralTourismBulgaria"] },
-  { id: "hiddenPlaces", slug: "hidden-places-near-aglen", image: images.cave, imageAltKey: "cave", schemaType: "TravelGuide", internalLinkRouteIds: ["lukovitGuide", "karlukovoGuide", "krushunaGuide", "devetashkaCaveGuide"] },
+  { id: "hiddenPlaces", slug: "hidden-places-near-aglen", image: images.nearbyRetreat, imageAltKey: "nearbyRetreat", schemaType: "TravelGuide", internalLinkRouteIds: ["lukovitGuide", "karlukovoGuide", "krushunaGuide", "devetashkaCaveGuide"] },
   { id: "culturalTourism", slug: "cultural-tourism-aglen", image: images.kaleto, imageAltKey: "kaleto", schemaType: "TravelGuide", internalLinkRouteIds: ["historyOfAglen", "quests", "contact"] },
   { id: "natureTourism", slug: "nature-tourism-aglen", image: images.hero, imageAltKey: "hero", schemaType: "TravelGuide", internalLinkRouteIds: ["natureAroundAglen", "vitRiver", "campingNearAglen"] },
   { id: "adventureTourism", slug: "adventure-tourism-aglen", image: images.cave, imageAltKey: "cave", schemaType: "TravelGuide", internalLinkRouteIds: ["quests", "hiking", "caves"] },
@@ -104,11 +104,11 @@ export const landingPageMaster: LandingPageMaster[] = [
   { id: "howToGet", slug: "how-to-get-to-aglen", image: images.aerial, imageAltKey: "aerial", schemaType: "Article", internalLinkRouteIds: ["aglenFromSofia", "lukovitGuide", "routeMap"] },
   { id: "aglenFromSofia", slug: "aglen-from-sofia", image: images.hero, imageAltKey: "hero", schemaType: "TravelGuide", internalLinkRouteIds: ["weekendInAglen", "howToGet", "nearby"] },
   { id: "lovechRegionGuide", slug: "lovech-region-travel-guide", image: images.aerial, imageAltKey: "aerial", schemaType: "TravelGuide", internalLinkRouteIds: ["lukovitGuide", "krushunaGuide", "devetashkaCaveGuide", "visitAglen"] },
-  { id: "lukovitGuide", slug: "lukovit-travel-guide", image: images.aerial, imageAltKey: "aerial", schemaType: "TravelGuide", internalLinkRouteIds: ["visitAglen", "iskarPanegaGuide", "karlukovoGuide"] },
+  { id: "lukovitGuide", slug: "lukovit-travel-guide", image: images.nearbyRetreat, imageAltKey: "nearbyRetreat", schemaType: "TravelGuide", internalLinkRouteIds: ["visitAglen", "iskarPanegaGuide", "karlukovoGuide"] },
   { id: "karlukovoGuide", slug: "karlukovo-travel-guide", image: images.cave, imageAltKey: "cave", schemaType: "TravelGuide", internalLinkRouteIds: ["caves", "hiking", "weekendInAglen"] },
   { id: "krushunaGuide", slug: "krushuna-travel-guide", image: images.pool, imageAltKey: "pool", schemaType: "TravelGuide", internalLinkRouteIds: ["lovechRegionGuide", "devetashkaCaveGuide", "visitAglen"] },
   { id: "devetashkaCaveGuide", slug: "devetashka-cave-travel-guide", image: images.cave, imageAltKey: "cave", schemaType: "TravelGuide", internalLinkRouteIds: ["krushunaGuide", "lovechRegionGuide", "caves"] },
-  { id: "iskarPanegaGuide", slug: "iskar-panega-travel-guide", image: images.pool, imageAltKey: "pool", schemaType: "TravelGuide", internalLinkRouteIds: ["lukovitGuide", "hiking", "natureAroundAglen"] },
+  { id: "iskarPanegaGuide", slug: "iskar-panega-travel-guide", image: images.nearbyRetreat, imageAltKey: "nearbyRetreat", schemaType: "TravelGuide", internalLinkRouteIds: ["lukovitGuide", "hiking", "natureAroundAglen"] },
   { id: "ruralTourismBulgaria", slug: "rural-tourism-bulgaria-aglen", image: images.church, imageAltKey: "church", schemaType: "Article", internalLinkRouteIds: ["accommodationNearAglen", "traditionalFood", "slowTravelBulgaria"] },
   { id: "ecoTourismBulgaria", slug: "eco-tourism-bulgaria-aglen", image: images.hero, imageAltKey: "hero", schemaType: "Article", internalLinkRouteIds: ["natureAroundAglen", "campingNearAglen", "vitRiver"] },
   { id: "slowTravelBulgaria", slug: "slow-travel-bulgaria-aglen", image: images.aerial, imageAltKey: "aerial", schemaType: "Article", internalLinkRouteIds: ["ruralTourismBulgaria", "hiddenPlaces", "weekendInAglen"] },
@@ -203,6 +203,7 @@ function imageAlt(lang: LanguageCode, key: LandingPageMaster["imageAltKey"]): st
     cave: copy.galleryItems[2]?.alt ?? copy.guides.caves.text,
     church: placeAlt("st-archangel-michael") ?? copy.stay.title,
     pool: placeAlt("rachkov-vir") ?? copy.guides.vitRiver.text,
+    nearbyRetreat: copy.guides.nearby.text,
     kaleto: placeAlt("kaleto") ?? copy.about.title,
   };
 
