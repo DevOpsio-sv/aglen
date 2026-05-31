@@ -6,15 +6,18 @@ export type PlaceExperienceLink =
 
 export const placeExperienceLinks: Record<PlaceId, PlaceExperienceLink[]> = {
   dupkata: [
-    { kind: "activity", id: "canyon-walk" },
-    { kind: "quest", id: "gps-missions" },
+    { kind: "activity", id: "canyonWalk" },
+    { kind: "quest", id: "gps" },
   ],
-  sloncheto: [],
-  "chervena-stena": [],
+  sloncheto: [{ kind: "activity", id: "canyonWalk" }],
+  "chervena-stena": [
+    { kind: "activity", id: "canyonWalk" },
+    { kind: "quest", id: "ar" },
+  ],
   "rachkov-vir": [
-    { kind: "activity", id: "river-photo-journey" },
-    { kind: "activity", id: "vit-fishing" },
+    { kind: "activity", id: "photoTour" },
+    { kind: "activity", id: "fishing" },
   ],
-  "st-archangel-michael": [],
-  kaleto: [{ kind: "quest", id: "living-history" }],
+  "st-archangel-michael": [{ kind: "activity", id: "weekendEscape" }],
+  kaleto: [{ kind: "quest", id: "story" }],
 };

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type MouseEvent, type SyntheticEvent } from "react";
-import { contentByLanguage, languages, type Accommodation, type LanguageCode, type TimelineItem } from "./content";
+import { contentByLanguage, languages, type Accommodation, type LanguageCode, type PlaceId, type TimelineItem } from "./content";
 import { getLandingPage, getLandingPages, isLandingPageId } from "./landingPages";
 import { placeExperienceLinks, type PlaceExperienceLink } from "./placeLinks";
 import { buildRoutePath, getStaticRoute, resolveRoute, type RouteId, type ResolvedRoute } from "./routes";
@@ -42,6 +42,10 @@ function gatewayRouteId(link: PlaceExperienceLink): RouteId {
 
 function gatewayTargetId(link: PlaceExperienceLink): string {
   return link.kind === "activity" ? `experience-${link.id}` : `quest-${link.id}`;
+}
+
+function gatewayKey(link: PlaceExperienceLink): string {
+  return `${link.kind}:${link.id}`;
 }
 
 export function App() {
@@ -235,10 +239,30 @@ export function App() {
     [copy.quests.features],
   );
 
+  const gatewayPlaceLabelsByKey = useMemo(() => {
+    const placeTitleById = new Map(copy.placesList.map((place) => [place.id, place.title] as const));
+    const labels = new Map<string, string[]>();
+
+    (Object.entries(placeExperienceLinks) as Array<[PlaceId, PlaceExperienceLink[]]>).forEach(([placeId, links]) => {
+      const placeTitle = placeTitleById.get(placeId);
+      if (!placeTitle) return;
+
+      links.forEach((link) => {
+        const key = gatewayKey(link);
+        labels.set(key, [...(labels.get(key) ?? []), placeTitle]);
+      });
+    });
+
+    return labels;
+  }, [copy.placesList]);
+
   const gatewayLabel = (link: PlaceExperienceLink) =>
     link.kind === "activity"
       ? experienceById.get(link.id)?.title ?? link.id
       : questFeatureById.get(link.id)?.title ?? link.id;
+
+  const gatewayPlaceLabel = (link: PlaceExperienceLink) =>
+    (gatewayPlaceLabelsByKey.get(gatewayKey(link)) ?? []).join(", ");
 
   return (
     <main lang={language}>
@@ -550,7 +574,7 @@ export function App() {
                   <h3>{place.title}</h3>
                   <span>{place.description}</span>
                   {gatewayLinks.length > 0 && (
-                    <nav className="place-card-links" aria-label={place.title}>
+                    <nav className="place-card-links" aria-label={`${localizedUi.gateway.exploreFrom} ${place.title}`}>
                       {gatewayLinks.map((link) => (
                         <a
                           href={`${routeHref(gatewayRouteId(link))}#${gatewayTargetId(link)}`}
@@ -633,25 +657,34 @@ export function App() {
           <p>{copy.experiences.text}</p>
         </div>
         <div className="experience-grid">
-          {copy.experiencesList.map((experience) => (
-            <article className="experience-card reveal" id={`experience-${experience.id}`} key={experience.id}>
-              <div>
-                <p>
-                  {experience.duration} · {experience.bestFor}
-                </p>
-                <h3>{experience.title}</h3>
-                <span>{experience.description}</span>
-              </div>
-              <strong className="experience-card-price">{experience.price}</strong>
-              <a
-                href={routeHref("contact")}
-                aria-label={`${copy.experiences.cta}: ${experience.title}`}
-                onClick={(event) => handleRouteClick(event, "contact")}
-              >
-                {copy.experiences.cta}
-              </a>
-            </article>
-          ))}
+          {copy.experiencesList.map((experience) => {
+            const linkedPlaces = gatewayPlaceLabel({ kind: "activity", id: experience.id });
+
+            return (
+              <article className="experience-card reveal" id={`experience-${experience.id}`} key={experience.id}>
+                <div>
+                  <p>
+                    {experience.duration} · {experience.bestFor}
+                  </p>
+                  <h3>{experience.title}</h3>
+                  <span>{experience.description}</span>
+                  {linkedPlaces && (
+                    <p className="gateway-place-context">
+                      {localizedUi.gateway.placeContext}: {linkedPlaces}
+                    </p>
+                  )}
+                </div>
+                <strong className="experience-card-price">{experience.price}</strong>
+                <a
+                  href={routeHref("contact")}
+                  aria-label={`${copy.experiences.cta}: ${experience.title}`}
+                  onClick={(event) => handleRouteClick(event, "contact")}
+                >
+                  {copy.experiences.cta}
+                </a>
+              </article>
+            );
+          })}
         </div>
       </section>
 
@@ -688,13 +721,22 @@ export function App() {
             <p className="quests-lede">{copy.quests.text}</p>
           </div>
           <div className="quests-features">
-            {copy.quests.features.map((f, i) => (
-              <article className="quest-feature reveal" id={`quest-${f.id}`} key={f.id}>
-                <span className="quest-feature-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
-                <h3>{f.title}</h3>
-                <p>{f.text}</p>
-              </article>
-            ))}
+            {copy.quests.features.map((f, i) => {
+              const linkedPlaces = gatewayPlaceLabel({ kind: "quest", id: f.id });
+
+              return (
+                <article className="quest-feature reveal" id={`quest-${f.id}`} key={f.id}>
+                  <span className="quest-feature-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+                  <h3>{f.title}</h3>
+                  <p>{f.text}</p>
+                  {linkedPlaces && (
+                    <p className="gateway-place-context">
+                      {localizedUi.gateway.placeContext}: {linkedPlaces}
+                    </p>
+                  )}
+                </article>
+              );
+            })}
           </div>
           <div className="quests-cta reveal">
             <a className="button primary quests-btn" href={routeHref("app")} onClick={(event) => handleRouteClick(event, "app")}>

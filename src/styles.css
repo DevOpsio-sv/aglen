@@ -1334,6 +1334,15 @@ h3 {
   margin: 0;
 }
 
+.experience-card .gateway-place-context,
+.quest-feature .gateway-place-context {
+  margin-top: 0.85rem;
+  color: var(--gold);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
 .quests-cta {
   text-align: center;
 }

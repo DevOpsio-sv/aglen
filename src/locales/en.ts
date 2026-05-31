@@ -23,9 +23,9 @@ export const en: PageCopy = {
     text: "Hidden Bulgaria Quests takes you to real places - with your phone you see a hidden 3D world, solve riddles, and follow the Guardian's trail. Not a simulation. Not a museum. A real live adventure.",
     cta: "Download and start",
     features: [
-      { id: "augmented-reality", title: "Augmented Reality (AR)", text: "Point the camera at a marked place and see the hidden world come alive before your eyes - 3D characters, signs, and stories." },
-      { id: "gps-missions", title: "Live GPS missions", text: "The journeys lead you to real landmarks around Aglen. Every place hides the next clue." },
-      { id: "living-history", title: "History, told differently", text: "The legends of Prohodna Cave come alive as a game. The Guardian, the cave, the ancient signs - everything is connected in one experience." },
+      { id: "ar", title: "Augmented Reality (AR)", text: "Point the camera at a marked place and see the hidden world come alive before your eyes - 3D characters, signs, and stories." },
+      { id: "gps", title: "Live GPS missions", text: "The journeys lead you to real landmarks around Aglen. Every place hides the next clue." },
+      { id: "story", title: "History, told differently", text: "The legends of Prohodna Cave come alive as a game. The Guardian, the cave, the ancient signs - everything is connected in one experience." },
     ],
   },
   ar: {
@@ -87,12 +87,12 @@ export const en: PageCopy = {
     { id: "kaleto", title: "Калето", tag: "Archaeology", image: images.kaleto, imageAlt: "Stone remains on a hill above canyon and river", description: "A place connected with old routes, fortified memory, and the long life beside the river." },
   ],
   experiencesList: [
-    { id: "canyon-walk", title: "Canyon Walk", price: negotiablePrice.en, duration: "2-3 hours", bestFor: "First-time visitors", description: "Guided views toward the Vit, rock forms, and the local names behind the landscape." },
-    { id: "river-photo-journey", title: "River Photo Journey", price: negotiablePrice.en, duration: "Half day", bestFor: "Photographers", description: "Selected places around the river, rocks, old village streets, and soft natural light." },
-    { id: "vit-fishing", title: "Fishing by the Vit", price: negotiablePrice.en, duration: "2 hours", bestFor: "Slow travel", description: "A quiet local rhythm by the water with practical guidance and care for the river." },
-    { id: "aglen-weekend", title: "Aglen Weekend Escape", price: negotiablePrice.en, duration: "2 days", bestFor: "Couples and friends", description: "Walks, picnic time, crafts, and an evening route through village stories." },
-    { id: "herbs-village-knowledge", title: "Herbs & Village Knowledge", price: negotiablePrice.en, duration: "90 min.", bestFor: "Curious travelers", description: "Recognizing herbs, traditional uses, and responsible gathering in the local landscape." },
-    { id: "school-discovery-day", title: "School Discovery Day", price: negotiablePrice.en, duration: "1 day", bestFor: "Student groups", description: "A field route through geography, history, local legends, and nature protection." },
+    { id: "canyonWalk", title: "Canyon Walk", price: negotiablePrice.en, duration: "2-3 hours", bestFor: "First-time visitors", description: "Guided views toward the Vit, rock forms, and the local names behind the landscape." },
+    { id: "photoTour", title: "River Photo Journey", price: negotiablePrice.en, duration: "Half day", bestFor: "Photographers", description: "Selected places around the river, rocks, old village streets, and soft natural light." },
+    { id: "fishing", title: "Fishing by the Vit", price: negotiablePrice.en, duration: "2 hours", bestFor: "Slow travel", description: "A quiet local rhythm by the water with practical guidance and care for the river." },
+    { id: "weekendEscape", title: "Aglen Weekend Escape", price: negotiablePrice.en, duration: "2 days", bestFor: "Couples and friends", description: "Walks, picnic time, crafts, and an evening route through village stories." },
+    { id: "herbs", title: "Herbs & Village Knowledge", price: negotiablePrice.en, duration: "90 min.", bestFor: "Curious travelers", description: "Recognizing herbs, traditional uses, and responsible gathering in the local landscape." },
+    { id: "schoolDay", title: "School Discovery Day", price: negotiablePrice.en, duration: "1 day", bestFor: "Student groups", description: "A field route through geography, history, local legends, and nature protection." },
   ],
   galleryItems: [
     { title: "Vit River Canyon", image: images.hero, alt: "Cinematic river canyon and village at sunrise", size: "wide" },

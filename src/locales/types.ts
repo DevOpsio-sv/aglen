@@ -7,8 +7,8 @@ export type Highlight = {
 };
 
 export type PlaceId = "dupkata" | "sloncheto" | "chervena-stena" | "rachkov-vir" | "st-archangel-michael" | "kaleto";
-export type ExperienceId = "canyon-walk" | "river-photo-journey" | "vit-fishing" | "aglen-weekend" | "herbs-village-knowledge" | "school-discovery-day";
-export type QuestId = "augmented-reality" | "gps-missions" | "living-history";
+export type ExperienceId = "canyonWalk" | "photoTour" | "fishing" | "weekendEscape" | "herbs" | "schoolDay";
+export type QuestId = "ar" | "gps" | "story";
 
 export type Place = {
   id: PlaceId;

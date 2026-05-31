@@ -13,6 +13,10 @@ export type LocalizedUiText = {
     mobileNav: string;
     footerPolicy: string;
   };
+  gateway: {
+    exploreFrom: string;
+    placeContext: string;
+  };
 };
 
 export const uiTextByLanguage: Record<LanguageCode, LocalizedUiText> = {
@@ -26,6 +30,7 @@ export const uiTextByLanguage: Record<LanguageCode, LocalizedUiText> = {
     ],
     landing: { routeMap: "Виж маршрутната карта", visitorAnswers: "Отговори за посетители", internalLinks: "Вътрешни връзки", relatedGuides: "Свързани ръководства", relatedGuidesAria: "Свързани ръководства за Ъглен" },
     aria: { mobileNav: "Навигация", footerPolicy: "Страници за доверие и политики" },
+    gateway: { exploreFrom: "Разгледай от", placeContext: "Места" },
   },
   en: {
     trustLinks: [
@@ -37,6 +42,7 @@ export const uiTextByLanguage: Record<LanguageCode, LocalizedUiText> = {
     ],
     landing: { routeMap: "View route map", visitorAnswers: "Visitor answers", internalLinks: "Internal links", relatedGuides: "Related guides", relatedGuidesAria: "Related Aglen guides" },
     aria: { mobileNav: "Navigation", footerPolicy: "Trust and policy pages" },
+    gateway: { exploreFrom: "Explore from", placeContext: "At" },
   },
   de: {
     trustLinks: [
@@ -48,6 +54,7 @@ export const uiTextByLanguage: Record<LanguageCode, LocalizedUiText> = {
     ],
     landing: { routeMap: "Routenkarte ansehen", visitorAnswers: "Antworten für Besucher", internalLinks: "Interne Links", relatedGuides: "Verwandte Führer", relatedGuidesAria: "Verwandte Aglen-Führer" },
     aria: { mobileNav: "Navigation", footerPolicy: "Vertrauens- und Richtlinienseiten" },
+    gateway: { exploreFrom: "Entdecken ab", placeContext: "Bei" },
   },
   fr: {
     trustLinks: [
@@ -59,6 +66,7 @@ export const uiTextByLanguage: Record<LanguageCode, LocalizedUiText> = {
     ],
     landing: { routeMap: "Voir la carte d'itinéraire", visitorAnswers: "Réponses visiteurs", internalLinks: "Liens internes", relatedGuides: "Guides associés", relatedGuidesAria: "Guides Aglen associés" },
     aria: { mobileNav: "Navigation", footerPolicy: "Pages de confiance et politiques" },
+    gateway: { exploreFrom: "Explorer depuis", placeContext: "À" },
   },
   es: {
     trustLinks: [
@@ -70,6 +78,7 @@ export const uiTextByLanguage: Record<LanguageCode, LocalizedUiText> = {
     ],
     landing: { routeMap: "Ver mapa de ruta", visitorAnswers: "Respuestas para visitantes", internalLinks: "Enlaces internos", relatedGuides: "Guías relacionadas", relatedGuidesAria: "Guías relacionadas de Aglen" },
     aria: { mobileNav: "Navegación", footerPolicy: "Páginas de confianza y políticas" },
+    gateway: { exploreFrom: "Explorar desde", placeContext: "En" },
   },
   it: {
     trustLinks: [
@@ -81,6 +90,7 @@ export const uiTextByLanguage: Record<LanguageCode, LocalizedUiText> = {
     ],
     landing: { routeMap: "Vedi mappa del percorso", visitorAnswers: "Risposte per visitatori", internalLinks: "Link interni", relatedGuides: "Guide correlate", relatedGuidesAria: "Guide correlate di Aglen" },
     aria: { mobileNav: "Navigazione", footerPolicy: "Pagine di fiducia e politiche" },
+    gateway: { exploreFrom: "Esplora da", placeContext: "A" },
   },
   ro: {
     trustLinks: [
@@ -92,6 +102,7 @@ export const uiTextByLanguage: Record<LanguageCode, LocalizedUiText> = {
     ],
     landing: { routeMap: "Vezi harta traseului", visitorAnswers: "Răspunsuri pentru vizitatori", internalLinks: "Linkuri interne", relatedGuides: "Ghiduri asociate", relatedGuidesAria: "Ghiduri Aglen asociate" },
     aria: { mobileNav: "Navigare", footerPolicy: "Pagini de încredere și politici" },
+    gateway: { exploreFrom: "Explorează de la", placeContext: "La" },
   },
   tr: {
     trustLinks: [
@@ -103,6 +114,7 @@ export const uiTextByLanguage: Record<LanguageCode, LocalizedUiText> = {
     ],
     landing: { routeMap: "Rota haritasını gör", visitorAnswers: "Ziyaretçi yanıtları", internalLinks: "İç bağlantılar", relatedGuides: "İlgili rehberler", relatedGuidesAria: "İlgili Aglen rehberleri" },
     aria: { mobileNav: "Gezinme", footerPolicy: "Güven ve politika sayfaları" },
+    gateway: { exploreFrom: "Buradan keşfet", placeContext: "Yer" },
   },
   el: {
     trustLinks: [
@@ -114,6 +126,7 @@ export const uiTextByLanguage: Record<LanguageCode, LocalizedUiText> = {
     ],
     landing: { routeMap: "Δείτε τον χάρτη διαδρομής", visitorAnswers: "Απαντήσεις επισκεπτών", internalLinks: "Εσωτερικοί σύνδεσμοι", relatedGuides: "Σχετικοί οδηγοί", relatedGuidesAria: "Σχετικοί οδηγοί Aglen" },
     aria: { mobileNav: "Πλοήγηση", footerPolicy: "Σελίδες εμπιστοσύνης και πολιτικών" },
+    gateway: { exploreFrom: "Εξερεύνηση από", placeContext: "Στο" },
   },
   ru: {
     trustLinks: [
@@ -125,6 +138,7 @@ export const uiTextByLanguage: Record<LanguageCode, LocalizedUiText> = {
     ],
     landing: { routeMap: "Смотреть карту маршрута", visitorAnswers: "Ответы для посетителей", internalLinks: "Внутренние ссылки", relatedGuides: "Связанные гиды", relatedGuidesAria: "Связанные гиды по Аглену" },
     aria: { mobileNav: "Навигация", footerPolicy: "Страницы доверия и политик" },
+    gateway: { exploreFrom: "Исследовать от", placeContext: "Места" },
   },
   ja: {
     trustLinks: [
@@ -136,6 +150,7 @@ export const uiTextByLanguage: Record<LanguageCode, LocalizedUiText> = {
     ],
     landing: { routeMap: "ルートマップを見る", visitorAnswers: "訪問者向け回答", internalLinks: "内部リンク", relatedGuides: "関連ガイド", relatedGuidesAria: "アグレン関連ガイド" },
     aria: { mobileNav: "ナビゲーション", footerPolicy: "信頼とポリシーのページ" },
+    gateway: { exploreFrom: "ここから探索", placeContext: "場所" },
   },
   sr: {
     trustLinks: [
@@ -147,6 +162,7 @@ export const uiTextByLanguage: Record<LanguageCode, LocalizedUiText> = {
     ],
     landing: { routeMap: "Погледај мапу руте", visitorAnswers: "Одговори за посетиоце", internalLinks: "Унутрашње везе", relatedGuides: "Повезани водичи", relatedGuidesAria: "Повезани водичи за Аглен" },
     aria: { mobileNav: "Навигација", footerPolicy: "Странице поверења и политика" },
+    gateway: { exploreFrom: "Истражи од", placeContext: "Места" },
   },
   zh: {
     trustLinks: [
@@ -158,6 +174,7 @@ export const uiTextByLanguage: Record<LanguageCode, LocalizedUiText> = {
     ],
     landing: { routeMap: "查看路线地图", visitorAnswers: "访客问答", internalLinks: "内部链接", relatedGuides: "相关指南", relatedGuidesAria: "阿格伦相关指南" },
     aria: { mobileNav: "导航", footerPolicy: "信任与政策页面" },
+    gateway: { exploreFrom: "从这里探索", placeContext: "地点" },
   },
   hu: {
     trustLinks: [
@@ -169,5 +186,6 @@ export const uiTextByLanguage: Record<LanguageCode, LocalizedUiText> = {
     ],
     landing: { routeMap: "Útvonaltérkép megtekintése", visitorAnswers: "Válaszok látogatóknak", internalLinks: "Belső linkek", relatedGuides: "Kapcsolódó kalauzok", relatedGuidesAria: "Kapcsolódó Aglen-kalauzok" },
     aria: { mobileNav: "Navigáció", footerPolicy: "Bizalmi és irányelv oldalak" },
+    gateway: { exploreFrom: "Felfedezés innen", placeContext: "Helyszín" },
   },
 };
