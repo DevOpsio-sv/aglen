@@ -1,11 +1,20 @@
-import type { PlaceId } from "./content";
-import type { RouteId } from "./routes";
+import type { ExperienceId, PlaceId, QuestId } from "./content";
 
-export const placeLinks: Record<PlaceId, RouteId[]> = {
-  dupkata: ["activities", "quests"],
+export type PlaceExperienceLink =
+  | { kind: "activity"; id: ExperienceId }
+  | { kind: "quest"; id: QuestId };
+
+export const placeExperienceLinks: Record<PlaceId, PlaceExperienceLink[]> = {
+  dupkata: [
+    { kind: "activity", id: "canyon-walk" },
+    { kind: "quest", id: "gps-missions" },
+  ],
   sloncheto: [],
   "chervena-stena": [],
-  "rachkov-vir": ["activities"],
+  "rachkov-vir": [
+    { kind: "activity", id: "river-photo-journey" },
+    { kind: "activity", id: "vit-fishing" },
+  ],
   "st-archangel-michael": [],
-  kaleto: ["quests"],
+  kaleto: [{ kind: "quest", id: "living-history" }],
 };
