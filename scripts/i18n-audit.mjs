@@ -137,6 +137,13 @@ const placeholderPatterns = [
   /планирай пътеводител за/i,
   /plan travel guide for/i,
   /this guide helps you plan travel guide/i,
+  /Основен смисъл/i,
+  /Core promise/i,
+  /Planning notes/i,
+  /Related routes/i,
+  /Promesse principale/i,
+  /Promesa central/i,
+  /Главная идея/i,
 ];
 
 const issues = [];

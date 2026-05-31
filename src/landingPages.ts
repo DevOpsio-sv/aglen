@@ -1,6 +1,6 @@
 import { contentByLanguage } from "./locales";
 import { images } from "./locales/shared";
-import type { LanguageCode } from "./locales/types";
+import type { LanguageCode, PageCopy } from "./locales/types";
 import { uiTextByLanguage } from "./uiText";
 
 export type LandingPageId =
@@ -206,6 +206,10 @@ function imageAlt(lang: LanguageCode, key: LandingPageMaster["imageAltKey"]): st
   };
 
   return byKey[key];
+}
+
+function landingImage(path: string): string {
+  return path.startsWith("/assets/") || path.startsWith("http") ? path : images.hero;
 }
 
 const guideOverrides: Partial<Record<LandingPageId, Record<LanguageCode, LandingPageOverride>>> = {
@@ -483,6 +487,252 @@ const guideOverrides: Partial<Record<LandingPageId, Record<LanguageCode, Landing
   },
 };
 
+type RegionalGuideTopic = {
+  highlightsBg: string[];
+  highlightsIntl: string[];
+  aglenConnectionBg: string;
+  aglenConnectionIntl: string;
+  imageAltKey: "aerial" | "cave" | "pool";
+};
+
+type RegionalGuideText = {
+  title: (name: string, brand: string) => string;
+  meta: (name: string, highlights: string, brand: string) => string;
+  h1: (name: string) => string;
+  intro: (name: string, highlights: string) => string;
+  cta: string;
+  imageAlt: (name: string) => string;
+  sectionWhy: string;
+  sectionSee: string;
+  sectionAglen: string;
+  sectionRoute: string;
+  sectionSeason: string;
+  whyBody: (name: string, highlights: string) => string;
+  seeBody: (highlights: string) => string;
+  aglenBody: (connection: string) => string;
+  routeBody: (name: string, highlights: string) => string;
+  seasonBody: string;
+  faqTimeQ: (name: string) => string;
+  faqTimeA: string;
+  faqFamilyQ: string;
+  faqFamilyA: string;
+  faqPhotoQ: string;
+  faqPhotoA: (highlights: string) => string;
+};
+
+const regionalGuideIds = new Set<LandingPageId>([
+  "lovechRegionGuide",
+  "karlukovoGuide",
+  "krushunaGuide",
+  "devetashkaCaveGuide",
+  "iskarPanegaGuide",
+]);
+
+const regionalGuideTopics: Record<LandingPageId, RegionalGuideTopic> = {
+  visitAglen: { highlightsBg: [], highlightsIntl: [], aglenConnectionBg: "", aglenConnectionIntl: "", imageAltKey: "aerial" },
+  thingsToDo: { highlightsBg: [], highlightsIntl: [], aglenConnectionBg: "", aglenConnectionIntl: "", imageAltKey: "aerial" },
+  natureAroundAglen: { highlightsBg: [], highlightsIntl: [], aglenConnectionBg: "", aglenConnectionIntl: "", imageAltKey: "aerial" },
+  historyOfAglen: { highlightsBg: [], highlightsIntl: [], aglenConnectionBg: "", aglenConnectionIntl: "", imageAltKey: "aerial" },
+  accommodationNearAglen: { highlightsBg: [], highlightsIntl: [], aglenConnectionBg: "", aglenConnectionIntl: "", imageAltKey: "aerial" },
+  traditionalFood: { highlightsBg: [], highlightsIntl: [], aglenConnectionBg: "", aglenConnectionIntl: "", imageAltKey: "aerial" },
+  hiddenPlaces: { highlightsBg: [], highlightsIntl: [], aglenConnectionBg: "", aglenConnectionIntl: "", imageAltKey: "aerial" },
+  culturalTourism: { highlightsBg: [], highlightsIntl: [], aglenConnectionBg: "", aglenConnectionIntl: "", imageAltKey: "aerial" },
+  natureTourism: { highlightsBg: [], highlightsIntl: [], aglenConnectionBg: "", aglenConnectionIntl: "", imageAltKey: "aerial" },
+  adventureTourism: { highlightsBg: [], highlightsIntl: [], aglenConnectionBg: "", aglenConnectionIntl: "", imageAltKey: "aerial" },
+  familyTrip: { highlightsBg: [], highlightsIntl: [], aglenConnectionBg: "", aglenConnectionIntl: "", imageAltKey: "aerial" },
+  campingNearAglen: { highlightsBg: [], highlightsIntl: [], aglenConnectionBg: "", aglenConnectionIntl: "", imageAltKey: "aerial" },
+  weekendInAglen: { highlightsBg: [], highlightsIntl: [], aglenConnectionBg: "", aglenConnectionIntl: "", imageAltKey: "aerial" },
+  routeMap: { highlightsBg: [], highlightsIntl: [], aglenConnectionBg: "", aglenConnectionIntl: "", imageAltKey: "aerial" },
+  bestTime: { highlightsBg: [], highlightsIntl: [], aglenConnectionBg: "", aglenConnectionIntl: "", imageAltKey: "aerial" },
+  howToGet: { highlightsBg: [], highlightsIntl: [], aglenConnectionBg: "", aglenConnectionIntl: "", imageAltKey: "aerial" },
+  aglenFromSofia: { highlightsBg: [], highlightsIntl: [], aglenConnectionBg: "", aglenConnectionIntl: "", imageAltKey: "aerial" },
+  lovechRegionGuide: {
+    highlightsBg: ["Луковит", "Искър-Панега", "Карлуково", "Крушуна", "Деветашката пещера", "Ъглен"],
+    highlightsIntl: ["Lukovit", "Iskar-Panega", "Karlukovo", "Krushuna", "Devetashka", "Aglen"],
+    aglenConnectionBg: "Ъглен е тихата селска спирка между по-популярните места: река Вит, варовикови форми, местна храна и по-бавен ритъм.",
+    aglenConnectionIntl: "Aglen is the quieter village stop between the better-known places: the Vit River, limestone forms, local food, and a slower rhythm.",
+    imageAltKey: "aerial",
+  },
+  lukovitGuide: { highlightsBg: [], highlightsIntl: [], aglenConnectionBg: "", aglenConnectionIntl: "", imageAltKey: "aerial" },
+  karlukovoGuide: {
+    highlightsBg: ["Проходна", "карлуковските пещери", "скални венци", "Искър-Панега", "Ъглен"],
+    highlightsIntl: ["Prohodna", "Karlukovo", "Iskar-Panega", "Aglen"],
+    aglenConnectionBg: "След драматичните пещери Ъглен дава по-мек финал с река Вит, селски пейзаж, вечерна светлина и възможност за нощувка.",
+    aglenConnectionIntl: "After the dramatic caves, Aglen gives the route a softer finish with the Vit River, village landscape, evening light, and possible overnight stay.",
+    imageAltKey: "cave",
+  },
+  krushunaGuide: {
+    highlightsBg: ["Крушунските водопади", "Деветашката пещера", "Ловеч", "селски пътища", "Ъглен"],
+    highlightsIntl: ["Krushuna", "Devetashka", "Lovech", "Aglen"],
+    aglenConnectionBg: "Ъглен работи като спокойна контратема на водопадите: по-малко тълпи, река Вит, храна, снимки и селски туризъм.",
+    aglenConnectionIntl: "Aglen works as a calm counterpoint to the waterfalls: fewer crowds, the Vit River, food, photography, and village tourism.",
+    imageAltKey: "pool",
+  },
+  devetashkaCaveGuide: {
+    highlightsBg: ["Деветашката пещера", "Крушуна", "Ловеч", "Карлуково", "Ъглен"],
+    highlightsIntl: ["Devetashka", "Krushuna", "Lovech", "Karlukovo", "Aglen"],
+    aglenConnectionBg: "Ъглен добавя човешки мащаб към голямата пещерна сцена: река, селска памет, местен разговор и бавен завършек.",
+    aglenConnectionIntl: "Aglen adds human scale to the large cave landscape: river, village memory, local conversation, and a slower ending.",
+    imageAltKey: "cave",
+  },
+  iskarPanegaGuide: {
+    highlightsBg: ["екопътека Искър-Панега", "синята вода", "Луковит", "Проходна", "Ъглен"],
+    highlightsIntl: ["Iskar-Panega", "Lukovit", "Prohodna", "Aglen"],
+    aglenConnectionBg: "След Искър-Панега Ъглен продължава темата за реките, но я прави по-тиха: Вит, скали, селски улици и залез.",
+    aglenConnectionIntl: "After Iskar-Panega, Aglen continues the river theme in a quieter way: the Vit River, rocks, village streets, and sunset.",
+    imageAltKey: "pool",
+  },
+  ruralTourismBulgaria: { highlightsBg: [], highlightsIntl: [], aglenConnectionBg: "", aglenConnectionIntl: "", imageAltKey: "aerial" },
+  ecoTourismBulgaria: { highlightsBg: [], highlightsIntl: [], aglenConnectionBg: "", aglenConnectionIntl: "", imageAltKey: "aerial" },
+  slowTravelBulgaria: { highlightsBg: [], highlightsIntl: [], aglenConnectionBg: "", aglenConnectionIntl: "", imageAltKey: "aerial" },
+  aiAnswerHub: { highlightsBg: [], highlightsIntl: [], aglenConnectionBg: "", aglenConnectionIntl: "", imageAltKey: "aerial" },
+};
+
+const regionalGuideText: Partial<Record<LanguageCode, RegionalGuideText>> = {
+  bg: {
+    title: (name, brand) => `${name}, маршрути и връзка с ${brand} | ${brand}`,
+    meta: (name, highlights) => `Практичен пътеводител за ${name}: ${highlights}, сезон, снимки, храна, връзка с Ъглен и маршрути край река Вит.`,
+    h1: (name) => `${name}: как да го включиш в пътуване около Ъглен`,
+    intro: (name, highlights) => `${name} е най-полезен, когато се планира като част от по-широк маршрут: ${highlights}. Тук ще намериш какво да видиш, кога да тръгнеш, как Ъглен влиза в деня и как да избегнеш прибързаното обикаляне.`,
+    cta: "Планирай маршрут с Ъглен",
+    imageAlt: (name) => `Пейзаж и туристически маршрут около ${name}, свързан с Ъглен и река Вит`,
+    sectionWhy: "Защо да го посетиш",
+    sectionSee: "Какво да видиш наблизо",
+    sectionAglen: "Как Ъглен допълва маршрута",
+    sectionRoute: "Предложен дневен маршрут",
+    sectionSeason: "Сезон и практични съвети",
+    whyBody: (name, highlights) => `${name} събира природни гледки, кратки преходи и места за фотография на малка дистанция. Най-смисленият маршрут не е списък за отметки, а плавно движение между ${highlights}.`,
+    seeBody: (highlights) => `Основните спирки за комбиниране са ${highlights}. Провери предварително достъпа до пътеки и пещери, защото след дъжд настилките и камъните могат да са хлъзгави.`,
+    aglenBody: (connection) => connection,
+    routeBody: (name, highlights) => `Започни рано с най-посещаваната точка около ${name}, остави обяда за пещера, водопад или екопътека, а късния следобед насочи към Ъглен за река Вит, снимки и по-тиха среща с района. Маршрутът работи най-добре, когато ${highlights} не се минават на бегом.`,
+    seasonBody: "Пролетта и есента са най-добри за цветове, ходене и фотография. Лятото изисква ранен старт, вода и сянка; през зимата провери пътните условия и дневната светлина.",
+    faqTimeQ: (name) => `Колко време е нужно за ${name} и Ъглен?`,
+    faqTimeA: "Един пълен ден е достатъчен за основен маршрут, но уикендът дава по-добър ритъм, време за храна, снимки и неочаквани спирки.",
+    faqFamilyQ: "Подходящо ли е за семейства?",
+    faqFamilyA: "Да, ако се изберат лесни участъци и се внимава край пещери, скали, водопади и речни брегове. Носи вода, удобни обувки и план Б при лошо време.",
+    faqPhotoQ: "Къде са най-добрите моменти за снимки?",
+    faqPhotoA: (highlights) => `Най-добрата светлина е рано сутрин и късно следобед. Комбинирай широките гледки около ${highlights} с по-тихите кадри край Вит и селските улици на Ъглен.`,
+  },
+  en: {
+    title: (name, brand) => `${name}, Routes, and the Link to ${brand} | ${brand}`,
+    meta: (name, highlights) => `Practical guide to ${name}: ${highlights}, seasons, photography, food, the Aglen connection, and Vit River routes.`,
+    h1: (name) => `${name}: how to fit it into a trip around Aglen`,
+    intro: (name, highlights) => `${name} works best as part of a wider route: ${highlights}. This guide explains what to see, when to go, how Aglen fits into the day, and how to avoid a rushed checklist trip.`,
+    cta: "Plan a route with Aglen",
+    imageAlt: (name) => `Landscape and travel route around ${name}, connected with Aglen and the Vit River`,
+    sectionWhy: "Why visit",
+    sectionSee: "What to see nearby",
+    sectionAglen: "How Aglen completes the route",
+    sectionRoute: "Suggested day route",
+    sectionSeason: "Season and practical tips",
+    whyBody: (name, highlights) => `${name} brings together nature views, short walks, and strong photo stops within a compact area. The best route is not a checklist, but a smooth movement between ${highlights}.`,
+    seeBody: (highlights) => `The main stops to combine are ${highlights}. Check access to trails and caves before you go, especially after rain when paths and stone can be slippery.`,
+    aglenBody: (connection) => connection,
+    routeBody: (name, highlights) => `Start early with the busiest place around ${name}, keep midday for a cave, waterfall, or eco trail, then move toward Aglen in late afternoon for the Vit River, photos, and a quieter local layer. The route works best when ${highlights} are not rushed.`,
+    seasonBody: "Spring and autumn are best for color, walking, and photography. Summer needs an early start, water, and shade; in winter, check road conditions and daylight.",
+    faqTimeQ: (name) => `How much time do ${name} and Aglen need?`,
+    faqTimeA: "One full day is enough for a basic route, but a weekend gives better rhythm, time for food, photography, and unexpected stops.",
+    faqFamilyQ: "Is it suitable for families?",
+    faqFamilyA: "Yes, if you choose easy sections and stay careful around caves, cliffs, waterfalls, and riverbanks. Carry water, walking shoes, and a backup plan for bad weather.",
+    faqPhotoQ: "When are the best photo moments?",
+    faqPhotoA: (highlights) => `The best light is early morning and late afternoon. Pair the wider views around ${highlights} with quieter frames by the Vit River and Aglen's village streets.`,
+  },
+};
+
+function listText(items: string[]): string {
+  return items.join(", ");
+}
+
+function subjectName(lang: LanguageCode, id: LandingPageId): string {
+  const name = pageNames[lang][id];
+  return name
+    .replace(/^Пътеводител за\s+/u, "")
+    .replace(/^Travel Guide to\s+/u, "")
+    .replace(/\s+Travel Guide$/u, "")
+    .replace(/^Reiseführer\s+/u, "")
+    .replace(/^Guide de\s+/u, "")
+    .replace(/^Guía de\s+/u, "")
+    .replace(/^Guida di\s+/u, "")
+    .replace(/^Ghid\s+/u, "")
+    .replace(/\s+rehberi$/u, "")
+    .replace(/^Οδηγός\s+/u, "")
+    .replace(/^Путеводитель по\s+/u, "")
+    .replace(/^Водич за\s+/u, "")
+    .replace(/旅行ガイド$/u, "")
+    .replace(/指南$/u, "")
+    .replace(/\s+kalauz$/u, "")
+    .trim();
+}
+
+function regionalTextFor(lang: LanguageCode, copy: PageCopy): RegionalGuideText {
+  const override = regionalGuideText[lang];
+  if (override) return override;
+
+  const local = landingText[lang];
+  return {
+    title: (name, brand) => `${name}${local.titleSeparator}${brand}`,
+    meta: (name) => `${name}: ${copy.landmarks.text}`,
+    h1: (name) => name,
+    intro: (name) => `${name} — ${copy.hero.meta}. ${copy.hub.text}`,
+    cta: local.cta,
+    imageAlt: (name) => `${imageAlt(lang, "aerial")} ${name}`,
+    sectionWhy: local.sectionHeadings[0],
+    sectionSee: local.sectionHeadings[1],
+    sectionAglen: local.sectionHeadings[2],
+    sectionRoute: copy.guides.nearby.label,
+    sectionSeason: copy.guides.seasonal.label,
+    whyBody: (name) => `${name}: ${local.sectionBodies[0]} ${copy.about.text}`,
+    seeBody: (highlights) => `${local.sectionBodies[1]} ${highlights}.`,
+    aglenBody: (connection) => connection,
+    routeBody: (_name, highlights) => `${local.sectionBodies[2]} ${highlights}.`,
+    seasonBody: copy.guides.seasonal.text,
+    faqTimeQ: () => local.faqWhen,
+    faqTimeA: local.faqWhenAnswer,
+    faqFamilyQ: local.faqDo,
+    faqFamilyA: local.faqDoAnswer,
+    faqPhotoQ: local.faqWhere,
+    faqPhotoA: () => local.faqWhereAnswer,
+  };
+}
+
+function buildRegionalGuideOverride(id: LandingPageId, lang: LanguageCode): LandingPageOverride | undefined {
+  if (!regionalGuideIds.has(id)) return undefined;
+
+  const copy = contentByLanguage[lang];
+  const text = regionalTextFor(lang, copy);
+  const topic = regionalGuideTopics[id];
+  const name = subjectName(lang, id);
+  const highlights = listText(lang === "bg" ? topic.highlightsBg : topic.highlightsIntl);
+  const connection = lang === "bg"
+    ? topic.aglenConnectionBg
+    : lang === "en"
+      ? topic.aglenConnectionIntl
+      : `${landingText[lang].sectionBodies[0]} ${copy.guides.vitRiver.text}`;
+
+  return {
+    title: text.title(name, copy.brand.name),
+    metaDescription: text.meta(name, highlights, copy.brand.name),
+    h1: text.h1(name),
+    intro: text.intro(name, highlights),
+    imageAlt: text.imageAlt(name),
+    ctaLabel: text.cta,
+    sections: [
+      { heading: text.sectionWhy, body: text.whyBody(name, highlights) },
+      { heading: text.sectionSee, body: text.seeBody(highlights) },
+      { heading: text.sectionAglen, body: text.aglenBody(connection) },
+      { heading: text.sectionRoute, body: text.routeBody(name, highlights) },
+      { heading: text.sectionSeason, body: text.seasonBody },
+    ],
+    faqs: [
+      { question: text.faqTimeQ(name), answer: text.faqTimeA },
+      { question: text.faqFamilyQ, answer: text.faqFamilyA },
+      { question: text.faqPhotoQ, answer: text.faqPhotoA(highlights) },
+    ],
+    keywords: [name, ...highlights.split(", "), copy.brand.name, copy.guides.vitRiver.label],
+    secondaryKeywords: [copy.guides.nearby.label, copy.guides.hiking.label, copy.guides.food.label],
+  };
+}
+
 function routeLabel(lang: LanguageCode, routeId: LandingPageId | string): string {
   const copy = contentByLanguage[lang];
   const ui = uiTextByLanguage[lang];
@@ -529,7 +779,7 @@ function buildLandingPage(lang: LanguageCode, page: LandingPageMaster): LandingP
   const metaDescription = `${h1}: ${copy.landmarks.text}`;
   const intro = `${h1} — ${location}. ${copy.hub.text}`;
   const linkedLabels = page.internalLinkRouteIds.map((routeId) => routeLabel(lang, routeId));
-  const override = guideOverrides[page.id]?.[lang];
+  const override = guideOverrides[page.id]?.[lang] ?? buildRegionalGuideOverride(page.id, lang);
 
   const generated: LandingPage = {
     id: page.id,
@@ -543,7 +793,7 @@ function buildLandingPage(lang: LanguageCode, page: LandingPageMaster): LandingP
     keywords: [h1, copy.brand.name, copy.landmarks.title, ...text.keywordSuffixes],
     secondaryKeywords: [copy.guides.vitRiver.label, copy.guides.hiking.label, copy.guides.nearby.label],
     bulgarianKeywords: lang === "bg" ? ["Ъглен", "село Ъглен", "река Вит", "Луковит"] : [copy.brand.name, h1],
-    image: page.image,
+    image: landingImage(page.image),
     imageAlt: imageAlt(lang, page.imageAltKey),
     ctaLabel: text.cta,
     schemaType: page.schemaType,
