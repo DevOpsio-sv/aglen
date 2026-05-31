@@ -1,9 +1,18 @@
-import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type MouseEvent, type SyntheticEvent } from "react";
 import { contentByLanguage, languages, type Accommodation, type LanguageCode, type TimelineItem } from "./content";
 import { getLandingPage, getLandingPages, isLandingPageId } from "./landingPages";
 import { buildRoutePath, getStaticRoute, resolveRoute, type RouteId, type ResolvedRoute } from "./routes";
 import { updateDocumentSEO } from "./seo";
 import { uiTextByLanguage } from "./uiText";
+
+const fallbackImage = "/assets/aglen-hero-river-canyon.png";
+
+function useFallbackImage(event: SyntheticEvent<HTMLImageElement>) {
+  const image = event.currentTarget;
+  if (image.dataset.fallbackApplied === "true") return;
+  image.dataset.fallbackApplied = "true";
+  image.src = fallbackImage;
+}
 
 export function App() {
   const [pageRoute, setPageRoute] = useState<ResolvedRoute>(() =>
@@ -297,30 +306,8 @@ export function App() {
         </>
       )}
 
-      <section id="home" className="hero">
-        <img className="hero-image" src="/assets/aglen-hero-river-canyon.png" alt={copy.hero.imageAlt} width="1200" height="630" fetchPriority="high" decoding="async" />
-        <div className="hero-overlay" aria-hidden="true" />
-        <div className="hero-copy section-shell reveal">
-          <p className="eyebrow">{copy.hero.meta}</p>
-          <h1>{copy.hero.title}</h1>
-          <p className="hero-title">{copy.hero.subtitle}</p>
-          <p className="hero-lede">{copy.hero.lede}</p>
-          <div className="hero-actions">
-            <a className="button primary" href={routeHref("attractions")} onClick={(event) => handleRouteClick(event, "attractions")}>
-              {copy.hero.primary}
-            </a>
-            <a className="button ghost" href={routeHref("app")} onClick={(event) => handleRouteClick(event, "app")}>
-              {copy.hero.secondary}
-            </a>
-          </div>
-        </div>
-        <div className="scroll-cue" aria-hidden="true">
-          {copy.hero.cue}
-        </div>
-      </section>
-
       {currentLandingPage && (
-        <section id="seo-guide" className="seo-landing section-shell">
+        <section id="seo-guide" className="seo-landing route-landing section-shell">
           <article className="seo-landing-panel reveal">
             <div className="seo-landing-hero">
               <div>
@@ -336,7 +323,7 @@ export function App() {
                   </a>
                 </div>
               </div>
-              <img src={currentLandingPage.image} alt={currentLandingPage.imageAlt} loading="eager" />
+              <img src={currentLandingPage.image || fallbackImage} alt={currentLandingPage.imageAlt} width="1200" height="900" loading="eager" decoding="async" onError={useFallbackImage} />
             </div>
 
             <div className="seo-section-grid">
@@ -377,6 +364,30 @@ export function App() {
         </section>
       )}
 
+      {!currentLandingPage && (
+        <>
+      <section id="home" className="hero">
+        <img className="hero-image" src="/assets/aglen-hero-river-canyon.png" alt={copy.hero.imageAlt} width="1200" height="630" fetchPriority="high" decoding="async" onError={useFallbackImage} />
+        <div className="hero-overlay" aria-hidden="true" />
+        <div className="hero-copy section-shell reveal">
+          <p className="eyebrow">{copy.hero.meta}</p>
+          <h1>{copy.hero.title}</h1>
+          <p className="hero-title">{copy.hero.subtitle}</p>
+          <p className="hero-lede">{copy.hero.lede}</p>
+          <div className="hero-actions">
+            <a className="button primary" href={routeHref("attractions")} onClick={(event) => handleRouteClick(event, "attractions")}>
+              {copy.hero.primary}
+            </a>
+            <a className="button ghost" href={routeHref("app")} onClick={(event) => handleRouteClick(event, "app")}>
+              {copy.hero.secondary}
+            </a>
+          </div>
+        </div>
+        <div className="scroll-cue" aria-hidden="true">
+          {copy.hero.cue}
+        </div>
+      </section>
+
       <section className="stats section-shell" aria-label={copy.statsLabel}>
         {copy.highlights.map((item) => (
           <article className="stat-card reveal" key={item.label}>
@@ -415,7 +426,7 @@ export function App() {
           <div className="mystery-grid">
             {copy.mysteries.map((item) => (
               <article className="mystery-card reveal" key={item.title}>
-                <img src={item.image} alt="" aria-hidden="true" width="1200" height="900" loading="lazy" />
+                <img src={item.image || fallbackImage} alt={`${item.title} - ${item.description}`} width="1200" height="900" loading="lazy" decoding="async" onError={useFallbackImage} />
                 <div>
                   <p>{item.tag}</p>
                   <h3>{item.title}</h3>
@@ -462,7 +473,7 @@ export function App() {
         <div className="place-grid">
           {copy.placesList.map((place) => (
             <article className="place-card reveal" key={place.title}>
-              <img src={place.image} alt={place.imageAlt} width="1200" height="900" loading="lazy" />
+              <img src={place.image || fallbackImage} alt={place.imageAlt} width="1200" height="900" loading="lazy" decoding="async" onError={useFallbackImage} />
               <div>
                 <p>{place.tag}</p>
                 <h3>{place.title}</h3>
@@ -481,7 +492,7 @@ export function App() {
         <div className="gallery-grid" aria-label={copy.gallery.aria}>
           {copy.galleryItems.map((item) => (
             <figure className={`gallery-item ${item.size} reveal`} key={item.title}>
-              <img src={item.image} alt={item.alt} width="1200" height="900" loading="lazy" />
+              <img src={item.image || fallbackImage} alt={item.alt} width="1200" height="900" loading="lazy" decoding="async" onError={useFallbackImage} />
               <figcaption>{item.title}</figcaption>
             </figure>
           ))}
@@ -568,7 +579,7 @@ export function App() {
         <div className="place-grid">
           {copy.accommodationList.map((item: Accommodation) => (
             <article className="place-card reveal" key={item.title}>
-              <img src={item.image} alt="" aria-hidden="true" width="1200" height="900" loading="lazy" />
+              <img src={item.image || fallbackImage} alt={`${item.title} - ${item.description}`} width="1200" height="900" loading="lazy" decoding="async" onError={useFallbackImage} />
               <div>
                 <p>{item.type}</p>
                 <h3>{item.title}</h3>
@@ -677,6 +688,8 @@ export function App() {
           </div>
         </div>
       </section>
+        </>
+      )}
 
       <section id="contact" className="contact section-shell">
         <div className="section-heading reveal">

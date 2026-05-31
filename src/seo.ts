@@ -4,7 +4,7 @@ import type { LanguageCode } from "./locales/types";
 import { allLanguageCodes, buildRoutePath, DEFAULT_LANGUAGE, type CoreRouteId, type RouteId } from "./routes";
 import { uiTextByLanguage } from "./uiText";
 
-export const SITE_URL = "https://aglen.bg";
+export const SITE_URL = "https://xn--c1aerj5d.com";
 const OG_IMAGE = `${SITE_URL}/assets/aglen-hero-river-canyon.png`;
 const OG_IMAGE_WIDTH = "1200";
 const OG_IMAGE_HEIGHT = "630";
@@ -34,6 +34,7 @@ type SEOConfig = {
   keywords: string;
   author: string;
   siteName: string;
+  imageUrl: string;
   imageAlt: string;
   canonicalUrl: string;
   alternates: Array<{ lang: string; href: string }>;
@@ -145,6 +146,7 @@ function keywordsForRoute(lang: LanguageCode, routeId: RouteId): string {
 
 export function getSEOConfig(lang: LanguageCode, routeId: RouteId = "home"): SEOConfig {
   const text = routeText(lang, routeId);
+  const primaryImage = getRouteImageEntries(lang, routeId)[0];
 
   return {
     title: text.title,
@@ -153,7 +155,8 @@ export function getSEOConfig(lang: LanguageCode, routeId: RouteId = "home"): SEO
     keywords: keywordsForRoute(lang, routeId),
     author: seoTextByLanguage[lang].organizationName,
     siteName: contentByLanguage[lang].nav.quests,
-    imageAlt: contentByLanguage[lang].hero.imageAlt,
+    imageUrl: primaryImage?.loc ?? OG_IMAGE,
+    imageAlt: primaryImage?.caption ?? contentByLanguage[lang].hero.imageAlt,
     canonicalUrl: absoluteRouteUrl(lang, routeId),
     alternates: [
       { lang: "x-default", href: absoluteRouteUrl(DEFAULT_LANGUAGE, routeId) },
@@ -597,9 +600,9 @@ export function updateDocumentSEO(lang: LanguageCode, routeId: RouteId = "home")
   setMeta("og:url", meta.canonicalUrl, true);
   setMeta("og:title", meta.title, true);
   setMeta("og:description", meta.description, true);
-  setMeta("og:image", OG_IMAGE, true);
-  setMeta("og:image:url", OG_IMAGE, true);
-  setMeta("og:image:secure_url", OG_IMAGE, true);
+  setMeta("og:image", meta.imageUrl, true);
+  setMeta("og:image:url", meta.imageUrl, true);
+  setMeta("og:image:secure_url", meta.imageUrl, true);
   setMeta("og:image:width", OG_IMAGE_WIDTH, true);
   setMeta("og:image:height", OG_IMAGE_HEIGHT, true);
   setMeta("og:image:alt", meta.imageAlt, true);
@@ -610,7 +613,7 @@ export function updateDocumentSEO(lang: LanguageCode, routeId: RouteId = "home")
   setMeta("twitter:site", "@hiddenBulgaria");
   setMeta("twitter:title", meta.title);
   setMeta("twitter:description", meta.description);
-  setMeta("twitter:image", OG_IMAGE);
+  setMeta("twitter:image", meta.imageUrl);
   setMeta("twitter:image:alt", meta.imageAlt);
   setCanonical(meta.canonicalUrl);
   setHreflangLinks(lang, routeId);

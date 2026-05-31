@@ -136,10 +136,14 @@ function renderPageHtml(routePath) {
   html = replaceOrInsert(html, /<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${escapeAttribute(pageSeo.canonicalUrl)}" />`);
   html = replaceOrInsert(html, /<meta property="og:title" content="[^"]*" \/>/, `<meta property="og:title" content="${escapeAttribute(pageSeo.title)}" />`);
   html = replaceOrInsert(html, /<meta property="og:description" content="[^"]*" \/>/, `<meta property="og:description" content="${escapeAttribute(pageSeo.description)}" />`);
+  html = replaceOrInsert(html, /<meta property="og:image" content="[^"]*" \/>/, `<meta property="og:image" content="${escapeAttribute(pageSeo.imageUrl)}" />`);
+  html = replaceOrInsert(html, /<meta property="og:image:url" content="[^"]*" \/>/, `<meta property="og:image:url" content="${escapeAttribute(pageSeo.imageUrl)}" />`);
+  html = replaceOrInsert(html, /<meta property="og:image:secure_url" content="[^"]*" \/>/, `<meta property="og:image:secure_url" content="${escapeAttribute(pageSeo.imageUrl)}" />`);
   html = replaceOrInsert(html, /<meta property="og:image:alt" content="[^"]*" \/>/, `<meta property="og:image:alt" content="${escapeAttribute(pageSeo.imageAlt)}" />`);
   html = replaceOrInsert(html, /<meta property="og:locale" content="[^"]*" \/>/, `<meta property="og:locale" content="${escapeAttribute(pageSeo.locale)}" />`);
   html = replaceOrInsert(html, /<meta name="twitter:title" content="[^"]*" \/>/, `<meta name="twitter:title" content="${escapeAttribute(pageSeo.title)}" />`);
   html = replaceOrInsert(html, /<meta name="twitter:description" content="[^"]*" \/>/, `<meta name="twitter:description" content="${escapeAttribute(pageSeo.description)}" />`);
+  html = replaceOrInsert(html, /<meta name="twitter:image" content="[^"]*" \/>/, `<meta name="twitter:image" content="${escapeAttribute(pageSeo.imageUrl)}" />`);
   html = replaceOrInsert(html, /<meta name="twitter:image:alt" content="[^"]*" \/>/, `<meta name="twitter:image:alt" content="${escapeAttribute(pageSeo.imageAlt)}" />`);
 
   html = html.replace(/\n\s*<link rel="alternate" hreflang="[^"]+" href="[^"]+" \/>\n?/g, "\n");
@@ -273,6 +277,6 @@ fs.writeFileSync(
   ].join("\n"),
 );
 
-fs.writeFileSync(path.join(distDir, "_redirects"), "/ /bg/ 301\n");
+// _redirects is managed in public/_redirects and copied to dist/ by Vite.
 
 console.log(`Generated ${routes.allLanguageCodes.length} language folders and ${staticRoutePaths.length} static topic routes.`);

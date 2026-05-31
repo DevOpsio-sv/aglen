@@ -20,4 +20,4 @@ User-agent: Amazonbot
 Disallow: /
 
 # Sitemap
-Sitemap: https://aglen.bg/sitemap.xml
+Sitemap: https://xn--c1aerj5d.com/sitemap.xml

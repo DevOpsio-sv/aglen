@@ -72,6 +72,19 @@ type LandingPageMaster = {
   internalLinkRouteIds: Array<LandingPageId | string>;
 };
 
+type LandingPageOverride = {
+  title: string;
+  metaDescription: string;
+  h1: string;
+  intro: string;
+  imageAlt: string;
+  ctaLabel: string;
+  sections: LandingPageSection[];
+  faqs: LandingPageFaq[];
+  keywords?: string[];
+  secondaryKeywords?: string[];
+};
+
 export const landingPageMaster: LandingPageMaster[] = [
   { id: "visitAglen", slug: "visit-aglen", image: images.hero, imageAltKey: "hero", schemaType: "TravelGuide", internalLinkRouteIds: ["attractions", "thingsToDo", "accommodationNearAglen", "vitRiver", "contact"] },
   { id: "thingsToDo", slug: "things-to-do-in-aglen", image: images.aerial, imageAltKey: "aerial", schemaType: "TravelGuide", internalLinkRouteIds: ["fishing", "hiking", "quests", "weekendInAglen"] },
@@ -165,12 +178,12 @@ type LandingLanguageText = {
 };
 
 const landingText: Record<LanguageCode, LandingLanguageText> = {
-  bg: { category: "Туристическо ръководство", titleSeparator: " | ", metaPrefix: "Планирай", introPrefix: "Това ръководство помага да планираш", sectionHeadings: ["Основен смисъл", "Планиране", "Свързани маршрути"], sectionBodies: ["Свързва реката, скалите, селската памет и практичните нужди на посетителите.", "Провери сезон, достъп, време, обувки, вода и дали е нужна местна насока.", "Използвай вътрешните връзки, за да свържеш темата с маршрути, настаняване, храна и близки места."], cta: "Попитай за посещение", faqWhere: "Къде се намира Ъглен?", faqWhereAnswer: "Ъглен е село в Ловешка област, Северна България, близо до Луковит и долината на река Вит.", faqDo: "Какво могат да правят посетителите?", faqDoAnswer: "Посетителите могат да вървят край реката, да снимат, да разглеждат скални форми, да планират риболов, къмпинг, местни истории и AR преживяване.", faqWhen: "Кога е най-доброто време?", faqWhenAnswer: "Пролетта и есента са най-силни за ходене и фотография, а лятото е подходящо за речни паузи и внимателно планиране.", keywordSuffixes: ["Ъглен", "река Вит", "Луковит", "Ловешка област", "селски туризъм"] },
-  en: { category: "Travel guide", titleSeparator: " | ", metaPrefix: "Plan", introPrefix: "This guide helps you plan", sectionHeadings: ["Core promise", "Planning notes", "Related routes"], sectionBodies: ["Connect the river, rocks, village memory, and practical visitor needs.", "Check season, access, timing, shoes, water, and whether local guidance is useful.", "Use the internal links to connect this topic with routes, stays, food, and nearby places."], cta: "Ask about a visit", faqWhere: "Where is Aglen?", faqWhereAnswer: "Aglen is a village in Lovech Province, Northern Bulgaria, near Lukovit and the Vit River valley.", faqDo: "What can visitors do?", faqDoAnswer: "Visitors can walk river routes, photograph limestone places, plan fishing, camping, local stories, and an AR experience.", faqWhen: "When is the best time?", faqWhenAnswer: "Spring and autumn are strongest for walking and photography, while summer suits river pauses with careful planning.", keywordSuffixes: ["Aglen", "Vit River", "Lukovit", "Lovech region", "rural tourism"] },
-  de: { category: "Reiseführer", titleSeparator: " | ", metaPrefix: "Plane", introPrefix: "Dieser Führer hilft bei der Planung von", sectionHeadings: ["Kernversprechen", "Planungshinweise", "Verwandte Routen"], sectionBodies: ["Verbindet Fluss, Felsen, Dorfgedächtnis und praktische Besucherfragen.", "Prüfe Saison, Zugang, Zeit, Schuhe, Wasser und ob lokale Führung sinnvoll ist.", "Nutze interne Links, um Thema, Routen, Unterkunft, Essen und nahe Orte zu verbinden."], cta: "Nach Besuch fragen", faqWhere: "Wo liegt Aglen?", faqWhereAnswer: "Aglen ist ein Dorf in der Region Lovech in Nordbulgarien, nahe Lukovit und dem Tal des Vit.", faqDo: "Was können Besucher tun?", faqDoAnswer: "Besucher können Flussrouten gehen, Kalksteinorte fotografieren, Angeln, Camping, lokale Geschichten und AR planen.", faqWhen: "Wann ist die beste Reisezeit?", faqWhenAnswer: "Frühling und Herbst sind stark für Spaziergänge und Fotografie, der Sommer passt zu Flusspausen mit guter Planung.", keywordSuffixes: ["Aglen", "Vit-Fluss", "Lukovit", "Region Lovech", "ländlicher Tourismus"] },
-  fr: { category: "Guide de voyage", titleSeparator: " | ", metaPrefix: "Planifiez", introPrefix: "Ce guide aide à planifier", sectionHeadings: ["Promesse principale", "Notes de préparation", "Itinéraires liés"], sectionBodies: ["Relie la rivière, les rochers, la mémoire du village et les besoins pratiques des visiteurs.", "Vérifiez saison, accès, durée, chaussures, eau et besoin éventuel d'un guide local.", "Utilisez les liens internes pour relier ce thème aux routes, hébergements, repas et lieux proches."], cta: "Demander une visite", faqWhere: "Où se trouve Aglen ?", faqWhereAnswer: "Aglen est un village de la province de Lovech, au nord de la Bulgarie, près de Lukovit et de la vallée de la Vit.", faqDo: "Que peuvent faire les visiteurs ?", faqDoAnswer: "Les visiteurs peuvent marcher près de la rivière, photographier le calcaire, prévoir pêche, camping, récits locaux et expérience AR.", faqWhen: "Quelle est la meilleure période ?", faqWhenAnswer: "Le printemps et l'automne sont les meilleurs pour marcher et photographier; l'été convient aux pauses au bord de l'eau avec préparation.", keywordSuffixes: ["Aglen", "rivière Vit", "Lukovit", "région de Lovech", "tourisme rural"] },
-  es: { category: "Guía de viaje", titleSeparator: " | ", metaPrefix: "Planifica", introPrefix: "Esta guía ayuda a planificar", sectionHeadings: ["Promesa central", "Notas de planificación", "Rutas relacionadas"], sectionBodies: ["Conecta río, rocas, memoria del pueblo y necesidades prácticas del visitante.", "Revisa temporada, acceso, tiempo, calzado, agua y si conviene guía local.", "Usa los enlaces internos para unir el tema con rutas, alojamiento, comida y lugares cercanos."], cta: "Consultar una visita", faqWhere: "¿Dónde está Aglen?", faqWhereAnswer: "Aglen es un pueblo de la provincia de Lovech, en el norte de Bulgaria, cerca de Lukovit y del valle del Vit.", faqDo: "¿Qué pueden hacer los visitantes?", faqDoAnswer: "Pueden caminar junto al río, fotografiar caliza, planear pesca, camping, historias locales y una experiencia AR.", faqWhen: "¿Cuál es la mejor época?", faqWhenAnswer: "Primavera y otoño destacan para caminar y fotografiar; el verano sirve para pausas junto al río con buena planificación.", keywordSuffixes: ["Aglen", "río Vit", "Lukovit", "región de Lovech", "turismo rural"] },
-  it: { category: "Guida di viaggio", titleSeparator: " | ", metaPrefix: "Pianifica", introPrefix: "Questa guida aiuta a pianificare", sectionHeadings: ["Promessa centrale", "Note di pianificazione", "Percorsi collegati"], sectionBodies: ["Collega fiume, rocce, memoria del villaggio e bisogni pratici dei visitatori.", "Controlla stagione, accesso, tempi, scarpe, acqua e se serve una guida locale.", "Usa i link interni per collegare tema, percorsi, alloggi, cibo e luoghi vicini."], cta: "Chiedi una visita", faqWhere: "Dove si trova Aglen?", faqWhereAnswer: "Aglen è un villaggio della provincia di Lovech, nel nord della Bulgaria, vicino a Lukovit e alla valle del Vit.", faqDo: "Cosa possono fare i visitatori?", faqDoAnswer: "Possono camminare lungo il fiume, fotografare luoghi calcarei, pianificare pesca, campeggio, storie locali ed esperienza AR.", faqWhen: "Qual è il periodo migliore?", faqWhenAnswer: "Primavera e autunno sono ideali per camminare e fotografare; l'estate va bene per pause sul fiume con pianificazione.", keywordSuffixes: ["Aglen", "fiume Vit", "Lukovit", "regione Lovech", "turismo rurale"] },
+  bg: { category: "Туристическо ръководство", titleSeparator: " | ", metaPrefix: "Планирай", introPrefix: "Това ръководство помага да планираш", sectionHeadings: ["За кого е това ръководство", "Как да планираш посещението", "Какво да свържеш наблизо"], sectionBodies: ["Подрежда реката, скалите, селската памет и практичните нужди на посетителите в ясен маршрут.", "Провери сезон, достъп, време, обувки, вода и дали е нужна актуална местна насока.", "Използвай вътрешните връзки, за да съчетаеш темата с маршрути, настаняване, храна и близки места."], cta: "Попитай за посещение", faqWhere: "Къде се намира Ъглен?", faqWhereAnswer: "Ъглен е село в Ловешка област, Северна България, близо до Луковит и долината на река Вит.", faqDo: "Какво могат да правят посетителите?", faqDoAnswer: "Посетителите могат да вървят край реката, да снимат, да разглеждат скални форми, да планират риболов, къмпинг, местни истории и AR преживяване.", faqWhen: "Кога е най-доброто време?", faqWhenAnswer: "Пролетта и есента са най-силни за ходене и фотография, а лятото е подходящо за речни паузи и внимателно планиране.", keywordSuffixes: ["Ъглен", "река Вит", "Луковит", "Ловешка област", "селски туризъм"] },
+  en: { category: "Travel guide", titleSeparator: " | ", metaPrefix: "Plan", introPrefix: "This guide helps you plan", sectionHeadings: ["Who this guide is for", "How to plan the visit", "What to connect nearby"], sectionBodies: ["Organizes the river, rocks, village memory, and practical visitor needs into a clear route.", "Check season, access, timing, shoes, water, and whether current local guidance is useful.", "Use the internal links to combine this topic with routes, stays, food, and nearby places."], cta: "Ask about a visit", faqWhere: "Where is Aglen?", faqWhereAnswer: "Aglen is a village in Lovech Province, Northern Bulgaria, near Lukovit and the Vit River valley.", faqDo: "What can visitors do?", faqDoAnswer: "Visitors can walk river routes, photograph limestone places, plan fishing, camping, local stories, and an AR experience.", faqWhen: "When is the best time?", faqWhenAnswer: "Spring and autumn are strongest for walking and photography, while summer suits river pauses with careful planning.", keywordSuffixes: ["Aglen", "Vit River", "Lukovit", "Lovech region", "rural tourism"] },
+  de: { category: "Reiseführer", titleSeparator: " | ", metaPrefix: "Plane", introPrefix: "Dieser Führer hilft bei der Planung von", sectionHeadings: ["Für wen dieser Führer ist", "So planst du den Besuch", "Was du in der Nähe verbindest"], sectionBodies: ["Ordnet Fluss, Felsen, Dorfgedächtnis und praktische Besucherfragen zu einer klaren Route.", "Prüfe Saison, Zugang, Zeit, Schuhe, Wasser und ob aktuelle lokale Hinweise sinnvoll sind.", "Nutze interne Links, um Thema, Routen, Unterkunft, Essen und nahe Orte zu verbinden."], cta: "Nach Besuch fragen", faqWhere: "Wo liegt Aglen?", faqWhereAnswer: "Aglen ist ein Dorf in der Region Lovech in Nordbulgarien, nahe Lukovit und dem Tal des Vit.", faqDo: "Was können Besucher tun?", faqDoAnswer: "Besucher können Flussrouten gehen, Kalksteinorte fotografieren, Angeln, Camping, lokale Geschichten und AR planen.", faqWhen: "Wann ist die beste Reisezeit?", faqWhenAnswer: "Frühling und Herbst sind stark für Spaziergänge und Fotografie, der Sommer passt zu Flusspausen mit guter Planung.", keywordSuffixes: ["Aglen", "Vit-Fluss", "Lukovit", "Region Lovech", "ländlicher Tourismus"] },
+  fr: { category: "Guide de voyage", titleSeparator: " | ", metaPrefix: "Planifiez", introPrefix: "Ce guide aide à planifier", sectionHeadings: ["À qui s'adresse ce guide", "Comment préparer la visite", "Que relier à proximité"], sectionBodies: ["Organise la rivière, les rochers, la mémoire du village et les besoins pratiques dans un itinéraire clair.", "Vérifiez saison, accès, durée, chaussures, eau et intérêt d'un conseil local récent.", "Utilisez les liens internes pour relier ce thème aux routes, hébergements, repas et lieux proches."], cta: "Demander une visite", faqWhere: "Où se trouve Aglen ?", faqWhereAnswer: "Aglen est un village de la province de Lovech, au nord de la Bulgarie, près de Lukovit et de la vallée de la Vit.", faqDo: "Que peuvent faire les visiteurs ?", faqDoAnswer: "Les visiteurs peuvent marcher près de la rivière, photographier le calcaire, prévoir pêche, camping, récits locaux et expérience AR.", faqWhen: "Quelle est la meilleure période ?", faqWhenAnswer: "Le printemps et l'automne sont les meilleurs pour marcher et photographier; l'été convient aux pauses au bord de l'eau avec préparation.", keywordSuffixes: ["Aglen", "rivière Vit", "Lukovit", "région de Lovech", "tourisme rural"] },
+  es: { category: "Guía de viaje", titleSeparator: " | ", metaPrefix: "Planifica", introPrefix: "Esta guía ayuda a planificar", sectionHeadings: ["Para quién es esta guía", "Cómo planificar la visita", "Qué conectar cerca"], sectionBodies: ["Ordena río, rocas, memoria local y necesidades prácticas en una ruta clara.", "Revisa temporada, acceso, tiempo, calzado, agua y si conviene orientación local actual.", "Usa los enlaces internos para unir el tema con rutas, alojamiento, comida y lugares cercanos."], cta: "Consultar una visita", faqWhere: "¿Dónde está Aglen?", faqWhereAnswer: "Aglen es un pueblo de la provincia de Lovech, en el norte de Bulgaria, cerca de Lukovit y del valle del Vit.", faqDo: "¿Qué pueden hacer los visitantes?", faqDoAnswer: "Pueden caminar junto al río, fotografiar caliza, planear pesca, camping, historias locales y una experiencia AR.", faqWhen: "¿Cuál es la mejor época?", faqWhenAnswer: "Primavera y otoño destacan para caminar y fotografiar; el verano sirve para pausas junto al río con buena planificación.", keywordSuffixes: ["Aglen", "río Vit", "Lukovit", "región de Lovech", "turismo rural"] },
+  it: { category: "Guida di viaggio", titleSeparator: " | ", metaPrefix: "Pianifica", introPrefix: "Questa guida aiuta a pianificare", sectionHeadings: ["A chi serve questa guida", "Come pianificare la visita", "Cosa collegare nei dintorni"], sectionBodies: ["Organizza fiume, rocce, memoria del villaggio e bisogni pratici in una rotta chiara.", "Controlla stagione, accesso, tempi, scarpe, acqua e se servono indicazioni locali aggiornate.", "Usa i link interni per collegare tema, percorsi, alloggi, cibo e luoghi vicini."], cta: "Chiedi una visita", faqWhere: "Dove si trova Aglen?", faqWhereAnswer: "Aglen è un villaggio della provincia di Lovech, nel nord della Bulgaria, vicino a Lukovit e alla valle del Vit.", faqDo: "Cosa possono fare i visitatori?", faqDoAnswer: "Possono camminare lungo il fiume, fotografare luoghi calcarei, pianificare pesca, campeggio, storie locali ed esperienza AR.", faqWhen: "Qual è il periodo migliore?", faqWhenAnswer: "Primavera e autunno sono ideali per camminare e fotografare; l'estate va bene per pause sul fiume con pianificazione.", keywordSuffixes: ["Aglen", "fiume Vit", "Lukovit", "regione Lovech", "turismo rurale"] },
   ro: { category: "Ghid de călătorie", titleSeparator: " | ", metaPrefix: "Planifică", introPrefix: "Acest ghid te ajută să planifici", sectionHeadings: ["Promisiune principală", "Note de planificare", "Trasee asociate"], sectionBodies: ["Leagă râul, stâncile, memoria satului și nevoile practice ale vizitatorilor.", "Verifică sezonul, accesul, timpul, încălțămintea, apa și dacă e util ghid local.", "Folosește linkurile interne pentru a lega tema de trasee, cazare, mâncare și locuri apropiate."], cta: "Întreabă despre vizită", faqWhere: "Unde este Aglen?", faqWhereAnswer: "Aglen este un sat din provincia Lovech, Bulgaria de Nord, aproape de Lukovit și valea râului Vit.", faqDo: "Ce pot face vizitatorii?", faqDoAnswer: "Pot merge pe trasee de râu, fotografia locuri calcaroase, planifica pescuit, camping, povești locale și experiență AR.", faqWhen: "Care este cea mai bună perioadă?", faqWhenAnswer: "Primăvara și toamna sunt excelente pentru mers și fotografie; vara merge pentru pauze la râu cu planificare atentă.", keywordSuffixes: ["Aglen", "râul Vit", "Lukovit", "regiunea Lovech", "turism rural"] },
   tr: { category: "Gezi rehberi", titleSeparator: " | ", metaPrefix: "Planla", introPrefix: "Bu rehber planlamaya yardımcı olur:", sectionHeadings: ["Temel vaat", "Planlama notları", "İlgili rotalar"], sectionBodies: ["Nehri, kayaları, köy belleğini ve ziyaretçinin pratik ihtiyaçlarını birleştirir.", "Sezonu, erişimi, süreyi, ayakkabıyı, suyu ve yerel rehber gerekip gerekmediğini kontrol et.", "İç bağlantılarla konuyu rotalar, konaklama, yemek ve yakın yerlerle bağla."], cta: "Ziyaret hakkında sor", faqWhere: "Aglen nerede?", faqWhereAnswer: "Aglen, Kuzey Bulgaristan'da Lovech ilinde, Lukovit ve Vit Nehri vadisi yakınında bir köydür.", faqDo: "Ziyaretçiler ne yapabilir?", faqDoAnswer: "Nehir rotalarında yürüyebilir, kireçtaşı yerleri fotoğraflayabilir, balıkçılık, kamp, yerel hikâyeler ve AR deneyimi planlayabilirler.", faqWhen: "En iyi zaman ne zaman?", faqWhenAnswer: "İlkbahar ve sonbahar yürüyüş ve fotoğraf için güçlüdür; yaz dikkatli planlamayla nehir molalarına uygundur.", keywordSuffixes: ["Aglen", "Vit Nehri", "Lukovit", "Lovech bölgesi", "kırsal turizm"] },
   el: { category: "Ταξιδιωτικός οδηγός", titleSeparator: " | ", metaPrefix: "Σχεδιάστε", introPrefix: "Αυτός ο οδηγός βοηθά να σχεδιάσετε", sectionHeadings: ["Κύρια υπόσχεση", "Σημειώσεις σχεδιασμού", "Σχετικές διαδρομές"], sectionBodies: ["Συνδέει ποτάμι, βράχια, μνήμη χωριού και πρακτικές ανάγκες επισκεπτών.", "Ελέγξτε εποχή, πρόσβαση, χρόνο, παπούτσια, νερό και αν χρειάζεται τοπική καθοδήγηση.", "Χρησιμοποιήστε εσωτερικούς συνδέσμους για σύνδεση με διαδρομές, διαμονή, φαγητό και κοντινά μέρη."], cta: "Ρωτήστε για επίσκεψη", faqWhere: "Πού βρίσκεται το Aglen;", faqWhereAnswer: "Το Aglen είναι χωριό στην επαρχία Lovech της Βόρειας Βουλγαρίας, κοντά στο Lukovit και την κοιλάδα του Vit.", faqDo: "Τι μπορούν να κάνουν οι επισκέπτες;", faqDoAnswer: "Μπορούν να περπατήσουν κοντά στο ποτάμι, να φωτογραφίσουν ασβεστολιθικά τοπία, να σχεδιάσουν ψάρεμα, κάμπινγκ, τοπικές ιστορίες και εμπειρία AR.", faqWhen: "Πότε είναι η καλύτερη περίοδος;", faqWhenAnswer: "Άνοιξη και φθινόπωρο είναι καλύτερα για περπάτημα και φωτογραφία, ενώ το καλοκαίρι ταιριάζει σε στάσεις στο ποτάμι με προσοχή.", keywordSuffixes: ["Aglen", "ποταμός Vit", "Lukovit", "περιοχή Lovech", "αγροτικός τουρισμός"] },
@@ -194,6 +207,281 @@ function imageAlt(lang: LanguageCode, key: LandingPageMaster["imageAltKey"]): st
 
   return byKey[key];
 }
+
+const guideOverrides: Partial<Record<LandingPageId, Record<LanguageCode, LandingPageOverride>>> = {
+  lukovitGuide: {
+    bg: {
+      title: "Пътеводител за Луковит, Искър-Панега и Ъглен | Ъглен",
+      metaDescription: "Практичен туристически пътеводител за Луковит: Искър-Панега, Проходна, Карлуково, река Вит, Ъглен, пещери, скали, екопътеки, храна и маршрути.",
+      h1: "Луковит: пътеводител за каньони, пещери и бавен маршрут към Ъглен",
+      intro: "Луковит е естествен вход към едни от най-силните пейзажи в Северна България: синята вода на Искър-Панега, скалните прозорци на Проходна, карлуковските пещери и по-тихата долина на река Вит при Ъглен. Този маршрут е за хора, които искат смислен ден навън, добри снимки, кратки преходи и близка среща с местния ритъм.",
+      imageAlt: "Въздушна гледка към речен каньон, варовикови скали и села около Луковит и Ъглен",
+      ctaLabel: "Планирай посещение край Ъглен",
+      sections: [
+        { heading: "Защо да посетиш Луковит", body: "Районът събира много преживявания на малка дистанция: екопътека Искър-Панега, пещера Проходна, скалите край Карлуково, речни гледки, селски пътища и спокойни места за фотография. Луковит е удобна база за еднодневен маршрут, но най-доброто усещане идва, когато не бързаш." },
+        { heading: "Как Ъглен влиза в маршрута", body: "Ъглен добавя по-тихия пласт на пътуването: река Вит, варовикови форми, селска памет, местна храна, възможни водени разходки и бавно преживяване далеч от най-посещаваните точки. Комбинирай Луковит и Искър-Панега сутринта, Карлуково или Проходна по обяд и Ъглен за залез, вечеря или уикенд нощувка." },
+        { heading: "Практичен дневен маршрут", body: "Започни рано с Искър-Панега, когато светлината е мека и пътеката е по-спокойна. Продължи към Проходна или Карлуково за пещери и скални кадри. Следобед се насочи към Ъглен и река Вит за по-бавна разходка, снимки, разговор с домакин и планиране на следващо посещение." },
+        { heading: "Най-добър сезон и съвети", body: "Пролетта и есента са най-добри за цветове, ходене и фотография. Лятото е подходящо за речни паузи, но тръгвай рано и носи вода. След дъжд пътеките и камъните могат да са хлъзгави; удобни обувки, зареден телефон и уважение към частните дворове са задължителни." },
+      ],
+      faqs: [
+        { question: "Колко време е нужно за Луковит, Искър-Панега, Проходна и Ъглен?", answer: "За бърз маршрут е достатъчен един пълен ден, но уикендът е по-добър: един ден за Искър-Панега и Карлуково, втори за Ъглен, река Вит, местна храна и спокойни снимки." },
+        { question: "Подходящ ли е районът за семейства?", answer: "Да, ако маршрутът е избран според възрастта и времето. Искър-Панега има лесни участъци, а Ъглен е добър за по-спокойна пауза. При пещери, скали и речни брегове децата трябва да са под постоянен надзор." },
+        { question: "Къде е най-добре да се правят снимки?", answer: "Искър-Панега е силна сутрин, Проходна и Карлуково дават драматична светлина около обяд, а Ъглен и долината на Вит са най-красиви в късния следобед и при залез." },
+      ],
+      keywords: ["Луковит", "Искър-Панега", "Проходна", "Карлуково", "Ъглен", "река Вит"],
+      secondaryKeywords: ["екопътеки край Луковит", "пещери край Карлуково", "маршрут Луковит Ъглен"],
+    },
+    en: {
+      title: "Lukovit, Iskar-Panega and Aglen Travel Guide | Aglen",
+      metaDescription: "A practical Lukovit travel guide covering Iskar-Panega, Prohodna Cave, Karlukovo, the Vit River, Aglen, caves, cliffs, eco trails, food, and day routes.",
+      h1: "Lukovit Travel Guide: Canyons, Caves, and a Slow Route to Aglen",
+      intro: "Lukovit is a natural gateway to some of Northern Bulgaria's strongest landscapes: the blue water of Iskar-Panega, the rock windows of Prohodna Cave, the caves around Karlukovo, and the quieter Vit River valley near Aglen. This guide is for travelers who want a meaningful day outside, strong photography, short walks, and a closer local rhythm.",
+      imageAlt: "Aerial view of a river canyon, limestone cliffs, and villages around Lukovit and Aglen",
+      ctaLabel: "Plan a visit near Aglen",
+      sections: [
+        { heading: "Why Visit Lukovit", body: "The area brings many experiences into a compact route: the Iskar-Panega eco trail, Prohodna Cave, Karlukovo's cliffs, river views, village roads, and quiet places for photography. Lukovit works as a day-trip base, but the route feels best when you leave time to slow down." },
+        { heading: "How Aglen Fits the Route", body: "Aglen adds the quieter layer: the Vit River, limestone forms, village memory, local food, possible guided walks, and slow travel away from the busiest stops. Pair Lukovit and Iskar-Panega in the morning, Karlukovo or Prohodna around midday, and Aglen for sunset, dinner, or a weekend stay." },
+        { heading: "Suggested Day Route", body: "Start early at Iskar-Panega while the light is soft and the trail is calmer. Continue to Prohodna or Karlukovo for caves and rock photography. In the afternoon, head toward Aglen and the Vit River for a slower walk, photos, a host conversation, and planning a return visit." },
+        { heading: "Best Season and Tips", body: "Spring and autumn are strongest for color, walking, and photography. Summer works for river pauses, but start early and carry water. After rain, trails and stones can be slippery; walking shoes, a charged phone, and respect for private village spaces matter." },
+      ],
+      faqs: [
+        { question: "How much time do Lukovit, Iskar-Panega, Prohodna, and Aglen need?", answer: "A fast route fits into one full day, but a weekend is better: one day for Iskar-Panega and Karlukovo, and one for Aglen, the Vit River, local food, and relaxed photography." },
+        { question: "Is the area good for families?", answer: "Yes, if the route matches the age of the group and the weather. Iskar-Panega has easy sections, and Aglen is good for a quieter pause. Around caves, cliffs, and riverbanks, children need close supervision." },
+        { question: "Where are the best photo stops?", answer: "Iskar-Panega is strongest in the morning, Prohodna and Karlukovo give dramatic light around midday, and Aglen with the Vit valley is most atmospheric in late afternoon and sunset." },
+      ],
+      keywords: ["Lukovit", "Iskar-Panega", "Prohodna Cave", "Karlukovo", "Aglen", "Vit River"],
+      secondaryKeywords: ["Lukovit eco trails", "Karlukovo caves", "Lukovit Aglen route"],
+    },
+    de: {
+      title: "Reiseführer Lukovit, Iskar-Panega und Aglen | Aglen",
+      metaDescription: "Praktischer Reiseführer für Lukovit mit Iskar-Panega, Prohodna-Höhle, Karlukovo, Vit-Fluss, Aglen, Höhlen, Felsen, Ökopfaden, Essen und Tagesrouten.",
+      h1: "Lukovit-Reiseführer: Canyons, Höhlen und eine ruhige Route nach Aglen",
+      intro: "Lukovit ist ein natürlicher Einstieg in starke Landschaften Nordbulgariens: das blaue Wasser von Iskar-Panega, die Felsfenster der Prohodna-Höhle, die Höhlen um Karlukovo und das ruhigere Tal des Vit bei Aglen.",
+      imageAlt: "Luftblick auf Flusscanyon, Kalksteinfelsen und Dörfer um Lukovit und Aglen",
+      ctaLabel: "Besuch bei Aglen planen",
+      sections: [
+        { heading: "Warum Lukovit besuchen", body: "Die Region verbindet Ökopfad Iskar-Panega, Prohodna, Karlukovo, Flussblicke, Dorfstraßen und ruhige Fotostellen auf kurzer Distanz." },
+        { heading: "Wie Aglen in die Route passt", body: "Aglen ergänzt die leise Seite der Reise: Vit-Fluss, Kalksteinformen, Dorfgedächtnis, lokale Küche, geführte Spaziergänge und Slow Travel abseits der meistbesuchten Orte." },
+        { heading: "Vorgeschlagene Tagesroute", body: "Beginne früh in Iskar-Panega, fahre mittags nach Prohodna oder Karlukovo und nimm dir am Nachmittag Zeit für Aglen, den Vit, Fotos und ein Gespräch mit Gastgebern." },
+        { heading: "Beste Saison und Tipps", body: "Frühling und Herbst sind ideal für Farbe, Wandern und Fotografie. Im Sommer früh starten, Wasser mitnehmen und nach Regen auf rutschige Steine achten." },
+      ],
+      faqs: [
+        { question: "Wie viel Zeit braucht die Route?", answer: "Ein voller Tag reicht knapp, ein Wochenende ist deutlich besser." },
+        { question: "Ist die Region familienfreundlich?", answer: "Ja, mit passenden Abschnitten und Aufsicht an Höhlen, Felsen und Flussufern." },
+        { question: "Wo lohnt Fotografie besonders?", answer: "Morgens Iskar-Panega, mittags Prohodna oder Karlukovo, spät am Tag Aglen und das Vit-Tal." },
+      ],
+    },
+    fr: {
+      title: "Guide de Lukovit, Iskar-Panega et Aglen | Aglen",
+      metaDescription: "Guide pratique de Lukovit: Iskar-Panega, grotte Prohodna, Karlukovo, rivière Vit, Aglen, grottes, falaises, sentiers, cuisine et itinéraires.",
+      h1: "Guide de Lukovit: canyons, grottes et route lente vers Aglen",
+      intro: "Lukovit ouvre l'accès à des paysages majeurs du nord de la Bulgarie: l'eau bleue d'Iskar-Panega, les fenêtres rocheuses de Prohodna, les grottes de Karlukovo et la vallée plus calme de la Vit près d'Aglen.",
+      imageAlt: "Vue aérienne d'un canyon, de falaises calcaires et de villages autour de Lukovit et Aglen",
+      ctaLabel: "Planifier une visite près d'Aglen",
+      sections: [
+        { heading: "Pourquoi visiter Lukovit", body: "La région rassemble sentier Iskar-Panega, Prohodna, Karlukovo, vues de rivière, routes villageoises et lieux calmes pour la photo." },
+        { heading: "La place d'Aglen", body: "Aglen ajoute la partie lente: rivière Vit, formes calcaires, mémoire villageoise, cuisine locale, marches guidées et tourisme rural." },
+        { heading: "Itinéraire d'une journée", body: "Commencez tôt à Iskar-Panega, continuez vers Prohodna ou Karlukovo, puis gardez l'après-midi pour Aglen, la Vit, les photos et un contact local." },
+        { heading: "Saison et conseils", body: "Printemps et automne sont les meilleurs pour marcher et photographier. En été, partez tôt, prenez de l'eau et soyez prudent après la pluie." },
+      ],
+      faqs: [
+        { question: "Combien de temps prévoir?", answer: "Une journée complète suffit pour un aperçu; un week-end donne un rythme meilleur." },
+        { question: "Est-ce adapté aux familles?", answer: "Oui, avec des tronçons simples et une surveillance près des grottes, falaises et rivières." },
+        { question: "Où faire les meilleures photos?", answer: "Iskar-Panega le matin, Prohodna ou Karlukovo à midi, Aglen et la Vit en fin de journée." },
+      ],
+    },
+    es: {
+      title: "Guía de Lukovit, Iskar-Panega y Aglen | Aglen",
+      metaDescription: "Guía práctica de Lukovit: Iskar-Panega, cueva Prohodna, Karlukovo, río Vit, Aglen, cuevas, rocas, senderos, comida y rutas de día.",
+      h1: "Guía de Lukovit: cañones, cuevas y una ruta lenta hacia Aglen",
+      intro: "Lukovit es una puerta natural a los paisajes del norte de Bulgaria: Iskar-Panega, Prohodna, las cuevas de Karlukovo y el valle más tranquilo del Vit junto a Aglen.",
+      imageAlt: "Vista aérea de un cañón fluvial, rocas calizas y pueblos alrededor de Lukovit y Aglen",
+      ctaLabel: "Planificar una visita cerca de Aglen",
+      sections: [
+        { heading: "Por qué visitar Lukovit", body: "La zona reúne Iskar-Panega, Prohodna, Karlukovo, vistas de río, caminos rurales y lugares tranquilos para fotografía." },
+        { heading: "Cómo encaja Aglen", body: "Aglen aporta el ritmo lento: río Vit, formas calizas, memoria local, comida rural, paseos guiados y descanso lejos de los puntos más concurridos." },
+        { heading: "Ruta sugerida", body: "Empieza temprano en Iskar-Panega, sigue hacia Prohodna o Karlukovo y deja la tarde para Aglen, el Vit, fotos y una conversación local." },
+        { heading: "Temporada y consejos", body: "Primavera y otoño son ideales para caminar y fotografiar. En verano sal temprano, lleva agua y cuidado tras la lluvia." },
+      ],
+      faqs: [
+        { question: "Cuánto tiempo hace falta?", answer: "Un día completo permite ver lo principal; un fin de semana es mejor." },
+        { question: "Es adecuado para familias?", answer: "Sí, con tramos fáciles y vigilancia en cuevas, rocas y riberas." },
+        { question: "Dónde hacer fotos?", answer: "Iskar-Panega por la mañana, Prohodna o Karlukovo al mediodía, Aglen y el Vit al atardecer." },
+      ],
+    },
+    it: {
+      title: "Guida di Lukovit, Iskar-Panega e Aglen | Aglen",
+      metaDescription: "Guida pratica a Lukovit: Iskar-Panega, grotta Prohodna, Karlukovo, fiume Vit, Aglen, grotte, rocce, sentieri, cibo e itinerari.",
+      h1: "Guida di Lukovit: canyon, grotte e una rotta lenta verso Aglen",
+      intro: "Lukovit introduce alcuni dei paesaggi più forti della Bulgaria settentrionale: Iskar-Panega, Prohodna, Karlukovo e la valle più tranquilla del Vit vicino ad Aglen.",
+      imageAlt: "Vista aerea di canyon fluviale, falesie calcaree e villaggi intorno a Lukovit e Aglen",
+      ctaLabel: "Pianifica una visita vicino ad Aglen",
+      sections: [
+        { heading: "Perché visitare Lukovit", body: "In poca distanza trovi Iskar-Panega, Prohodna, Karlukovo, viste sul fiume, strade di villaggio e luoghi fotografici tranquilli." },
+        { heading: "Come entra Aglen", body: "Aglen aggiunge il lato lento: fiume Vit, forme calcaree, memoria del villaggio, cucina locale, passeggiate guidate e turismo rurale." },
+        { heading: "Itinerario consigliato", body: "Parti presto da Iskar-Panega, prosegui verso Prohodna o Karlukovo e dedica il pomeriggio ad Aglen, al Vit, alle foto e ai contatti locali." },
+        { heading: "Stagione e consigli", body: "Primavera e autunno sono ideali. In estate parti presto, porta acqua e fai attenzione dopo la pioggia." },
+      ],
+      faqs: [
+        { question: "Quanto tempo serve?", answer: "Un giorno pieno basta per un assaggio; un weekend è migliore." },
+        { question: "Va bene per famiglie?", answer: "Sì, con percorsi adatti e attenzione presso grotte, rocce e fiumi." },
+        { question: "Dove fotografare?", answer: "Iskar-Panega al mattino, Prohodna o Karlukovo a metà giornata, Aglen e il Vit verso sera." },
+      ],
+    },
+    ro: {
+      title: "Ghid Lukovit, Iskar-Panega și Aglen | Aglen",
+      metaDescription: "Ghid practic pentru Lukovit: Iskar-Panega, Peștera Prohodna, Karlukovo, râul Vit, Aglen, peșteri, stânci, trasee, mâncare și rute.",
+      h1: "Ghid Lukovit: canioane, peșteri și o rută lentă spre Aglen",
+      intro: "Lukovit deschide drumul către Iskar-Panega, Prohodna, Karlukovo și valea mai liniștită a râului Vit de lângă Aglen.",
+      imageAlt: "Vedere aeriană cu canion, stânci calcaroase și sate în jurul Lukovit și Aglen",
+      ctaLabel: "Planifică o vizită lângă Aglen",
+      sections: [
+        { heading: "De ce să vizitezi Lukovit", body: "Zona adună Iskar-Panega, Prohodna, Karlukovo, priveliști de râu, drumuri de sat și locuri liniștite pentru fotografie." },
+        { heading: "Cum se leagă Aglen", body: "Aglen adaugă ritmul calm: râul Vit, forme calcaroase, memorie locală, mâncare de sat, plimbări ghidate și turism rural." },
+        { heading: "Rută de o zi", body: "Începe devreme la Iskar-Panega, continuă spre Prohodna sau Karlukovo și lasă după-amiaza pentru Aglen, Vit, fotografii și conversații locale." },
+        { heading: "Sezon și sfaturi", body: "Primăvara și toamna sunt cele mai bune. Vara pleacă devreme, ia apă și ai grijă după ploaie." },
+      ],
+      faqs: [
+        { question: "Cât timp este necesar?", answer: "O zi întreagă ajunge pentru esențial; un weekend este mai potrivit." },
+        { question: "Este potrivit pentru familii?", answer: "Da, cu trasee ușoare și supraveghere la peșteri, stânci și râu." },
+        { question: "Unde se fac fotografii bune?", answer: "Iskar-Panega dimineața, Prohodna sau Karlukovo la prânz, Aglen și Vit spre apus." },
+      ],
+    },
+    tr: {
+      title: "Lukovit, Iskar-Panega ve Aglen Rehberi | Aglen",
+      metaDescription: "Lukovit için pratik rehber: Iskar-Panega, Prohodna Mağarası, Karlukovo, Vit Nehri, Aglen, mağaralar, kayalar, patikalar, yemek ve rotalar.",
+      h1: "Lukovit Rehberi: Kanyonlar, mağaralar ve Aglen'e yavaş rota",
+      intro: "Lukovit; Iskar-Panega, Prohodna, Karlukovo ve Aglen yakınındaki sakin Vit vadisine açılan doğal bir başlangıçtır.",
+      imageAlt: "Lukovit ve Aglen çevresinde nehir kanyonu, kireçtaşı kayaları ve köylerin hava görünümü",
+      ctaLabel: "Aglen yakınında ziyaret planla",
+      sections: [
+        { heading: "Neden Lukovit", body: "Bölge Iskar-Panega, Prohodna, Karlukovo, nehir manzaraları, köy yolları ve sakin fotoğraf noktalarını birleştirir." },
+        { heading: "Aglen rotaya nasıl uyar", body: "Aglen daha yavaş katmanı sunar: Vit Nehri, kireçtaşı şekilleri, köy belleği, yerel yemek, rehberli yürüyüşler ve kırsal turizm." },
+        { heading: "Önerilen günlük rota", body: "Erken Iskar-Panega'da başla, öğlen Prohodna veya Karlukovo'ya geç, öğleden sonra Aglen ve Vit için zaman ayır." },
+        { heading: "Sezon ve ipuçları", body: "İlkbahar ve sonbahar en iyisidir. Yazın erken çık, su taşı ve yağmurdan sonra dikkatli ol." },
+      ],
+      faqs: [
+        { question: "Ne kadar zaman gerekir?", answer: "Bir tam gün yeterli olabilir; hafta sonu daha iyidir." },
+        { question: "Aileler için uygun mu?", answer: "Evet, kolay bölümler seçilir ve mağara, kaya, nehir kenarında gözetim olursa." },
+        { question: "En iyi fotoğraf noktaları neresi?", answer: "Sabah Iskar-Panega, öğlen Prohodna veya Karlukovo, gün sonunda Aglen ve Vit vadisi." },
+      ],
+    },
+    el: {
+      title: "Οδηγός Lukovit, Iskar-Panega και Aglen | Aglen",
+      metaDescription: "Πρακτικός οδηγός για Lukovit: Iskar-Panega, σπήλαιο Prohodna, Karlukovo, ποταμός Vit, Aglen, σπήλαια, βράχια, μονοπάτια, φαγητό και διαδρομές.",
+      h1: "Οδηγός Lukovit: φαράγγια, σπήλαια και αργή διαδρομή προς Aglen",
+      intro: "Το Lukovit οδηγεί σε Iskar-Panega, Prohodna, Karlukovo και στην πιο ήσυχη κοιλάδα του Vit κοντά στο Aglen.",
+      imageAlt: "Αεροφωτογραφία φαραγγιού, ασβεστολιθικών βράχων και χωριών γύρω από Lukovit και Aglen",
+      ctaLabel: "Σχεδιάστε επίσκεψη κοντά στο Aglen",
+      sections: [
+        { heading: "Γιατί να επισκεφθείτε το Lukovit", body: "Η περιοχή συνδυάζει Iskar-Panega, Prohodna, Karlukovo, ποτάμιες θέες, χωριάτικους δρόμους και ήσυχα σημεία φωτογραφίας." },
+        { heading: "Πώς ταιριάζει το Aglen", body: "Το Aglen προσθέτει τον αργό ρυθμό: ποταμό Vit, ασβεστολιθικά σχήματα, τοπική μνήμη, φαγητό και αγροτικό τουρισμό." },
+        { heading: "Προτεινόμενη ημερήσια διαδρομή", body: "Ξεκινήστε νωρίς από Iskar-Panega, συνεχίστε σε Prohodna ή Karlukovo και κρατήστε το απόγευμα για Aglen και Vit." },
+        { heading: "Εποχή και συμβουλές", body: "Άνοιξη και φθινόπωρο είναι ιδανικά. Το καλοκαίρι ξεκινήστε νωρίς, πάρτε νερό και προσοχή μετά τη βροχή." },
+      ],
+      faqs: [
+        { question: "Πόσος χρόνος χρειάζεται;", answer: "Μια γεμάτη ημέρα αρκεί για τα βασικά, αλλά ένα σαββατοκύριακο είναι καλύτερο." },
+        { question: "Είναι κατάλληλο για οικογένειες;", answer: "Ναι, με εύκολα τμήματα και επίβλεψη σε σπήλαια, βράχους και όχθες." },
+        { question: "Πού αξίζει η φωτογραφία;", answer: "Iskar-Panega το πρωί, Prohodna ή Karlukovo το μεσημέρι, Aglen και Vit στο τέλος της ημέρας." },
+      ],
+    },
+    ru: {
+      title: "Путеводитель по Луковиту, Искыр-Панега и Аглену | Аглен",
+      metaDescription: "Практичный гид по Луковиту: Искыр-Панега, пещера Проходна, Карлуково, река Вит, Аглен, пещеры, скалы, тропы, еда и маршруты.",
+      h1: "Луковит: каньоны, пещеры и спокойный маршрут к Аглену",
+      intro: "Луковит открывает путь к Искыр-Панега, Проходне, Карлуково и более тихой долине Вита рядом с Агленом.",
+      imageAlt: "Вид с воздуха на речной каньон, известняковые скалы и деревни вокруг Луковита и Аглена",
+      ctaLabel: "Планировать визит рядом с Агленом",
+      sections: [
+        { heading: "Зачем ехать в Луковит", body: "Здесь рядом находятся Искыр-Панега, Проходна, Карлуково, речные виды, сельские дороги и спокойные места для фотографии." },
+        { heading: "Как вписывается Аглен", body: "Аглен добавляет спокойный слой маршрута: река Вит, известняковые формы, местная память, еда, прогулки и сельский туризм." },
+        { heading: "Маршрут на день", body: "Начните рано в Искыр-Панега, затем Проходна или Карлуково, а после обеда оставьте время для Аглена и Вита." },
+        { heading: "Сезон и советы", body: "Весна и осень лучше всего. Летом выходите рано, берите воду и будьте осторожны после дождя." },
+      ],
+      faqs: [
+        { question: "Сколько времени нужно?", answer: "Один полный день возможен, но выходные лучше." },
+        { question: "Подходит ли для семей?", answer: "Да, при выборе лёгких участков и внимании у пещер, скал и реки." },
+        { question: "Где лучше фотографировать?", answer: "Искыр-Панега утром, Проходна или Карлуково днём, Аглен и Вит к вечеру." },
+      ],
+    },
+    ja: {
+      title: "ルコヴィト、イスカル・パネガ、アグレン旅行ガイド | Aglen",
+      metaDescription: "ルコヴィト実用ガイド。イスカル・パネガ、プロホドナ洞窟、カルルコヴォ、ヴィト川、アグレン、洞窟、岩、遊歩道、食、日帰りルート。",
+      h1: "ルコヴィト旅行ガイド: 渓谷、洞窟、アグレンへのゆっくりしたルート",
+      intro: "ルコヴィトは、イスカル・パネガ、プロホドナ、カルルコヴォ、そしてアグレン近くの静かなヴィト川谷への自然な入口です。",
+      imageAlt: "ルコヴィトとアグレン周辺の川の渓谷、石灰岩の崖、村の空撮",
+      ctaLabel: "アグレン周辺の訪問を計画",
+      sections: [
+        { heading: "ルコヴィトを訪れる理由", body: "イスカル・パネガ、プロホドナ、カルルコヴォ、川の眺め、村道、静かな撮影地が近くにまとまっています。" },
+        { heading: "アグレンの組み込み方", body: "アグレンは、ヴィト川、石灰岩の景観、村の記憶、地元の食、ガイド散策、農村観光という静かな層を加えます。" },
+        { heading: "日帰りルート", body: "朝はイスカル・パネガ、昼はプロホドナまたはカルルコヴォ、午後はアグレンとヴィト川に時間を残します。" },
+        { heading: "季節と実用メモ", body: "春と秋が最適です。夏は早朝出発、水の携帯、雨後の足元への注意が必要です。" },
+      ],
+      faqs: [
+        { question: "必要な時間は?", answer: "主要部は丸一日で可能ですが、週末の方が余裕があります。" },
+        { question: "家族向けですか?", answer: "はい。簡単な区間を選び、洞窟、崖、川辺では見守りが必要です。" },
+        { question: "写真に良い場所は?", answer: "朝のイスカル・パネガ、昼のプロホドナまたはカルルコヴォ、夕方のアグレンとヴィト谷です。" },
+      ],
+    },
+    sr: {
+      title: "Водич за Луковит, Искар-Панегу и Аглен | Аглен",
+      metaDescription: "Практичан водич за Луковит: Искар-Панега, пећина Проходна, Карлуково, река Вит, Аглен, пећине, стене, стазе, храна и руте.",
+      h1: "Луковит: кањони, пећине и спора рута ка Аглену",
+      intro: "Луковит води ка Искар-Панеги, Проходни, Карлукову и тишој долини Вита близу Аглена.",
+      imageAlt: "Поглед из ваздуха на речни кањон, кречњачке стене и села око Луковита и Аглена",
+      ctaLabel: "Планирај посету близу Аглена",
+      sections: [
+        { heading: "Зашто посетити Луковит", body: "Регион спаја Искар-Панегу, Проходну, Карлуково, речне видике, сеоске путеве и мирна места за фотографију." },
+        { heading: "Како се уклапа Аглен", body: "Аглен додаје мирни слој: реку Вит, кречњачке форме, сеоско памћење, локалну храну, вођене шетње и сеоски туризам." },
+        { heading: "Предложена дневна рута", body: "Почни рано у Искар-Панеги, настави ка Проходни или Карлукову, а поподне остави за Аглен и Вит." },
+        { heading: "Сезона и савети", body: "Пролеће и јесен су најбољи. Лети крени рано, понеси воду и пази после кише." },
+      ],
+      faqs: [
+        { question: "Колико времена треба?", answer: "Један цео дан је могућ, али викенд је бољи." },
+        { question: "Да ли је за породице?", answer: "Да, уз лакше деонице и надзор код пећина, стена и реке." },
+        { question: "Где је најбоље за фотографије?", answer: "Искар-Панега ујутру, Проходна или Карлуково око поднева, Аглен и Вит предвече." },
+      ],
+    },
+    zh: {
+      title: "卢科维特、伊斯卡尔-帕内加与阿格伦旅行指南 | Aglen",
+      metaDescription: "卢科维特实用旅行指南：伊斯卡尔-帕内加、普罗霍德纳洞穴、卡尔卢科沃、维特河、阿格伦、洞穴、岩石、步道、美食和线路。",
+      h1: "卢科维特旅行指南：峡谷、洞穴与通往阿格伦的慢路线",
+      intro: "卢科维特是通往伊斯卡尔-帕内加、普罗霍德纳、卡尔卢科沃以及阿格伦附近安静维特河谷的自然入口。",
+      imageAlt: "卢科维特和阿格伦周边河谷、石灰岩峭壁和村庄的航拍",
+      ctaLabel: "规划阿格伦附近访问",
+      sections: [
+        { heading: "为什么访问卢科维特", body: "这里把伊斯卡尔-帕内加、普罗霍德纳、卡尔卢科沃、河景、村路和安静摄影点集中在短距离内。" },
+        { heading: "阿格伦如何融入路线", body: "阿格伦带来更慢的部分：维特河、石灰岩地貌、村庄记忆、本地食物、导览散步和乡村旅游。" },
+        { heading: "建议一日路线", body: "清晨从伊斯卡尔-帕内加开始，中午去普罗霍德纳或卡尔卢科沃，下午留给阿格伦和维特河。" },
+        { heading: "季节和提示", body: "春秋最适合。夏季请早出发、带水，雨后注意湿滑。" },
+      ],
+      faqs: [
+        { question: "需要多长时间？", answer: "一整天可看主要地点，周末更从容。" },
+        { question: "适合家庭吗？", answer: "适合，但需选择简单路段，并在洞穴、岩石和河岸看护儿童。" },
+        { question: "哪里适合拍照？", answer: "上午伊斯卡尔-帕内加，中午普罗霍德纳或卡尔卢科沃，傍晚阿格伦和维特河谷。" },
+      ],
+    },
+    hu: {
+      title: "Lukovit, Iskar-Panega és Aglen útikalauz | Aglen",
+      metaDescription: "Gyakorlati Lukovit kalauz: Iskar-Panega, Prohodna-barlang, Karlukovo, Vit folyó, Aglen, barlangok, sziklák, ösvények, étel és útvonalak.",
+      h1: "Lukovit kalauz: kanyonok, barlangok és lassú út Aglen felé",
+      intro: "Lukovit természetes kapu Iskar-Panega, Prohodna, Karlukovo és az Aglen melletti csendes Vit-völgy felé.",
+      imageAlt: "Légi felvétel folyókanyonról, mészkősziklákról és falvakról Lukovit és Aglen körül",
+      ctaLabel: "Látogatás tervezése Aglen közelében",
+      sections: [
+        { heading: "Miért érdemes Lukovitba menni", body: "A térség rövid távolságon belül köti össze Iskar-Panegát, Prohodnát, Karlukovót, folyókilátásokat, falusi utakat és csendes fotópontokat." },
+        { heading: "Hogyan illik bele Aglen", body: "Aglen a lassabb réteg: Vit folyó, mészkőformák, falusi emlékezet, helyi étel, vezetett séták és falusi turizmus." },
+        { heading: "Javasolt napi útvonal", body: "Kezdj korán Iskar-Panegánál, délben Prohodna vagy Karlukovo, délután pedig Aglen és a Vit következzen." },
+        { heading: "Szezon és tippek", body: "Tavasz és ősz a legjobb. Nyáron indulj korán, vigyél vizet, eső után figyelj a csúszós kövekre." },
+      ],
+      faqs: [
+        { question: "Mennyi idő kell?", answer: "Egy teljes nap elég lehet, de egy hétvége jobb." },
+        { question: "Családoknak megfelelő?", answer: "Igen, könnyű szakaszokkal és felügyelettel a barlangoknál, szikláknál és folyónál." },
+        { question: "Hol jó fotózni?", answer: "Reggel Iskar-Panega, délben Prohodna vagy Karlukovo, késő délután Aglen és a Vit-völgy." },
+      ],
+    },
+  },
+};
 
 function routeLabel(lang: LanguageCode, routeId: LandingPageId | string): string {
   const copy = contentByLanguage[lang];
@@ -238,11 +526,12 @@ function buildLandingPage(lang: LanguageCode, page: LandingPageMaster): LandingP
   const category = text.category;
   const location = copy.hero.meta;
   const title = `${h1}${text.titleSeparator}${copy.brand.name}`;
-  const metaDescription = `${text.metaPrefix} ${h1.toLocaleLowerCase()}: ${copy.landmarks.text}`;
-  const intro = `${text.introPrefix} ${h1.toLocaleLowerCase()} — ${location}. ${copy.hub.text}`;
+  const metaDescription = `${h1}: ${copy.landmarks.text}`;
+  const intro = `${h1} — ${location}. ${copy.hub.text}`;
   const linkedLabels = page.internalLinkRouteIds.map((routeId) => routeLabel(lang, routeId));
+  const override = guideOverrides[page.id]?.[lang];
 
-  return {
+  const generated: LandingPage = {
     id: page.id,
     slug: page.slug,
     sectionId: "seo-guide",
@@ -269,6 +558,18 @@ function buildLandingPage(lang: LanguageCode, page: LandingPageMaster): LandingP
       { question: text.faqWhen, answer: text.faqWhenAnswer },
     ],
     internalLinks: page.internalLinkRouteIds.map((routeId) => ({ label: routeLabel(lang, routeId), routeId })),
+  };
+
+  if (!override) {
+    return generated;
+  }
+
+  return {
+    ...generated,
+    ...override,
+    keywords: override.keywords ?? generated.keywords,
+    secondaryKeywords: override.secondaryKeywords ?? generated.secondaryKeywords,
+    bulgarianKeywords: lang === "bg" ? [...generated.bulgarianKeywords, ...(override.keywords ?? [])] : generated.bulgarianKeywords,
   };
 }
 

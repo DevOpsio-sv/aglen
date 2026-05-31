@@ -6,6 +6,7 @@ import ts from "typescript";
 const rootDir = process.cwd();
 const localesDir = path.join(rootDir, "src", "locales");
 const distDir = path.join(rootDir, "dist");
+const publicDir = path.join(rootDir, "public");
 const reportsDir = path.join(rootDir, "reports");
 const reportPath = path.join(reportsDir, "i18n-bg-audit.md");
 const nodeRequire = createRequire(import.meta.url);
@@ -128,6 +129,16 @@ const allowlistedProperTerms = [
   "Schema.org",
 ];
 
+const placeholderPatterns = [
+  /lorem ipsum/i,
+  /placeholder/i,
+  /\bTODO\b/,
+  /планираш пътеводител за/i,
+  /планирай пътеводител за/i,
+  /plan travel guide for/i,
+  /this guide helps you plan travel guide/i,
+];
+
 const issues = [];
 const sections = [];
 
@@ -215,6 +226,19 @@ function checkNoPolish(kind, context, value) {
   }
 }
 
+function checkNoPlaceholder(kind, context, value) {
+  const text = String(value);
+  for (const pattern of placeholderPatterns) {
+    if (pattern.test(text)) addIssue(kind, `${context}: placeholder or generated-template phrase matched ${pattern}.`);
+  }
+}
+
+function publicAssetExists(assetUrl) {
+  if (!assetUrl || /^https?:\/\//.test(assetUrl)) return true;
+  const cleanPath = assetUrl.split("?")[0].replace(/^\/+/, "");
+  return fs.existsSync(path.join(publicDir, cleanPath));
+}
+
 function validateSourceFiles() {
   const localeFiles = fs.readdirSync(localesDir).filter((file) => file.endsWith(".ts")).map((file) => path.basename(file, ".ts"));
   const content = [
@@ -233,6 +257,7 @@ function validateSourceFiles() {
 
   for (const [file, text] of content) {
     checkNoPolish("source", file, text);
+    checkNoPlaceholder("source", file, text);
     if (file.startsWith("src/")) {
       for (const lang of ["zh", "hu"]) {
         if (!text.includes(lang)) addIssue("source", `${file} does not mention required locale ${lang}.`);
@@ -263,6 +288,7 @@ function validateRuntimeData(routes, seo, landing) {
     }
     for (const row of flattenStrings(copy)) {
       checkNoPolish("source", `${lang}.${row.path}`, row.value);
+      checkNoPlaceholder("source", `${lang}.${row.path}`, row.value);
     }
   }
 
@@ -273,9 +299,11 @@ function validateRuntimeData(routes, seo, landing) {
     }
     for (const page of pages) {
       checkContamination("source", lang, `${lang}.${page.id}`, JSON.stringify(page));
+      checkNoPlaceholder("source", `${lang}.${page.id}`, JSON.stringify(page));
       if (!page.h1 || !page.title || !page.metaDescription || !page.intro) {
         addIssue("source", `${lang}.${page.id} missing required localized landing text.`);
       }
+      if (!publicAssetExists(page.image)) addIssue("assets", `${lang}.${page.id} references missing image ${page.image}.`);
       const master = landing.landingPageMaster.find((candidate) => candidate.id === page.id);
       if (!master) addIssue("source", `${lang}.${page.id} missing Bulgarian master entry.`);
       if (master && page.slug !== master.slug) addIssue("route parity", `${lang}.${page.id} slug changed from master.`);
@@ -302,6 +330,7 @@ function validateRuntimeData(routes, seo, landing) {
     for (const route of routes.staticRoutes) {
       const meta = seo.getSEOConfig(lang, route.id);
       checkNoPolish("metadata", `${lang}.${route.id}`, JSON.stringify(meta));
+      checkNoPlaceholder("metadata", `${lang}.${route.id}`, JSON.stringify(meta));
       checkContamination("metadata", lang, `${lang}.${route.id}`, `${meta.title} ${meta.description} ${meta.keywords}`);
       if (meta.locale !== expectedLocaleCodes[lang]) {
         addIssue("metadata", `${lang}.${route.id} locale ${meta.locale} does not match ${expectedLocaleCodes[lang]}.`);
@@ -315,7 +344,13 @@ function validateRuntimeData(routes, seo, landing) {
 
       const jsonld = JSON.stringify(seo.buildJSONLD(lang, route.id));
       checkNoPolish("JSON-LD", `${lang}.${route.id}`, jsonld);
+      checkNoPlaceholder("JSON-LD", `${lang}.${route.id}`, jsonld);
       checkContamination("JSON-LD", lang, `${lang}.${route.id}`, jsonld);
+
+      for (const image of seo.getRouteImageEntries(lang, route.id)) {
+        const url = new URL(image.loc);
+        if (!publicAssetExists(url.pathname)) addIssue("assets", `${lang}.${route.id} sitemap image missing from public assets: ${url.pathname}.`);
+      }
     }
   }
 }
@@ -344,6 +379,7 @@ function validateGeneratedHtml(routes) {
       }
       const html = fs.readFileSync(outputPath, "utf8");
       checkNoPolish("generated HTML", path.relative(rootDir, outputPath), html);
+      checkNoPlaceholder("generated HTML", path.relative(rootDir, outputPath), html);
       checkContamination("generated HTML", lang, path.relative(rootDir, outputPath), html);
       if (!html.includes(`/${lang}/`)) addIssue("generated HTML", `${path.relative(rootDir, outputPath)} does not include its locale route.`);
     }

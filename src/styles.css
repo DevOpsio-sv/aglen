@@ -13,6 +13,7 @@
   --forest-deep: #071a14;
   --river: #1f6f7a;
   --gold: #c59a45;
+  --gold-dark: #7d5a1f;
   --gold-soft: #e2c879;
   --stone: #b9aa8c;
   --parchment: #efe4cc;
@@ -862,6 +863,11 @@ h3 {
 
 .seo-landing {
   padding: 4rem 0 1.5rem;
+}
+
+.route-landing {
+  padding-top: 7.5rem;
+  padding-bottom: 3rem;
 }
 
 .seo-landing-panel {
