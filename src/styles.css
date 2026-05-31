@@ -902,6 +902,19 @@ h3 {
   line-height: 0.92;
 }
 
+.seo-faq h2,
+.seo-related h2 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.seo-section-card h2 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
 .seo-landing-hero p {
   max-width: 760px;
   color: rgba(7, 26, 20, 0.78);
@@ -957,6 +970,14 @@ h3 {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
+}
+
+.seo-section-grid > :last-child:nth-child(3n + 1) {
+  grid-column: 1 / -1;
+}
+
+.seo-section-grid > :last-child:nth-child(3n + 2) {
+  grid-column: span 2;
 }
 
 .seo-section-card,

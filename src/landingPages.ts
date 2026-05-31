@@ -224,8 +224,7 @@ const guideOverrides: Partial<Record<LandingPageId, Record<LanguageCode, Landing
       sections: [
         { heading: "Защо да посетиш Луковит", body: "Районът събира много преживявания на малка дистанция: екопътека Искър-Панега, пещера Проходна, скалите край Карлуково, речни гледки, селски пътища и спокойни места за фотография. Луковит е удобна база за еднодневен маршрут, но най-доброто усещане идва, когато не бързаш." },
         { heading: "Как Ъглен влиза в маршрута", body: "Ъглен добавя по-тихия пласт на пътуването: река Вит, варовикови форми, селска памет, местна храна, възможни водени разходки и бавно преживяване далеч от най-посещаваните точки. Комбинирай Луковит и Искър-Панега сутринта, Карлуково или Проходна по обяд и Ъглен за залез, вечеря или уикенд нощувка." },
-        { heading: "Практичен дневен маршрут", body: "Започни рано с Искър-Панега, когато светлината е мека и пътеката е по-спокойна. Продължи към Проходна или Карлуково за пещери и скални кадри. Следобед се насочи към Ъглен и река Вит за по-бавна разходка, снимки, разговор с домакин и планиране на следващо посещение." },
-        { heading: "Най-добър сезон и съвети", body: "Пролетта и есента са най-добри за цветове, ходене и фотография. Лятото е подходящо за речни паузи, но тръгвай рано и носи вода. След дъжд пътеките и камъните могат да са хлъзгави; удобни обувки, зареден телефон и уважение към частните дворове са задължителни." },
+        { heading: "Маршрут и практични съвети", body: "Започни рано с Искър-Панега, когато светлината е мека и пътеката е по-спокойна. Продължи към Проходна или Карлуково за пещери и скални кадри. Следобед се насочи към Ъглен и река Вит за по-бавна разходка, снимки, разговор с домакин и планиране на следващо посещение. Пролетта и есента са най-добри за цветове, ходене и фотография. Лятото е подходящо за речни паузи, но тръгвай рано и носи вода. След дъжд пътеките и камъните могат да са хлъзгави; удобни обувки, зареден телефон и уважение към частните дворове са задължителни." },
       ],
       faqs: [
         { question: "Колко време е нужно за Луковит, Искър-Панега, Проходна и Ъглен?", answer: "За бърз маршрут е достатъчен един пълен ден, но уикендът е по-добър: един ден за Искър-Панега и Карлуково, втори за Ъглен, река Вит, местна храна и спокойни снимки." },
@@ -245,8 +244,7 @@ const guideOverrides: Partial<Record<LandingPageId, Record<LanguageCode, Landing
       sections: [
         { heading: "Why Visit Lukovit", body: "The area brings many experiences into a compact route: the Iskar-Panega eco trail, Prohodna Cave, Karlukovo's cliffs, river views, village roads, and quiet places for photography. Lukovit works as a day-trip base, but the route feels best when you leave time to slow down." },
         { heading: "How Aglen Fits the Route", body: "Aglen adds the quieter layer: the Vit River, limestone forms, village memory, local food, possible guided walks, and slow travel away from the busiest stops. Pair Lukovit and Iskar-Panega in the morning, Karlukovo or Prohodna around midday, and Aglen for sunset, dinner, or a weekend stay." },
-        { heading: "Suggested Day Route", body: "Start early at Iskar-Panega while the light is soft and the trail is calmer. Continue to Prohodna or Karlukovo for caves and rock photography. In the afternoon, head toward Aglen and the Vit River for a slower walk, photos, a host conversation, and planning a return visit." },
-        { heading: "Best Season and Tips", body: "Spring and autumn are strongest for color, walking, and photography. Summer works for river pauses, but start early and carry water. After rain, trails and stones can be slippery; walking shoes, a charged phone, and respect for private village spaces matter." },
+        { heading: "Route and Practical Tips", body: "Start early at Iskar-Panega while the light is soft and the trail is calmer. Continue to Prohodna or Karlukovo for caves and rock photography. In the afternoon, head toward Aglen and the Vit River for a slower walk, photos, a host conversation, and planning a return visit. Spring and autumn are strongest for color, walking, and photography. Summer works for river pauses, but start early and carry water. After rain, trails and stones can be slippery; walking shoes, a charged phone, and respect for private village spaces matter." },
       ],
       faqs: [
         { question: "How much time do Lukovit, Iskar-Panega, Prohodna, and Aglen need?", answer: "A fast route fits into one full day, but a weekend is better: one day for Iskar-Panega and Karlukovo, and one for Aglen, the Vit River, local food, and relaxed photography." },
@@ -266,8 +264,7 @@ const guideOverrides: Partial<Record<LandingPageId, Record<LanguageCode, Landing
       sections: [
         { heading: "Warum Lukovit besuchen", body: "Die Region verbindet Ökopfad Iskar-Panega, Prohodna, Karlukovo, Flussblicke, Dorfstraßen und ruhige Fotostellen auf kurzer Distanz." },
         { heading: "Wie Aglen in die Route passt", body: "Aglen ergänzt die leise Seite der Reise: Vit-Fluss, Kalksteinformen, Dorfgedächtnis, lokale Küche, geführte Spaziergänge und Slow Travel abseits der meistbesuchten Orte." },
-        { heading: "Vorgeschlagene Tagesroute", body: "Beginne früh in Iskar-Panega, fahre mittags nach Prohodna oder Karlukovo und nimm dir am Nachmittag Zeit für Aglen, den Vit, Fotos und ein Gespräch mit Gastgebern." },
-        { heading: "Beste Saison und Tipps", body: "Frühling und Herbst sind ideal für Farbe, Wandern und Fotografie. Im Sommer früh starten, Wasser mitnehmen und nach Regen auf rutschige Steine achten." },
+        { heading: "Route und Tipps", body: "Beginne früh in Iskar-Panega, fahre mittags nach Prohodna oder Karlukovo und nimm dir am Nachmittag Zeit für Aglen, den Vit, Fotos und ein Gespräch mit Gastgebern. Frühling und Herbst sind ideal für Farbe, Wandern und Fotografie. Im Sommer früh starten, Wasser mitnehmen und nach Regen auf rutschige Steine achten." },
       ],
       faqs: [
         { question: "Wie viel Zeit braucht die Route?", answer: "Ein voller Tag reicht knapp, ein Wochenende ist deutlich besser." },
@@ -285,8 +282,7 @@ const guideOverrides: Partial<Record<LandingPageId, Record<LanguageCode, Landing
       sections: [
         { heading: "Pourquoi visiter Lukovit", body: "La région rassemble sentier Iskar-Panega, Prohodna, Karlukovo, vues de rivière, routes villageoises et lieux calmes pour la photo." },
         { heading: "La place d'Aglen", body: "Aglen ajoute la partie lente: rivière Vit, formes calcaires, mémoire villageoise, cuisine locale, marches guidées et tourisme rural." },
-        { heading: "Itinéraire d'une journée", body: "Commencez tôt à Iskar-Panega, continuez vers Prohodna ou Karlukovo, puis gardez l'après-midi pour Aglen, la Vit, les photos et un contact local." },
-        { heading: "Saison et conseils", body: "Printemps et automne sont les meilleurs pour marcher et photographier. En été, partez tôt, prenez de l'eau et soyez prudent après la pluie." },
+        { heading: "Itinéraire et conseils", body: "Commencez tôt à Iskar-Panega, continuez vers Prohodna ou Karlukovo, puis gardez l'après-midi pour Aglen, la Vit, les photos et un contact local. Printemps et automne sont les meilleurs pour marcher et photographier. En été, partez tôt, prenez de l'eau et soyez prudent après la pluie." },
       ],
       faqs: [
         { question: "Combien de temps prévoir?", answer: "Une journée complète suffit pour un aperçu; un week-end donne un rythme meilleur." },
@@ -304,8 +300,7 @@ const guideOverrides: Partial<Record<LandingPageId, Record<LanguageCode, Landing
       sections: [
         { heading: "Por qué visitar Lukovit", body: "La zona reúne Iskar-Panega, Prohodna, Karlukovo, vistas de río, caminos rurales y lugares tranquilos para fotografía." },
         { heading: "Cómo encaja Aglen", body: "Aglen aporta el ritmo lento: río Vit, formas calizas, memoria local, comida rural, paseos guiados y descanso lejos de los puntos más concurridos." },
-        { heading: "Ruta sugerida", body: "Empieza temprano en Iskar-Panega, sigue hacia Prohodna o Karlukovo y deja la tarde para Aglen, el Vit, fotos y una conversación local." },
-        { heading: "Temporada y consejos", body: "Primavera y otoño son ideales para caminar y fotografiar. En verano sal temprano, lleva agua y cuidado tras la lluvia." },
+        { heading: "Ruta y consejos prácticos", body: "Empieza temprano en Iskar-Panega, sigue hacia Prohodna o Karlukovo y deja la tarde para Aglen, el Vit, fotos y una conversación local. Primavera y otoño son ideales para caminar y fotografiar. En verano sal temprano, lleva agua y cuidado tras la lluvia." },
       ],
       faqs: [
         { question: "Cuánto tiempo hace falta?", answer: "Un día completo permite ver lo principal; un fin de semana es mejor." },
@@ -323,8 +318,7 @@ const guideOverrides: Partial<Record<LandingPageId, Record<LanguageCode, Landing
       sections: [
         { heading: "Perché visitare Lukovit", body: "In poca distanza trovi Iskar-Panega, Prohodna, Karlukovo, viste sul fiume, strade di villaggio e luoghi fotografici tranquilli." },
         { heading: "Come entra Aglen", body: "Aglen aggiunge il lato lento: fiume Vit, forme calcaree, memoria del villaggio, cucina locale, passeggiate guidate e turismo rurale." },
-        { heading: "Itinerario consigliato", body: "Parti presto da Iskar-Panega, prosegui verso Prohodna o Karlukovo e dedica il pomeriggio ad Aglen, al Vit, alle foto e ai contatti locali." },
-        { heading: "Stagione e consigli", body: "Primavera e autunno sono ideali. In estate parti presto, porta acqua e fai attenzione dopo la pioggia." },
+        { heading: "Itinerario e consigli", body: "Parti presto da Iskar-Panega, prosegui verso Prohodna o Karlukovo e dedica il pomeriggio ad Aglen, al Vit, alle foto e ai contatti locali. Primavera e autunno sono ideali. In estate parti presto, porta acqua e fai attenzione dopo la pioggia." },
       ],
       faqs: [
         { question: "Quanto tempo serve?", answer: "Un giorno pieno basta per un assaggio; un weekend è migliore." },
@@ -342,8 +336,7 @@ const guideOverrides: Partial<Record<LandingPageId, Record<LanguageCode, Landing
       sections: [
         { heading: "De ce să vizitezi Lukovit", body: "Zona adună Iskar-Panega, Prohodna, Karlukovo, priveliști de râu, drumuri de sat și locuri liniștite pentru fotografie." },
         { heading: "Cum se leagă Aglen", body: "Aglen adaugă ritmul calm: râul Vit, forme calcaroase, memorie locală, mâncare de sat, plimbări ghidate și turism rural." },
-        { heading: "Rută de o zi", body: "Începe devreme la Iskar-Panega, continuă spre Prohodna sau Karlukovo și lasă după-amiaza pentru Aglen, Vit, fotografii și conversații locale." },
-        { heading: "Sezon și sfaturi", body: "Primăvara și toamna sunt cele mai bune. Vara pleacă devreme, ia apă și ai grijă după ploaie." },
+        { heading: "Rută și sfaturi practice", body: "Începe devreme la Iskar-Panega, continuă spre Prohodna sau Karlukovo și lasă după-amiaza pentru Aglen, Vit, fotografii și conversații locale. Primăvara și toamna sunt cele mai bune. Vara pleacă devreme, ia apă și ai grijă după ploaie." },
       ],
       faqs: [
         { question: "Cât timp este necesar?", answer: "O zi întreagă ajunge pentru esențial; un weekend este mai potrivit." },
@@ -361,8 +354,7 @@ const guideOverrides: Partial<Record<LandingPageId, Record<LanguageCode, Landing
       sections: [
         { heading: "Neden Lukovit", body: "Bölge Iskar-Panega, Prohodna, Karlukovo, nehir manzaraları, köy yolları ve sakin fotoğraf noktalarını birleştirir." },
         { heading: "Aglen rotaya nasıl uyar", body: "Aglen daha yavaş katmanı sunar: Vit Nehri, kireçtaşı şekilleri, köy belleği, yerel yemek, rehberli yürüyüşler ve kırsal turizm." },
-        { heading: "Önerilen günlük rota", body: "Erken Iskar-Panega'da başla, öğlen Prohodna veya Karlukovo'ya geç, öğleden sonra Aglen ve Vit için zaman ayır." },
-        { heading: "Sezon ve ipuçları", body: "İlkbahar ve sonbahar en iyisidir. Yazın erken çık, su taşı ve yağmurdan sonra dikkatli ol." },
+        { heading: "Rota ve pratik ipuçları", body: "Erken Iskar-Panega'da başla, öğlen Prohodna veya Karlukovo'ya geç, öğleden sonra Aglen ve Vit için zaman ayır. İlkbahar ve sonbahar en iyisidir. Yazın erken çık, su taşı ve yağmurdan sonra dikkatli ol." },
       ],
       faqs: [
         { question: "Ne kadar zaman gerekir?", answer: "Bir tam gün yeterli olabilir; hafta sonu daha iyidir." },
@@ -380,8 +372,7 @@ const guideOverrides: Partial<Record<LandingPageId, Record<LanguageCode, Landing
       sections: [
         { heading: "Γιατί να επισκεφθείτε το Lukovit", body: "Η περιοχή συνδυάζει Iskar-Panega, Prohodna, Karlukovo, ποτάμιες θέες, χωριάτικους δρόμους και ήσυχα σημεία φωτογραφίας." },
         { heading: "Πώς ταιριάζει το Aglen", body: "Το Aglen προσθέτει τον αργό ρυθμό: ποταμό Vit, ασβεστολιθικά σχήματα, τοπική μνήμη, φαγητό και αγροτικό τουρισμό." },
-        { heading: "Προτεινόμενη ημερήσια διαδρομή", body: "Ξεκινήστε νωρίς από Iskar-Panega, συνεχίστε σε Prohodna ή Karlukovo και κρατήστε το απόγευμα για Aglen και Vit." },
-        { heading: "Εποχή και συμβουλές", body: "Άνοιξη και φθινόπωρο είναι ιδανικά. Το καλοκαίρι ξεκινήστε νωρίς, πάρτε νερό και προσοχή μετά τη βροχή." },
+        { heading: "Διαδρομή και πρακτικές συμβουλές", body: "Ξεκινήστε νωρίς από Iskar-Panega, συνεχίστε σε Prohodna ή Karlukovo και κρατήστε το απόγευμα για Aglen και Vit. Άνοιξη και φθινόπωρο είναι ιδανικά. Το καλοκαίρι ξεκινήστε νωρίς, πάρτε νερό και προσοχή μετά τη βροχή." },
       ],
       faqs: [
         { question: "Πόσος χρόνος χρειάζεται;", answer: "Μια γεμάτη ημέρα αρκεί για τα βασικά, αλλά ένα σαββατοκύριακο είναι καλύτερο." },
@@ -399,8 +390,7 @@ const guideOverrides: Partial<Record<LandingPageId, Record<LanguageCode, Landing
       sections: [
         { heading: "Зачем ехать в Луковит", body: "Здесь рядом находятся Искыр-Панега, Проходна, Карлуково, речные виды, сельские дороги и спокойные места для фотографии." },
         { heading: "Как вписывается Аглен", body: "Аглен добавляет спокойный слой маршрута: река Вит, известняковые формы, местная память, еда, прогулки и сельский туризм." },
-        { heading: "Маршрут на день", body: "Начните рано в Искыр-Панега, затем Проходна или Карлуково, а после обеда оставьте время для Аглена и Вита." },
-        { heading: "Сезон и советы", body: "Весна и осень лучше всего. Летом выходите рано, берите воду и будьте осторожны после дождя." },
+        { heading: "Маршрут и советы", body: "Начните рано в Искыр-Панега, затем Проходна или Карлуково, а после обеда оставьте время для Аглена и Вита. Весна и осень лучше всего. Летом выходите рано, берите воду и будьте осторожны после дождя." },
       ],
       faqs: [
         { question: "Сколько времени нужно?", answer: "Один полный день возможен, но выходные лучше." },
@@ -418,8 +408,7 @@ const guideOverrides: Partial<Record<LandingPageId, Record<LanguageCode, Landing
       sections: [
         { heading: "ルコヴィトを訪れる理由", body: "イスカル・パネガ、プロホドナ、カルルコヴォ、川の眺め、村道、静かな撮影地が近くにまとまっています。" },
         { heading: "アグレンの組み込み方", body: "アグレンは、ヴィト川、石灰岩の景観、村の記憶、地元の食、ガイド散策、農村観光という静かな層を加えます。" },
-        { heading: "日帰りルート", body: "朝はイスカル・パネガ、昼はプロホドナまたはカルルコヴォ、午後はアグレンとヴィト川に時間を残します。" },
-        { heading: "季節と実用メモ", body: "春と秋が最適です。夏は早朝出発、水の携帯、雨後の足元への注意が必要です。" },
+        { heading: "ルートと実用アドバイス", body: "朝はイスカル・パネガ、昼はプロホドナまたはカルルコヴォ、午後はアグレンとヴィト川に時間を残します。春と秋が最適です。夏は早朝出発、水の携帯、雨後の足元への注意が必要です。" },
       ],
       faqs: [
         { question: "必要な時間は?", answer: "主要部は丸一日で可能ですが、週末の方が余裕があります。" },
@@ -437,8 +426,7 @@ const guideOverrides: Partial<Record<LandingPageId, Record<LanguageCode, Landing
       sections: [
         { heading: "Зашто посетити Луковит", body: "Регион спаја Искар-Панегу, Проходну, Карлуково, речне видике, сеоске путеве и мирна места за фотографију." },
         { heading: "Како се уклапа Аглен", body: "Аглен додаје мирни слој: реку Вит, кречњачке форме, сеоско памћење, локалну храну, вођене шетње и сеоски туризам." },
-        { heading: "Предложена дневна рута", body: "Почни рано у Искар-Панеги, настави ка Проходни или Карлукову, а поподне остави за Аглен и Вит." },
-        { heading: "Сезона и савети", body: "Пролеће и јесен су најбољи. Лети крени рано, понеси воду и пази после кише." },
+        { heading: "Рута и савети", body: "Почни рано у Искар-Панеги, настави ка Проходни или Карлукову, а поподне остави за Аглен и Вит. Пролеће и јесен су најбољи. Лети крени рано, понеси воду и пази после кише." },
       ],
       faqs: [
         { question: "Колико времена треба?", answer: "Један цео дан је могућ, али викенд је бољи." },
@@ -456,8 +444,7 @@ const guideOverrides: Partial<Record<LandingPageId, Record<LanguageCode, Landing
       sections: [
         { heading: "为什么访问卢科维特", body: "这里把伊斯卡尔-帕内加、普罗霍德纳、卡尔卢科沃、河景、村路和安静摄影点集中在短距离内。" },
         { heading: "阿格伦如何融入路线", body: "阿格伦带来更慢的部分：维特河、石灰岩地貌、村庄记忆、本地食物、导览散步和乡村旅游。" },
-        { heading: "建议一日路线", body: "清晨从伊斯卡尔-帕内加开始，中午去普罗霍德纳或卡尔卢科沃，下午留给阿格伦和维特河。" },
-        { heading: "季节和提示", body: "春秋最适合。夏季请早出发、带水，雨后注意湿滑。" },
+        { heading: "路线与实用建议", body: "清晨从伊斯卡尔-帕内加开始，中午去普罗霍德纳或卡尔卢科沃，下午留给阿格伦和维特河。春秋最适合。夏季请早出发、带水，雨后注意湿滑。" },
       ],
       faqs: [
         { question: "需要多长时间？", answer: "一整天可看主要地点，周末更从容。" },
@@ -475,8 +462,7 @@ const guideOverrides: Partial<Record<LandingPageId, Record<LanguageCode, Landing
       sections: [
         { heading: "Miért érdemes Lukovitba menni", body: "A térség rövid távolságon belül köti össze Iskar-Panegát, Prohodnát, Karlukovót, folyókilátásokat, falusi utakat és csendes fotópontokat." },
         { heading: "Hogyan illik bele Aglen", body: "Aglen a lassabb réteg: Vit folyó, mészkőformák, falusi emlékezet, helyi étel, vezetett séták és falusi turizmus." },
-        { heading: "Javasolt napi útvonal", body: "Kezdj korán Iskar-Panegánál, délben Prohodna vagy Karlukovo, délután pedig Aglen és a Vit következzen." },
-        { heading: "Szezon és tippek", body: "Tavasz és ősz a legjobb. Nyáron indulj korán, vigyél vizet, eső után figyelj a csúszós kövekre." },
+        { heading: "Útvonal és praktikus tippek", body: "Kezdj korán Iskar-Panegánál, délben Prohodna vagy Karlukovo, délután pedig Aglen és a Vit következzen. Tavasz és ősz a legjobb. Nyáron indulj korán, vigyél vizet, eső után figyelj a csúszós kövekre." },
       ],
       faqs: [
         { question: "Mennyi idő kell?", answer: "Egy teljes nap elég lehet, de egy hétvége jobb." },
@@ -717,11 +703,9 @@ function buildRegionalGuideOverride(id: LandingPageId, lang: LanguageCode): Land
     imageAlt: text.imageAlt(name),
     ctaLabel: text.cta,
     sections: [
-      { heading: text.sectionWhy, body: text.whyBody(name, highlights) },
-      { heading: text.sectionSee, body: text.seeBody(highlights) },
+      { heading: text.sectionWhy, body: `${text.whyBody(name, highlights)} ${text.seeBody(highlights)}` },
       { heading: text.sectionAglen, body: text.aglenBody(connection) },
-      { heading: text.sectionRoute, body: text.routeBody(name, highlights) },
-      { heading: text.sectionSeason, body: text.seasonBody },
+      { heading: text.sectionSeason, body: `${text.routeBody(name, highlights)} ${text.seasonBody}` },
     ],
     faqs: [
       { question: text.faqTimeQ(name), answer: text.faqTimeA },
@@ -778,7 +762,6 @@ function buildLandingPage(lang: LanguageCode, page: LandingPageMaster): LandingP
   const title = `${h1}${text.titleSeparator}${copy.brand.name}`;
   const metaDescription = `${h1}: ${copy.landmarks.text}`;
   const intro = `${h1} — ${location}. ${copy.hub.text}`;
-  const linkedLabels = page.internalLinkRouteIds.map((routeId) => routeLabel(lang, routeId));
   const override = guideOverrides[page.id]?.[lang] ?? buildRegionalGuideOverride(page.id, lang);
 
   const generated: LandingPage = {
@@ -800,7 +783,7 @@ function buildLandingPage(lang: LanguageCode, page: LandingPageMaster): LandingP
     sections: [
       { heading: text.sectionHeadings[0], body: `${h1}: ${text.sectionBodies[0]} ${copy.about.text}` },
       { heading: text.sectionHeadings[1], body: `${text.sectionBodies[1]} ${copy.contact.noteTwo}` },
-      { heading: text.sectionHeadings[2], body: `${text.sectionBodies[2]} ${linkedLabels.join(", ")}.` },
+      { heading: text.sectionHeadings[2], body: text.sectionBodies[2] },
     ],
     faqs: [
       { question: text.faqWhere, answer: text.faqWhereAnswer },
