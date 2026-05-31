@@ -1,4 +1,4 @@
-import { images, negotiablePrice } from "./shared";
+﻿import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const ja: PageCopy = {
@@ -53,10 +53,10 @@ export const ja: PageCopy = {
     { title: "地元名を持つ岩", tag: "民話の風景", image: images.arch, description: "Дупката や Слончето のような名前が、風景を個人的なものにします。それらは見どころであり、同時に物語でもあります。" },
   ],
   placesList: [
-    { id: "dupkata", title: "Дупката", tag: "岩のアーチ", image: images.arch, imageAlt: "アグレン近くの川の上にある石灰岩の岩のアーチ", description: "ヴィト川の上にある自然の石のアーチ。ゆっくり歩き、静かに撮影し、隠れたルートの感覚を味わうための場所です。" },
+    { id: "dupkata", title: "Дупката", tag: "岩のアーチ", image: images.caveCard, imageAlt: "アグレン近くの川の上にある石灰岩の岩のアーチ", description: "ヴィト川の上にある自然の石のアーチ。ゆっくり歩き、静かに撮影し、隠れたルートの感覚を味わうための場所です。" },
     { id: "sloncheto", title: "Слончето", tag: "岩の形", image: images.hero, imageAlt: "アグレン近くの峡谷、川、石灰岩の崖", description: "川辺の遊び心ある形が、普通の散策を小さな発見に変えます。" },
-    { id: "chervena-stena", title: "Червена стена", tag: "峡谷の眺め", image: images.aerial, imageAlt: "川と村を含む峡谷の風景", description: "村の近くで、石灰岩、森、川の光が劇的に出会う場所です。" },
-    { id: "rachkov-vir", title: "Рачков вир", tag: "川の淵", image: images.pool, imageAlt: "石灰岩の岸と森に囲まれた静かな川の淵", description: "水辺で休み、ピクニックし、ヴィト川のそばでゆっくりしたリズムを感じる静かな自然の地点です。" },
+    { id: "chervena-stena", title: "Червена стена", tag: "峡谷の眺め", image: images.riverSunsetCard, imageAlt: "川と村を含む峡谷の風景", description: "村の近くで、石灰岩、森、川の光が劇的に出会う場所です。" },
+    { id: "rachkov-vir", title: "Рачков вир", tag: "川の淵", image: images.nearbyRetreatCard, imageAlt: "石灰岩の岸と森に囲まれた静かな川の淵", description: "水辺で休み、ピクニックし、ヴィト川のそばでゆっくりしたリズムを感じる静かな自然の地点です。" },
     { id: "st-archangel-michael", title: "聖大天使ミカエル教会", tag: "村の記憶", image: images.church, imageAlt: "村の教会、石の道、緑の谷", description: "1888年に建てられた教会は、アグレンの物語にある人々の層を守っています。" },
     { id: "kaleto", title: "Калето", tag: "考古学", image: images.kaleto, imageAlt: "峡谷と川を見下ろす丘の上の石の遺構", description: "古いルート、防御の記憶、川辺で続いてきた暮らしと結びつく場所です。" },
   ],
@@ -87,3 +87,4 @@ export const ja: PageCopy = {
   ],
   sourceNotes: ["DevOpsio により作成 - www.devopsio.eu", "すべての画像は地元の写真家によるもので、許可を得て使用しています。"],
 };
+

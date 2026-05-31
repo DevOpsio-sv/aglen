@@ -1,4 +1,4 @@
-import { images, negotiablePrice } from "./shared";
+﻿import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const de: PageCopy = {
@@ -53,10 +53,10 @@ export const de: PageCopy = {
     { title: "Felsen mit lokalen Namen", tag: "Folklore-Landschaft", image: images.arch, description: "Namen wie Дупката und Слончето machen die Landschaft persönlich. Sie sind Sehenswürdigkeiten und Geschichten zugleich." },
   ],
   placesList: [
-    { id: "dupkata", title: "Дупката", tag: "Felsbogen", image: images.arch, imageAlt: "Kalkstein-Felsbogen über dem Fluss nahe Aglen", description: "Ein natürlicher Steinbogen über dem Vit, geschaffen für langsame Spaziergänge, ruhige Fotos und das Gefühl einer verborgenen Route." },
+    { id: "dupkata", title: "Дупката", tag: "Felsbogen", image: images.caveCard, imageAlt: "Kalkstein-Felsbogen über dem Fluss nahe Aglen", description: "Ein natürlicher Steinbogen über dem Vit, geschaffen für langsame Spaziergänge, ruhige Fotos und das Gefühl einer verborgenen Route." },
     { id: "sloncheto", title: "Слончето", tag: "Felsfigur", image: images.hero, imageAlt: "Canyon, Fluss und Kalksteinfelsen nahe Aglen", description: "Eine spielerische Form am Fluss, die einen gewöhnlichen Spaziergang in eine kleine Entdeckung verwandelt." },
-    { id: "chervena-stena", title: "Червена стена", tag: "Canyonblick", image: images.aerial, imageAlt: "Canyonlandschaft mit Fluss und Dorf", description: "Ein dramatisches Zusammentreffen von Kalkstein, Wald und Flusslicht nahe dem Dorf." },
-    { id: "rachkov-vir", title: "Рачков вир", tag: "Flussbecken", image: images.pool, imageAlt: "Ruhiges Flussbecken mit Kalksteinufer und Wald", description: "Ein stiller Naturpunkt für eine Pause am Wasser, ein Picknick und einen langsameren Rhythmus am Vit." },
+    { id: "chervena-stena", title: "Червена стена", tag: "Canyonblick", image: images.riverSunsetCard, imageAlt: "Canyonlandschaft mit Fluss und Dorf", description: "Ein dramatisches Zusammentreffen von Kalkstein, Wald und Flusslicht nahe dem Dorf." },
+    { id: "rachkov-vir", title: "Рачков вир", tag: "Flussbecken", image: images.nearbyRetreatCard, imageAlt: "Ruhiges Flussbecken mit Kalksteinufer und Wald", description: "Ein stiller Naturpunkt für eine Pause am Wasser, ein Picknick und einen langsameren Rhythmus am Vit." },
     { id: "st-archangel-michael", title: "St. Erzengel Michael", tag: "Dorfgedächtnis", image: images.church, imageAlt: "Dorfkirche, Steingasse und grünes Tal", description: "Die 1888 erbaute Dorfkirche bewahrt die menschliche Schicht der Geschichte von Aglen." },
     { id: "kaleto", title: "Калето", tag: "Archäologie", image: images.kaleto, imageAlt: "Steinreste auf einer Anhöhe über Canyon und Fluss", description: "Ein Ort, verbunden mit alten Routen, befestigter Erinnerung und der langen Kontinuität des Lebens am Fluss." },
   ],
@@ -87,3 +87,4 @@ export const de: PageCopy = {
   ],
   sourceNotes: ["Erstellt von DevOpsio - www.devopsio.eu", "Alle Bilder stammen von lokalen Fotografen und werden mit Genehmigung verwendet."],
 };
+

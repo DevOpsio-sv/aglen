@@ -1,4 +1,4 @@
-import { images, negotiablePrice } from "./shared";
+﻿import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const ro: PageCopy = {
@@ -53,10 +53,10 @@ export const ro: PageCopy = {
     { title: "Stânci cu nume locale", tag: "Peisaj folcloric", image: images.arch, description: "Nume precum Дупката și Слончето fac peisajul personal. Sunt repere și povești în același timp." },
   ],
   placesList: [
-    { id: "dupkata", title: "Дупката", tag: "Arcă de stâncă", image: images.arch, imageAlt: "Arcă de calcar deasupra râului lângă Aglen", description: "O arcă naturală de piatră deasupra râului Vit, creată pentru plimbări lente, fotografii calme și sentimentul unui traseu ascuns." },
+    { id: "dupkata", title: "Дупката", tag: "Arcă de stâncă", image: images.caveCard, imageAlt: "Arcă de calcar deasupra râului lângă Aglen", description: "O arcă naturală de piatră deasupra râului Vit, creată pentru plimbări lente, fotografii calme și sentimentul unui traseu ascuns." },
     { id: "sloncheto", title: "Слончето", tag: "Formă de stâncă", image: images.hero, imageAlt: "Canion, râu și stânci calcaroase lângă Aglen", description: "O formă jucăușă de lângă râu care transformă o plimbare obișnuită într-o mică descoperire." },
-    { id: "chervena-stena", title: "Червена стена", tag: "Vedere de canion", image: images.aerial, imageAlt: "Peisaj de canion cu râu și sat", description: "O întâlnire dramatică între calcar, pădure și lumina râului aproape de sat." },
-    { id: "rachkov-vir", title: "Рачков вир", tag: "Bulboană de râu", image: images.pool, imageAlt: "Bulboană liniștită cu mal calcaros și pădure", description: "Un punct natural calm pentru o pauză lângă apă, picnic și un ritm mai lent lângă Vit." },
+    { id: "chervena-stena", title: "Червена стена", tag: "Vedere de canion", image: images.riverSunsetCard, imageAlt: "Peisaj de canion cu râu și sat", description: "O întâlnire dramatică între calcar, pădure și lumina râului aproape de sat." },
+    { id: "rachkov-vir", title: "Рачков вир", tag: "Bulboană de râu", image: images.nearbyRetreatCard, imageAlt: "Bulboană liniștită cu mal calcaros și pădure", description: "Un punct natural calm pentru o pauză lângă apă, picnic și un ritm mai lent lângă Vit." },
     { id: "st-archangel-michael", title: "Sf. Arhanghel Mihail", tag: "Memoria satului", image: images.church, imageAlt: "Biserică de sat și vale verde", description: "Biserica din 1888 păstrează stratul uman al poveștii Aglen." },
     { id: "kaleto", title: "Калето", tag: "Arheologie", image: images.kaleto, imageAlt: "Vestigii de piatră deasupra canionului", description: "Un loc legat de rute vechi, memorie fortificată și viață lângă râu." },
   ],
@@ -87,3 +87,4 @@ export const ro: PageCopy = {
   ],
   sourceNotes: ["Creat de DevOpsio - www.devopsio.eu", "Toate imaginile sunt realizate de fotografi locali și sunt folosite cu permisiune."],
 };
+

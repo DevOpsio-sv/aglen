@@ -1,4 +1,4 @@
-import { accommodationEn, images, negotiablePrice } from "./shared";
+﻿import { accommodationEn, images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const en: PageCopy = {
@@ -79,10 +79,10 @@ export const en: PageCopy = {
     { title: "Rocks with local names", tag: "Folklore landscape", image: images.arch, description: "Names like Дупката and Слончето make the landscape personal. They are landmarks and stories at the same time." },
   ],
   placesList: [
-    { id: "dupkata", title: "Дупката", tag: "Rock arch", image: images.arch, imageAlt: "Limestone rock arch above the river near Aglen", description: "A natural stone arch above the Vit, made for slow walks, quiet photos, and the feeling of a hidden route." },
+    { id: "dupkata", title: "Дупката", tag: "Rock arch", image: images.caveCard, imageAlt: "Limestone rock arch above the river near Aglen", description: "A natural stone arch above the Vit, made for slow walks, quiet photos, and the feeling of a hidden route." },
     { id: "sloncheto", title: "Слончето", tag: "Rock figure", image: images.hero, imageAlt: "Canyon, river, and limestone cliffs near Aglen", description: "A playful riverside form that turns an ordinary walk into a small discovery." },
-    { id: "chervena-stena", title: "Червена стена", tag: "Canyon view", image: images.aerial, imageAlt: "Canyon landscape with river and village", description: "A dramatic meeting of limestone, forest, and river light near the village." },
-    { id: "rachkov-vir", title: "Рачков вир", tag: "River pool", image: images.pool, imageAlt: "Quiet river pool with limestone bank and forest", description: "A calm natural point for a pause by the water, a picnic, and a slower rhythm beside the Vit." },
+    { id: "chervena-stena", title: "Червена стена", tag: "Canyon view", image: images.riverSunsetCard, imageAlt: "Canyon landscape with river and village", description: "A dramatic meeting of limestone, forest, and river light near the village." },
+    { id: "rachkov-vir", title: "Рачков вир", tag: "River pool", image: images.nearbyRetreatCard, imageAlt: "Quiet river pool with limestone bank and forest", description: "A calm natural point for a pause by the water, a picnic, and a slower rhythm beside the Vit." },
     { id: "st-archangel-michael", title: "St. Archangel Michael", tag: "Village memory", image: images.church, imageAlt: "Village church, stone lane, and green valley", description: "The village church, built in 1888, keeps the human layer of Aglen's story close to the landscape." },
     { id: "kaleto", title: "Калето", tag: "Archaeology", image: images.kaleto, imageAlt: "Stone remains on a hill above canyon and river", description: "A place connected with old routes, fortified memory, and the long life beside the river." },
   ],
@@ -109,3 +109,4 @@ export const en: PageCopy = {
   accommodationList: accommodationEn,
   sourceNotes: ["Created by DevOpsio - www.devopsio.eu", "All images are by local photographers and are used with permission."],
 };
+

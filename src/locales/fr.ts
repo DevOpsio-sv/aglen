@@ -1,4 +1,4 @@
-import { images, negotiablePrice } from "./shared";
+﻿import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const fr: PageCopy = {
@@ -59,10 +59,10 @@ export const fr: PageCopy = {
     { title: "Rochers aux noms locaux", tag: "Paysage folklorique", image: images.arch, description: "Des noms comme Дупката et Слончето rendent le paysage personnel. Ce sont des sites et des histoires à la fois." },
   ],
   placesList: [
-    { id: "dupkata", title: "Дупката", tag: "Arche rocheuse", image: images.arch, imageAlt: "Arche calcaire au-dessus de la rivière près d'Aglen", description: "Une arche naturelle de pierre au-dessus de la Vit, faite pour les marches lentes, les photos calmes et la sensation d'un itinéraire caché." },
+    { id: "dupkata", title: "Дупката", tag: "Arche rocheuse", image: images.caveCard, imageAlt: "Arche calcaire au-dessus de la rivière près d'Aglen", description: "Une arche naturelle de pierre au-dessus de la Vit, faite pour les marches lentes, les photos calmes et la sensation d'un itinéraire caché." },
     { id: "sloncheto", title: "Слончето", tag: "Forme rocheuse", image: images.hero, imageAlt: "Canyon, rivière et falaises calcaires près d'Aglen", description: "Une forme ludique au bord de la rivière qui transforme une promenade ordinaire en petite découverte." },
-    { id: "chervena-stena", title: "Червена стена", tag: "Vue de canyon", image: images.aerial, imageAlt: "Paysage de canyon avec rivière et village", description: "Une rencontre dramatique entre calcaire, forêt et lumière de rivière près du village." },
-    { id: "rachkov-vir", title: "Рачков вир", tag: "Bassin de rivière", image: images.pool, imageAlt: "Bassin calme avec rive calcaire et forêt", description: "Un point naturel paisible pour une pause au bord de l'eau, un pique-nique et un rythme plus lent près de la Vit." },
+    { id: "chervena-stena", title: "Червена стена", tag: "Vue de canyon", image: images.riverSunsetCard, imageAlt: "Paysage de canyon avec rivière et village", description: "Une rencontre dramatique entre calcaire, forêt et lumière de rivière près du village." },
+    { id: "rachkov-vir", title: "Рачков вир", tag: "Bassin de rivière", image: images.nearbyRetreatCard, imageAlt: "Bassin calme avec rive calcaire et forêt", description: "Un point naturel paisible pour une pause au bord de l'eau, un pique-nique et un rythme plus lent près de la Vit." },
     { id: "st-archangel-michael", title: "Saint Archange Michel", tag: "Mémoire villageoise", image: images.church, imageAlt: "Église de village, rue de pierre et vallée verte", description: "L'église de 1888 garde la couche humaine de l'histoire d'Aglen." },
     { id: "kaleto", title: "Калето", tag: "Archéologie", image: images.kaleto, imageAlt: "Vestiges de pierre sur une colline au-dessus du canyon", description: "Un lieu lié aux anciennes routes, à la mémoire fortifiée et à la vie près de la rivière." },
   ],
@@ -93,3 +93,4 @@ export const fr: PageCopy = {
   ],
   sourceNotes: ["Créé par DevOpsio - www.devopsio.eu", "Toutes les images proviennent de photographes locaux et sont utilisées avec autorisation."],
 };
+

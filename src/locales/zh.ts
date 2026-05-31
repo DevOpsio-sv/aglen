@@ -1,4 +1,4 @@
-import { images, negotiablePrice } from "./shared";
+﻿import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const zh: PageCopy = {
@@ -55,10 +55,10 @@ export const zh: PageCopy = {
     { title: "带地方名字的岩石", tag: "民俗景观", image: images.arch, description: "Дупката 和 Слончето 这样的名字让景观变得亲近。它们既是地标，也是故事。" },
   ],
   placesList: [
-    { id: "dupkata", title: "Дупката", tag: "岩石拱门", image: images.arch, imageAlt: "阿格伦附近河上的石灰岩拱门", description: "维特河上方的天然石拱，适合慢走、安静拍照和感受隐藏路线。" },
+    { id: "dupkata", title: "Дупката", tag: "岩石拱门", image: images.caveCard, imageAlt: "阿格伦附近河上的石灰岩拱门", description: "维特河上方的天然石拱，适合慢走、安静拍照和感受隐藏路线。" },
     { id: "sloncheto", title: "Слончето", tag: "岩石形象", image: images.hero, imageAlt: "阿格伦附近的峡谷、河流和石灰岩峭壁", description: "河边有趣的岩形，让普通散步变成小发现。" },
-    { id: "chervena-stena", title: "Червена стена", tag: "峡谷视野", image: images.aerial, imageAlt: "有河流和村庄的峡谷景观", description: "村庄附近石灰岩、森林和河光交会的戏剧性地点。" },
-    { id: "rachkov-vir", title: "Рачков вир", tag: "河潭", image: images.pool, imageAlt: "石灰岩河岸和森林旁的安静河潭", description: "适合水边休息、野餐并放慢节奏的自然点。" },
+    { id: "chervena-stena", title: "Червена стена", tag: "峡谷视野", image: images.riverSunsetCard, imageAlt: "有河流和村庄的峡谷景观", description: "村庄附近石灰岩、森林和河光交会的戏剧性地点。" },
+    { id: "rachkov-vir", title: "Рачков вир", tag: "河潭", image: images.nearbyRetreatCard, imageAlt: "石灰岩河岸和森林旁的安静河潭", description: "适合水边休息、野餐并放慢节奏的自然点。" },
     { id: "st-archangel-michael", title: "圣大天使米迦勒教堂", tag: "村庄记忆", image: images.church, imageAlt: "村庄教堂、石路和绿色山谷", description: "建于 1888 年的教堂保留着阿格伦故事中的人文层次。" },
     { id: "kaleto", title: "Калето", tag: "考古", image: images.kaleto, imageAlt: "峡谷和河流上方山丘上的石质遗迹", description: "与古老路线、防御记忆和河边长久生活相关的地点。" },
   ],
@@ -89,3 +89,4 @@ export const zh: PageCopy = {
   ],
   sourceNotes: ["由 DevOpsio 创建 - www.devopsio.eu", "所有图片来自当地摄影师，并已获授权使用。"],
 };
+

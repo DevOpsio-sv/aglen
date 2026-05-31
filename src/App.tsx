@@ -6,7 +6,7 @@ import { buildRoutePath, getStaticRoute, resolveRoute, type RouteId, type Resolv
 import { updateDocumentSEO } from "./seo";
 import { uiTextByLanguage } from "./uiText";
 
-const fallbackImage = "/assets/aglen-vit-river-sunset.png";
+const fallbackImage = "/assets/aglen-hero-river-canyon.png";
 
 function LanguageIcon() {
   return (
@@ -347,7 +347,7 @@ export function App() {
           aria-label={`${copy.brand.name} - ${copy.nav.home}`}
           onClick={(event) => handleRouteClick(event, "home")}
         >
-          <span className="brand-mark">Ъ</span>
+          <img className="brand-mark" src="/assets/aglen-logo-mark.png" alt="" width="44" height="44" decoding="async" />
           <span>
             <strong>{copy.brand.name}</strong>
             <small>{copy.brand.subtitle}</small>
@@ -535,7 +535,7 @@ export function App() {
       {!currentLandingPage && (
         <>
       <section id="home" className="hero">
-        <img className="hero-image" src="/assets/aglen-vit-river-sunset.png" alt={copy.hero.imageAlt} width="1200" height="630" fetchPriority="high" decoding="async" onError={handleImageError} />
+        <img className="hero-image" src="/assets/aglen-hero-river-canyon.png" alt={copy.hero.imageAlt} width="1200" height="630" fetchPriority="high" decoding="async" onError={handleImageError} />
         <div className="hero-overlay" aria-hidden="true" />
         <div className="hero-copy section-shell reveal">
           <p className="eyebrow">{copy.hero.meta}</p>

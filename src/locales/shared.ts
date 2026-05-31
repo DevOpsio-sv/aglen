@@ -20,11 +20,14 @@ export const languages: { code: LanguageCode; label: string; short: string }[] =
 export const images = {
   hero: "/assets/aglen-hero-river-canyon.png",
   arch: "/assets/aglen-rock-arch.png",
-  cave: "/assets/aglen-cave-window-view.png",
+  cave: "/assets/aglen-cave-window-gallery.jpg",
+  caveCard: "/assets/aglen-cave-window-card.jpg",
   aerial: "/assets/aglen-aerial-river.png",
   pool: "/assets/aglen-river-pool.png",
-  riverSunset: "/assets/aglen-vit-river-sunset.png",
-  nearbyRetreat: "/assets/lukovit-aglen-river-retreat.png",
+  riverSunset: "/assets/aglen-vit-river-sunset-gallery.jpg",
+  riverSunsetCard: "/assets/aglen-vit-river-sunset-card.jpg",
+  nearbyRetreat: "/assets/lukovit-aglen-river-retreat-gallery.jpg",
+  nearbyRetreatCard: "/assets/lukovit-aglen-river-retreat-card.jpg",
   church: "/assets/aglen-village-church.png",
   kaleto: "/assets/aglen-kaleto-ruins.png",
 };

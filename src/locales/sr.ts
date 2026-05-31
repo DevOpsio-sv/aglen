@@ -1,4 +1,4 @@
-import { accommodationSr, images, negotiablePrice } from "./shared";
+﻿import { accommodationSr, images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const sr: PageCopy = {
@@ -53,10 +53,10 @@ export const sr: PageCopy = {
     { title: "Стене са локалним именима", tag: "Фолклорни пејзаж", image: images.arch, description: "Имена као Дупката и Слончето чине пејзаж личним. Она су знаменитости и приче истовремено." },
   ],
   placesList: [
-    { id: "dupkata", title: "Дупката", tag: "Стеновити лук", image: images.arch, imageAlt: "Кречњачки лук изнад реке код Аглена", description: "Природни камени лук изнад Вита, створен за споре шетње, мирне фотографије и осећај скривене руте." },
+    { id: "dupkata", title: "Дупката", tag: "Стеновити лук", image: images.caveCard, imageAlt: "Кречњачки лук изнад реке код Аглена", description: "Природни камени лук изнад Вита, створен за споре шетње, мирне фотографије и осећај скривене руте." },
     { id: "sloncheto", title: "Слончето", tag: "Стеновита фигура", image: images.hero, imageAlt: "Кањон, река и кречњачке стене код Аглена", description: "Разиграна форма крај реке која обичну шетњу претвара у мало откриће." },
-    { id: "chervena-stena", title: "Червена стена", tag: "Кањонски поглед", image: images.aerial, imageAlt: "Кањонски пејзаж са реком и селом", description: "Драматичан сусрет кречњака, шуме и речне светлости близу села." },
-    { id: "rachkov-vir", title: "Рачков вир", tag: "Речни вир", image: images.pool, imageAlt: "Тих речни вир са кречњачком обалом и шумом", description: "Мирна природна тачка за паузу крај воде, пикник и спорији ритам крај Вита." },
+    { id: "chervena-stena", title: "Червена стена", tag: "Кањонски поглед", image: images.riverSunsetCard, imageAlt: "Кањонски пејзаж са реком и селом", description: "Драматичан сусрет кречњака, шуме и речне светлости близу села." },
+    { id: "rachkov-vir", title: "Рачков вир", tag: "Речни вир", image: images.nearbyRetreatCard, imageAlt: "Тих речни вир са кречњачком обалом и шумом", description: "Мирна природна тачка за паузу крај воде, пикник и спорији ритам крај Вита." },
     { id: "st-archangel-michael", title: "Св. Архангел Михаил", tag: "Сеоско памћење", image: images.church, imageAlt: "Сеоска црква и зелена долина", description: "Црква из 1888. чува људски слој приче о Аглену." },
     { id: "kaleto", title: "Калето", tag: "Археологија", image: images.kaleto, imageAlt: "Камени остаци изнад кањона", description: "Место повезано са старим путевима, утврђеним памћењем и животом крај реке." },
   ],
@@ -83,3 +83,4 @@ export const sr: PageCopy = {
   accommodationList: accommodationSr,
   sourceNotes: ["Креирао DevOpsio - www.devopsio.eu", "Све слике су од локалних фотографа и користе се уз дозволу."],
 };
+

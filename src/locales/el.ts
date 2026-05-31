@@ -1,4 +1,4 @@
-import { images, negotiablePrice } from "./shared";
+﻿import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const el: PageCopy = {
@@ -53,10 +53,10 @@ export const el: PageCopy = {
     { title: "Βράχοι με τοπικά ονόματα", tag: "Λαογραφικό τοπίο", image: images.arch, description: "Ονόματα όπως Дупката και Слончето κάνουν το τοπίο προσωπικό. Είναι αξιοθέατα και ιστορίες ταυτόχρονα." },
   ],
   placesList: [
-    { id: "dupkata", title: "Дупката", tag: "Βραχώδης αψίδα", image: images.arch, imageAlt: "Ασβεστολιθική αψίδα πάνω από τον ποταμό κοντά στο Aglen", description: "Φυσική πέτρινη αψίδα πάνω από τον Vit, φτιαγμένη για αργούς περιπάτους, ήρεμες φωτογραφίες και αίσθηση κρυφής διαδρομής." },
+    { id: "dupkata", title: "Дупката", tag: "Βραχώδης αψίδα", image: images.caveCard, imageAlt: "Ασβεστολιθική αψίδα πάνω από τον ποταμό κοντά στο Aglen", description: "Φυσική πέτρινη αψίδα πάνω από τον Vit, φτιαγμένη για αργούς περιπάτους, ήρεμες φωτογραφίες και αίσθηση κρυφής διαδρομής." },
     { id: "sloncheto", title: "Слончето", tag: "Βραχώδης μορφή", image: images.hero, imageAlt: "Φαράγγι, ποτάμι και ασβεστολιθικοί βράχοι κοντά στο Aglen", description: "Παιχνιδιάρικη μορφή δίπλα στο ποτάμι που μετατρέπει έναν συνηθισμένο περίπατο σε μικρή ανακάλυψη." },
-    { id: "chervena-stena", title: "Червена стена", tag: "Θέα φαραγγιού", image: images.aerial, imageAlt: "Τοπίο φαραγγιού με ποτάμι και χωριό", description: "Δραματική συνάντηση ασβεστόλιθου, δάσους και φωτός ποταμού κοντά στο χωριό." },
-    { id: "rachkov-vir", title: "Рачков вир", tag: "Λιμνούλα ποταμού", image: images.pool, imageAlt: "Ήσυχη λιμνούλα με ασβεστολιθική όχθη και δάσος", description: "Ήρεμο φυσικό σημείο για παύση δίπλα στο νερό, πικνίκ και πιο αργό ρυθμό κοντά στον Vit." },
+    { id: "chervena-stena", title: "Червена стена", tag: "Θέα φαραγγιού", image: images.riverSunsetCard, imageAlt: "Τοπίο φαραγγιού με ποτάμι και χωριό", description: "Δραματική συνάντηση ασβεστόλιθου, δάσους και φωτός ποταμού κοντά στο χωριό." },
+    { id: "rachkov-vir", title: "Рачков вир", tag: "Λιμνούλα ποταμού", image: images.nearbyRetreatCard, imageAlt: "Ήσυχη λιμνούλα με ασβεστολιθική όχθη και δάσος", description: "Ήρεμο φυσικό σημείο για παύση δίπλα στο νερό, πικνίκ και πιο αργό ρυθμό κοντά στον Vit." },
     { id: "st-archangel-michael", title: "Άγιος Αρχάγγελος Μιχαήλ", tag: "Μνήμη χωριού", image: images.church, imageAlt: "Εκκλησία χωριού και πράσινη κοιλάδα", description: "Η εκκλησία του 1888 κρατά το ανθρώπινο στρώμα της ιστορίας του Aglen." },
     { id: "kaleto", title: "Калето", tag: "Αρχαιολογία", image: images.kaleto, imageAlt: "Πέτρινα κατάλοιπα πάνω από φαράγγι", description: "Μέρος συνδεδεμένο με παλιές διαδρομές, οχυρωμένη μνήμη και ζωή δίπλα στο ποτάμι." },
   ],
@@ -87,3 +87,4 @@ export const el: PageCopy = {
   ],
   sourceNotes: ["Δημιουργήθηκε από DevOpsio - www.devopsio.eu", "Όλες οι εικόνες είναι από τοπικούς φωτογράφους και χρησιμοποιούνται με άδεια."],
 };
+

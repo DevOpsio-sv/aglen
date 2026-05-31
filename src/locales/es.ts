@@ -1,4 +1,4 @@
-import { images, negotiablePrice } from "./shared";
+﻿import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const es: PageCopy = {
@@ -53,10 +53,10 @@ export const es: PageCopy = {
     { title: "Rocas con nombres locales", tag: "Paisaje de folclore", image: images.arch, description: "Nombres como Дупката y Слончето hacen que el paisaje sea personal. Son lugares de interés e historias al mismo tiempo." },
   ],
   placesList: [
-    { id: "dupkata", title: "Дупката", tag: "Arco de roca", image: images.arch, imageAlt: "Arco de roca caliza sobre el río cerca de Aglen", description: "Un arco natural de piedra sobre el Vit, creado para caminatas lentas, fotos tranquilas y la sensación de una ruta escondida." },
+    { id: "dupkata", title: "Дупката", tag: "Arco de roca", image: images.caveCard, imageAlt: "Arco de roca caliza sobre el río cerca de Aglen", description: "Un arco natural de piedra sobre el Vit, creado para caminatas lentas, fotos tranquilas y la sensación de una ruta escondida." },
     { id: "sloncheto", title: "Слончето", tag: "Figura de roca", image: images.hero, imageAlt: "Cañón, río y acantilados calizos cerca de Aglen", description: "Una forma juguetona junto al río que convierte una caminata común en un pequeño descubrimiento." },
-    { id: "chervena-stena", title: "Червена стена", tag: "Vista de cañón", image: images.aerial, imageAlt: "Paisaje de cañón con río y pueblo", description: "Un encuentro dramático de caliza, bosque y luz de río cerca del pueblo." },
-    { id: "rachkov-vir", title: "Рачков вир", tag: "Poza del río", image: images.pool, imageAlt: "Poza tranquila del río con orilla caliza y bosque", description: "Un punto natural tranquilo para una pausa junto al agua, un picnic y un ritmo más lento al lado del Vit." },
+    { id: "chervena-stena", title: "Червена стена", tag: "Vista de cañón", image: images.riverSunsetCard, imageAlt: "Paisaje de cañón con río y pueblo", description: "Un encuentro dramático de caliza, bosque y luz de río cerca del pueblo." },
+    { id: "rachkov-vir", title: "Рачков вир", tag: "Poza del río", image: images.nearbyRetreatCard, imageAlt: "Poza tranquila del río con orilla caliza y bosque", description: "Un punto natural tranquilo para una pausa junto al agua, un picnic y un ritmo más lento al lado del Vit." },
     { id: "st-archangel-michael", title: "San Arcángel Miguel", tag: "Memoria del pueblo", image: images.church, imageAlt: "Iglesia del pueblo, calle de piedra y valle verde", description: "La iglesia de 1888 conserva la capa humana de la historia de Aglen." },
     { id: "kaleto", title: "Калето", tag: "Arqueología", image: images.kaleto, imageAlt: "Restos de piedra en una colina sobre cañón y río", description: "Un lugar conectado con rutas antiguas, memoria fortificada y la larga continuidad de vida junto al río." },
   ],
@@ -87,3 +87,4 @@ export const es: PageCopy = {
   ],
   sourceNotes: ["Creado por DevOpsio - www.devopsio.eu", "Todas las imágenes son de fotógrafos locales y se usan con permiso."],
 };
+

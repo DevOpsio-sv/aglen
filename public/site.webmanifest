@@ -14,14 +14,14 @@
   "categories": ["travel", "tourism", "entertainment", "education"],
   "icons": [
     {
-      "src": "/assets/favicon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "/assets/aglen-logo-mark.png",
+      "sizes": "640x640",
+      "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/assets/aglen-hero-river-canyon.png",
-      "sizes": "1200x630",
+      "src": "/assets/aglen-logo-mark.png",
+      "sizes": "640x640",
       "type": "image/png",
       "purpose": "any maskable"
     }
@@ -44,14 +44,14 @@
       "short_name": "Landmarks",
       "description": "Explore Aglen's natural landmarks",
       "url": "/#landmarks",
-      "icons": [{ "src": "/assets/favicon.svg", "sizes": "any" }]
+      "icons": [{ "src": "/assets/aglen-logo-mark.png", "sizes": "640x640" }]
     },
     {
       "name": "unlockingbulgaria",
       "short_name": "AR Quests",
       "description": "Download the AR adventure app",
       "url": "/#app",
-      "icons": [{ "src": "/assets/favicon.svg", "sizes": "any" }]
+      "icons": [{ "src": "/assets/aglen-logo-mark.png", "sizes": "640x640" }]
     }
   ],
   "related_applications": [
