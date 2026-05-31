@@ -7,6 +7,27 @@ import { uiTextByLanguage } from "./uiText";
 
 const fallbackImage = "/assets/aglen-hero-river-canyon.png";
 
+function LanguageIcon() {
+  return (
+    <svg className="language-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M4.75 12h14.5" />
+      <path d="M12 4.75c2.15 2 3.25 4.42 3.25 7.25S14.15 17.25 12 19.25" />
+      <path d="M12 4.75C9.85 6.75 8.75 9.17 8.75 12s1.1 5.25 3.25 7.25" />
+      <path d="M6.35 7.35c1.35.8 3.26 1.25 5.65 1.25s4.3-.45 5.65-1.25" />
+      <path d="M6.35 16.65c1.35-.8 3.26-1.25 5.65-1.25s4.3.45 5.65 1.25" />
+      <circle cx="12" cy="12" r="7.25" />
+    </svg>
+  );
+}
+
+function ChevronDownIcon() {
+  return (
+    <svg className="language-chevron" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+      <path d="m4.5 6.25 3.5 3.5 3.5-3.5" />
+    </svg>
+  );
+}
+
 function useFallbackImage(event: SyntheticEvent<HTMLImageElement>) {
   const image = event.currentTarget;
   if (image.dataset.fallbackApplied === "true") return;
@@ -223,9 +244,15 @@ export function App() {
             aria-haspopup="listbox"
             onClick={() => setLanguageMenuOpen((open) => !open)}
           >
-            <span className="language-globe" aria-hidden="true" />
-            <span>{selectedLanguage.short} · {selectedLanguage.label}</span>
-            <span className="language-chevron" aria-hidden="true" />
+            <span className="language-icon-shell">
+              <LanguageIcon />
+            </span>
+            <span className="language-current">
+              <span className="language-current-code">{selectedLanguage.short}</span>
+              <span className="language-current-separator" aria-hidden="true">·</span>
+              <span>{selectedLanguage.label}</span>
+            </span>
+            <ChevronDownIcon />
           </button>
           {languageMenuOpen && (
             <div className="language-popover" role="listbox" aria-label={copy.ui.languageSelectAria}>
