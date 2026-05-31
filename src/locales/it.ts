@@ -71,7 +71,7 @@ export const it: PageCopy = {
   galleryItems: [
     { title: "Canyon del Vit", image: images.hero, alt: "Canyon fluviale e villaggio all'alba", size: "wide" },
     { title: "L'arco di pietra", image: images.arch, alt: "Arco calcareo naturale sopra il fiume", size: "standard" },
-    { title: "Luce nella grotta", image: images.cave, alt: "Ingresso di grotta con luce calda", size: "tall" },
+    { title: "Luce nella grotta", image: images.cave, alt: "Ingresso di grotta con luce calda, fiume e rocce sullo sfondo", size: "tall" },
     { title: "Sopra la valle nascosta", image: images.aerial, alt: "Vista aerea di fiume, rocce e villaggio", size: "wide" },
   ],
   mapStops: [

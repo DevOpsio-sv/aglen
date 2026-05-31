@@ -71,7 +71,7 @@ export const es: PageCopy = {
   galleryItems: [
     { title: "Cañón del río Vit", image: images.hero, alt: "Cañón fluvial cinematográfico y pueblo al amanecer", size: "wide" },
     { title: "El arco de piedra", image: images.arch, alt: "Arco natural de caliza sobre el río", size: "standard" },
-    { title: "Luz de cueva", image: images.cave, alt: "Entrada de cueva con luz cálida", size: "tall" },
+    { title: "Luz de cueva", image: images.cave, alt: "Entrada de cueva con luz cálida, río y acantilados al fondo", size: "tall" },
     { title: "Sobre el valle oculto", image: images.aerial, alt: "Vista aérea de río, acantilados y pueblo rural", size: "wide" },
   ],
   mapStops: [

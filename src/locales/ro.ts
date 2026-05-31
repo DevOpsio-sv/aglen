@@ -71,7 +71,7 @@ export const ro: PageCopy = {
   galleryItems: [
     { title: "Canionul râului Vit", image: images.hero, alt: "Canion fluvial și sat la răsărit", size: "wide" },
     { title: "Arca de piatră", image: images.arch, alt: "Arcă naturală de calcar deasupra râului", size: "standard" },
-    { title: "Lumina peșterii", image: images.cave, alt: "Intrare de peșteră cu lumină caldă", size: "tall" },
+    { title: "Lumina peșterii", image: images.cave, alt: "Intrare de peșteră cu lumină caldă, râu și stânci în fundal", size: "tall" },
     { title: "Deasupra văii ascunse", image: images.aerial, alt: "Vedere aeriană cu râu, stânci și sat", size: "wide" },
   ],
   mapStops: [

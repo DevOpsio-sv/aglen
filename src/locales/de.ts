@@ -71,7 +71,7 @@ export const de: PageCopy = {
   galleryItems: [
     { title: "Canyon des Vit", image: images.hero, alt: "Cinematischer Flusscanyon und Dorf bei Sonnenaufgang", size: "wide" },
     { title: "Der Steinbogen", image: images.arch, alt: "Natürlicher Kalksteinbogen über dem Fluss", size: "standard" },
-    { title: "Höhlenlicht", image: images.cave, alt: "Höhleneingang mit warmem Licht", size: "tall" },
+    { title: "Höhlenlicht", image: images.cave, alt: "Höhleneingang mit warmem Licht, Fluss und Felsen dahinter", size: "tall" },
     { title: "Über dem verborgenen Tal", image: images.aerial, alt: "Luftblick auf Fluss, Felsen und ländliches Dorf", size: "wide" },
   ],
   mapStops: [

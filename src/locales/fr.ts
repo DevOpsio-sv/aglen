@@ -77,7 +77,7 @@ export const fr: PageCopy = {
   galleryItems: [
     { title: "Canyon de la Vit", image: images.hero, alt: "Canyon fluvial et village au lever du soleil", size: "wide" },
     { title: "L'arche de pierre", image: images.arch, alt: "Arche calcaire naturelle au-dessus de la rivière", size: "standard" },
-    { title: "Lumière de grotte", image: images.cave, alt: "Entrée de grotte avec lumière chaude", size: "tall" },
+    { title: "Lumière de grotte", image: images.cave, alt: "Entrée de grotte avec lumière chaude, rivière et falaises au-delà", size: "tall" },
     { title: "Au-dessus de la vallée cachée", image: images.aerial, alt: "Vue aérienne de rivière, falaises et village", size: "wide" },
   ],
   mapStops: [

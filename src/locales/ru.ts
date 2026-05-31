@@ -71,7 +71,7 @@ export const ru: PageCopy = {
   galleryItems: [
     { title: "Каньон Вита", image: images.hero, alt: "Кинематографичный речной каньон и село на рассвете", size: "wide" },
     { title: "Каменная арка", image: images.arch, alt: "Естественная известняковая арка над рекой", size: "standard" },
-    { title: "Свет пещеры", image: images.cave, alt: "Вход в пещеру с теплым светом", size: "tall" },
+    { title: "Свет пещеры", image: images.cave, alt: "Вход в пещеру с теплым светом, рекой и скалами вдали", size: "tall" },
     { title: "Над скрытой долиной", image: images.aerial, alt: "Вид с высоты на реку, скалы и сельский пейзаж", size: "wide" },
   ],
   mapStops: [

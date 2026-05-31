@@ -71,7 +71,7 @@ export const el: PageCopy = {
   galleryItems: [
     { title: "Φαράγγι του Vit", image: images.hero, alt: "Φαράγγι ποταμού και χωριό στην ανατολή", size: "wide" },
     { title: "Η πέτρινη αψίδα", image: images.arch, alt: "Φυσική ασβεστολιθική αψίδα πάνω από τον ποταμό", size: "standard" },
-    { title: "Φως σπηλιάς", image: images.cave, alt: "Είσοδος σπηλιάς με ζεστό φως", size: "tall" },
+    { title: "Φως σπηλιάς", image: images.cave, alt: "Είσοδος σπηλιάς με ζεστό φως, ποτάμι και βράχια στο βάθος", size: "tall" },
     { title: "Πάνω από την κρυφή κοιλάδα", image: images.aerial, alt: "Εναέρια θέα ποταμού, βράχων και χωριού", size: "wide" },
   ],
   mapStops: [

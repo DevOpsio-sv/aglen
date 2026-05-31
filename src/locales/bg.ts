@@ -147,7 +147,7 @@ export const bg: PageCopy = {
   galleryItems: [
     { title: "Каньонът на Вит", image: images.hero, alt: "Кинематографичен речен каньон и село при изгрев", size: "wide" },
     { title: "Каменната арка", image: images.arch, alt: "Естествена варовикова арка над реката", size: "standard" },
-    { title: "Пещерна светлина", image: images.cave, alt: "Пещерен вход с топла светлина", size: "tall" },
+    { title: "Пещерна светлина", image: images.cave, alt: "Пещерен вход с гледка към река и скали", size: "tall" },
     { title: "Над скритата долина", image: images.aerial, alt: "Въздушна гледка към река, скали и село", size: "wide" },
   ],
   mapStops: [

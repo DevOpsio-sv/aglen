@@ -97,7 +97,7 @@ export const en: PageCopy = {
   galleryItems: [
     { title: "Vit River Canyon", image: images.hero, alt: "Cinematic river canyon and village at sunrise", size: "wide" },
     { title: "The Stone Arch", image: images.arch, alt: "Natural limestone rock arch above the river", size: "standard" },
-    { title: "Cave Light", image: images.cave, alt: "Cave entrance with warm light and river beyond", size: "tall" },
+    { title: "Cave Light", image: images.cave, alt: "Cave entrance with warm light, river, and cliffs beyond", size: "tall" },
     { title: "Above the Hidden Valley", image: images.aerial, alt: "Aerial view of river, cliffs, and rural village", size: "wide" },
   ],
   mapStops: [

@@ -71,7 +71,7 @@ export const tr: PageCopy = {
   galleryItems: [
     { title: "Vit Nehri kanyonu", image: images.hero, alt: "Gün doğumunda nehir kanyonu ve köy", size: "wide" },
     { title: "Taş kemer", image: images.arch, alt: "Nehir üstünde doğal kireçtaşı kemer", size: "standard" },
-    { title: "Mağara ışığı", image: images.cave, alt: "Sıcak ışıklı mağara girişi", size: "tall" },
+    { title: "Mağara ışığı", image: images.cave, alt: "Sıcak ışıklı mağara girişi, arkada nehir ve kayalar", size: "tall" },
     { title: "Gizli vadinin üstünde", image: images.aerial, alt: "Nehir, kayalar ve köyün havadan görünümü", size: "wide" },
   ],
   mapStops: [
