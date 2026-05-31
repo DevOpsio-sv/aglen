@@ -73,7 +73,7 @@ export const zh: PageCopy = {
   galleryItems: [
     { title: "维特河峡谷", image: images.hero, alt: "日出时的河流峡谷和村庄", size: "wide" },
     { title: "石拱", image: images.arch, alt: "河上的天然石灰岩拱门", size: "standard" },
-    { title: "洞穴光线", image: images.cave, alt: "带温暖光线的洞穴入口", size: "tall" },
+    { title: "洞穴光线", image: images.cave, alt: "带温暖光线的洞穴入口，远处有河流和峭壁", size: "tall" },
     { title: "隐秘河谷上方", image: images.aerial, alt: "河流、峭壁和乡村的航拍视角", size: "wide" },
   ],
   mapStops: [

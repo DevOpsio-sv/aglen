@@ -867,23 +867,31 @@ export function App() {
           </div>
 
           <div className="app-showcase" aria-hidden="true">
-            <div className="app-glow" />
-            <div className="phone-mockup">
-              <div className="phone-speaker" />
-              <div className="phone-screen">
-                <div className="phone-map">
-                  <span className="map-line one" />
-                  <span className="map-line two" />
-                  <span className="map-line three" />
-                  <span className="quest-pin main" />
-                  <span className="quest-pin secondary" />
-                  <span className="quest-pin tertiary" />
+            <div className="ub-product-card">
+              <div className="ub-product-nav">
+                <span>Official product website</span>
+                <span>Domains</span>
+                <span>Timeline</span>
+                <span>Download</span>
+              </div>
+              <div className="ub-logo-lockup">
+                <div className="ub-crest">
+                  <span>UB</span>
                 </div>
-                <div className="phone-card">
-                  <span>{copy.quests.eyebrow}</span>
-                  <strong>{copy.ar.title}</strong>
-                  <small>{copy.quests.cta}</small>
+                <div>
+                  <strong>Unlocking Bulgaria</strong>
+                  <small>Hidden AR live quests</small>
                 </div>
+              </div>
+              <div className="ub-product-hero">
+                <p>1345 Years.</p>
+                <p>One Name Survived.</p>
+                <em>How?</em>
+              </div>
+              <div className="ub-domain-card">
+                <span>Domain of the name</span>
+                <strong>{copy.quests.features[0]?.title}</strong>
+                <small>{copy.quests.features.length} seals discovered</small>
               </div>
             </div>
           </div>

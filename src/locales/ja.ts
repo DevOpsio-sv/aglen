@@ -71,7 +71,7 @@ export const ja: PageCopy = {
   galleryItems: [
     { title: "ヴィト川の峡谷", image: images.hero, alt: "日の出の川の峡谷と村の映画的な風景", size: "wide" },
     { title: "石のアーチ", image: images.arch, alt: "川の上にある自然の石灰岩アーチ", size: "standard" },
-    { title: "洞窟の光", image: images.cave, alt: "暖かな光が差す洞窟の入口", size: "tall" },
+    { title: "洞窟の光", image: images.cave, alt: "暖かな光が差す洞窟の入口、奥に川と崖", size: "tall" },
     { title: "隠れた谷の上から", image: images.aerial, alt: "川、崖、田園の村を見下ろす空撮風景", size: "wide" },
   ],
   mapStops: [

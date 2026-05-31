@@ -73,7 +73,7 @@ export const hu: PageCopy = {
   galleryItems: [
     { title: "A Vit kanyonja", image: images.hero, alt: "Filmszerű folyókanyon és falu napkeltekor", size: "wide" },
     { title: "A kőív", image: images.arch, alt: "Természetes mészkőív a folyó fölött", size: "standard" },
-    { title: "Barlangfény", image: images.cave, alt: "Barlangbejárat meleg fénnyel", size: "tall" },
+    { title: "Barlangfény", image: images.cave, alt: "Barlangbejárat meleg fénnyel, folyóval és sziklákkal a háttérben", size: "tall" },
     { title: "A rejtett völgy fölött", image: images.aerial, alt: "Légi nézet folyóra, sziklákra és falusi tájra", size: "wide" },
   ],
   mapStops: [

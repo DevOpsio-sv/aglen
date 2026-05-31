@@ -1545,182 +1545,198 @@ h3 {
 .app-showcase {
   position: relative;
   display: grid;
-  min-height: 500px;
+  min-height: 520px;
   place-items: center;
+  perspective: 1200px;
 }
 
-.app-glow {
-  position: absolute;
-  width: min(74vw, 420px);
-  height: min(74vw, 420px);
-  border-radius: 50%;
-  background:
-    radial-gradient(circle, rgba(226, 200, 121, 0.28), transparent 58%),
-    radial-gradient(circle at 68% 28%, rgba(31, 111, 122, 0.35), transparent 42%);
-  filter: blur(2px);
-}
-
-.phone-mockup {
+.ub-product-card {
   position: relative;
-  width: min(78vw, 304px);
-  min-height: 590px;
-  border: 10px solid #06110d;
-  border-radius: 42px;
-  padding: 0.9rem;
-  background: linear-gradient(145deg, #163d30, #050b09);
-  box-shadow:
-    0 34px 80px rgba(0, 0, 0, 0.48),
-    -18px 18px 0 rgba(226, 200, 121, 0.08),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.12);
-  transform: rotate(4deg);
-}
-
-.phone-speaker {
-  position: absolute;
-  top: 18px;
-  left: 50%;
-  z-index: 3;
-  width: 82px;
-  height: 22px;
-  border-radius: 0 0 18px 18px;
-  background: #06110d;
-  transform: translateX(-50%);
-}
-
-.phone-screen {
-  position: relative;
-  min-height: 548px;
+  width: min(100%, 610px);
+  min-height: 430px;
   overflow: hidden;
-  border-radius: 30px;
+  border: 1px solid rgba(226, 200, 121, 0.28);
+  border-radius: 34px;
+  padding: clamp(1.1rem, 2.5vw, 1.6rem);
   background:
-    linear-gradient(180deg, rgba(7, 26, 20, 0.2), rgba(7, 26, 20, 0.9)),
-    url("/assets/aglen-aerial-river.png") center / cover;
+    radial-gradient(circle at 78% 22%, rgba(226, 200, 121, 0.18), transparent 16rem),
+    radial-gradient(circle at 56% 58%, rgba(31, 111, 122, 0.18), transparent 20rem),
+    linear-gradient(145deg, rgba(4, 8, 18, 0.98), rgba(8, 15, 31, 0.96) 58%, rgba(3, 8, 14, 0.98));
+  box-shadow:
+    0 36px 90px rgba(0, 0, 0, 0.46),
+    0 0 0 10px rgba(226, 200, 121, 0.035),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transform: rotateY(-7deg) rotateX(2deg);
 }
 
-.phone-screen::after {
+.ub-product-card::before,
+.ub-product-card::after {
   position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 58% 36%, rgba(226, 200, 121, 0.25), transparent 20%),
-    linear-gradient(180deg, transparent 18%, rgba(7, 26, 20, 0.68) 100%);
+  pointer-events: none;
   content: "";
 }
 
-.phone-map {
-  position: absolute;
+.ub-product-card::before {
   inset: 0;
+  background:
+    linear-gradient(rgba(226, 200, 121, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(226, 200, 121, 0.035) 1px, transparent 1px);
+  background-size: 54px 54px;
+  mask-image: radial-gradient(circle at 62% 48%, black, transparent 72%);
+}
+
+.ub-product-card::after {
+  right: -5rem;
+  bottom: -5rem;
+  width: 18rem;
+  height: 18rem;
+  border: 1px solid rgba(226, 200, 121, 0.18);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(226, 200, 121, 0.1), transparent 62%),
+    url("/assets/aglen-aerial-river.png") center / cover;
+  opacity: 0.34;
+  filter: saturate(0.65);
+}
+
+.ub-product-nav,
+.ub-logo-lockup,
+.ub-product-hero,
+.ub-domain-card {
+  position: relative;
   z-index: 1;
 }
 
-.map-line {
-  position: absolute;
-  display: block;
-  border: 2px dashed rgba(226, 200, 121, 0.64);
-  border-color: rgba(226, 200, 121, 0.64) transparent transparent transparent;
-  border-radius: 50%;
-}
-
-.map-line.one {
-  top: 110px;
-  left: 28px;
-  width: 220px;
-  height: 150px;
-  transform: rotate(-28deg);
-}
-
-.map-line.two {
-  top: 210px;
-  left: -12px;
-  width: 270px;
-  height: 170px;
-  transform: rotate(18deg);
-}
-
-.map-line.three {
-  right: -28px;
-  bottom: 102px;
-  width: 210px;
-  height: 140px;
-  transform: rotate(-18deg);
-}
-
-.quest-pin {
-  position: absolute;
-  z-index: 2;
-  width: 28px;
-  height: 28px;
-  border: 4px solid rgba(255, 255, 255, 0.78);
-  border-radius: 50% 50% 50% 0;
-  background: linear-gradient(135deg, var(--gold-soft), var(--gold));
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.38);
-  transform: rotate(-45deg);
-}
-
-.quest-pin::before {
-  position: absolute;
-  inset: 6px;
-  border-radius: 50%;
-  background: var(--forest-deep);
-  content: "";
-}
-
-.quest-pin.main {
-  top: 218px;
-  left: 132px;
-  width: 42px;
-  height: 42px;
-}
-
-.quest-pin.secondary {
-  top: 132px;
-  right: 48px;
-}
-
-.quest-pin.tertiary {
-  bottom: 154px;
-  left: 52px;
-}
-
-.phone-card {
-  position: absolute;
-  right: 16px;
-  bottom: 16px;
-  left: 16px;
-  z-index: 3;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 24px;
-  padding: 1.1rem;
-  background: rgba(7, 26, 20, 0.76);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
-  backdrop-filter: blur(18px);
-}
-
-.phone-card span,
-.phone-card small {
-  display: block;
-  color: var(--gold-soft);
-  font-size: 0.72rem;
-  font-weight: 900;
-  letter-spacing: 0.13em;
+.ub-product-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+  color: rgba(247, 242, 231, 0.64);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
-.phone-card strong {
+.ub-product-nav span:first-child {
+  color: var(--gold-soft);
+}
+
+.ub-logo-lockup {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: clamp(1.7rem, 4vw, 2.7rem);
+  padding-bottom: 1.35rem;
+  border-bottom: 1px solid rgba(226, 200, 121, 0.28);
+}
+
+.ub-crest {
+  position: relative;
+  display: grid;
+  width: clamp(74px, 10vw, 104px);
+  height: clamp(74px, 10vw, 104px);
+  place-items: center;
+  border: 1px solid rgba(226, 200, 121, 0.82);
+  border-radius: 50%;
+  color: var(--gold-soft);
+  background:
+    radial-gradient(circle, rgba(226, 200, 121, 0.12), transparent 58%),
+    rgba(2, 7, 17, 0.9);
+  box-shadow:
+    0 0 0 7px rgba(226, 200, 121, 0.08),
+    inset 0 0 0 7px rgba(226, 200, 121, 0.1);
+  font-family: Cinzel, Georgia, serif;
+  font-size: clamp(1.15rem, 2vw, 1.55rem);
+  font-weight: 800;
+}
+
+.ub-crest::before,
+.ub-crest::after {
+  position: absolute;
+  width: 132%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(226, 200, 121, 0.72), transparent);
+  content: "";
+}
+
+.ub-crest::after {
+  transform: rotate(90deg);
+}
+
+.ub-logo-lockup strong {
   display: block;
-  margin: 0.5rem 0 0.85rem;
-  color: #fff;
+  color: var(--gold-soft);
+  font-family: Cinzel, Georgia, serif;
+  font-size: clamp(1.9rem, 5vw, 3.8rem);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  line-height: 0.96;
+  text-transform: uppercase;
+}
+
+.ub-logo-lockup small,
+.ub-domain-card span,
+.ub-domain-card small {
+  display: block;
+  color: rgba(226, 200, 121, 0.78);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+}
+
+.ub-product-hero {
+  max-width: 430px;
+  margin-top: clamp(2rem, 5vw, 3.6rem);
+}
+
+.ub-product-hero p {
+  margin: 0;
+  color: #fff7df;
   font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 1.55rem;
+  font-size: clamp(2.7rem, 7vw, 5.4rem);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+}
+
+.ub-product-hero em {
+  display: block;
+  margin-top: 0.85rem;
+  color: var(--gold-soft);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(1.7rem, 4vw, 3rem);
   line-height: 1;
 }
 
-.phone-card small {
-  display: inline-flex;
-  border-radius: 999px;
-  padding: 0.55rem 0.78rem;
-  color: var(--forest-deep);
-  background: var(--gold-soft);
-  letter-spacing: 0.03em;
+.ub-domain-card {
+  width: min(260px, 54%);
+  margin: 1.8rem 0 0 auto;
+  border: 1px solid rgba(226, 200, 121, 0.24);
+  border-radius: 24px;
+  padding: 1.15rem;
+  background: rgba(4, 8, 18, 0.74);
+  box-shadow:
+    0 22px 54px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+}
+
+.ub-domain-card strong {
+  display: block;
+  margin: 0.55rem 0 1rem;
+  color: #fff7df;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.35rem;
+  line-height: 1.08;
+}
+
+.ub-domain-card small {
+  border-top: 1px solid rgba(226, 200, 121, 0.3);
+  padding-top: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
 }
 
 .reveal {
@@ -1959,7 +1975,11 @@ h3 {
   }
 
   .app-showcase {
-    min-height: 460px;
+    min-height: 480px;
+  }
+
+  .ub-product-card {
+    transform: none;
   }
 
   .mystery-card,
@@ -2068,20 +2088,26 @@ h3 {
   }
 
   .app-showcase {
-    min-height: 390px;
+    min-height: auto;
   }
 
-  .phone-mockup {
-    min-height: 430px;
-    transform: rotate(0deg);
+  .ub-product-card {
+    min-height: 0;
+    border-radius: 24px;
   }
 
-  .phone-screen {
-    min-height: 388px;
+  .ub-product-nav span:not(:first-child) {
+    display: none;
   }
 
-  .phone-card strong {
-    font-size: 1.32rem;
+  .ub-logo-lockup {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .ub-domain-card {
+    width: 100%;
+    margin-left: 0;
   }
 }
 

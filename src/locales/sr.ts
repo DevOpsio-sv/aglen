@@ -71,7 +71,7 @@ export const sr: PageCopy = {
   galleryItems: [
     { title: "Кањон Вита", image: images.hero, alt: "Речни кањон и село у зору", size: "wide" },
     { title: "Камени лук", image: images.arch, alt: "Природни кречњачки лук изнад реке", size: "standard" },
-    { title: "Пећинска светлост", image: images.cave, alt: "Улаз у пећину са топлом светлошћу", size: "tall" },
+    { title: "Пећинска светлост", image: images.cave, alt: "Улаз у пећину са топлом светлошћу, реком и стенама у даљини", size: "tall" },
     { title: "Изнад скривене долине", image: images.aerial, alt: "Поглед из ваздуха на реку, стене и село", size: "wide" },
   ],
   mapStops: [
