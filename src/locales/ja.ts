@@ -18,8 +18,8 @@ export const ja: PageCopy = {
     { id: "gps", title: "ライブGPSミッション", text: "どの場所が次の手がかりを隠しているのか？GPS ミッションに従ってアグレン周辺の実在する見どころへ向かおう。" },
     { id: "story", title: "違う形で語られる歴史", text: "守護者とは誰か？古代の印は何を守っているのか？ゲームを通じてプロホドナ洞窟の伝説を明かそう。" },
   ] },
-  ar: { eyebrow: "ARアドベンチャー", title: "守護者の世界を見る", text: "スマートフォンのカメラでプロホドナの隠れた世界を生き生きとさせましょう。ARレイヤーは肉眼では見えない物語、印、キャラクターを、それが起きた場所だけで明かします。", steps: ["unlockingbulgaria.com/bg/を開く", "アグレン周辺のARマーク地点へ移動", "カメラを向けて隠れた世界を見る"], cta: "ダウンロードして始める" },
-  app: { eyebrow: "アプリをダウンロード", title: "unlockingbulgaria", text: "Android向け無料モバイルアプリ。アグレン周辺のクエストを見つけて本物の冒険へ出発しましょう。", badge: "unlockingbulgaria.comを開く", note: "アプリ公式サイトは unlockingbulgaria.com/bg/ です。" },
+  ar: { eyebrow: "ARアドベンチャー", title: "守護者の世界を見る", text: "スマートフォンのカメラでプロホドナの隠れた世界を生き生きとさせましょう。ARレイヤーは肉眼では見えない物語、印、キャラクターを、それが起きた場所だけで明かします。", steps: ["アプリをダウンロード", "アグレン周辺のARマーク地点へ移動", "カメラを向けて隠れた世界を見る"], cta: "ダウンロードして始める" },
+  app: { eyebrow: "アプリをダウンロード", title: "Unlocking Bulgaria", text: "Android向け無料モバイルアプリ。アグレン周辺のクエストを見つけて本物の冒険へ出発しましょう。", badge: "Unlocking Bulgariaを開く", note: "アプリ公式サイトは unlockingbulgaria.com/bg/ です。" },
   contact: { eyebrow: "訪問を計画", title: "ヴィト川が秘密を守る場所で週末を。", text: "ルート、ガイド付き散策、写真スポット、地元の話、実用的な訪問情報を問い合わせてください。", notesTitle: "訪問メモ", noteOne: "自然散策、写真、川の景色、洞窟、地元の記憶に向いています。", noteTwo: "歩きやすい靴、水、日よけ、地域への敬意を持ってお越しください。", cta: "問い合わせる" },
   hub: {
     eyebrow: "旅行ガイドハブ",

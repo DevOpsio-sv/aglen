@@ -33,7 +33,7 @@ export const en: PageCopy = {
     title: "See the Guardian's World",
     text: "With your phone camera, bring the hidden world of Prohodna to life. The AR layer reveals stories, signs, and characters invisible to the naked eye, but only in the places where they happened.",
     steps: [
-      "Open unlockingbulgaria.com/bg/",
+      "Download the app",
       "Go to a marked AR place around Aglen",
       "Point your camera and see the hidden world",
     ],
@@ -41,9 +41,9 @@ export const en: PageCopy = {
   },
   app: {
     eyebrow: "Download the App",
-    title: "unlockingbulgaria",
+    title: "Unlocking Bulgaria",
     text: "A mobile app for Android. Find the missions around Aglen and set off on a real adventure.",
-    badge: "Open unlockingbulgaria.com",
+    badge: "Open Unlocking Bulgaria",
     note: "The official app website is unlockingbulgaria.com/bg/.",
   },
   contact: { eyebrow: "Plan your visit", title: "Spend a weekend where the Vit keeps its secrets.", text: "Ask for routes, guided walks, photo spots, local stories, and practical visitor information.", notesTitle: "Visitor notes", noteOne: "Best for nature walks, photography, river viewpoints, caves, and local memory.", noteTwo: "Bring walking shoes, water, sun protection, and respect for private/local spaces.", cta: "Send Inquiry" },

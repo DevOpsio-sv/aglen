@@ -907,12 +907,13 @@ export function App() {
           <div className="app-showcase" aria-hidden="true">
             <figure className="ub-banner-card">
               <img
-                src="/assets/unlocking-bulgaria-quest-banner.svg"
-                alt=""
+                src="/assets/unlocking-bulgaria-quest-banner.png"
+                alt="Unlocking Bulgaria – мобилно AR приключение в Ъглен"
                 width="1024"
                 height="550"
                 loading="lazy"
                 decoding="async"
+                onError={handleImageError}
               />
               <figcaption>
                 <span>{copy.quests.eyebrow}</span>

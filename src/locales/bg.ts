@@ -60,7 +60,7 @@ export const bg: PageCopy = {
     title: "Погледни света на Пазителя",
     text: "С камерата на телефона си оживи скрития свят на Проходна. AR слоят разкрива истории, знаци и персонажи, невидими с просто око, но само на местата, където са се случили.",
     steps: [
-      "Отвори unlockingbulgaria.com/bg/",
+      "Свали приложението",
       "Отиди на обозначено AR място около Ъглен",
       "Насочи камерата и виж скрития свят",
     ],
@@ -68,9 +68,9 @@ export const bg: PageCopy = {
   },
   app: {
     eyebrow: "Изтегли приложението",
-    title: "unlockingbulgaria",
+    title: "Unlocking Bulgaria",
     text: "Мобилно приложение за Android. Намери мисиите около Ъглен и тръгни на истинско приключение.",
-    badge: "Отвори unlockingbulgaria.com",
+    badge: "Отвори Unlocking Bulgaria",
     note: "Официалният сайт на приложението е unlockingbulgaria.com/bg/.",
   },
   contact: {
