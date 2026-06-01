@@ -13,7 +13,7 @@ export const tr: PageCopy = {
   experiences: { eyebrow: "Deneyimler", title: "Turist listesi değil, rehberli anlar", text: "Hafta sonu için kısa, yerel hissettirecek kadar kişisel ziyaret deneyimleri.", cta: "Bu rotayı sor" },
   gallery: { eyebrow: "Sürükleyici galeri", title: "Nehir ışığı ve taşla anlatılan bir yer", aria: "Aglen galerisi" },
   stay: { eyebrow: "Aglen'de konaklama", title: "Nehre yakın dinlen", text: "Aglen doğa içinde sakin konaklama seçenekleri sunar. Uygunluk ve rezervasyon için iletişime geçin." },
-  quests: { eyebrow: "Bulgaristan'da türünün ilki", title: "Aglen yakınında gerçek bir AR macerası", text: "unlockingbulgaria sizi gerçek yerlere götürür - telefonunuzla gizli bir 3D dünya görür, bilmeceler çözer ve Koruyucu'nun izlerini takip edersiniz. Simülasyon değil. Müze değil. Gerçek bir canlı macera.", cta: "İndir ve başla", features: [
+  quests: { eyebrow: "Bulgaristan'da türünün ilki", title: "Aglen yakınında gerçek bir AR macerası", text: "Unlocking Bulgaria sizi gerçek yerlere götürür - telefonunuzla gizli bir 3D dünya görür, bilmeceler çözer ve Koruyucu'nun izlerini takip edersiniz. Simülasyon değil. Müze değil. Gerçek bir canlı macera.", cta: "İndir ve başla", features: [
     { id: "ar", title: "Artırılmış Gerçeklik (AR)", text: "Bu yerlerde ne gizli? Kamerayı doğrult ve gizli dünyanın gözlerinin önünde canlandığını gör." },
     { id: "gps", title: "Canlı GPS görevleri", text: "Hangi yer bir sonraki ipucunu saklıyor? GPS görevini takip ederek Aglen çevresindeki gerçek noktalara ulaş." },
     { id: "story", title: "Tarih farklı anlatılır", text: "Koruyucu kim? Eski işaretler neyi koruyor? Prohodna Mağarası'nın efsanelerini bir oyun aracılığıyla keşfet." },

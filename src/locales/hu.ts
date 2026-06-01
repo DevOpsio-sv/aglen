@@ -16,7 +16,7 @@ export const hu: PageCopy = {
   quests: {
     eyebrow: "Első a maga nemében Bulgáriában",
     title: "Valódi AR-kaland Aglen közelében",
-    text: "Az unlockingbulgaria valódi helyekre vezet: telefonoddal rejtett 3D világot látsz, rejtvényeket oldasz meg, és követed az Őrző nyomait. Nem szimuláció. Nem múzeum. Valódi élő kaland.",
+    text: "Az Unlocking Bulgaria valódi helyekre vezet: telefonoddal rejtett 3D világot látsz, rejtvényeket oldasz meg, és követed az Őrző nyomait. Nem szimuláció. Nem múzeum. Valódi élő kaland.",
     cta: "Letöltés és kezdés",
     features: [
       { id: "ar", title: "Kiterjesztett valóság (AR)", text: "Mi rejtőzik ezeken a helyeken? Irányítsd a kamerát, és nézd, ahogy a rejtett világ életre kel a szemeid előtt." },

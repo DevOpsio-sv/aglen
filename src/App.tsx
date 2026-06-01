@@ -905,16 +905,25 @@ export function App() {
           </div>
 
           <div className="app-showcase" aria-hidden="true">
-            <figure className="ub-banner-card">
-              <img
-                src="/assets/unlocking-bulgaria-quest-banner.png"
-                alt="Unlocking Bulgaria – мобилно AR приключение в Ъглен"
-                width="1024"
-                height="550"
-                loading="lazy"
-                decoding="async"
-                onError={handleImageError}
-              />
+            <figure className="phone-mockup">
+              <div className="phone-frame">
+                <div className="phone-screen">
+                  <div className="phone-dynamic-island" />
+                  <img
+                    src="/assets/unlocking-bulgaria-quest-banner.png"
+                    alt="Unlocking Bulgaria – мобилно AR приключение в Ъглен"
+                    width="1024"
+                    height="550"
+                    loading="lazy"
+                    decoding="async"
+                    onError={handleImageError}
+                  />
+                  <div className="phone-home-indicator" />
+                </div>
+                <div className="phone-btn phone-btn-vol-up" />
+                <div className="phone-btn phone-btn-vol-down" />
+                <div className="phone-btn phone-btn-power" />
+              </div>
               <figcaption>
                 <span>{copy.quests.eyebrow}</span>
                 <strong>{copy.quests.features[0]?.title}</strong>

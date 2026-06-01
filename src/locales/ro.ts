@@ -13,7 +13,7 @@ export const ro: PageCopy = {
   experiences: { eyebrow: "Experiențe", title: "Momente ghidate, nu liste turistice", text: "Experiențe clare pentru vizitatori: destul de scurte pentru un weekend, destul de personale pentru a simți locul.", cta: "Cere acest traseu" },
   gallery: { eyebrow: "Galerie imersivă", title: "Un loc povestit prin lumina râului și piatră", aria: "Galeria Aglen" },
   stay: { eyebrow: "Cazare în Aglen", title: "Odihnă aproape de râu", text: "Aglen oferă opțiuni liniștite de cazare în natură. Pentru disponibilitate și rezervări, contactează-ne." },
-  quests: { eyebrow: "Primul de acest fel în Bulgaria", title: "O aventură AR reală lângă Aglen", text: "unlockingbulgaria te duce în locuri reale - cu telefonul vezi o lume 3D ascunsă, rezolvi enigme și urmezi urmele Gardianului. Nu este simulare. Nu este muzeu. Este o aventură reală live.", cta: "Descarcă și începe", features: [
+  quests: { eyebrow: "Primul de acest fel în Bulgaria", title: "O aventură AR reală lângă Aglen", text: "Unlocking Bulgaria te duce în locuri reale - cu telefonul vezi o lume 3D ascunsă, rezolvi enigme și urmezi urmele Gardianului. Nu este simulare. Nu este muzeu. Este o aventură reală live.", cta: "Descarcă și începe", features: [
     { id: "ar", title: "Realitate augmentată (AR)", text: "Ce se ascunde în aceste locuri? Îndreaptă camera și vezi cum lumea ascunsă prinde viață în fața ochilor tăi." },
     { id: "gps", title: "Misiuni GPS live", text: "Ce loc ascunde următorul indiciu? Urmează misiunea GPS până la reperele reale din jurul Aglen." },
     { id: "story", title: "Istorie spusă altfel", text: "Cine este Gardianul? Ce protejează semnele vechi? Dezvăluie legendele peșterii Prohodna printr-un joc." },

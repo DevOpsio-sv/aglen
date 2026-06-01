@@ -20,7 +20,7 @@ export const en: PageCopy = {
   quests: {
     eyebrow: "First of its kind in Bulgaria",
     title: "A real AR adventure near Aglen",
-    text: "unlockingbulgaria takes you to real places - with your phone you see a hidden 3D world, solve riddles, and follow the Guardian's trail. Not a simulation. Not a museum. A real live adventure.",
+    text: "Unlocking Bulgaria takes you to real places - with your phone you see a hidden 3D world, solve riddles, and follow the Guardian's trail. Not a simulation. Not a museum. A real live adventure.",
     cta: "Download and start",
     features: [
       { id: "ar", title: "Augmented Reality (AR)", text: "What is hidden in these places? Point the camera and see the hidden world come alive before your eyes." },

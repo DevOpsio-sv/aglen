@@ -16,7 +16,7 @@ export const zh: PageCopy = {
   quests: {
     eyebrow: "保加利亚首创体验",
     title: "阿格伦附近的真实 AR 冒险",
-    text: "unlockingbulgaria 会带你到真实地点。用手机看到隐藏的 3D 世界，解开谜题，追随守护者的线索。这不是模拟，也不是博物馆，而是真实现场冒险。",
+    text: "Unlocking Bulgaria 会带你到真实地点。用手机看到隐藏的 3D 世界，解开谜题，追随守护者的线索。这不是模拟，也不是博物馆，而是真实现场冒险。",
     cta: "下载并开始",
     features: [
       { id: "ar", title: "增强现实 (AR)", text: "这些地方隐藏着什么？将摄像头对准，看隐藏世界在眼前出现。" },

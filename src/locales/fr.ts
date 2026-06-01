@@ -16,7 +16,7 @@ export const fr: PageCopy = {
   quests: {
     eyebrow: "Une première en Bulgarie",
     title: "Une vraie aventure AR près d'Aglen",
-    text: "unlockingbulgaria vous mène vers des lieux réels - avec votre téléphone, vous voyez un monde 3D caché, résolvez des énigmes et suivez les traces du Gardien. Pas une simulation. Pas un musée. Une vraie aventure vivante.",
+    text: "Unlocking Bulgaria vous mène vers des lieux réels - avec votre téléphone, vous voyez un monde 3D caché, résolvez des énigmes et suivez les traces du Gardien. Pas une simulation. Pas un musée. Une vraie aventure vivante.",
     cta: "Télécharger et commencer",
     features: [
       { id: "ar", title: "Réalité augmentée (AR)", text: "Qu'est-ce qui se cache dans ces lieux ? Pointez la caméra et voyez le monde caché prendre vie sous vos yeux." },
