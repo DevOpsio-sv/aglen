@@ -7,6 +7,14 @@ import { updateDocumentSEO } from "./seo";
 import { uiTextByLanguage } from "./uiText";
 
 const fallbackImage = "/assets/aglen-hero-river-canyon.png";
+const curatedLandingPageRouteIds = [
+  "visitAglen",
+  "weekendInAglen",
+  "thingsToDo",
+  "natureAroundAglen",
+  "karlukovoGuide",
+  "aglenFromSofia",
+] as const;
 
 function LanguageIcon() {
   return (
@@ -711,19 +719,49 @@ export function App() {
           <p>{copy.hub.text}</p>
         </div>
         <div className="hub-grid">
-          {[...guideLinks, ...landingPageLinks].map((link) => (
+          {guideLinks.map((link) => (
             <a
               className="hub-card reveal"
               href={routeHref(link.routeId)}
               key={link.routeId}
               onClick={(event) => handleRouteClick(event, link.routeId)}
             >
-              {"category" in link && <small>{link.category}</small>}
               <span>{link.label}</span>
               <p>{link.text}</p>
             </a>
           ))}
         </div>
+
+        <div className="section-heading reveal">
+          <p className="eyebrow">{copy.hub.eyebrow}</p>
+          <h2>{localizedUi.landing.relatedGuides}</h2>
+        </div>
+        <div className="hub-grid">
+          {curatedLandingPageRouteIds
+            .map((routeId) => landingPageLinks.find((link) => link.routeId === routeId))
+            .filter((link): link is NonNullable<typeof link> => Boolean(link))
+            .map((link) => (
+              <a
+                className="hub-card reveal"
+                href={routeHref(link.routeId)}
+                key={link.routeId}
+                onClick={(event) => handleRouteClick(event, link.routeId)}
+              >
+                <small>{link.category}</small>
+                <span>{link.label.split(" | ")[0]}</span>
+                <p>{link.text}</p>
+              </a>
+            ))}
+        </div>
+        {landingPageLinks
+          .filter((link) => link.routeId === "visitAglen")
+          .map((link) => (
+            <p className="reveal" key={`${link.routeId}-all-guides`}>
+              <a href={routeHref(link.routeId)} onClick={(event) => handleRouteClick(event, link.routeId)}>
+                {localizedUi.landing.relatedGuides}: {link.label.split(" | ")[0]}
+              </a>
+            </p>
+          ))}
       </section>
 
       <section id="experiences" className="experiences section-shell">
