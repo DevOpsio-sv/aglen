@@ -52,10 +52,10 @@ export const hu: PageCopy = {
   mysteries: [
     { title: "Ahol a folyó eltűnik a szem elől", tag: "Rejtett ösvények", image: images.hero, description: "A Vit nem mutat meg mindent egyszerre. A kanyarok, árnyékok és sziklák kereséssé változtatják a sétát." },
     { title: "Barlangküszöbök", tag: "Kő és csend", image: images.cave, description: "A barlangok a föld régebbi emlékezetéhez tartoznak: földtani, emberi és jelképes rétegek." },
-    { title: "Helyi nevű sziklák", tag: "Folklór táj", image: images.arch, description: "Az olyan nevek, mint Дупката és Слончето személyessé teszik a tájat. Egyszerre látnivalók és történetek." },
+    { title: "Helyi nevű sziklák", tag: "Folklór táj", image: images.arch, description: "Az olyan nevek, mint Dupkata és Sloncheto személyessé teszik a tájat. Egyszerre látnivalók és történetek." },
   ],
   placesList: [
-    { id: "dupkata", title: "Дупката", tag: "Sziklaív", image: images.caveCard, imageAlt: "Mészkő sziklaív a folyó fölött Aglen közelében", description: "Természetes kőív a Vit fölött, lassú sétákhoz, csendes fotókhoz és rejtett útvonalérzethez." },
+    { id: "dupkata", title: "Dupkata", tag: "Sziklaív", image: images.caveCard, imageAlt: "Mészkő sziklaív a folyó fölött Aglen közelében", description: "Természetes kőív a Vit fölött, lassú sétákhoz, csendes fotókhoz és rejtett útvonalérzethez." },
     { id: "sloncheto", title: "Слончето", tag: "Sziklaalak", image: images.hero, imageAlt: "Kanyon, folyó és mészkősziklák Aglen közelében", description: "Játékos folyóparti forma, amely egy egyszerű sétát kis felfedezéssé tesz." },
     { id: "chervena-stena", title: "Червена стена", tag: "Kanyonkilátás", image: images.riverSunsetCard, imageAlt: "Kanyontáj folyóval és faluval", description: "Mészkő, erdő és folyófény drámai találkozása a falu közelében." },
     { id: "rachkov-vir", title: "Рачков вир", tag: "Folyómedence", image: images.nearbyRetreatCard, imageAlt: "Csendes folyómedence mészkőparttal és erdővel", description: "Nyugodt természeti pont vízparti pihenéshez, piknikhez és lassabb ritmushoz a Vit mellett." },
@@ -77,10 +77,10 @@ export const hu: PageCopy = {
     { title: "A rejtett völgy fölött", image: images.aerial, alt: "Légi nézet folyóra, sziklákra és falusi tájra", size: "wide" },
   ],
   mapStops: [
-    { title: "A falu központja", detail: "Kezdd Aglen emberi léptékével: utcák, templom, helyi emlékezet és tájékozódás." },
-    { title: "Ösvény a Vit mellett", detail: "Kövesd a vizet csendes kilátások, kanyarok és fotózásra alkalmas árnyékos helyek felé." },
-    { title: "Дупката", detail: "Természetes kőküszöb és a célpont egyik erős vizuális jelképe." },
-    { title: "Barlangok és sziklaformák", detail: "Fedezd fel a régebbi tájréteget óvatosan, helyi vezetéssel és a terep tiszteletével." },
+    { title: "A falu központja", detail: "A séta Aglen szívéből indul – a főtérről, a templomtól és a régi házakból, amelyek őrzik a falu lelkét." },
+    { title: "Ösvény a Vit mellett", detail: "Kövesd a Vit folyó áramlását festői partok, árnyékos fák és a sziklákra nyíló gyönyörű kilátások mentén." },
+    { title: "Dupkata", detail: "Aglen egyik legikonikusabb természetes szimbóluma – egy lenyűgöző sziklaív, amelyet a természet évezredek alatt alakított ki." },
+    { title: "Barlangok és sziklajelenségek", detail: "Fedezd fel a karszt-domborzat rejtett világát – barlangokat, sziklaképződményeket és páratlan hangulatú helyeket." },
   ],
   accommodationList: [
     { title: "Vendégszobák", type: "Falusi szállás", description: "Csendes szállás helyi otthonban, közel a természethez és a folyóhoz.", image: images.church },

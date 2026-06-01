@@ -50,10 +50,10 @@ export const de: PageCopy = {
   mysteries: [
     { title: "Wo der Fluss aus dem Blick verschwindet", tag: "Verborgene Wege", image: images.hero, description: "Der Vit zeigt nicht alles auf einmal. Biegungen, Schatten und Felsen machen den Spaziergang zu einer Suche." },
     { title: "Die Schwellen der Höhlen", tag: "Stein und Stille", image: images.cave, description: "Die Höhlen tragen eine ältere Erinnerung der Landschaft: geologisch, menschlich und symbolisch." },
-    { title: "Felsen mit lokalen Namen", tag: "Folklore-Landschaft", image: images.arch, description: "Namen wie Дупката und Слончето machen die Landschaft persönlich. Sie sind Sehenswürdigkeiten und Geschichten zugleich." },
+    { title: "Felsen mit lokalen Namen", tag: "Folklore-Landschaft", image: images.arch, description: "Namen wie Dupkata und Sloncheto machen die Landschaft persönlich. Sie sind Sehenswürdigkeiten und Geschichten zugleich." },
   ],
   placesList: [
-    { id: "dupkata", title: "Дупката", tag: "Felsbogen", image: images.caveCard, imageAlt: "Kalkstein-Felsbogen über dem Fluss nahe Aglen", description: "Ein natürlicher Steinbogen über dem Vit, geschaffen für langsame Spaziergänge, ruhige Fotos und das Gefühl einer verborgenen Route." },
+    { id: "dupkata", title: "Dupkata", tag: "Felsbogen", image: images.caveCard, imageAlt: "Kalkstein-Felsbogen über dem Fluss nahe Aglen", description: "Ein natürlicher Steinbogen über dem Vit, geschaffen für langsame Spaziergänge, ruhige Fotos und das Gefühl einer verborgenen Route." },
     { id: "sloncheto", title: "Слончето", tag: "Felsfigur", image: images.hero, imageAlt: "Canyon, Fluss und Kalksteinfelsen nahe Aglen", description: "Eine spielerische Form am Fluss, die einen gewöhnlichen Spaziergang in eine kleine Entdeckung verwandelt." },
     { id: "chervena-stena", title: "Червена стена", tag: "Canyonblick", image: images.riverSunsetCard, imageAlt: "Canyonlandschaft mit Fluss und Dorf", description: "Ein dramatisches Zusammentreffen von Kalkstein, Wald und Flusslicht nahe dem Dorf." },
     { id: "rachkov-vir", title: "Рачков вир", tag: "Flussbecken", image: images.nearbyRetreatCard, imageAlt: "Ruhiges Flussbecken mit Kalksteinufer und Wald", description: "Ein stiller Naturpunkt für eine Pause am Wasser, ein Picknick und einen langsameren Rhythmus am Vit." },
@@ -75,10 +75,10 @@ export const de: PageCopy = {
     { title: "Über dem verborgenen Tal", image: images.aerial, alt: "Luftblick auf Fluss, Felsen und ländliches Dorf", size: "wide" },
   ],
   mapStops: [
-    { title: "Das Dorfzentrum", detail: "Beginne mit dem menschlichen Maßstab von Aglen: Straßen, Kirche, lokale Erinnerung und Orientierung." },
-    { title: "Der Weg am Vit", detail: "Folge dem Wasser zu stillen Aussichten, Biegungen und schattigen Orten für Fotografie." },
-    { title: "Дупката", detail: "Eine natürliche Steinschwelle und eines der starken visuellen Symbole des Reiseziels." },
-    { title: "Höhlen und Felsformen", detail: "Entdecke die ältere Landschaftsschicht mit Sorgfalt, lokaler Führung und Respekt vor dem Gelände." },
+    { title: "Das Dorfzentrum", detail: "Der Spaziergang beginnt im Herzen von Aglen – dem Platz, der Kirche und den alten Häusern, die den Geist des Dorfes bewahren." },
+    { title: "Der Weg am Vit", detail: "Folge dem Lauf des Vit-Flusses entlang malerischer Ufer, schattiger Bäume und schöner Blicke auf die Felsen." },
+    { title: "Dupkata", detail: "Eines der markantesten Natursymbole von Aglen – ein beeindruckender Felsbogen, der über Jahrtausende von der Natur geformt wurde." },
+    { title: "Höhlen und Felsphänomene", detail: "Entdecke die verborgene Welt des Karstgeländes – Höhlen, Felsformationen und Orte mit unvergleichlicher Atmosphäre." },
   ],
   accommodationList: [
     { title: "Gästezimmer", type: "Unterkunft im Dorf", description: "Ruhige Unterkunft in einem lokalen Haus, nahe an Natur und Fluss.", image: images.church },

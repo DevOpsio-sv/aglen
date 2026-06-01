@@ -50,10 +50,10 @@ export const it: PageCopy = {
   mysteries: [
     { title: "Dove il fiume scompare alla vista", tag: "Percorsi nascosti", image: images.hero, description: "Il Vit non rivela tutto subito. Curve, ombre e rocce trasformano la passeggiata in ricerca." },
     { title: "Le soglie delle grotte", tag: "Pietra e silenzio", image: images.cave, description: "Le grotte custodiscono una memoria più antica: geologica, umana e simbolica." },
-    { title: "Rocce con nomi locali", tag: "Paesaggio folclorico", image: images.arch, description: "Nomi come Дупката e Слончето rendono il paesaggio personale. Sono attrazioni e storie allo stesso tempo." },
+    { title: "Rocce con nomi locali", tag: "Paesaggio folclorico", image: images.arch, description: "Nomi come Dupkata e Sloncheto rendono il paesaggio personale. Sono attrazioni e storie allo stesso tempo." },
   ],
   placesList: [
-    { id: "dupkata", title: "Дупката", tag: "Arco roccioso", image: images.caveCard, imageAlt: "Arco calcareo sopra il fiume vicino ad Aglen", description: "Un arco naturale di pietra sopra il Vit, creato per camminate lente, fotografie tranquille e la sensazione di un percorso nascosto." },
+    { id: "dupkata", title: "Dupkata", tag: "Arco roccioso", image: images.caveCard, imageAlt: "Arco calcareo sopra il fiume vicino ad Aglen", description: "Un arco naturale di pietra sopra il Vit, creato per camminate lente, fotografie tranquille e la sensazione di un percorso nascosto." },
     { id: "sloncheto", title: "Слончето", tag: "Figura rocciosa", image: images.hero, imageAlt: "Canyon, fiume e scogliere calcaree vicino ad Aglen", description: "Una forma giocosa lungo il fiume che trasforma una passeggiata ordinaria in una piccola scoperta." },
     { id: "chervena-stena", title: "Червена стена", tag: "Vista canyon", image: images.riverSunsetCard, imageAlt: "Paesaggio di canyon con fiume e villaggio", description: "Un incontro drammatico tra calcare, bosco e luce del fiume vicino al villaggio." },
     { id: "rachkov-vir", title: "Рачков вир", tag: "Pozza del fiume", image: images.nearbyRetreatCard, imageAlt: "Pozza tranquilla con riva calcarea e bosco", description: "Un punto naturale calmo per una pausa accanto all'acqua, un picnic e un ritmo più lento vicino al Vit." },
@@ -75,10 +75,10 @@ export const it: PageCopy = {
     { title: "Sopra la valle nascosta", image: images.aerial, alt: "Vista aerea di fiume, rocce e villaggio", size: "wide" },
   ],
   mapStops: [
-    { title: "Il centro del villaggio", detail: "Inizia dalla scala umana di Aglen: strade, chiesa, memoria locale e orientamento." },
-    { title: "Il sentiero lungo il Vit", detail: "Segui l'acqua verso viste tranquille, curve e luoghi ombreggiati per la fotografia." },
-    { title: "Дупката", detail: "Una soglia naturale di pietra e uno dei forti simboli visivi della destinazione." },
-    { title: "Grotte e forme rocciose", detail: "Scopri lo strato antico del paesaggio con cura, guida locale e rispetto." },
+    { title: "Il centro del villaggio", detail: "La passeggiata inizia nel cuore di Aglen – la piazza, la chiesa e le vecchie case che custodiscono lo spirito del villaggio." },
+    { title: "Il sentiero lungo il Vit", detail: "Segui il corso del fiume Vit lungo rive pittoresche, alberi ombrosi e belle viste sulle rocce." },
+    { title: "Dupkata", detail: "Uno dei simboli naturali più iconici di Aglen – un imponente arco di roccia plasmato dalla natura nel corso dei millenni." },
+    { title: "Grotte e fenomeni rocciosi", detail: "Scopri il mondo nascosto del rilievo carsico – grotte, formazioni rocciose e luoghi dall'atmosfera incomparabile." },
   ],
   accommodationList: [
     { title: "Camere per ospiti", type: "Soggiorno nel villaggio", description: "Camere tranquille in una casa locale, vicino alla natura e al fiume.", image: images.church },

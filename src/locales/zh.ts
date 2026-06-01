@@ -52,10 +52,10 @@ export const zh: PageCopy = {
   mysteries: [
     { title: "河流从视线中消失的地方", tag: "隐藏路径", image: images.hero, description: "维特河不会一次展示全部。转弯、阴影和岩石让步行变成寻找。" },
     { title: "洞穴门槛", tag: "石与静", image: images.cave, description: "洞穴属于土地更古老的记忆：地质、人类与象征。" },
-    { title: "带地方名字的岩石", tag: "民俗景观", image: images.arch, description: "Дупката 和 Слончето 这样的名字让景观变得亲近。它们既是地标，也是故事。" },
+    { title: "带地方名字的岩石", tag: "民俗景观", image: images.arch, description: "Dupkata 和 Sloncheto 这样的名字让景观变得亲近。它们既是地标，也是故事。" },
   ],
   placesList: [
-    { id: "dupkata", title: "Дупката", tag: "岩石拱门", image: images.caveCard, imageAlt: "阿格伦附近河上的石灰岩拱门", description: "维特河上方的天然石拱，适合慢走、安静拍照和感受隐藏路线。" },
+    { id: "dupkata", title: "Dupkata", tag: "岩石拱门", image: images.caveCard, imageAlt: "阿格伦附近河上的石灰岩拱门", description: "维特河上方的天然石拱，适合慢走、安静拍照和感受隐藏路线。" },
     { id: "sloncheto", title: "Слончето", tag: "岩石形象", image: images.hero, imageAlt: "阿格伦附近的峡谷、河流和石灰岩峭壁", description: "河边有趣的岩形，让普通散步变成小发现。" },
     { id: "chervena-stena", title: "Червена стена", tag: "峡谷视野", image: images.riverSunsetCard, imageAlt: "有河流和村庄的峡谷景观", description: "村庄附近石灰岩、森林和河光交会的戏剧性地点。" },
     { id: "rachkov-vir", title: "Рачков вир", tag: "河潭", image: images.nearbyRetreatCard, imageAlt: "石灰岩河岸和森林旁的安静河潭", description: "适合水边休息、野餐并放慢节奏的自然点。" },
@@ -77,10 +77,10 @@ export const zh: PageCopy = {
     { title: "隐秘河谷上方", image: images.aerial, alt: "河流、峭壁和乡村的航拍视角", size: "wide" },
   ],
   mapStops: [
-    { title: "村庄中心", detail: "从阿格伦的人尺度开始：街道、教堂、地方记忆和方向感。" },
-    { title: "维特河边小路", detail: "沿水前行，寻找安静视野、河湾和适合摄影的阴凉处。" },
-    { title: "Дупката", detail: "天然石门槛，也是目的地强烈的视觉符号之一。" },
-    { title: "洞穴与岩形", detail: "以谨慎、地方引导和对地形的尊重发现更古老的景观。" },
+    { title: "村庄中心", detail: "散步从阿格伦的心脏出发——广场、教堂和守护着村庄灵魂的古老房屋。" },
+    { title: "维特河边小路", detail: "沿着维特河流，走过风景如画的河岸、遮荫的树木，欣赏美丽的岩石景色。" },
+    { title: "Dupkata", detail: "阿格伦最具标志性的自然符号之一——一座令人印象深刻的岩石拱门，历经数千年由自然塑造而成。" },
+    { title: "洞穴与岩石奇观", detail: "发现喀斯特地貌的隐秘世界——洞穴、岩石地貌和拥有无与伦比氛围的地方。" },
   ],
   accommodationList: [
     { title: "客房", type: "村庄住宿", description: "位于当地家庭中的安静住宿，靠近自然和河流。", image: images.church },

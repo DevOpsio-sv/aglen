@@ -50,10 +50,10 @@ export const es: PageCopy = {
   mysteries: [
     { title: "Donde el río desaparece de la vista", tag: "Rutas ocultas", image: images.hero, description: "El Vit no revela todo de una vez. Curvas, sombras y líneas de roca convierten el paseo en una búsqueda." },
     { title: "Los umbrales de las cuevas", tag: "Piedra y silencio", image: images.cave, description: "Las cuevas pertenecen a una memoria más antigua de la tierra: geológica, humana y simbólica." },
-    { title: "Rocas con nombres locales", tag: "Paisaje de folclore", image: images.arch, description: "Nombres como Дупката y Слончето hacen que el paisaje sea personal. Son lugares de interés e historias al mismo tiempo." },
+    { title: "Rocas con nombres locales", tag: "Paisaje de folclore", image: images.arch, description: "Nombres como Dupkata y Sloncheto hacen que el paisaje sea personal. Son lugares de interés e historias al mismo tiempo." },
   ],
   placesList: [
-    { id: "dupkata", title: "Дупката", tag: "Arco de roca", image: images.caveCard, imageAlt: "Arco de roca caliza sobre el río cerca de Aglen", description: "Un arco natural de piedra sobre el Vit, creado para caminatas lentas, fotos tranquilas y la sensación de una ruta escondida." },
+    { id: "dupkata", title: "Dupkata", tag: "Arco de roca", image: images.caveCard, imageAlt: "Arco de roca caliza sobre el río cerca de Aglen", description: "Un arco natural de piedra sobre el Vit, creado para caminatas lentas, fotos tranquilas y la sensación de una ruta escondida." },
     { id: "sloncheto", title: "Слончето", tag: "Figura de roca", image: images.hero, imageAlt: "Cañón, río y acantilados calizos cerca de Aglen", description: "Una forma juguetona junto al río que convierte una caminata común en un pequeño descubrimiento." },
     { id: "chervena-stena", title: "Червена стена", tag: "Vista de cañón", image: images.riverSunsetCard, imageAlt: "Paisaje de cañón con río y pueblo", description: "Un encuentro dramático de caliza, bosque y luz de río cerca del pueblo." },
     { id: "rachkov-vir", title: "Рачков вир", tag: "Poza del río", image: images.nearbyRetreatCard, imageAlt: "Poza tranquila del río con orilla caliza y bosque", description: "Un punto natural tranquilo para una pausa junto al agua, un picnic y un ritmo más lento al lado del Vit." },
@@ -75,10 +75,10 @@ export const es: PageCopy = {
     { title: "Sobre el valle oculto", image: images.aerial, alt: "Vista aérea de río, acantilados y pueblo rural", size: "wide" },
   ],
   mapStops: [
-    { title: "El centro del pueblo", detail: "Empieza por la escala humana de Aglen: calles, iglesia, memoria local y orientación." },
-    { title: "El sendero junto al Vit", detail: "Sigue el agua hacia vistas tranquilas, curvas y lugares de sombra para fotografiar." },
-    { title: "Дупката", detail: "Un umbral natural de piedra y uno de los símbolos visuales fuertes del destino." },
-    { title: "Cuevas y formas de roca", detail: "Descubre la capa más antigua del paisaje con cuidado, guía local y respeto por el terreno." },
+    { title: "El centro del pueblo", detail: "El paseo comienza en el corazón de Aglen – la plaza, la iglesia y las viejas casas que guardan el espíritu del pueblo." },
+    { title: "El sendero junto al Vit", detail: "Sigue el curso del río Vit por orillas pintorescas, árboles frondosos y hermosas vistas de las rocas." },
+    { title: "Dupkata", detail: "Uno de los símbolos naturales más emblemáticos de Aglen – un impresionante arco de roca formado por la naturaleza a lo largo de milenios." },
+    { title: "Cuevas y fenómenos rocosos", detail: "Descubre el mundo oculto del relieve kárstico – cuevas, formaciones rocosas y lugares con una atmósfera incomparable." },
   ],
   accommodationList: [
     { title: "Habitaciones para huéspedes", type: "Alojamiento en el pueblo", description: "Alojamiento tranquilo en una casa local, cerca de la naturaleza y del río.", image: images.church },

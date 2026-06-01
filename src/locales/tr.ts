@@ -50,10 +50,10 @@ export const tr: PageCopy = {
   mysteries: [
     { title: "Nehrin gözden kaybolduğu yer", tag: "Gizli yollar", image: images.hero, description: "Vit her şeyi bir anda göstermez. Kıvrımlar, gölgeler ve kayalar yürüyüşü arayışa dönüştürür." },
     { title: "Mağara eşikleri", tag: "Taş ve sessizlik", image: images.cave, description: "Mağaralar daha eski bir hafızayı taşır: jeolojik, insani ve sembolik." },
-    { title: "Yerel adları olan kayalar", tag: "Folklor manzarası", image: images.arch, description: "Дупката ve Слончето gibi adlar manzarayı kişisel kılar. Bunlar aynı anda hem görülecek yerler hem de hikayelerdir." },
+    { title: "Yerel adları olan kayalar", tag: "Folklor manzarası", image: images.arch, description: "Dupkata ve Sloncheto gibi adlar manzarayı kişisel kılar. Bunlar aynı anda hem görülecek yerler hem de hikayelerdir." },
   ],
   placesList: [
-    { id: "dupkata", title: "Дупката", tag: "Kaya kemeri", image: images.caveCard, imageAlt: "Aglen yakınında nehir üstünde kireçtaşı kemer", description: "Vit üzerinde doğal bir taş kemer; yavaş yürüyüşler, sakin fotoğraflar ve gizli bir rota hissi için." },
+    { id: "dupkata", title: "Dupkata", tag: "Kaya kemeri", image: images.caveCard, imageAlt: "Aglen yakınında nehir üstünde kireçtaşı kemer", description: "Vit üzerinde doğal bir taş kemer; yavaş yürüyüşler, sakin fotoğraflar ve gizli bir rota hissi için." },
     { id: "sloncheto", title: "Слончето", tag: "Kaya şekli", image: images.hero, imageAlt: "Aglen yakınında kanyon, nehir ve kireçtaşı kayalıkları", description: "Nehir kıyısındaki oyunlu şekil, sıradan yürüyüşü küçük bir keşfe çevirir." },
     { id: "chervena-stena", title: "Червена стена", tag: "Kanyon görünümü", image: images.riverSunsetCard, imageAlt: "Nehir ve köy içeren kanyon manzarası", description: "Köyün yakınında kireçtaşı, orman ve nehir ışığının dramatik buluşması." },
     { id: "rachkov-vir", title: "Рачков вир", tag: "Nehir havuzu", image: images.nearbyRetreatCard, imageAlt: "Kireçtaşı kıyılı ve ormanlı sakin nehir havuzu", description: "Su kenarında mola, piknik ve Vit yanında daha yavaş bir ritim için sakin bir doğal nokta." },
@@ -75,10 +75,10 @@ export const tr: PageCopy = {
     { title: "Gizli vadinin üstünde", image: images.aerial, alt: "Nehir, kayalar ve köyün havadan görünümü", size: "wide" },
   ],
   mapStops: [
-    { title: "Köy merkezi", detail: "Aglen'in insan ölçeğinden başlayın: sokaklar, kilise, yerel hafıza ve yön bulma." },
-    { title: "Vit yolu", detail: "Suyu takip ederek sakin manzaralara, kıvrımlara ve gölgeli noktalara gidin." },
-    { title: "Дупката", detail: "Doğal taş eşiği ve destinasyonun güçlü görsel sembollerinden biri." },
-    { title: "Mağaralar ve kaya şekilleri", detail: "Eski manzara katmanını dikkatle, yerel rehberle ve saygıyla keşfedin." },
+    { title: "Köy merkezi", detail: "Yürüyüş, Aglen'in kalbinden başlar – meydan, kilise ve köyün ruhunu koruyan eski evler." },
+    { title: "Vit yolu", detail: "Vit Nehri'nin akışını manzaralı kıyılar, gölgeli ağaçlar ve kayalara açılan güzel görüntüler boyunca takip edin." },
+    { title: "Dupkata", detail: "Aglen'in en simgesel doğal sembollerinden biri – doğanın binlerce yıl boyunca şekillendirdiği etkileyici bir kaya kemeri." },
+    { title: "Mağaralar ve kaya olayları", detail: "Karst rölyefinin gizli dünyasını keşfedin – mağaralar, kaya oluşumları ve eşsiz atmosferli yerler." },
   ],
   accommodationList: [
     { title: "Misafir odaları", type: "Köy konaklaması", description: "Doğaya ve nehre yakın yerel evde sakin odalar.", image: images.church },

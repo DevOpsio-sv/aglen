@@ -50,10 +50,10 @@ export const ro: PageCopy = {
   mysteries: [
     { title: "Unde râul dispare din vedere", tag: "Poteci ascunse", image: images.hero, description: "Vit nu arată totul deodată. Coturile, umbrele și stâncile transformă plimbarea în căutare." },
     { title: "Pragurile peșterilor", tag: "Piatră și liniște", image: images.cave, description: "Peșterile poartă o memorie mai veche: geologică, umană și simbolică." },
-    { title: "Stânci cu nume locale", tag: "Peisaj folcloric", image: images.arch, description: "Nume precum Дупката și Слончето fac peisajul personal. Sunt repere și povești în același timp." },
+    { title: "Stânci cu nume locale", tag: "Peisaj folcloric", image: images.arch, description: "Nume precum Dupkata și Sloncheto fac peisajul personal. Sunt repere și povești în același timp." },
   ],
   placesList: [
-    { id: "dupkata", title: "Дупката", tag: "Arcă de stâncă", image: images.caveCard, imageAlt: "Arcă de calcar deasupra râului lângă Aglen", description: "O arcă naturală de piatră deasupra râului Vit, creată pentru plimbări lente, fotografii calme și sentimentul unui traseu ascuns." },
+    { id: "dupkata", title: "Dupkata", tag: "Arcă de stâncă", image: images.caveCard, imageAlt: "Arcă de calcar deasupra râului lângă Aglen", description: "O arcă naturală de piatră deasupra râului Vit, creată pentru plimbări lente, fotografii calme și sentimentul unui traseu ascuns." },
     { id: "sloncheto", title: "Слончето", tag: "Formă de stâncă", image: images.hero, imageAlt: "Canion, râu și stânci calcaroase lângă Aglen", description: "O formă jucăușă de lângă râu care transformă o plimbare obișnuită într-o mică descoperire." },
     { id: "chervena-stena", title: "Червена стена", tag: "Vedere de canion", image: images.riverSunsetCard, imageAlt: "Peisaj de canion cu râu și sat", description: "O întâlnire dramatică între calcar, pădure și lumina râului aproape de sat." },
     { id: "rachkov-vir", title: "Рачков вир", tag: "Bulboană de râu", image: images.nearbyRetreatCard, imageAlt: "Bulboană liniștită cu mal calcaros și pădure", description: "Un punct natural calm pentru o pauză lângă apă, picnic și un ritm mai lent lângă Vit." },
@@ -75,10 +75,10 @@ export const ro: PageCopy = {
     { title: "Deasupra văii ascunse", image: images.aerial, alt: "Vedere aeriană cu râu, stânci și sat", size: "wide" },
   ],
   mapStops: [
-    { title: "Centrul satului", detail: "Începe cu scara umană a Aglen: străzi, biserică, memorie locală și orientare." },
-    { title: "Poteca de pe Vit", detail: "Urmează apa spre priveliști calme, coturi și locuri umbrite." },
-    { title: "Дупката", detail: "Un prag natural de piatră și unul dintre simbolurile vizuale puternice ale destinației." },
-    { title: "Peșteri și forme de stâncă", detail: "Descoperă stratul vechi al peisajului cu grijă, ghid local și respect." },
+    { title: "Centrul satului", detail: "Plimbarea începe din inima Aglen – piața, biserica și casele vechi care păstrează spiritul satului." },
+    { title: "Poteca de pe Vit", detail: "Urmează cursul râului Vit pe maluri pitorești, copaci umbroși și priveliști frumoase ale stâncilor." },
+    { title: "Dupkata", detail: "Unul dintre cele mai emblematice simboluri naturale ale Aglen – un arc de stâncă impresionant, modelat de natură de-a lungul mileniilor." },
+    { title: "Peșteri și fenomene stâncoase", detail: "Descoperă lumea ascunsă a reliefului carstic – peșteri, formațiuni stâncoase și locuri cu o atmosferă de neegalat." },
   ],
   accommodationList: [
     { title: "Camere pentru oaspeți", type: "Cazare în sat", description: "Camere liniștite într-o casă locală, aproape de natură și râu.", image: images.church },

@@ -50,10 +50,10 @@ export const ja: PageCopy = {
   mysteries: [
     { title: "川が視界から消える場所", tag: "隠れた道", image: images.hero, description: "ヴィト川は一度にすべてを見せません。曲がり角、影、崖が、散策を探す時間に変えます。" },
     { title: "洞窟の入口", tag: "石と静けさ", image: images.cave, description: "洞窟は土地の古い記憶に属しています。地質、人の営み、象徴が重なる場所です。" },
-    { title: "地元名を持つ岩", tag: "民話の風景", image: images.arch, description: "Дупката や Слончето のような名前が、風景を個人的なものにします。それらは見どころであり、同時に物語でもあります。" },
+    { title: "地元名を持つ岩", tag: "民話の風景", image: images.arch, description: "Dupkata や Sloncheto のような名前が、風景を個人的なものにします。それらは見どころであり、同時に物語でもあります。" },
   ],
   placesList: [
-    { id: "dupkata", title: "Дупката", tag: "岩のアーチ", image: images.caveCard, imageAlt: "アグレン近くの川の上にある石灰岩の岩のアーチ", description: "ヴィト川の上にある自然の石のアーチ。ゆっくり歩き、静かに撮影し、隠れたルートの感覚を味わうための場所です。" },
+    { id: "dupkata", title: "Dupkata", tag: "岩のアーチ", image: images.caveCard, imageAlt: "アグレン近くの川の上にある石灰岩の岩のアーチ", description: "ヴィト川の上にある自然の石のアーチ。ゆっくり歩き、静かに撮影し、隠れたルートの感覚を味わうための場所です。" },
     { id: "sloncheto", title: "Слончето", tag: "岩の形", image: images.hero, imageAlt: "アグレン近くの峡谷、川、石灰岩の崖", description: "川辺の遊び心ある形が、普通の散策を小さな発見に変えます。" },
     { id: "chervena-stena", title: "Червена стена", tag: "峡谷の眺め", image: images.riverSunsetCard, imageAlt: "川と村を含む峡谷の風景", description: "村の近くで、石灰岩、森、川の光が劇的に出会う場所です。" },
     { id: "rachkov-vir", title: "Рачков вир", tag: "川の淵", image: images.nearbyRetreatCard, imageAlt: "石灰岩の岸と森に囲まれた静かな川の淵", description: "水辺で休み、ピクニックし、ヴィト川のそばでゆっくりしたリズムを感じる静かな自然の地点です。" },
@@ -75,10 +75,10 @@ export const ja: PageCopy = {
     { title: "隠れた谷の上から", image: images.aerial, alt: "川、崖、田園の村を見下ろす空撮風景", size: "wide" },
   ],
   mapStops: [
-    { title: "村の中心", detail: "アグレンの人の尺度から始めます。道、教会、地元の記憶、方向感覚を感じる場所です。" },
-    { title: "ヴィト川沿いの道", detail: "水をたどり、静かな眺め、曲がり角、写真に向く木陰へ進みます。" },
-    { title: "Дупката", detail: "自然の石の入口であり、この目的地の強い視覚的シンボルの一つです。" },
-    { title: "洞窟と岩の形", detail: "より古い風景の層を、注意深く、地元の案内と地形への敬意をもって見つけます。" },
+    { title: "村の中心", detail: "散策はアグレンの中心から始まります──広場、教会、そして村の魂を守る古い家々。" },
+    { title: "ヴィト川沿いの道", detail: "ヴィト川の流れをたどり、景色の良い川岸、木陰、岩への美しい眺めを楽しみましょう。" },
+    { title: "Dupkata", detail: "アグレンを代表する自然のシンボルのひとつ──数千年にわたり自然が形成した印象的な岩のアーチ。" },
+    { title: "洞窟と岩石現象", detail: "カルスト地形の隠れた世界を発見しましょう──洞窟、岩石地形、そして比類なき雰囲気の場所。" },
   ],
   accommodationList: [
     { title: "ゲストルーム", type: "村での宿泊", description: "自然と川に近い地元の家での静かな宿泊。", image: images.church },
