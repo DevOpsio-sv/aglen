@@ -1,6 +1,7 @@
 import { languages } from "./locales/shared";
 import type { LanguageCode } from "./locales/types";
 import { landingPages, type LandingPageId } from "./landingPages";
+import { publishedBusinesses } from "./localBusinesses";
 
 export type CoreRouteId =
   | "home"
@@ -20,6 +21,7 @@ export type CoreRouteId =
   | "travelGuide"
   | "seasonal"
   | "events"
+  | "localBusinesses"
   | "trust"
   | "editorial"
   | "localSeo"
@@ -37,7 +39,11 @@ export type StaticRoute = {
 export type ResolvedRoute = {
   language: LanguageCode;
   routeId: RouteId;
+  // Set when the path addresses a single business: /<lang>/local-businesses/<slug>/
+  businessSlug?: string;
 };
+
+export const BUSINESS_ROUTE_SLUG = "local-businesses";
 
 export const DEFAULT_LANGUAGE: LanguageCode = "bg";
 
@@ -58,7 +64,8 @@ const coreRoutes: StaticRoute[] = [
   { id: "app", slug: "app", sectionId: "app" },
   { id: "travelGuide", slug: "travel-guide", sectionId: "travel-guide" },
   { id: "seasonal", slug: "travel-guide/seasonal-guide", sectionId: "travel-guide" },
-  { id: "events", slug: "events", sectionId: "travel-guide" },
+  { id: "events", slug: "events", sectionId: "events" },
+  { id: "localBusinesses", slug: "local-businesses", sectionId: "local-businesses" },
   { id: "trust", slug: "about", sectionId: "trust" },
   { id: "editorial", slug: "editorial-policy", sectionId: "trust" },
   { id: "localSeo", slug: "local-presence", sectionId: "trust" },
@@ -113,13 +120,27 @@ export function resolveRoute(pathname: string, search = ""): ResolvedRoute {
       : DEFAULT_LANGUAGE;
 
   const slug = isLanguageCode(firstSegment) ? segments.slice(1).join("/") : "";
+
+  // Business detail pages hang off the listing route: they share its component
+  // and differ only by the trailing slug.
+  if (slug.startsWith(`${BUSINESS_ROUTE_SLUG}/`)) {
+    const businessSlug = slug.slice(BUSINESS_ROUTE_SLUG.length + 1).replace(/\/$/, "");
+    if (businessSlug) return { language, routeId: "localBusinesses", businessSlug };
+  }
+
   const route = routesBySlug.get(slug) ?? getStaticRoute("home");
 
   return { language, routeId: route.id };
 }
 
+export function buildBusinessPath(language: LanguageCode, businessSlug: string): string {
+  return `/${language}/${BUSINESS_ROUTE_SLUG}/${businessSlug}/`;
+}
+
 export function getAllStaticRoutePaths(): string[] {
-  return allLanguageCodes.flatMap((language) =>
-    staticRoutes.map((route) => buildRoutePath(language, route.id)),
-  );
+  const businesses = publishedBusinesses();
+  return allLanguageCodes.flatMap((language) => [
+    ...staticRoutes.map((route) => buildRoutePath(language, route.id)),
+    ...businesses.map((business) => buildBusinessPath(language, business.slug)),
+  ]);
 }

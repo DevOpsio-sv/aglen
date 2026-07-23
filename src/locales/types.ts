@@ -53,9 +53,18 @@ export type MapStop = {
   detail: string;
 };
 
+export type TimelineSection = {
+  heading: string;
+  body: string[];
+};
+
 export type TimelineItem = {
   title: string;
   detail: string;
+  // Optional long-form content shown in the timeline modal. When present, the modal
+  // renders `intro` + `sections` instead of the short `detail`.
+  intro?: string;
+  sections?: TimelineSection[];
 };
 
 export type Accommodation = {
@@ -65,6 +74,103 @@ export type Accommodation = {
   image: string;
 };
 
+// Text that may be provided per language, with Bulgarian as the required fallback.
+export type LocalizedText = Partial<Record<LanguageCode, string>> & { bg: string };
+
+export type EventCategory = "traditions" | "children" | "nature" | "contest" | "culture";
+
+// Season an event recurs in — used by the seasonal timeline.
+export type EventSeason = "spring" | "summer" | "autumn" | "winter";
+
+// A block of long-form event information (contest rules, programme, ...),
+// shown in the event details dialog. One level of sub-sections is supported.
+export type EventDetailSection = {
+  title: LocalizedText;
+  body?: LocalizedText;
+  items?: LocalizedText[];
+  note?: LocalizedText; // closing line rendered under the list
+  sections?: EventDetailSection[];
+};
+
+export type EventItem = {
+  id: string;
+  startDate: string; // ISO date, e.g. "2026-05-06"
+  endDate?: string; // ISO date for multi-day events
+  startTime?: string; // e.g. "18:00" (local)
+  dateLabel: string; // human-readable label shown to visitors, e.g. "6 май 2026"
+  location: string;
+  category?: EventCategory;
+  season?: EventSeason; // for recurring events on the seasonal timeline
+  title: LocalizedText;
+  description: LocalizedText;
+  image?: string;
+  imageAlt?: string;
+  // Full-size poster/flyer artwork. When set, the card shows the image uncropped
+  // (letterboxed over a blurred copy) and opens this file in the lightbox.
+  poster?: string;
+  gallery?: string[]; // image paths for past-event galleries / memories
+  // Optional call-to-action button (e.g. a contest entry / registration form).
+  ctaLabel?: LocalizedText;
+  ctaUrl?: string;
+  // Full write-up (rules, categories, prizes) opened from a "details" button.
+  details?: { intro?: LocalizedText[]; sections: EventDetailSection[]; outro?: LocalizedText[] };
+};
+
+// ── Local businesses ─────────────────────────────────────────
+export type BusinessCategory =
+  | "food"
+  | "shops"
+  | "producers"
+  | "stay"
+  | "crafts"
+  | "services"
+  | "farming"
+  | "other";
+
+// Publication state. Only "published" entries are ever rendered, so a pending
+// submission cannot reach the public site without an explicit edit here.
+export type BusinessStatus = "draft" | "pending" | "published" | "temporarily_closed" | "closed";
+
+// Minutes-of-day ranges per weekday, Monday = 1 … Sunday = 7. Omit a day to
+// mark it closed; omit the whole object when the hours are not reliably known.
+export type OpeningHours = Partial<Record<1 | 2 | 3 | 4 | 5 | 6 | 7, { open: string; close: string }[]>>;
+
+export type LocalBusiness = {
+  id: string;
+  slug: string;
+  name: string; // business names stay untranslated
+  category: BusinessCategory;
+  shortDescription: LocalizedText;
+  description?: LocalizedText;
+  story?: { quote: LocalizedText; person: string; role?: LocalizedText; image?: string };
+  coverImage?: string;
+  coverImageAlt?: LocalizedText;
+  gallery?: { src: string; alt: LocalizedText }[];
+  logo?: string;
+  // Contact data is published only when the business supplied it for that purpose.
+  phone?: string;
+  email?: string;
+  website?: string;
+  socialLinks?: { facebook?: string; instagram?: string };
+  address?: string;
+  locality?: string; // town/village, when the business is not based in Ъглен
+  latitude?: number;
+  longitude?: number;
+  openingHours?: OpeningHours;
+  products?: LocalizedText[];
+  services?: LocalizedText[];
+  delivery?: boolean;
+  pickup?: boolean;
+  bookingRequired?: boolean;
+  seasonal?: boolean;
+  seasonalNote?: LocalizedText;
+  accessibility?: LocalizedText[];
+  status: BusinessStatus;
+  verified: boolean; // only ever set by an administrator who checked the listing
+  featured: boolean;
+  lastUpdated?: string; // ISO date
+};
+
 export type PageCopy = {
   nav: {
     home: string;
@@ -72,6 +178,8 @@ export type PageCopy = {
     landmarks: string;
     stay: string;
     quests: string;
+    events: string;
+    business: string;
   };
   ui: {
     languageLabel: string;
@@ -155,6 +263,17 @@ export type PageCopy = {
     noteOne: string;
     noteTwo: string;
     cta: string;
+  };
+  events: {
+    eyebrow: string;
+    title: string;
+    text: string;
+    emptyState: string;
+    dateLabel: string;
+    locationLabel: string;
+    submitTitle: string;
+    submitText: string;
+    submitCta: string;
   };
   hub: {
     eyebrow: string;

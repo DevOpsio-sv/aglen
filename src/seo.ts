@@ -1,7 +1,11 @@
 import { contentByLanguage, languages } from "./content";
+import { localize, sortedEvents } from "./events";
 import { getLandingPage, isLandingPageId } from "./landingPages";
 import type { LanguageCode, PageCopy, PlaceId } from "./locales/types";
-import { allLanguageCodes, buildRoutePath, DEFAULT_LANGUAGE, type CoreRouteId, type RouteId } from "./routes";
+import { allLanguageCodes, buildBusinessPath, buildRoutePath, DEFAULT_LANGUAGE, type CoreRouteId, type RouteId } from "./routes";
+import { findBusiness, localizeText, mapUrl, publishedBusinesses } from "./localBusinesses";
+import { businessesUiByLanguage, categoryLabel as businessCategoryLabel } from "./localBusinessesUi";
+import type { BusinessCategory, LocalBusiness } from "./locales/types";
 import { uiTextByLanguage } from "./uiText";
 
 export const SITE_URL = "https://xn--c1aerj5d.com";
@@ -85,6 +89,31 @@ function absoluteRouteUrl(lang: LanguageCode, routeId: RouteId): string {
   return `${SITE_URL}${buildRoutePath(lang, routeId)}`;
 }
 
+function absoluteBusinessUrl(lang: LanguageCode, slug: string): string {
+  return `${SITE_URL}${buildBusinessPath(lang, slug)}`;
+}
+
+// schema.org type per business category — a specific supported subtype where
+// one exists, LocalBusiness only as the honest fallback.
+const businessSchemaType: Record<BusinessCategory, string> = {
+  food: "FoodEstablishment",
+  shops: "Store",
+  producers: "Store",
+  stay: "LodgingBusiness",
+  crafts: "Store",
+  services: "LocalBusiness",
+  farming: "LocalBusiness",
+  other: "LocalBusiness",
+};
+
+function businessText(lang: LanguageCode, business: LocalBusiness): { title: string; description: string } {
+  const bui = businessesUiByLanguage[lang];
+  return {
+    title: `${business.name} | ${bui.heroTitle}`,
+    description: localizeText(business.shortDescription, lang),
+  };
+}
+
 function absoluteAssetUrl(path: string): string {
   return path.startsWith("http") ? path : `${SITE_URL}${path}`;
 }
@@ -118,6 +147,15 @@ function routeText(lang: LanguageCode, routeId: RouteId): { title: string; descr
     travelGuide: { title: `${copy.hub.title} | ${copy.brand.name}`, description: copy.hub.text },
     seasonal: { title: `${copy.guides.seasonal.label} | ${copy.brand.name}`, description: copy.guides.seasonal.text },
     events: { title: `${trust.events} | ${copy.brand.name}`, description: copy.hub.text },
+    localBusinesses: (() => {
+      const bui = businessesUiByLanguage[lang];
+      // The hero title already names the village, so the suffix lists what the
+      // page actually holds instead of repeating the brand.
+      return {
+        title: `${bui.heroTitle} | ${bui.catShops}, ${bui.catServices}, ${bui.catProducers}`,
+        description: bui.heroSubtitle,
+      };
+    })(),
     trust: { title: `${trust.trust} | ${copy.brand.name}`, description: copy.sourceNotes.join(" ") },
     editorial: { title: `${trust.editorial} | ${copy.brand.name}`, description: copy.sourceNotes.join(" ") },
     localSeo: { title: `${trust.localSeo} | ${copy.brand.name}`, description: copy.landmarks.aria },
@@ -148,23 +186,30 @@ function keywordsForRoute(lang: LanguageCode, routeId: RouteId): string {
   return [...base, text.title, text.description].join(", ");
 }
 
-export function getSEOConfig(lang: LanguageCode, routeId: RouteId = "home"): SEOConfig {
-  const text = routeText(lang, routeId);
+export function getSEOConfig(lang: LanguageCode, routeId: RouteId = "home", businessSlug?: string): SEOConfig {
+  const business = businessSlug ? findBusiness(businessSlug) : undefined;
+  const text = business ? businessText(lang, business) : routeText(lang, routeId);
   const primaryImage = getRouteImageEntries(lang, routeId)[0];
+  const businessImage = business?.coverImage ? absoluteAssetUrl(business.coverImage) : undefined;
+  const url = business ? absoluteBusinessUrl(lang, business.slug) : absoluteRouteUrl(lang, routeId);
+  const alternateUrl = (code: LanguageCode) =>
+    business ? absoluteBusinessUrl(code, business.slug) : absoluteRouteUrl(code, routeId);
 
   return {
     title: text.title,
     description: compact(text.description),
     locale: localeCodes[lang],
-    keywords: keywordsForRoute(lang, routeId),
+    keywords: business
+      ? [business.name, businessCategoryLabel(businessesUiByLanguage[lang], business.category), text.description].join(", ")
+      : keywordsForRoute(lang, routeId),
     author: seoTextByLanguage[lang].organizationName,
     siteName: contentByLanguage[lang].nav.quests,
-    imageUrl: primaryImage?.loc ?? OG_IMAGE,
-    imageAlt: primaryImage?.caption ?? contentByLanguage[lang].hero.imageAlt,
-    canonicalUrl: absoluteRouteUrl(lang, routeId),
+    imageUrl: businessImage ?? primaryImage?.loc ?? OG_IMAGE,
+    imageAlt: business ? business.name : primaryImage?.caption ?? contentByLanguage[lang].hero.imageAlt,
+    canonicalUrl: url,
     alternates: [
-      { lang: "x-default", href: absoluteRouteUrl(DEFAULT_LANGUAGE, routeId) },
-      ...allLanguageCodes.map((code) => ({ lang: code, href: absoluteRouteUrl(code, routeId) })),
+      { lang: "x-default", href: alternateUrl(DEFAULT_LANGUAGE) },
+      ...allLanguageCodes.map((code) => ({ lang: code, href: alternateUrl(code) })),
     ],
     ogLocaleAlternates: allLanguageCodes.filter((code) => code !== lang).map((code) => localeCodes[code]),
   };
@@ -203,6 +248,13 @@ function routeImages(lang: LanguageCode, routeId: RouteId): ImageSitemapEntry[] 
     travelGuide: [{ loc: OG_IMAGE, title: copy.hub.title, caption: copy.hub.text }],
     seasonal: [{ loc: `${SITE_URL}/assets/aglen-aerial-river.png`, title: copy.guides.seasonal.label, caption: copy.guides.seasonal.text }],
     events: [{ loc: `${SITE_URL}/assets/aglen-village-church.png`, title: routeText(lang, "events").title, caption: copy.hub.text }],
+    localBusinesses: [
+      {
+        loc: `${SITE_URL}/assets/aglen-village-church.png`,
+        title: businessesUiByLanguage[lang].heroTitle,
+        caption: businessesUiByLanguage[lang].heroSubtitle,
+      },
+    ],
     trust: [{ loc: `${SITE_URL}/assets/aglen-village-church.png`, title: routeText(lang, "trust").title, caption: copy.sourceNotes.join(" ") }],
     editorial: [{ loc: `${SITE_URL}/assets/aglen-village-church.png`, title: routeText(lang, "editorial").title, caption: copy.sourceNotes.join(" ") }],
     localSeo: [{ loc: `${SITE_URL}/assets/aglen-village-church.png`, title: routeText(lang, "localSeo").title, caption: copy.landmarks.aria }],
@@ -301,6 +353,28 @@ function buildPageSpecificSchemas(lang: LanguageCode, routeId: RouteId, routeUrl
     });
   }
 
+  if (routeId === "events") {
+    for (const item of sortedEvents()) {
+      schemas.push({
+        "@type": "Event",
+        "@id": `${routeUrl}#${item.id}`,
+        name: localize(item.title, lang),
+        description: localize(item.description, lang),
+        eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+        eventStatus: "https://schema.org/EventScheduled",
+        startDate: item.startDate,
+        ...(item.endDate ? { endDate: item.endDate } : {}),
+        location: {
+          "@type": "Place",
+          name: item.location,
+          address: { "@type": "PostalAddress", addressLocality: "Ъглен", addressRegion: "Lovech", addressCountry: "BG" },
+        },
+        organizer: { "@id": `${SITE_URL}/#organization` },
+        ...(item.image ? { image: [absoluteAssetUrl(item.image)] } : {}),
+      });
+    }
+  }
+
   if (routeId === "quests" || routeId === "app") {
     schemas.push({
       "@type": "VideoObject",
@@ -317,7 +391,78 @@ function buildPageSpecificSchemas(lang: LanguageCode, routeId: RouteId, routeUrl
   return schemas;
 }
 
-export function buildJSONLD(lang: LanguageCode, routeId: RouteId = "home"): object {
+/** schema.org for one business, typed by what it actually is. */
+function buildBusinessSchema(lang: LanguageCode, business: LocalBusiness): object {
+  const bui = businessesUiByLanguage[lang];
+  const url = absoluteBusinessUrl(lang, business.slug);
+  const openingHours = Object.entries(business.openingHours ?? {}).flatMap(([day, slots]) =>
+    (slots ?? []).map((slot) => ({
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: `https://schema.org/${["", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][Number(day)]}`,
+      opens: slot.open,
+      closes: slot.close,
+    })),
+  );
+
+  return {
+    "@type": businessSchemaType[business.category],
+    "@id": `${url}#business`,
+    name: business.name,
+    url,
+    description: localizeText(business.description ?? business.shortDescription, lang),
+    inLanguage: lang,
+    // Contact and address are emitted only when the business supplied them.
+    ...(business.coverImage ? { image: absoluteAssetUrl(business.coverImage) } : {}),
+    ...(business.logo ? { logo: absoluteAssetUrl(business.logo) } : {}),
+    ...(business.phone ? { telephone: business.phone } : {}),
+    ...(business.email ? { email: business.email } : {}),
+    ...(business.website ? { sameAs: [business.website, business.socialLinks?.facebook, business.socialLinks?.instagram].filter(Boolean) } : {}),
+    ...(business.address
+      ? {
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: business.address,
+            addressLocality: business.locality ?? "Ъглен",
+            addressCountry: "BG",
+          },
+        }
+      : {}),
+    ...(business.latitude !== undefined && business.longitude !== undefined
+      ? { geo: { "@type": "GeoCoordinates", latitude: business.latitude, longitude: business.longitude } }
+      : {}),
+    ...(openingHours.length > 0 ? { openingHoursSpecification: openingHours } : {}),
+    ...(mapUrl(business) ? { hasMap: mapUrl(business) } : {}),
+    ...(business.products && business.products.length > 0
+      ? {
+          makesOffer: business.products.map((product) => ({
+            "@type": "Offer",
+            itemOffered: { "@type": "Product", name: localizeText(product, lang) },
+          })),
+        }
+      : {}),
+    additionalType: businessCategoryLabel(bui, business.category),
+  };
+}
+
+export function buildJSONLD(lang: LanguageCode, routeId: RouteId = "home", businessSlug?: string): object {
+  const business = businessSlug ? findBusiness(businessSlug) : undefined;
+  if (business) {
+    const bui = businessesUiByLanguage[lang];
+    return {
+      "@context": "https://schema.org",
+      "@graph": [
+        buildBusinessSchema(lang, business),
+        {
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: bui.heroTitle, item: absoluteRouteUrl(lang, "localBusinesses") },
+            { "@type": "ListItem", position: 2, name: business.name, item: absoluteBusinessUrl(lang, business.slug) },
+          ],
+        },
+      ],
+    };
+  }
+
   const meta = getSEOConfig(lang, routeId);
   const copy = contentByLanguage[lang];
   const seoText = seoTextByLanguage[lang];
@@ -451,9 +596,37 @@ function staticFallbackLink(lang: LanguageCode, label: string, routeId: RouteId)
   return `<a href="${buildRoutePath(lang, routeId)}">${escapeHtml(label)}</a>`;
 }
 
-export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "home"): string {
+export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "home", businessSlug?: string): string {
   const copy = contentByLanguage[lang];
-  const meta = getSEOConfig(lang, routeId);
+  const meta = getSEOConfig(lang, routeId, businessSlug);
+  const business = businessSlug ? findBusiness(businessSlug) : undefined;
+
+  if (business) {
+    const bui = businessesUiByLanguage[lang];
+    const facts = [
+      business.address ? `${bui.detailLocation}: ${business.address}` : "",
+      business.phone ? `${bui.detailContact}: ${business.phone}` : "",
+      ...(business.products ?? []).map((product) => `${bui.detailProducts}: ${localizeText(product, lang)}`),
+      ...(business.services ?? []).map((service) => `${bui.detailServices}: ${localizeText(service, lang)}`),
+    ].filter(Boolean);
+
+    return `
+      <main id="static-seo-content" class="static-fallback" lang="${lang}">
+        <article class="content-hub section-shell">
+          <div class="section-heading">
+            <p class="eyebrow">${escapeHtml(businessCategoryLabel(bui, business.category))}</p>
+            <h1>${escapeHtml(business.name)}</h1>
+            ${paragraph(localizeText(business.description ?? business.shortDescription, lang))}
+            <a href="${buildRoutePath(lang, "localBusinesses")}">${escapeHtml(bui.backToList)}</a>
+          </div>
+          <div class="hub-grid">
+            ${facts.map((item) => `<div class="hub-card"><span>${escapeHtml(item)}</span></div>`).join("")}
+          </div>
+        </article>
+      </main>
+    `;
+  }
+
   const landing = isLandingPageId(routeId) ? getLandingPage(lang, routeId) : undefined;
   const ui = uiTextByLanguage[lang];
 
@@ -513,6 +686,12 @@ export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "hom
     travelGuide: [copy.hub.text],
     seasonal: [copy.guides.seasonal.text],
     events: [copy.hub.text],
+    localBusinesses: (() => {
+      const bui = businessesUiByLanguage[lang];
+      const listed = publishedBusinesses();
+      if (listed.length === 0) return [bui.heroTagline, bui.emptyAll];
+      return [bui.heroTagline, ...listed.map((item) => `${item.name}: ${localizeText(item.shortDescription, lang)}`)];
+    })(),
     trust: copy.sourceNotes,
     editorial: copy.sourceNotes,
     localSeo: [copy.landmarks.aria],
@@ -589,8 +768,8 @@ function injectJSONLD(data: object): void {
   el.textContent = JSON.stringify(data);
 }
 
-export function updateDocumentSEO(lang: LanguageCode, routeId: RouteId = "home"): void {
-  const meta = getSEOConfig(lang, routeId);
+export function updateDocumentSEO(lang: LanguageCode, routeId: RouteId = "home", businessSlug?: string): void {
+  const meta = getSEOConfig(lang, routeId, businessSlug);
   const copy = contentByLanguage[lang];
 
   document.title = meta.title;

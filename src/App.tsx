@@ -2,9 +2,12 @@ import { useEffect, useMemo, useRef, useState, type MouseEvent, type SyntheticEv
 import { contentByLanguage, languages, type Accommodation, type LanguageCode, type PlaceId, type TimelineItem } from "./content";
 import { getLandingPage, getLandingPages, isLandingPageId } from "./landingPages";
 import { placeExperienceLinks, type PlaceExperienceLink } from "./placeLinks";
-import { buildRoutePath, getStaticRoute, resolveRoute, type RouteId, type ResolvedRoute } from "./routes";
+import { buildBusinessPath, buildRoutePath, getStaticRoute, resolveRoute, type RouteId, type ResolvedRoute } from "./routes";
 import { updateDocumentSEO } from "./seo";
 import { uiTextByLanguage } from "./uiText";
+import EventsPage from "./EventsPage";
+import LocalBusinessesPage from "./LocalBusinessesPage";
+import { SHOW_EXPERIENCES, SHOW_STAY } from "./featureFlags";
 
 const fallbackImage = "/assets/aglen-hero-river-canyon.png";
 const curatedLandingPageRouteIds = [
@@ -67,15 +70,24 @@ export function App() {
   const timelineCloseRef = useRef<HTMLButtonElement | null>(null);
   const languageSwitchRef = useRef<HTMLDivElement | null>(null);
   const languageTriggerRef = useRef<HTMLButtonElement | null>(null);
-  const { language, routeId } = pageRoute;
+  const { language, routeId, businessSlug } = pageRoute;
   const copy = contentByLanguage[language];
   const localizedUi = uiTextByLanguage[language];
   const currentRoute = getStaticRoute(routeId);
   const currentLandingPage = isLandingPageId(routeId) ? getLandingPage(language, routeId) : undefined;
+  const isEventsPage = routeId === "events";
+  const isBusinessPage = routeId === "localBusinesses";
+  // Routes whose query string is shareable state rather than tracking noise.
+  const keepsSearch = isEventsPage || (isBusinessPage && !businessSlug);
   const selectedLanguage = languages.find((item) => item.code === language) ?? languages[0];
 
+  const routePath = (route: ResolvedRoute) =>
+    route.businessSlug
+      ? buildBusinessPath(route.language, route.businessSlug)
+      : buildRoutePath(route.language, route.routeId);
+
   const navigateTo = (nextRoute: ResolvedRoute, replace = false, hash = "") => {
-    const url = `${buildRoutePath(nextRoute.language, nextRoute.routeId)}${hash}`;
+    const url = `${routePath(nextRoute)}${hash}`;
     setSelectedTimeline(null);
     setLanguageMenuOpen(false);
     setMobileMenuOpen(false);
@@ -118,18 +130,28 @@ export function App() {
   };
 
   const changeLanguage = (nextLanguage: LanguageCode) => {
-    navigateTo({ language: nextLanguage, routeId }, true);
+    navigateTo({ language: nextLanguage, routeId, businessSlug }, true);
+  };
+
+  // Used by the local-businesses page, whose detail pages are addressed by slug
+  // rather than by route id.
+  const navigateToPath = (path: string) => {
+    navigateTo(resolveRoute(path));
+    window.scrollTo({ top: 0, behavior: "auto" });
   };
 
   useEffect(() => {
     document.documentElement.lang = language;
-    updateDocumentSEO(language, routeId);
+    updateDocumentSEO(language, routeId, businessSlug);
 
-    const canonicalPath = buildRoutePath(language, routeId);
-    if (window.location.pathname !== canonicalPath || window.location.search) {
-      history.replaceState(null, "", canonicalPath);
+    const canonicalPath = businessSlug ? buildBusinessPath(language, businessSlug) : buildRoutePath(language, routeId);
+    // Preserve query params where they carry shareable state (events views,
+    // business filters); strip them everywhere else so canonicals stay clean.
+    const keepSearch = keepsSearch ? window.location.search : "";
+    if (window.location.pathname !== canonicalPath || (!keepsSearch && window.location.search)) {
+      history.replaceState(null, "", canonicalPath + keepSearch);
     }
-  }, [language, routeId]);
+  }, [language, routeId, businessSlug, keepsSearch]);
 
   useEffect(() => {
     const onPopState = () => {
@@ -272,24 +294,30 @@ export function App() {
       [copy.nav.home, "home"],
       [copy.nav.about, "pillars"],
       [copy.nav.landmarks, "attractions"],
-      [copy.experiences.eyebrow, "activities"],
-      [copy.nav.stay, "stay"],
+      ...(SHOW_EXPERIENCES ? [[copy.experiences.eyebrow, "activities"]] : []),
+      ...(SHOW_STAY ? [[copy.nav.stay, "stay"]] : []),
       [copy.nav.quests, "quests"],
-    ],
+      [copy.nav.events, "events"],
+      [copy.nav.business, "localBusinesses"],
+    ] as Array<[string, RouteId]>,
     [copy],
-  ) as Array<[string, RouteId]>;
+  );
 
   const guideLinks = useMemo(
     () => [
-      { label: copy.landmarks.title, text: copy.landmarks.text, routeId: "attractions" },
-      { label: copy.guides.vitRiver.label, text: copy.guides.vitRiver.text, routeId: "vitRiver" },
-      { label: copy.guides.fishing.label, text: copy.guides.fishing.text, routeId: "fishing" },
-      { label: copy.guides.hiking.label, text: copy.guides.hiking.text, routeId: "hiking" },
-      { label: copy.guides.caves.label, text: copy.guides.caves.text, routeId: "caves" },
-      { label: copy.stay.title, text: copy.stay.text, routeId: "stay" },
-      { label: copy.guides.food.label, text: copy.guides.food.text, routeId: "food" },
-      { label: copy.guides.nearby.label, text: copy.guides.nearby.text, routeId: "nearby" },
-      { label: copy.guides.seasonal.label, text: copy.guides.seasonal.text, routeId: "seasonal" },
+      { label: copy.landmarks.title, text: copy.landmarks.text, routeId: "attractions" as RouteId },
+      { label: copy.guides.vitRiver.label, text: copy.guides.vitRiver.text, routeId: "vitRiver" as RouteId },
+      ...(SHOW_EXPERIENCES
+        ? [
+            { label: copy.guides.fishing.label, text: copy.guides.fishing.text, routeId: "fishing" as RouteId },
+            { label: copy.guides.hiking.label, text: copy.guides.hiking.text, routeId: "hiking" as RouteId },
+          ]
+        : []),
+      { label: copy.guides.caves.label, text: copy.guides.caves.text, routeId: "caves" as RouteId },
+      ...(SHOW_STAY ? [{ label: copy.stay.title, text: copy.stay.text, routeId: "stay" as RouteId }] : []),
+      { label: copy.guides.food.label, text: copy.guides.food.text, routeId: "food" as RouteId },
+      { label: copy.guides.nearby.label, text: copy.guides.nearby.text, routeId: "nearby" as RouteId },
+      { label: copy.guides.seasonal.label, text: copy.guides.seasonal.text, routeId: "seasonal" as RouteId },
     ] satisfies Array<{ label: string; text: string; routeId: RouteId }>,
     [copy],
   );
@@ -366,6 +394,7 @@ export function App() {
             <a
               key={navRouteId}
               href={routeHref(navRouteId)}
+              className={navRouteId === "events" ? "is-accent" : undefined}
               onClick={(event) => handleRouteClick(event, navRouteId)}
               aria-current={navRouteId === routeId ? "page" : undefined}
             >
@@ -451,6 +480,7 @@ export function App() {
               <a
                 key={navRouteId}
                 href={routeHref(navRouteId)}
+                className={navRouteId === "events" ? "is-accent" : undefined}
                 onClick={(event) => handleRouteClick(event, navRouteId)}
                 aria-current={navRouteId === routeId ? "page" : undefined}
               >
@@ -540,7 +570,7 @@ export function App() {
         </section>
       )}
 
-      {!currentLandingPage && (
+      {!currentLandingPage && !isEventsPage && !isBusinessPage && (
         <>
       <section id="home" className="hero">
         <img className="hero-image" src="/assets/aglen-hero-river-canyon.png" alt={copy.hero.imageAlt} width="1200" height="630" fetchPriority="high" decoding="async" onError={handleImageError} />
@@ -635,7 +665,21 @@ export function App() {
             </button>
             <p className="eyebrow">{copy.about.eyebrow}</p>
             <h3 id="timeline-dialog-title">{selectedTimeline.title}</h3>
-            <p>{selectedTimeline.detail}</p>
+            {selectedTimeline.sections ? (
+              <div className="timeline-article">
+                {selectedTimeline.intro && <p className="timeline-article-intro">{selectedTimeline.intro}</p>}
+                {selectedTimeline.sections.map((section) => (
+                  <section key={section.heading}>
+                    <h4>{section.heading}</h4>
+                    {section.body.map((paragraph, index) => (
+                      <p key={index}>{paragraph}</p>
+                    ))}
+                  </section>
+                ))}
+              </div>
+            ) : (
+              <p>{selectedTimeline.detail}</p>
+            )}
           </article>
         </div>
       )}
@@ -648,7 +692,9 @@ export function App() {
         </div>
         <div className="place-grid">
           {copy.placesList.map((place) => {
-            const gatewayLinks = placeExperienceLinks[place.id];
+            const gatewayLinks = placeExperienceLinks[place.id].filter(
+              (link) => SHOW_EXPERIENCES || link.kind !== "activity",
+            );
 
             return (
               <article className="place-card reveal" key={place.id}>
@@ -764,6 +810,7 @@ export function App() {
           ))}
       </section>
 
+      {SHOW_EXPERIENCES && (
       <section id="experiences" className="experiences section-shell">
         <div className="section-heading reveal">
           <p className="eyebrow">{copy.experiences.eyebrow}</p>
@@ -801,7 +848,9 @@ export function App() {
           })}
         </div>
       </section>
+      )}
 
+      {SHOW_STAY && (
       <section id="stay" className="stay section-shell">
         <div className="section-heading reveal">
           <p className="eyebrow">{copy.stay.eyebrow}</p>
@@ -826,6 +875,7 @@ export function App() {
           </a>
         </div>
       </section>
+      )}
 
       <section id="quests" className="quests">
         <div className="section-shell">
@@ -932,7 +982,14 @@ export function App() {
           </div>
         </div>
       </section>
+
         </>
+      )}
+
+      {isEventsPage && <EventsPage language={language} />}
+
+      {isBusinessPage && (
+        <LocalBusinessesPage language={language} businessSlug={businessSlug} onNavigate={navigateToPath} />
       )}
 
       <section id="contact" className="contact section-shell">

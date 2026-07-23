@@ -322,13 +322,20 @@ function validateRuntimeData(routes, seo, landing) {
     }
   }
 
-  const expectedPathCount = routes.staticRoutes.length * expectedLanguages.length;
+  // Every language gets every static route plus one page per published business.
+  const publishedBusinesses = localBusinesses.publishedBusinesses();
+  const expectedPathCount =
+    (routes.staticRoutes.length + publishedBusinesses.length) * expectedLanguages.length;
   const paths = routes.getAllStaticRoutePaths();
   if (paths.length !== expectedPathCount) addIssue("route parity", `Expected ${expectedPathCount} static paths, got ${paths.length}.`);
   for (const lang of expectedLanguages) {
     for (const route of routes.staticRoutes) {
       const routePath = routes.buildRoutePath(lang, route.id);
       if (!paths.includes(routePath)) addIssue("route parity", `Missing route path ${routePath}.`);
+    }
+    for (const business of publishedBusinesses) {
+      const businessPath = routes.buildBusinessPath(lang, business.slug);
+      if (!paths.includes(businessPath)) addIssue("route parity", `Missing business path ${businessPath}.`);
     }
   }
   if (paths.some((routePath) => routePath.startsWith("/pl/"))) addIssue("route parity", "Generated route list includes /pl/.");
@@ -437,6 +444,7 @@ validateSourceFiles();
 const routes = loadSourceModule(path.join(rootDir, "src", "routes.ts"));
 const seo = loadSourceModule(path.join(rootDir, "src", "seo.ts"));
 const landing = loadSourceModule(path.join(rootDir, "src", "landingPages.ts"));
+const localBusinesses = loadSourceModule(path.join(rootDir, "src", "localBusinesses.ts"));
 validateRuntimeData(routes, seo, landing);
 validateGeneratedHtml(routes);
 

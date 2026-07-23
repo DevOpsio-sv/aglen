@@ -77,6 +77,8 @@ function loadSourceModule(filePath) {
 
 const routes = loadSourceModule(path.join(rootDir, "src", "routes.ts"));
 const seo = loadSourceModule(path.join(rootDir, "src", "seo.ts"));
+const localBusinesses = loadSourceModule(path.join(rootDir, "src", "localBusinesses.ts"));
+const businesses = localBusinesses.publishedBusinesses();
 
 function escapeAttribute(value) {
   return value
@@ -122,8 +124,8 @@ function renderOpenGraphLocaleAlternates(locales) {
 }
 
 function renderPageHtml(routePath) {
-  const { language, routeId } = routes.resolveRoute(routePath);
-  const pageSeo = seo.getSEOConfig(language, routeId);
+  const { language, routeId, businessSlug } = routes.resolveRoute(routePath);
+  const pageSeo = seo.getSEOConfig(language, routeId, businessSlug);
   let html = template;
 
   html = html.replace(/<html lang="[^"]*">/, `<html lang="${language}">`);
@@ -150,11 +152,11 @@ function renderPageHtml(routePath) {
   html = html.replace(/\n\s*<meta property="og:locale:alternate" content="[^"]+" \/>\n?/g, "\n");
   html = html.replace(
     "</head>",
-    `${renderAlternateLinks(pageSeo.alternates)}\n${renderOpenGraphLocaleAlternates(pageSeo.ogLocaleAlternates)}\n    <script type="application/ld+json" id="site-jsonld">${JSON.stringify(seo.buildJSONLD(language, routeId))}</script>\n  </head>`,
+    `${renderAlternateLinks(pageSeo.alternates)}\n${renderOpenGraphLocaleAlternates(pageSeo.ogLocaleAlternates)}\n    <script type="application/ld+json" id="site-jsonld">${JSON.stringify(seo.buildJSONLD(language, routeId, businessSlug))}</script>\n  </head>`,
   );
   html = html.replace(
     '<div id="root"></div>',
-    `${seo.renderStaticFallback(language, routeId)}\n    <div id="root"></div>\n    <script>document.getElementById("static-seo-content")?.remove();</script>`,
+    `${seo.renderStaticFallback(language, routeId, businessSlug)}\n    <div id="root"></div>\n    <script>document.getElementById("static-seo-content")?.remove();</script>`,
   );
 
   return html;
@@ -181,8 +183,8 @@ fs.writeFileSync(templatePath, renderPageHtml(routes.buildRoutePath("bg", "home"
 
 const LASTMOD = new Date().toISOString().split("T")[0];
 
-function renderSitemapUrl(language, routeId) {
-  const pageSeo = seo.getSEOConfig(language, routeId);
+function renderSitemapUrl(language, routeId, businessSlug) {
+  const pageSeo = seo.getSEOConfig(language, routeId, businessSlug);
   const alternates = pageSeo.alternates
     .map((alternate) => `    <xhtml:link rel="alternate" hreflang="${escapeXml(alternate.lang)}" href="${escapeXml(alternate.href)}" />`)
     .join("\n");
@@ -207,9 +209,11 @@ function renderSitemapUrl(language, routeId) {
 }
 
 function renderLanguageSitemap(language) {
-  const entries = routes.staticRoutes
-    .map((route) => renderSitemapUrl(language, route.id))
-    .join("\n");
+  const entries = [
+    ...routes.staticRoutes.map((route) => renderSitemapUrl(language, route.id)),
+    // One entry per published business detail page.
+    ...businesses.map((business) => renderSitemapUrl(language, "localBusinesses", business.slug)),
+  ].join("\n");
 
   return [
     '<?xml version="1.0" encoding="UTF-8"?>',
