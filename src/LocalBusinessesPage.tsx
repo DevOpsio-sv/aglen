@@ -6,9 +6,7 @@ import {
   ADD_BUSINESS_PHONE,
   activeCategories,
   businessStories,
-  featuredBusinesses,
   findBusiness,
-  hasOpeningHours,
   isOpenNow,
   localizeText,
   localProducts,
@@ -30,12 +28,9 @@ function handleImageError(event: SyntheticEvent<HTMLImageElement>) {
 type Filters = {
   category: BusinessCategory | "all";
   query: string;
-  openNow: boolean;
-  delivery: boolean;
-  pickup: boolean;
 };
 
-const EMPTY_FILTERS: Filters = { category: "all", query: "", openNow: false, delivery: false, pickup: false };
+const EMPTY_FILTERS: Filters = { category: "all", query: "" };
 
 export default function LocalBusinessesPage({
   language,
@@ -67,10 +62,8 @@ function BusinessDirectory({
 }) {
   const all = useMemo(() => publishedBusinesses(), []);
   const categories = useMemo(() => activeCategories(), []);
-  const featured = useMemo(() => featuredBusinesses(), []);
   const stories = useMemo(() => businessStories(), []);
   const products = useMemo(() => localProducts(language), [language]);
-  const canFilterByHours = useMemo(() => hasOpeningHours(), []);
 
   const readFilters = useCallback((): Filters => {
     if (typeof window === "undefined") return EMPTY_FILTERS;
@@ -79,9 +72,6 @@ function BusinessDirectory({
     return {
       category: categories.includes(category as BusinessCategory) ? (category as BusinessCategory) : "all",
       query: params.get("q") ?? "",
-      openNow: params.get("open") === "1",
-      delivery: params.get("delivery") === "1",
-      pickup: params.get("pickup") === "1",
     };
   }, [categories]);
 
@@ -93,9 +83,6 @@ function BusinessDirectory({
     const set = (key: string, value: string | null) => (value ? params.set(key, value) : params.delete(key));
     set("category", filters.category === "all" ? null : filters.category);
     set("q", filters.query.trim() || null);
-    set("open", filters.openNow ? "1" : null);
-    set("delivery", filters.delivery ? "1" : null);
-    set("pickup", filters.pickup ? "1" : null);
     const search = params.toString();
     const next = `${window.location.pathname}${search ? `?${search}` : ""}`;
     if (next !== `${window.location.pathname}${window.location.search}`) {
@@ -113,9 +100,6 @@ function BusinessDirectory({
     const needle = filters.query.trim().toLowerCase();
     return all.filter((business) => {
       if (filters.category !== "all" && business.category !== filters.category) return false;
-      if (filters.delivery && !business.delivery) return false;
-      if (filters.pickup && !business.pickup) return false;
-      if (filters.openNow && !isOpenNow(business)) return false;
       if (!needle) return true;
       const haystack = [
         business.name,
@@ -132,34 +116,11 @@ function BusinessDirectory({
     });
   }, [all, filters, language, ui]);
 
-  const isFiltered =
-    filters.category !== "all" || filters.query.trim() !== "" || filters.openNow || filters.delivery || filters.pickup;
+  const isFiltered = filters.category !== "all" || filters.query.trim() !== "";
 
   return (
     <div className="businesses-page">
       <BusinessHero ui={ui} onAdd={() => scrollToId("businesses-add")} onExplore={() => scrollToId("businesses-list")} />
-
-      {featured.length > 0 && (
-        <section className="section-shell businesses-featured" aria-labelledby="businesses-featured-title">
-          <header className="businesses-head">
-            <p className="eyebrow">{ui.featuredEyebrow}</p>
-            <h2 id="businesses-featured-title">{ui.featuredTitle}</h2>
-          </header>
-          <div className={`businesses-featured-grid${featured.length === 1 ? " is-single" : ""}`}>
-            {featured.map((business) => (
-              <BusinessCard
-                key={business.id}
-                ui={ui}
-                language={language}
-                business={business}
-                onNavigate={onNavigate}
-                badge={ui.featuredBadge}
-                large={featured.length === 1}
-              />
-            ))}
-          </div>
-        </section>
-      )}
 
       <section className="section-shell businesses-listing" id="businesses-list" aria-labelledby="businesses-list-title">
         <header className="businesses-head">
@@ -207,34 +168,13 @@ function BusinessDirectory({
             </div>
           )}
 
-          <div className="businesses-toggles" role="group" aria-label={ui.filtersAria}>
-            {canFilterByHours && (
-              <Toggle
-                label={ui.filterOpenNow}
-                checked={filters.openNow}
-                onChange={(openNow) => setFilters((current) => ({ ...current, openNow }))}
-              />
-            )}
-            {all.some((business) => business.delivery) && (
-              <Toggle
-                label={ui.filterDelivery}
-                checked={filters.delivery}
-                onChange={(delivery) => setFilters((current) => ({ ...current, delivery }))}
-              />
-            )}
-            {all.some((business) => business.pickup) && (
-              <Toggle
-                label={ui.filterPickup}
-                checked={filters.pickup}
-                onChange={(pickup) => setFilters((current) => ({ ...current, pickup }))}
-              />
-            )}
-            {isFiltered && (
+          {isFiltered && (
+            <div className="businesses-toggles">
               <button type="button" className="businesses-clear" onClick={() => setFilters(EMPTY_FILTERS)}>
                 {ui.clearFilters}
               </button>
-            )}
-          </div>
+            </div>
+          )}
         </div>
 
         {/* Announced to screen readers whenever the result count changes. */}
@@ -327,22 +267,13 @@ function scrollToId(id: string) {
   document.getElementById(id)?.scrollIntoView({ block: "start", behavior: "smooth" });
 }
 
-function Toggle({ label, checked, onChange }: { label: string; checked: boolean; onChange: (value: boolean) => void }) {
-  return (
-    <label className={`businesses-toggle${checked ? " is-active" : ""}`}>
-      <input type="checkbox" checked={checked} onChange={(event) => onChange(event.target.checked)} />
-      <span>{label}</span>
-    </label>
-  );
-}
-
 // ── Hero ─────────────────────────────────────────────────────
 function BusinessHero({ ui, onExplore, onAdd }: { ui: BusinessesUiText; onExplore: () => void; onAdd: () => void }) {
   return (
     <section className="businesses-hero" aria-labelledby="businesses-hero-title">
       <img
         className="businesses-hero-bg"
-        src="/assets/aglen-village-church.png"
+        src="/assets/local-businesses-hero.jpg"
         alt=""
         aria-hidden="true"
         decoding="async"
@@ -373,21 +304,17 @@ function BusinessCard({
   language,
   business,
   onNavigate,
-  badge,
-  large,
 }: {
   ui: BusinessesUiText;
   language: LanguageCode;
   business: LocalBusiness;
   onNavigate: (path: string) => void;
-  badge?: string;
-  large?: boolean;
 }) {
   const href = buildBusinessPath(language, business.slug);
   const openState = business.openingHours ? isOpenNow(business) : undefined;
 
   return (
-    <article className={`business-card${large ? " is-large" : ""}`}>
+    <article className="business-card">
       <a
         className="business-card-link"
         href={href}
@@ -410,7 +337,6 @@ function BusinessCard({
               {categoryEmoji[business.category]}
             </span>
           )}
-          {badge && <span className="business-card-badge">{badge}</span>}
           {business.logo && <img className="business-card-logo" src={business.logo} alt="" aria-hidden="true" loading="lazy" />}
         </div>
 
@@ -421,7 +347,7 @@ function BusinessCard({
           <h3>{business.name}</h3>
           <p className="business-card-desc">{localizeText(business.shortDescription, language)}</p>
 
-          <BusinessBadges ui={ui} business={business} openState={openState} />
+          <BusinessBadges ui={ui} business={business} language={language} openState={openState} />
 
           <dl className="business-card-facts">
             {business.address && (
@@ -452,13 +378,16 @@ function BusinessCard({
 function BusinessBadges({
   ui,
   business,
+  language,
   openState,
 }: {
   ui: BusinessesUiText;
   business: LocalBusiness;
+  language: LanguageCode;
   openState?: boolean;
 }) {
   const badges: { key: string; label: string; tone?: string }[] = [];
+  if (business.highlight) badges.push({ key: "highlight", label: localizeText(business.highlight, language), tone: "highlight" });
   if (business.verified) badges.push({ key: "verified", label: `✓ ${ui.badgeVerified}`, tone: "verified" });
   if (business.status === "temporarily_closed") badges.push({ key: "closed", label: ui.badgeTemporarilyClosed, tone: "closed" });
   else if (openState === true) badges.push({ key: "open", label: ui.badgeOpenNow, tone: "open" });
@@ -544,7 +473,12 @@ function BusinessDetail({
           </p>
           <h1>{business.name}</h1>
           <p className="business-detail-lead">{localizeText(business.shortDescription, language)}</p>
-          <BusinessBadges ui={ui} business={business} openState={openState} />
+          {business.highlight && (
+            <p className="business-detail-highlight">
+              <span aria-hidden="true">★</span> {localizeText(business.highlight, language)}
+            </p>
+          )}
+          <BusinessBadges ui={ui} business={business} language={language} openState={openState} />
           <div className="business-detail-actions">
             {business.phone && (
               <a className="button primary" href={`tel:${business.phone.replace(/\s+/g, "")}`}>
@@ -553,7 +487,7 @@ function BusinessDetail({
             )}
             {maps && (
               <a className="button ghost" href={maps} target="_blank" rel="noopener noreferrer">
-                <span aria-hidden="true">🗺</span> {ui.openMap}
+                <span aria-hidden="true">📍</span> {ui.openMap}
               </a>
             )}
             {business.website && (
@@ -580,7 +514,11 @@ function BusinessDetail({
             {business.description && (
               <section aria-labelledby="business-about">
                 <h2 id="business-about">{ui.detailAbout}</h2>
-                <p>{localizeText(business.description, language)}</p>
+                {localizeText(business.description, language)
+                  .split("\n\n")
+                  .map((paragraph, index) => (
+                    <p key={index}>{paragraph}</p>
+                  ))}
               </section>
             )}
 
@@ -713,7 +651,7 @@ function BusinessDetail({
                 {business.address && <p>{business.address}</p>}
                 {maps && (
                   <a className="button ghost" href={maps} target="_blank" rel="noopener noreferrer">
-                    <span aria-hidden="true">🗺</span> {ui.openMap}
+                    <span aria-hidden="true">📍</span> {ui.openMap}
                   </a>
                 )}
               </section>

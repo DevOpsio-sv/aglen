@@ -2,6 +2,7 @@ import { languages } from "./locales/shared";
 import type { LanguageCode } from "./locales/types";
 import { landingPages, type LandingPageId } from "./landingPages";
 import { publishedBusinesses } from "./localBusinesses";
+import { guides } from "./guides";
 
 export type CoreRouteId =
   | "home"
@@ -22,6 +23,7 @@ export type CoreRouteId =
   | "seasonal"
   | "events"
   | "localBusinesses"
+  | "guides"
   | "trust"
   | "editorial"
   | "localSeo"
@@ -41,9 +43,12 @@ export type ResolvedRoute = {
   routeId: RouteId;
   // Set when the path addresses a single business: /<lang>/local-businesses/<slug>/
   businessSlug?: string;
+  // Set when the path addresses a single guide: /<lang>/guides/<slug>/
+  guideSlug?: string;
 };
 
 export const BUSINESS_ROUTE_SLUG = "local-businesses";
+export const GUIDES_ROUTE_SLUG = "guides";
 
 export const DEFAULT_LANGUAGE: LanguageCode = "bg";
 
@@ -66,6 +71,7 @@ const coreRoutes: StaticRoute[] = [
   { id: "seasonal", slug: "travel-guide/seasonal-guide", sectionId: "travel-guide" },
   { id: "events", slug: "events", sectionId: "events" },
   { id: "localBusinesses", slug: "local-businesses", sectionId: "local-businesses" },
+  { id: "guides", slug: "guides", sectionId: "guides" },
   { id: "trust", slug: "about", sectionId: "trust" },
   { id: "editorial", slug: "editorial-policy", sectionId: "trust" },
   { id: "localSeo", slug: "local-presence", sectionId: "trust" },
@@ -128,6 +134,12 @@ export function resolveRoute(pathname: string, search = ""): ResolvedRoute {
     if (businessSlug) return { language, routeId: "localBusinesses", businessSlug };
   }
 
+  // Guide detail pages hang off the guide index in the same way.
+  if (slug.startsWith(`${GUIDES_ROUTE_SLUG}/`)) {
+    const guideSlug = slug.slice(GUIDES_ROUTE_SLUG.length + 1).replace(/\/$/, "");
+    if (guideSlug) return { language, routeId: "guides", guideSlug };
+  }
+
   const route = routesBySlug.get(slug) ?? getStaticRoute("home");
 
   return { language, routeId: route.id };
@@ -137,10 +149,15 @@ export function buildBusinessPath(language: LanguageCode, businessSlug: string):
   return `/${language}/${BUSINESS_ROUTE_SLUG}/${businessSlug}/`;
 }
 
+export function buildGuidePath(language: LanguageCode, guideSlug: string): string {
+  return `/${language}/${GUIDES_ROUTE_SLUG}/${guideSlug}/`;
+}
+
 export function getAllStaticRoutePaths(): string[] {
   const businesses = publishedBusinesses();
   return allLanguageCodes.flatMap((language) => [
     ...staticRoutes.map((route) => buildRoutePath(language, route.id)),
     ...businesses.map((business) => buildBusinessPath(language, business.slug)),
+    ...guides.map((guide) => buildGuidePath(language, guide.slug)),
   ]);
 }

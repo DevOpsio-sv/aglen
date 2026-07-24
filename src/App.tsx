@@ -2,7 +2,9 @@ import { useEffect, useMemo, useRef, useState, type MouseEvent, type SyntheticEv
 import { contentByLanguage, languages, type Accommodation, type LanguageCode, type PlaceId, type TimelineItem } from "./content";
 import { getLandingPage, getLandingPages, isLandingPageId } from "./landingPages";
 import { placeExperienceLinks, type PlaceExperienceLink } from "./placeLinks";
-import { buildBusinessPath, buildRoutePath, getStaticRoute, resolveRoute, type RouteId, type ResolvedRoute } from "./routes";
+import { buildBusinessPath, buildGuidePath, buildRoutePath, getStaticRoute, resolveRoute, type RouteId, type ResolvedRoute } from "./routes";
+import { guideByLegacyRoute, guides, localizeGuide } from "./guides";
+import GuidesPage from "./GuidesPage";
 import { updateDocumentSEO } from "./seo";
 import { uiTextByLanguage } from "./uiText";
 import EventsPage from "./EventsPage";
@@ -70,21 +72,23 @@ export function App() {
   const timelineCloseRef = useRef<HTMLButtonElement | null>(null);
   const languageSwitchRef = useRef<HTMLDivElement | null>(null);
   const languageTriggerRef = useRef<HTMLButtonElement | null>(null);
-  const { language, routeId, businessSlug } = pageRoute;
+  const { language, routeId, businessSlug, guideSlug } = pageRoute;
   const copy = contentByLanguage[language];
   const localizedUi = uiTextByLanguage[language];
   const currentRoute = getStaticRoute(routeId);
   const currentLandingPage = isLandingPageId(routeId) ? getLandingPage(language, routeId) : undefined;
   const isEventsPage = routeId === "events";
   const isBusinessPage = routeId === "localBusinesses";
+  const isGuidesPage = routeId === "guides";
   // Routes whose query string is shareable state rather than tracking noise.
   const keepsSearch = isEventsPage || (isBusinessPage && !businessSlug);
   const selectedLanguage = languages.find((item) => item.code === language) ?? languages[0];
 
-  const routePath = (route: ResolvedRoute) =>
-    route.businessSlug
-      ? buildBusinessPath(route.language, route.businessSlug)
-      : buildRoutePath(route.language, route.routeId);
+  const routePath = (route: ResolvedRoute) => {
+    if (route.businessSlug) return buildBusinessPath(route.language, route.businessSlug);
+    if (route.guideSlug) return buildGuidePath(route.language, route.guideSlug);
+    return buildRoutePath(route.language, route.routeId);
+  };
 
   const navigateTo = (nextRoute: ResolvedRoute, replace = false, hash = "") => {
     const url = `${routePath(nextRoute)}${hash}`;
@@ -99,6 +103,13 @@ export function App() {
     }
 
     history.pushState(null, "", url);
+
+    // A new page always starts at its hero. Skipped when a hash is given, since
+    // the caller scrolls to that section itself, and on replace (language
+    // switches), where the reader should stay where they were.
+    if (!hash) {
+      window.scrollTo({ top: 0, behavior: "auto" });
+    }
   };
 
   const routeHref = (nextRouteId: RouteId, nextLanguage = language) =>
@@ -130,28 +141,31 @@ export function App() {
   };
 
   const changeLanguage = (nextLanguage: LanguageCode) => {
-    navigateTo({ language: nextLanguage, routeId, businessSlug }, true);
+    navigateTo({ language: nextLanguage, routeId, businessSlug, guideSlug }, true);
   };
 
   // Used by the local-businesses page, whose detail pages are addressed by slug
   // rather than by route id.
   const navigateToPath = (path: string) => {
     navigateTo(resolveRoute(path));
-    window.scrollTo({ top: 0, behavior: "auto" });
   };
 
   useEffect(() => {
     document.documentElement.lang = language;
-    updateDocumentSEO(language, routeId, businessSlug);
+    updateDocumentSEO(language, routeId, businessSlug ?? guideSlug);
 
-    const canonicalPath = businessSlug ? buildBusinessPath(language, businessSlug) : buildRoutePath(language, routeId);
+    const canonicalPath = businessSlug
+      ? buildBusinessPath(language, businessSlug)
+      : guideSlug
+        ? buildGuidePath(language, guideSlug)
+        : buildRoutePath(language, routeId);
     // Preserve query params where they carry shareable state (events views,
     // business filters); strip them everywhere else so canonicals stay clean.
     const keepSearch = keepsSearch ? window.location.search : "";
     if (window.location.pathname !== canonicalPath || (!keepsSearch && window.location.search)) {
       history.replaceState(null, "", canonicalPath + keepSearch);
     }
-  }, [language, routeId, businessSlug, keepsSearch]);
+  }, [language, routeId, businessSlug, guideSlug, keepsSearch]);
 
   useEffect(() => {
     const onPopState = () => {
@@ -570,7 +584,7 @@ export function App() {
         </section>
       )}
 
-      {!currentLandingPage && !isEventsPage && !isBusinessPage && (
+      {!currentLandingPage && !isEventsPage && !isBusinessPage && !isGuidesPage && (
         <>
       <section id="home" className="hero">
         <img className="hero-image" src="/assets/aglen-hero-river-canyon.png" alt={copy.hero.imageAlt} width="1200" height="630" fetchPriority="high" decoding="async" onError={handleImageError} />
@@ -765,17 +779,31 @@ export function App() {
           <p>{copy.hub.text}</p>
         </div>
         <div className="hub-grid">
-          {guideLinks.map((link) => (
-            <a
-              className="hub-card reveal"
-              href={routeHref(link.routeId)}
-              key={link.routeId}
-              onClick={(event) => handleRouteClick(event, link.routeId)}
-            >
-              <span>{link.label}</span>
-              <p>{link.text}</p>
-            </a>
-          ))}
+          {guideLinks.map((link) => {
+            // Cards whose topic has a real guide page open that guide; the rest
+            // keep their existing route rather than losing their destination.
+            const guide = guideByLegacyRoute(link.routeId);
+            const href = guide ? buildGuidePath(language, guide.slug) : routeHref(link.routeId);
+            return (
+              <a
+                className="hub-card reveal"
+                href={href}
+                key={link.routeId}
+                onClick={(event) => {
+                  if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                  if (!guide) {
+                    handleRouteClick(event, link.routeId);
+                    return;
+                  }
+                  event.preventDefault();
+                  navigateToPath(href);
+                }}
+              >
+                <span>{guide ? localizeGuide(guide.title, language) : link.label}</span>
+                <p>{guide ? localizeGuide(guide.summary, language) : link.text}</p>
+              </a>
+            );
+          })}
         </div>
 
         <div className="section-heading reveal">
@@ -991,6 +1019,8 @@ export function App() {
       {isBusinessPage && (
         <LocalBusinessesPage language={language} businessSlug={businessSlug} onNavigate={navigateToPath} />
       )}
+
+      {isGuidesPage && <GuidesPage language={language} guideSlug={guideSlug} onNavigate={navigateToPath} />}
 
       <section id="contact" className="contact section-shell">
         <div className="section-heading reveal">

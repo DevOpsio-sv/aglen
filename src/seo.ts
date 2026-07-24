@@ -2,9 +2,11 @@ import { contentByLanguage, languages } from "./content";
 import { localize, sortedEvents } from "./events";
 import { getLandingPage, isLandingPageId } from "./landingPages";
 import type { LanguageCode, PageCopy, PlaceId } from "./locales/types";
-import { allLanguageCodes, buildBusinessPath, buildRoutePath, DEFAULT_LANGUAGE, type CoreRouteId, type RouteId } from "./routes";
+import { allLanguageCodes, buildBusinessPath, buildGuidePath, buildRoutePath, DEFAULT_LANGUAGE, type CoreRouteId, type RouteId } from "./routes";
 import { findBusiness, localizeText, mapUrl, publishedBusinesses } from "./localBusinesses";
 import { businessesUiByLanguage, categoryLabel as businessCategoryLabel } from "./localBusinessesUi";
+import { findGuide, guidePlaces, guides, localizeGuide, readingMinutes } from "./guides";
+import { guidesUiByLanguage } from "./guidesUi";
 import type { BusinessCategory, LocalBusiness } from "./locales/types";
 import { uiTextByLanguage } from "./uiText";
 
@@ -93,6 +95,10 @@ function absoluteBusinessUrl(lang: LanguageCode, slug: string): string {
   return `${SITE_URL}${buildBusinessPath(lang, slug)}`;
 }
 
+function absoluteGuideUrl(lang: LanguageCode, slug: string): string {
+  return `${SITE_URL}${buildGuidePath(lang, slug)}`;
+}
+
 // schema.org type per business category — a specific supported subtype where
 // one exists, LocalBusiness only as the honest fallback.
 const businessSchemaType: Record<BusinessCategory, string> = {
@@ -147,6 +153,10 @@ function routeText(lang: LanguageCode, routeId: RouteId): { title: string; descr
     travelGuide: { title: `${copy.hub.title} | ${copy.brand.name}`, description: copy.hub.text },
     seasonal: { title: `${copy.guides.seasonal.label} | ${copy.brand.name}`, description: copy.guides.seasonal.text },
     events: { title: `${trust.events} | ${copy.brand.name}`, description: copy.hub.text },
+    guides: {
+      title: `${guidesUiByLanguage[lang].indexTitle} | ${copy.hub.eyebrow}`,
+      description: guidesUiByLanguage[lang].indexSubtitle,
+    },
     localBusinesses: (() => {
       const bui = businessesUiByLanguage[lang];
       // The hero title already names the village, so the suffix lists what the
@@ -186,14 +196,38 @@ function keywordsForRoute(lang: LanguageCode, routeId: RouteId): string {
   return [...base, text.title, text.description].join(", ");
 }
 
-export function getSEOConfig(lang: LanguageCode, routeId: RouteId = "home", businessSlug?: string): SEOConfig {
-  const business = businessSlug ? findBusiness(businessSlug) : undefined;
-  const text = business ? businessText(lang, business) : routeText(lang, routeId);
+/**
+ * `detailSlug` addresses a single business or guide beneath its index route.
+ * Both share the parameter because a route has at most one kind of detail page.
+ */
+export function getSEOConfig(lang: LanguageCode, routeId: RouteId = "home", detailSlug?: string): SEOConfig {
+  const business = detailSlug && routeId === "localBusinesses" ? findBusiness(detailSlug) : undefined;
+  const guide = detailSlug && routeId === "guides" ? findGuide(detailSlug) : undefined;
+  const text = business
+    ? businessText(lang, business)
+    : guide
+      ? {
+          title: `${localizeGuide(guide.title, lang)} | ${contentByLanguage[lang].brand.name}`,
+          description: localizeGuide(guide.summary, lang),
+        }
+      : routeText(lang, routeId);
   const primaryImage = getRouteImageEntries(lang, routeId)[0];
-  const businessImage = business?.coverImage ? absoluteAssetUrl(business.coverImage) : undefined;
-  const url = business ? absoluteBusinessUrl(lang, business.slug) : absoluteRouteUrl(lang, routeId);
+  const businessImage = business?.coverImage
+    ? absoluteAssetUrl(business.coverImage)
+    : guide
+      ? absoluteAssetUrl(guide.heroImage)
+      : undefined;
+  const url = business
+    ? absoluteBusinessUrl(lang, business.slug)
+    : guide
+      ? absoluteGuideUrl(lang, guide.slug)
+      : absoluteRouteUrl(lang, routeId);
   const alternateUrl = (code: LanguageCode) =>
-    business ? absoluteBusinessUrl(code, business.slug) : absoluteRouteUrl(code, routeId);
+    business
+      ? absoluteBusinessUrl(code, business.slug)
+      : guide
+        ? absoluteGuideUrl(code, guide.slug)
+        : absoluteRouteUrl(code, routeId);
 
   return {
     title: text.title,
@@ -248,9 +282,16 @@ function routeImages(lang: LanguageCode, routeId: RouteId): ImageSitemapEntry[] 
     travelGuide: [{ loc: OG_IMAGE, title: copy.hub.title, caption: copy.hub.text }],
     seasonal: [{ loc: `${SITE_URL}/assets/aglen-aerial-river.png`, title: copy.guides.seasonal.label, caption: copy.guides.seasonal.text }],
     events: [{ loc: `${SITE_URL}/assets/aglen-village-church.png`, title: routeText(lang, "events").title, caption: copy.hub.text }],
+    guides: [
+      {
+        loc: `${SITE_URL}/assets/aglen-aerial-river.png`,
+        title: guidesUiByLanguage[lang].indexTitle,
+        caption: guidesUiByLanguage[lang].indexSubtitle,
+      },
+    ],
     localBusinesses: [
       {
-        loc: `${SITE_URL}/assets/aglen-village-church.png`,
+        loc: `${SITE_URL}/assets/local-businesses-hero.jpg`,
         title: businessesUiByLanguage[lang].heroTitle,
         caption: businessesUiByLanguage[lang].heroSubtitle,
       },
@@ -444,8 +485,41 @@ function buildBusinessSchema(lang: LanguageCode, business: LocalBusiness): objec
   };
 }
 
-export function buildJSONLD(lang: LanguageCode, routeId: RouteId = "home", businessSlug?: string): object {
-  const business = businessSlug ? findBusiness(businessSlug) : undefined;
+export function buildJSONLD(lang: LanguageCode, routeId: RouteId = "home", detailSlug?: string): object {
+  const guide = detailSlug && routeId === "guides" ? findGuide(detailSlug) : undefined;
+  if (guide) {
+    const gui = guidesUiByLanguage[lang];
+    const url = absoluteGuideUrl(lang, guide.slug);
+    const minutes = readingMinutes(guide, lang);
+    return {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          // TravelGuide only where the guide really is one; the rest stay Article.
+          "@type": guide.status === "published" ? "TravelGuide" : "Article",
+          "@id": `${url}#guide`,
+          name: localizeGuide(guide.title, lang),
+          headline: localizeGuide(guide.title, lang),
+          description: localizeGuide(guide.summary, lang),
+          url,
+          inLanguage: lang,
+          image: absoluteAssetUrl(guide.heroImage),
+          isAccessibleForFree: true,
+          ...(minutes > 0 ? { timeRequired: `PT${minutes}M` } : {}),
+          publisher: { "@id": `${SITE_URL}/#organization` },
+        },
+        {
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: gui.indexTitle, item: absoluteRouteUrl(lang, "guides") },
+            { "@type": "ListItem", position: 2, name: localizeGuide(guide.title, lang), item: url },
+          ],
+        },
+      ],
+    };
+  }
+
+  const business = detailSlug && routeId === "localBusinesses" ? findBusiness(detailSlug) : undefined;
   if (business) {
     const bui = businessesUiByLanguage[lang];
     return {
@@ -596,10 +670,40 @@ function staticFallbackLink(lang: LanguageCode, label: string, routeId: RouteId)
   return `<a href="${buildRoutePath(lang, routeId)}">${escapeHtml(label)}</a>`;
 }
 
-export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "home", businessSlug?: string): string {
+export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "home", detailSlug?: string): string {
   const copy = contentByLanguage[lang];
-  const meta = getSEOConfig(lang, routeId, businessSlug);
-  const business = businessSlug ? findBusiness(businessSlug) : undefined;
+  const meta = getSEOConfig(lang, routeId, detailSlug);
+  const business = detailSlug && routeId === "localBusinesses" ? findBusiness(detailSlug) : undefined;
+  const guide = detailSlug && routeId === "guides" ? findGuide(detailSlug) : undefined;
+
+  if (guide) {
+    const gui = guidesUiByLanguage[lang];
+    const lines = [
+      ...(guide.status === "in-preparation" ? [`${gui.inPreparation}. ${gui.inPreparationNote}`] : []),
+      ...(guide.sections ?? []).flatMap((section) => [
+        `${localizeGuide(section.heading, lang)}: ${section.body.map((p) => localizeGuide(p, lang)).join(" ")}`,
+        ...(section.list ?? []).map((item) => localizeGuide(item, lang)),
+        ...(section.notice ? [`${gui.noticeLabel}: ${localizeGuide(section.notice, lang)}`] : []),
+      ]),
+      ...guidePlaces(guide, lang).map((place) => `${place.title}: ${place.description}`),
+    ].filter((line) => line.trim().length > 0);
+
+    return `
+      <main id="static-seo-content" class="static-fallback" lang="${lang}">
+        <article class="content-hub section-shell">
+          <div class="section-heading">
+            <p class="eyebrow">${escapeHtml(gui.indexEyebrow)}</p>
+            <h1>${escapeHtml(localizeGuide(guide.title, lang))}</h1>
+            ${paragraph(localizeGuide(guide.summary, lang))}
+            <a href="${buildRoutePath(lang, "guides")}">${escapeHtml(gui.backToGuides)}</a>
+          </div>
+          <div class="hub-grid">
+            ${lines.map((item) => `<div class="hub-card"><span>${escapeHtml(item)}</span></div>`).join("")}
+          </div>
+        </article>
+      </main>
+    `;
+  }
 
   if (business) {
     const bui = businessesUiByLanguage[lang];
@@ -686,6 +790,7 @@ export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "hom
     travelGuide: [copy.hub.text],
     seasonal: [copy.guides.seasonal.text],
     events: [copy.hub.text],
+    guides: guides.map((guide) => `${localizeGuide(guide.title, lang)}: ${localizeGuide(guide.summary, lang)}`),
     localBusinesses: (() => {
       const bui = businessesUiByLanguage[lang];
       const listed = publishedBusinesses();

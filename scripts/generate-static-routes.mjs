@@ -124,8 +124,9 @@ function renderOpenGraphLocaleAlternates(locales) {
 }
 
 function renderPageHtml(routePath) {
-  const { language, routeId, businessSlug } = routes.resolveRoute(routePath);
-  const pageSeo = seo.getSEOConfig(language, routeId, businessSlug);
+  const { language, routeId, businessSlug, guideSlug } = routes.resolveRoute(routePath);
+  const detailSlug = businessSlug ?? guideSlug;
+  const pageSeo = seo.getSEOConfig(language, routeId, detailSlug);
   let html = template;
 
   html = html.replace(/<html lang="[^"]*">/, `<html lang="${language}">`);
@@ -152,11 +153,11 @@ function renderPageHtml(routePath) {
   html = html.replace(/\n\s*<meta property="og:locale:alternate" content="[^"]+" \/>\n?/g, "\n");
   html = html.replace(
     "</head>",
-    `${renderAlternateLinks(pageSeo.alternates)}\n${renderOpenGraphLocaleAlternates(pageSeo.ogLocaleAlternates)}\n    <script type="application/ld+json" id="site-jsonld">${JSON.stringify(seo.buildJSONLD(language, routeId, businessSlug))}</script>\n  </head>`,
+    `${renderAlternateLinks(pageSeo.alternates)}\n${renderOpenGraphLocaleAlternates(pageSeo.ogLocaleAlternates)}\n    <script type="application/ld+json" id="site-jsonld">${JSON.stringify(seo.buildJSONLD(language, routeId, detailSlug))}</script>\n  </head>`,
   );
   html = html.replace(
     '<div id="root"></div>',
-    `${seo.renderStaticFallback(language, routeId, businessSlug)}\n    <div id="root"></div>\n    <script>document.getElementById("static-seo-content")?.remove();</script>`,
+    `${seo.renderStaticFallback(language, routeId, detailSlug)}\n    <div id="root"></div>\n    <script>document.getElementById("static-seo-content")?.remove();</script>`,
   );
 
   return html;

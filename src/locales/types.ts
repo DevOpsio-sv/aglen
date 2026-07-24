@@ -141,7 +141,12 @@ export type LocalBusiness = {
   name: string; // business names stay untranslated
   category: BusinessCategory;
   shortDescription: LocalizedText;
+  // Long description. Separate paragraphs with a blank line ("\n\n") — the
+  // detail page renders each as its own paragraph.
   description?: LocalizedText;
+  // One short, genuinely notable fact, shown as a highlighted badge on the card
+  // and as a callout on the detail page. Keep it to a few words.
+  highlight?: LocalizedText;
   story?: { quote: LocalizedText; person: string; role?: LocalizedText; image?: string };
   coverImage?: string;
   coverImageAlt?: LocalizedText;
@@ -168,6 +173,9 @@ export type LocalBusiness = {
   status: BusinessStatus;
   verified: boolean; // only ever set by an administrator who checked the listing
   featured: boolean;
+  // Position in the listing. Lower sorts earlier; entries without one fall in
+  // the middle, so only the businesses that need a fixed slot carry a value.
+  displayOrder?: number;
   lastUpdated?: string; // ISO date
 };
 
