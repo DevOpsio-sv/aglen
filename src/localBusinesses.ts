@@ -97,6 +97,8 @@ const businessData: LocalBusiness[] = [
       },
     ],
     socialLinks: { facebook: "https://www.facebook.com/chervenokosataeli" },
+    phone: "0897 911341",
+    address: "с. Ъглен",
     products: [
       { bg: "Плетени чанти за рамо", en: "Crocheted shoulder bags" },
       { bg: "Плетени чанти тип торба", en: "Crocheted bucket bags" },
