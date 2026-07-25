@@ -1,6 +1,8 @@
 /       /bg/    301
-/play   /bg/#app   302
-/ar     /bg/#ar    302
+# The old #app / #ar home anchors are gone: the Unlocking Bulgaria promo is now
+# the /ar-missions/ hub (M2, ADR-013). These vanity URLs point at it instead.
+/play   /bg/ar-missions/   302
+/ar     /bg/ar-missions/   302
 
 # ── Legacy topic routes → the guide that replaced them ───────────────────
 # These six routes rendered the same content as a /guides/ page, in all 14
@@ -36,3 +38,9 @@
 /:lang/traditional-food-aglen/        /:lang/local-businesses/   301
 /:lang/accommodation-near-aglen/      /:lang/local-businesses/   301
 /:lang/aglen-answer-hub/              /:lang/about/              301
+
+# ── M2: the two legacy standalone Unlocking Bulgaria pages consolidate into the
+# one local mission hub (ADR-013). /ar-missions/ returns 200 in every language;
+# these pages render noindex with a canonical → /ar-missions/ as the fallback.
+/:lang/unlockingbulgaria/            /:lang/ar-missions/        301
+/:lang/app/                          /:lang/ar-missions/        301

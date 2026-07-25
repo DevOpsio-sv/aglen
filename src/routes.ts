@@ -19,6 +19,7 @@ export type CoreRouteId =
   | "stay"
   | "quests"
   | "app"
+  | "arMissions"
   | "travelGuide"
   | "seasonal"
   | "events"
@@ -65,8 +66,12 @@ const coreRoutes: StaticRoute[] = [
   { id: "nearby", slug: "nearby-destinations", sectionId: "travel-guide" },
   { id: "geo", slug: "location", sectionId: "location" },
   { id: "stay", slug: "stay", sectionId: "stay" },
-  { id: "quests", slug: "unlockingbulgaria", sectionId: "quests" },
-  { id: "app", slug: "app", sectionId: "app" },
+  // The one local Unlocking Bulgaria hub (ADR-013). `quests` and `app` are the
+  // legacy standalone UB pages; they now merge into /ar-missions/ (canonical +
+  // 301, see seo.ts and public/_redirects) and are kept only so old links resolve.
+  { id: "arMissions", slug: "ar-missions", sectionId: "ar-missions" },
+  { id: "quests", slug: "unlockingbulgaria", sectionId: "ar-missions" },
+  { id: "app", slug: "app", sectionId: "ar-missions" },
   { id: "travelGuide", slug: "travel-guide", sectionId: "travel-guide" },
   { id: "seasonal", slug: "travel-guide/seasonal-guide", sectionId: "travel-guide" },
   { id: "events", slug: "events", sectionId: "events" },

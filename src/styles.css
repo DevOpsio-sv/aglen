@@ -413,6 +413,97 @@ section[id] {
   .mobile-menu a.is-accent::before { animation: none; }
 }
 
+/* "Посети Ъглен" disclosure — the one place the primary nav nests. The trigger
+   matches the sibling nav links; the panel reuses the language-popover look. */
+.nav-dropdown {
+  position: relative;
+  display: inline-flex;
+}
+
+.nav-dropdown-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 999px;
+  padding: 0.65rem 0.82rem calc(0.65rem - 2px);
+  color: var(--nav-text);
+  background: transparent;
+  font: inherit;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition:
+    background 180ms ease,
+    border-color 200ms ease,
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.nav-dropdown-trigger:hover,
+.nav-dropdown-trigger:focus-visible {
+  color: var(--forest-deep);
+  background: rgba(15, 47, 36, 0.09);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.nav-dropdown-trigger[aria-current="true"] {
+  border-bottom-color: var(--gold);
+}
+
+.nav-dropdown-trigger .language-chevron {
+  width: 14px;
+  height: 14px;
+  transition: transform 180ms ease;
+}
+
+.nav-dropdown.open .nav-dropdown-trigger .language-chevron {
+  transform: rotate(180deg);
+}
+
+.nav-dropdown-panel {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  z-index: 35;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  width: max-content;
+  min-width: 220px;
+  max-width: min(320px, calc(100vw - 32px));
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 18px;
+  padding: 0.5rem;
+  background: rgba(247, 242, 231, 0.96);
+  box-shadow: 0 28px 78px rgba(7, 26, 20, 0.22);
+  backdrop-filter: blur(24px) saturate(1.1);
+  animation: languageMenuRise 160ms ease both;
+}
+
+.nav-dropdown-panel a {
+  display: block;
+  border-radius: 12px;
+  padding: 0.6rem 0.8rem;
+  color: var(--forest);
+  font-size: 0.92rem;
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.nav-dropdown-panel a:hover,
+.nav-dropdown-panel a:focus-visible {
+  color: var(--forest-deep);
+  background: rgba(15, 47, 36, 0.09);
+  outline: none;
+}
+
+.nav-dropdown-panel a[aria-current="page"] {
+  color: var(--forest-deep);
+  font-weight: 700;
+  background: rgba(197, 154, 69, 0.16);
+}
+
 .hero {
   position: relative;
   display: grid;
@@ -3679,4 +3770,153 @@ h1.section-title {
 
 .trust-nearby p {
   margin: 0;
+}
+
+/* ── M2: mobile "Посети Ъглен" group ─────────────────────────────────────────
+   The sub-items stay fully visible in the sheet (no collapse), so no essential
+   link is ever hidden. */
+.mobile-nav-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.mobile-nav-group-label {
+  margin: 0.5rem 0 0.1rem;
+  padding: 0 1rem;
+  color: var(--gold);
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.mobile-menu a.mobile-nav-subitem {
+  min-height: 48px;
+  padding-left: 1.6rem;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.mobile-menu a.mobile-nav-subitem[aria-current="page"] {
+  color: var(--forest-deep);
+  font-weight: 700;
+  background: rgba(197, 154, 69, 0.16);
+}
+
+/* ── M2: one compact Unlocking Bulgaria home block ───────────────────────────
+   Replaces the former quests + ar + app promo trio. One heading, one line, a
+   CTA to the local hub, one clearly-labelled external CTA. */
+.ub-block {
+  padding: clamp(2.5rem, 5vw, 4rem) 0;
+}
+
+.ub-panel {
+  border-radius: 26px;
+  padding: clamp(1.8rem, 4vw, 3rem);
+  background: linear-gradient(135deg, #15523c, var(--forest-deep));
+  color: #fff;
+}
+
+.ub-copy {
+  max-width: 60ch;
+}
+
+.ub-copy .eyebrow {
+  color: var(--gold-soft);
+}
+
+.ub-copy h1,
+.ub-copy h2 {
+  margin: 0.4rem 0 0.6rem;
+  color: #fff;
+}
+
+.ub-copy p {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.ub-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.4rem;
+}
+
+.ub-external-note {
+  margin-top: 0.7rem;
+  color: rgba(255, 255, 255, 0.66);
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+}
+
+/* ── M2: the /ar-missions/ local hub ─────────────────────────────────────── */
+.ar-missions {
+  padding-top: 1rem;
+}
+
+.ar-missions-external {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  margin: 1.4rem 0 2.4rem;
+}
+
+.ar-missions .ub-external-note {
+  color: var(--muted);
+}
+
+.ar-missions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 1rem;
+  margin-bottom: 2.6rem;
+}
+
+.ar-mission-card {
+  position: relative;
+  border: 1px solid rgba(15, 47, 36, 0.12);
+  border-radius: 18px;
+  padding: 1.4rem 1.4rem 1.5rem;
+  background: rgba(247, 242, 231, 0.6);
+}
+
+.ar-mission-card:target {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px rgba(197, 154, 69, 0.35);
+}
+
+.ar-mission-num {
+  display: block;
+  margin-bottom: 0.4rem;
+  color: var(--gold);
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.ar-mission-card h3 {
+  margin: 0 0 0.4rem;
+  color: var(--forest-deep);
+}
+
+.ar-mission-card p {
+  margin: 0;
+  color: var(--forest);
+}
+
+.ar-missions-need {
+  border-top: 1px solid rgba(15, 47, 36, 0.12);
+  padding-top: 1.8rem;
+}
+
+.ar-missions-need-list {
+  margin: 0.6rem 0 1.4rem;
+  padding-left: 1.2rem;
+  color: var(--forest);
+}
+
+.ar-missions-need-list li {
+  margin-bottom: 0.35rem;
 }

@@ -69,6 +69,11 @@ const retiredLandingRouteIds: Partial<Record<RouteId, CoreRouteId>> = {
   traditionalFood: "localBusinesses",
   accommodationNearAglen: "localBusinesses",
   aiAnswerHub: "trust",
+  // ── M2: the two legacy standalone Unlocking Bulgaria pages consolidate into the
+  // one local mission hub (ADR-013). Same retirement plumbing: canonical +
+  // hreflang → /ar-missions/, noindex, dropped from the sitemaps, 301 in _redirects.
+  quests: "arMissions",
+  app: "arMissions",
 };
 
 /** The existing route a retired landing page now 301s and canonicalises to. */
@@ -317,6 +322,7 @@ function routeText(lang: LanguageCode, routeId: RouteId): { title: string; descr
     stay: { title: `${copy.stay.title} | ${copy.brand.name}`, description: copy.stay.text },
     quests: { title: `${copy.quests.title} | ${copy.brand.name}`, description: copy.quests.text },
     app: { title: `${copy.app.title} | ${copy.brand.name}`, description: copy.app.text },
+    arMissions: { title: `${copy.ub.hubTitle} | ${copy.brand.name}`, description: copy.ub.homeText },
     travelGuide: { title: `${copy.hub.title} | ${copy.brand.name}`, description: copy.hub.text },
     seasonal: { title: `${copy.guides.seasonal.label} | ${copy.brand.name}`, description: copy.guides.seasonal.text },
     events: { title: `${trust.events} | ${copy.brand.name}`, description: copy.hub.text },
@@ -476,6 +482,7 @@ function routeImages(lang: LanguageCode, routeId: RouteId, detailSlug?: string):
     stay: copy.accommodationList.map((item) => ({ loc: absoluteAssetUrl(item.image), title: item.title, caption: item.description })),
     quests: [{ loc: OG_IMAGE, title: copy.quests.title, caption: copy.quests.text }, { loc: `${SITE_URL}/assets/aglen-cave-mystery.png`, title: copy.ar.title, caption: copy.ar.text }],
     app: [{ loc: OG_IMAGE, title: copy.app.title, caption: copy.app.text }],
+    arMissions: [{ loc: OG_IMAGE, title: copy.ub.hubTitle, caption: copy.ub.homeText }, { loc: `${SITE_URL}/assets/aglen-cave-mystery.png`, title: copy.quests.title, caption: copy.quests.text }],
     travelGuide: [{ loc: OG_IMAGE, title: copy.hub.title, caption: copy.hub.text }],
     seasonal: [{ loc: `${SITE_URL}/assets/aglen-aerial-river.png`, title: copy.guides.seasonal.label, caption: copy.guides.seasonal.text }],
     events: [{ loc: `${SITE_URL}/assets/aglen-village-church.png`, title: routeText(lang, "events").title, caption: copy.hub.text }],
@@ -1227,6 +1234,7 @@ export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "hom
     stay: copy.accommodationList.map((item) => `${item.title}: ${item.description}`),
     quests: copy.quests.features.map((feature) => `${feature.title}: ${feature.text}`),
     app: [...copy.ar.steps, copy.app.note],
+    arMissions: [copy.ub.whatText, ...copy.quests.features.map((feature) => `${feature.title}: ${feature.text}`), `${copy.ub.needHeading}: ${copy.ub.needItems.join(", ")}`, copy.app.text],
     travelGuide: [copy.hub.text],
     seasonal: [copy.guides.seasonal.text],
     events: [copy.hub.text],

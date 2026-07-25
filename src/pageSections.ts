@@ -33,9 +33,10 @@ export type HomeSection =
   | "hub"
   | "experiences"
   | "stay"
-  | "quests"
-  | "ar"
-  | "app";
+  // One compact Unlocking Bulgaria block (ADR-013). It replaces the former
+  // "quests" + "ar" + "app" trio of home sections, which are consolidated into
+  // the /ar-missions/ hub — see App.tsx and pageSections history.
+  | "ub";
 
 /** Document order of the sections in App.tsx. */
 export const HOME_SECTIONS: HomeSection[] = [
@@ -49,9 +50,7 @@ export const HOME_SECTIONS: HomeSection[] = [
   "hub",
   "experiences",
   "stay",
-  "quests",
-  "ar",
-  "app",
+  "ub",
 ];
 
 export const sectionsByRoute: Partial<Record<RouteId, HomeSection[]>> = {
@@ -60,8 +59,9 @@ export const sectionsByRoute: Partial<Record<RouteId, HomeSection[]>> = {
   activities: ["experiences"],
   geo: ["map"],
   stay: ["stay"],
-  quests: ["quests", "ar", "app"],
-  app: ["app"],
+  // quests and app no longer render home sections: they merge into the
+  // /ar-missions/ hub, which App.tsx renders as its own component. They stay in
+  // the route table only so old URLs resolve (301 + canonical → /ar-missions/).
   travelGuide: ["hub"],
   // The contact section renders on every page, so this route adds nothing and
   // simply lets that section supply its h1.

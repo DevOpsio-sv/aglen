@@ -81,7 +81,7 @@ function handleImageError(event: SyntheticEvent<HTMLImageElement>) {
 }
 
 function gatewayRouteId(link: PlaceExperienceLink): RouteId {
-  return link.kind === "activity" ? "activities" : "quests";
+  return link.kind === "activity" ? "activities" : "arMissions";
 }
 
 function gatewayTargetId(link: PlaceExperienceLink): string {
@@ -92,6 +92,13 @@ function gatewayKey(link: PlaceExperienceLink): string {
   return `${link.kind}:${link.id}`;
 }
 
+// The one primary navigation. A leaf links to a route; a group opens a small
+// set of leaves (only "Посети Ъглен" uses this). No third structure exists.
+type NavLeaf = { label: string; routeId: RouteId; accent?: boolean };
+type NavGroup = { label: string; children: NavLeaf[] };
+type NavEntry = NavLeaf | NavGroup;
+const isNavGroup = (entry: NavEntry): entry is NavGroup => "children" in entry;
+
 export function App() {
   const [pageRoute, setPageRoute] = useState<ResolvedRoute>(() =>
     resolveRoute(window.location.pathname, window.location.search),
@@ -99,6 +106,9 @@ export function App() {
   const [selectedTimeline, setSelectedTimeline] = useState<TimelineItem | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
+  const [visitMenuOpen, setVisitMenuOpen] = useState(false);
+  const visitMenuRef = useRef<HTMLDivElement | null>(null);
+  const visitTriggerRef = useRef<HTMLButtonElement | null>(null);
   const timelineDialogRef = useRef<HTMLElement | null>(null);
   const timelineCloseRef = useRef<HTMLButtonElement | null>(null);
   const languageSwitchRef = useRef<HTMLDivElement | null>(null);
@@ -112,6 +122,11 @@ export function App() {
   const isBusinessPage = routeId === "localBusinesses";
   const isGuidesPage = routeId === "guides";
   const isTrustPage = isTrustRouteId(routeId);
+  // The one local Unlocking Bulgaria hub. The legacy `quests` and `app` pages
+  // resolve here too — they 301 to /ar-missions/ and canonicalise to it, and
+  // render the same hub so a direct hit before the redirect never shows the old
+  // standalone promo (ADR-013).
+  const isArMissionsPage = routeId === "arMissions" || routeId === "quests" || routeId === "app";
   // Routes whose query string is shareable state rather than tracking noise.
   const keepsSearch = isEventsPage || (isBusinessPage && !businessSlug);
   const selectedLanguage = languages.find((item) => item.code === language) ?? languages[0];
@@ -119,7 +134,7 @@ export function App() {
   // The home-page sections this route owns, from pageSections.ts. A legacy
   // duplicate route falls back to the full set so it still shows something if its
   // 301 has not applied yet; the noindex keeps it out of the index either way.
-  const hasOwnComponent = Boolean(currentLandingPage) || isEventsPage || isBusinessPage || isGuidesPage || isTrustPage;
+  const hasOwnComponent = Boolean(currentLandingPage) || isEventsPage || isBusinessPage || isGuidesPage || isTrustPage || isArMissionsPage;
   // Already in document order and with feature flags applied.
   const visibleSections = hasOwnComponent ? [] : sectionsForRoute(routeId);
   const showSection = (section: HomeSection) => visibleSections.includes(section);
@@ -143,6 +158,7 @@ export function App() {
     setSelectedTimeline(null);
     setLanguageMenuOpen(false);
     setMobileMenuOpen(false);
+    setVisitMenuOpen(false);
     setPageRoute(nextRoute);
 
     if (replace) {
@@ -294,6 +310,18 @@ export function App() {
   }, [mobileMenuOpen]);
 
   useEffect(() => {
+    if (!visitMenuOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setVisitMenuOpen(false);
+        visitTriggerRef.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [visitMenuOpen]);
+
+  useEffect(() => {
     if (!languageMenuOpen || !languageSwitchRef.current) return;
     const languageSwitch = languageSwitchRef.current;
 
@@ -363,19 +391,44 @@ export function App() {
     return () => document.removeEventListener("keydown", onKey);
   }, [selectedTimeline]);
 
-  const navItems = useMemo(
+  // One primary, village-first navigation (ADR-013). Six top-level intents;
+  // Unlocking Bulgaria lives as a sub-item of "Посети Ъглен", not a peer of
+  // Places; Events and Local Business stay top-level. Each target is the best
+  // existing valid page until its canonical /place/ or /plan/ home ships (M3) —
+  // no link points at an unbuilt destination.
+  const primaryNav = useMemo<NavEntry[]>(
     () => [
-      [copy.nav.home, "home"],
-      [copy.nav.about, "pillars"],
-      [copy.nav.landmarks, "attractions"],
-      ...(SHOW_EXPERIENCES ? [[copy.experiences.eyebrow, "activities"]] : []),
-      ...(SHOW_STAY ? [[copy.nav.stay, "stay"]] : []),
-      [copy.nav.quests, "quests"],
-      [copy.nav.events, "events"],
-      [copy.nav.business, "localBusinesses"],
-    ] as Array<[string, RouteId]>,
+      { label: copy.nav.home, routeId: "home" },
+      { label: copy.brand.name, routeId: "pillars" },
+      { label: copy.nav.placesNature, routeId: "attractions" },
+      {
+        label: copy.nav.visit,
+        children: [
+          { label: copy.nav.visitGettingHere, routeId: "howToGet" },
+          { label: copy.nav.visitRoutes, routeId: "geo" },
+          { label: copy.nav.visitChildren, routeId: "familyTrip" },
+          { label: copy.nav.visitMissions, routeId: "arMissions" },
+          { label: copy.nav.visitWhen, routeId: "bestTime" },
+        ],
+      },
+      { label: copy.nav.events, routeId: "events", accent: true },
+      { label: copy.nav.business, routeId: "localBusinesses" },
+    ],
     [copy],
   );
+
+  // Active state that survives the legacy-route→guide indirection: "Места и
+  // природа" points at `attractions`, which resolves to the beautiful-places
+  // guide, so the item must light up on that guide's URL too.
+  const isRouteActive = (navRouteId: RouteId): boolean => {
+    if (navRouteId === routeId) return true;
+    const guide = guideByLegacyRoute(navRouteId);
+    if (guide && guideSlug === guide.slug) return true;
+    // The two legacy UB routes render the hub, so "AR мисии" stays active there.
+    if (navRouteId === "arMissions" && (routeId === "quests" || routeId === "app")) return true;
+    return false;
+  };
+  const isGroupActive = (group: NavGroup): boolean => group.children.some((child) => isRouteActive(child.routeId));
 
   const guideLinks = useMemo(
     () => [
@@ -470,17 +523,58 @@ export function App() {
           </span>
         </a>
         <nav className="desktop-nav">
-          {navItems.map(([label, navRouteId]) => (
-            <a
-              key={navRouteId}
-              href={routeHref(navRouteId)}
-              className={navRouteId === "events" ? "is-accent" : undefined}
-              onClick={(event) => handleRouteClick(event, navRouteId)}
-              aria-current={navRouteId === routeId ? "page" : undefined}
-            >
-              {label}
-            </a>
-          ))}
+          {primaryNav.map((entry) =>
+            isNavGroup(entry) ? (
+              <div
+                key={entry.label}
+                ref={visitMenuRef}
+                className={`nav-dropdown ${visitMenuOpen ? "open" : ""}`}
+                onBlur={(event) => {
+                  const nextTarget = event.relatedTarget;
+                  if (!(nextTarget instanceof Node) || !event.currentTarget.contains(nextTarget)) {
+                    setVisitMenuOpen(false);
+                  }
+                }}
+              >
+                <button
+                  ref={visitTriggerRef}
+                  type="button"
+                  className="nav-dropdown-trigger"
+                  aria-expanded={visitMenuOpen}
+                  aria-haspopup="true"
+                  aria-current={isGroupActive(entry) ? "true" : undefined}
+                  onClick={() => setVisitMenuOpen((open) => !open)}
+                >
+                  {entry.label}
+                  <ChevronDownIcon />
+                </button>
+                {visitMenuOpen && (
+                  <div className="nav-dropdown-panel">
+                    {entry.children.map((child) => (
+                      <a
+                        key={child.routeId}
+                        href={routeHref(child.routeId)}
+                        onClick={(event) => handleRouteClick(event, child.routeId)}
+                        aria-current={isRouteActive(child.routeId) ? "page" : undefined}
+                      >
+                        {child.label}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <a
+                key={entry.routeId}
+                href={routeHref(entry.routeId)}
+                className={entry.accent ? "is-accent" : undefined}
+                onClick={(event) => handleRouteClick(event, entry.routeId)}
+                aria-current={isRouteActive(entry.routeId) ? "page" : undefined}
+              >
+                {entry.label}
+              </a>
+            ),
+          )}
         </nav>
         <div
           ref={languageSwitchRef}
@@ -556,17 +650,36 @@ export function App() {
             >
               ×
             </button>
-            {navItems.map(([label, navRouteId]) => (
-              <a
-                key={navRouteId}
-                href={routeHref(navRouteId)}
-                className={navRouteId === "events" ? "is-accent" : undefined}
-                onClick={(event) => handleRouteClick(event, navRouteId)}
-                aria-current={navRouteId === routeId ? "page" : undefined}
-              >
-                {label}
-              </a>
-            ))}
+            {primaryNav.map((entry) =>
+              isNavGroup(entry) ? (
+                // The Visit sub-items stay fully visible in the mobile sheet — no
+                // collapse — so no essential link is ever hidden.
+                <div key={entry.label} className="mobile-nav-group" role="group" aria-label={entry.label}>
+                  <p className="mobile-nav-group-label">{entry.label}</p>
+                  {entry.children.map((child) => (
+                    <a
+                      key={child.routeId}
+                      className="mobile-nav-subitem"
+                      href={routeHref(child.routeId)}
+                      onClick={(event) => handleRouteClick(event, child.routeId)}
+                      aria-current={isRouteActive(child.routeId) ? "page" : undefined}
+                    >
+                      {child.label}
+                    </a>
+                  ))}
+                </div>
+              ) : (
+                <a
+                  key={entry.routeId}
+                  href={routeHref(entry.routeId)}
+                  className={entry.accent ? "is-accent" : undefined}
+                  onClick={(event) => handleRouteClick(event, entry.routeId)}
+                  aria-current={isRouteActive(entry.routeId) ? "page" : undefined}
+                >
+                  {entry.label}
+                </a>
+              ),
+            )}
             <div className="mobile-language" aria-labelledby="mobile-language-title">
               <strong id="mobile-language-title">{copy.ui.languageLabel}</strong>
               <div className="mobile-language-grid" role="listbox" aria-label={copy.ui.languageSelectAria}>
@@ -683,7 +796,7 @@ export function App() {
             <a className="button primary" href={routeHref("attractions")} onClick={(event) => handleRouteClick(event, "attractions")}>
               {copy.hero.primary}
             </a>
-            <a className="button ghost" href={routeHref("app")} onClick={(event) => handleRouteClick(event, "app")}>
+            <a className="button ghost" href={routeHref("arMissions")} onClick={(event) => handleRouteClick(event, "arMissions")}>
               {copy.hero.secondary}
             </a>
           </div>
@@ -1005,111 +1118,26 @@ export function App() {
       </section>
       )}
 
-      {showSection("quests") && (
-      <section id="quests" className="quests">
-        <div className="section-shell">
-          <div className="quests-header reveal">
+      {/* One compact Unlocking Bulgaria block (ADR-013). It replaces the former
+          quests + ar + app promo sections: one heading, one short explanation,
+          a CTA to the local /ar-missions/ hub, and a clearly-labelled external
+          CTA to the app. No second hero, no repeated product introduction. */}
+      {showSection("ub") && (
+      <section id="ub" className="ub-block">
+        <div className="section-shell ub-panel reveal">
+          <div className="ub-copy">
             <p className="eyebrow">{copy.quests.eyebrow}</p>
-            <SectionTitle level={headingLevel("quests")}>{copy.quests.title}</SectionTitle>
-            <p className="quests-lede">{copy.quests.text}</p>
-          </div>
-          <div className="quests-features">
-            {copy.quests.features.map((f, i) => {
-              const linkedPlaces = gatewayPlaceLabel({ kind: "quest", id: f.id });
-
-              return (
-                <article className="quest-feature reveal" id={`quest-${f.id}`} key={f.id}>
-                  <span className="quest-feature-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
-                  <h3>{f.title}</h3>
-                  <p>{f.text}</p>
-                  {linkedPlaces && (
-                    <p className="gateway-place-context">
-                      {localizedUi.gateway.placeContext}: {linkedPlaces}
-                    </p>
-                  )}
-                </article>
-              );
-            })}
-          </div>
-          <div className="quests-cta reveal">
-            <a className="button primary quests-btn" href={routeHref("app")} onClick={(event) => handleRouteClick(event, "app")}>
-              {copy.quests.cta}
-            </a>
-          </div>
-        </div>
-      </section>
-      )}
-
-      {showSection("ar") && (
-      <section id="ar" className="ar-section section-shell">
-        <div className="section-heading reveal">
-          <p className="eyebrow">{copy.ar.eyebrow}</p>
-          <SectionTitle level={headingLevel("ar")}>{copy.ar.title}</SectionTitle>
-          <p>{copy.ar.text}</p>
-        </div>
-        <ol className="ar-steps reveal">
-          {copy.ar.steps.map((step, index) => (
-            <li key={index}>
-              <strong>{index + 1}</strong>
-              <span>{step}</span>
-            </li>
-          ))}
-        </ol>
-        <div className="ar-cta reveal">
-          <a className="button primary" href={routeHref("app")} onClick={(event) => handleRouteClick(event, "app")}>
-            {copy.ar.cta}
-          </a>
-        </div>
-      </section>
-      )}
-
-      {showSection("app") && (
-      <section id="app" className="app-section">
-        <div className="app-panel section-shell reveal">
-          <div className="app-copy">
-            <p className="eyebrow">{copy.app.eyebrow}</p>
-            <SectionTitle level={headingLevel("app")}>{copy.app.title}</SectionTitle>
-            <p>{copy.app.text}</p>
-            <div className="app-download">
-              <a
-                className="button primary app-cta"
-                href={appUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span>{copy.app.badge}</span>
+            <SectionTitle level={headingLevel("ub")}>{copy.ub.homeHeading}</SectionTitle>
+            <p>{copy.ub.homeText}</p>
+            <div className="ub-actions">
+              <a className="button primary" href={routeHref("arMissions")} onClick={(event) => handleRouteClick(event, "arMissions")}>
+                {copy.ub.seeMissions}
+              </a>
+              <a className="button ghost" href={appUrl} target="_blank" rel="noopener noreferrer">
+                {copy.app.badge}
               </a>
             </div>
-            <ul className="app-highlights" aria-label={copy.app.eyebrow}>
-              {copy.quests.features.slice(0, 3).map((feature) => (
-                <li key={feature.id}>{feature.title}</li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="app-showcase" aria-hidden="true">
-            <figure className="phone-mockup">
-              <div className="phone-frame">
-                <div className="phone-screen">
-                  <div className="phone-dynamic-island" />
-                  <img
-                    {...imageProps("/assets/unlocking-bulgaria-quest-banner.png", { variant: "card", sizes: "(max-width: 900px) 60vw, 320px" })}
-                    alt="Unlocking Bulgaria – мобилно AR приключение в Ъглен"
-                    loading="lazy"
-                    decoding="async"
-                    onError={handleImageError}
-                  />
-                  <div className="phone-home-indicator" />
-                </div>
-                <div className="phone-btn phone-btn-vol-up" />
-                <div className="phone-btn phone-btn-vol-down" />
-                <div className="phone-btn phone-btn-power" />
-              </div>
-              <figcaption>
-                <span>{copy.quests.eyebrow}</span>
-                <strong>{copy.quests.features[0]?.title}</strong>
-              </figcaption>
-            </figure>
+            <p className="ub-external-note">{copy.ub.externalLabel}</p>
           </div>
         </div>
       </section>
@@ -1127,6 +1155,64 @@ export function App() {
       {isGuidesPage && <GuidesPage language={language} guideSlug={guideSlug} onNavigate={navigateToPath} />}
 
       {isTrustPage && <TrustPage language={language} routeId={routeId} onNavigate={navigateToPath} />}
+
+      {/* The one local Unlocking Bulgaria hub. Its whole job: say what UB is (an
+          independent national app), that Aglen is its first active destination,
+          which missions are available and at which places, what a visitor needs,
+          and how to open the external app — the only cross-domain handoff. */}
+      {isArMissionsPage && (
+        <section id="ar-missions" className="ar-missions section-shell">
+          <div className="section-heading reveal">
+            <p className="eyebrow">{copy.quests.eyebrow}</p>
+            <SectionTitle level="h1">{copy.ub.hubTitle}</SectionTitle>
+            <p>{copy.ub.whatText}</p>
+          </div>
+
+          <div className="ar-missions-external reveal">
+            <a className="button primary" href={appUrl} target="_blank" rel="noopener noreferrer">
+              {copy.app.badge}
+            </a>
+            <span className="ub-external-note">{copy.ub.externalLabel}</span>
+          </div>
+
+          <div className="section-heading reveal">
+            <h2>{copy.ub.missionsHeading}</h2>
+          </div>
+          <div className="ar-missions-grid">
+            {copy.quests.features.map((feature, index) => {
+              const linkedPlaces = gatewayPlaceLabel({ kind: "quest", id: feature.id });
+              return (
+                <article className="ar-mission-card reveal" id={`quest-${feature.id}`} key={feature.id}>
+                  <span className="ar-mission-num" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+                  <h3>{feature.title}</h3>
+                  <p>{feature.text}</p>
+                  {linkedPlaces && (
+                    <p className="gateway-place-context">
+                      {localizedUi.gateway.placeContext}: {linkedPlaces}
+                    </p>
+                  )}
+                </article>
+              );
+            })}
+          </div>
+
+          <div className="ar-missions-need reveal">
+            <h2>{copy.ub.needHeading}</h2>
+            <ul className="ar-missions-need-list">
+              {copy.ub.needItems.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+            <p>{copy.app.text}</p>
+            <div className="ar-missions-external">
+              <a className="button primary" href={appUrl} target="_blank" rel="noopener noreferrer">
+                {copy.app.badge}
+              </a>
+              <span className="ub-external-note">{copy.ub.externalLabel}</span>
+            </div>
+          </div>
+        </section>
+      )}
 
       <section id="contact" className="contact section-shell">
         <div className="section-heading reveal">
@@ -1250,6 +1336,9 @@ function crumbLabel(language: LanguageCode, routeId: RouteId): string | undefine
     stay: copy.stay.title,
     quests: copy.quests.title,
     app: copy.app.title,
+    // Concise leaf label — not the hub h1 (copy.ub.hubTitle), so the breadcrumb
+    // never repeats the page title.
+    arMissions: copy.nav.quests,
     travelGuide: copy.hub.title,
     contact: copy.contact.title,
     events: copy.events.title,
