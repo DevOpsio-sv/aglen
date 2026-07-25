@@ -790,7 +790,7 @@ function identityNodes(lang: LanguageCode): object[] {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,
       name: seoText.organizationName,
-      alternateName: [copy.brand.name, "unlockingbulgaria"],
+      alternateName: [copy.brand.name],
       url: SITE_URL,
       logo: { "@type": "ImageObject", url: OG_IMAGE, width: 1200, height: 630 },
       contactPoint: {
@@ -807,7 +807,6 @@ function identityNodes(lang: LanguageCode): object[] {
         postalCode: AGLEN.postalCode,
         addressCountry: "BG",
       },
-      sameAs: [APP_SITE_URL],
     },
     {
       "@type": "WebSite",
@@ -964,7 +963,6 @@ export function buildJSONLD(lang: LanguageCode, routeId: RouteId = "home", detai
         operatingSystem: "Android",
         screenshot: OG_IMAGE,
         featureList: [...copy.ar.steps, ...copy.quests.features.map((feature) => feature.title)],
-        publisher: { "@id": `${SITE_URL}/#organization` },
         inLanguage: allLanguageCodes,
         isAccessibleForFree: true,
         availableOnDevice: "Mobile",
