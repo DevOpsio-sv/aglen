@@ -140,6 +140,7 @@ function renderPageHtml(routePath) {
   html = replaceOrInsert(html, /<link rel="canonical" href="[^"]*" \/>/, `<link rel="canonical" href="${escapeAttribute(pageSeo.canonicalUrl)}" />`);
   html = replaceOrInsert(html, /<meta property="og:type" content="[^"]*" \/>/, `<meta property="og:type" content="${escapeAttribute(pageSeo.ogType)}" />`);
   html = replaceOrInsert(html, /<meta property="og:site_name" content="[^"]*" \/>/, `<meta property="og:site_name" content="${escapeAttribute(pageSeo.siteName)}" />`);
+  html = replaceOrInsert(html, /<meta property="og:site_name" content="[^"]*" \/>/, `<meta property="og:site_name" content="${escapeAttribute(pageSeo.siteName)}" />`);
   html = replaceOrInsert(html, /<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${escapeAttribute(pageSeo.canonicalUrl)}" />`);
   html = replaceOrInsert(html, /<meta property="og:title" content="[^"]*" \/>/, `<meta property="og:title" content="${escapeAttribute(pageSeo.title)}" />`);
   html = replaceOrInsert(html, /<meta property="og:description" content="[^"]*" \/>/, `<meta property="og:description" content="${escapeAttribute(pageSeo.description)}" />`);

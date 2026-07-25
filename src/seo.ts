@@ -256,7 +256,7 @@ function routeText(lang: LanguageCode, routeId: RouteId): { title: string; descr
 
   const trust = Object.fromEntries(ui.trustLinks.map((link) => [link.routeId, link.label]));
   const core: Record<CoreRouteId, { title: string; description: string }> = {
-    home: { title: `${copy.hero.subtitle} | ${copy.nav.quests}`, description: copy.hero.lede },
+    home: { title: `${copy.hero.subtitle} | ${copy.brand.name}`, description: copy.hero.lede },
     pillars: { title: `${copy.about.title} | ${copy.brand.name}`, description: `${copy.about.text} ${copy.legends.text}` },
     attractions: { title: `${copy.landmarks.title} | ${copy.brand.name}`, description: copy.landmarks.text },
     activities: { title: `${copy.experiences.title} | ${copy.brand.name}`, description: copy.experiences.text },
@@ -334,7 +334,7 @@ export function getSEOConfig(lang: LanguageCode, routeId: RouteId = "home", deta
     description: compact(text.description),
     locale: localeCodes[lang],
     author: seoTextByLanguage[lang].organizationName,
-    siteName: contentByLanguage[lang].nav.quests,
+    siteName: seoTextByLanguage[lang].organizationName,
     imageUrl: pageImage ?? primaryImage?.loc ?? OG_IMAGE,
     imageAlt: business
       ? localizeText(business.coverImageAlt ?? business.shortDescription, lang)
