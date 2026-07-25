@@ -22,6 +22,19 @@ import {
 import { fontFaces } from "./generated/fontManifest";
 import { routeHasOwnSections } from "./pageSections";
 import { localizeTrust, trustPageByRoute } from "./trustPages";
+import { buildPlacePath } from "./routes";
+import {
+  breadcrumbTrail,
+  derivedLinks,
+  entityById,
+  entityBySlug,
+  entityName,
+  entityPoint,
+  entityShortText,
+  entityLongText,
+  entitySameAs,
+} from "./graph";
+import type { Entity } from "./graph/schema";
 
 export const SITE_URL = "https://aglen.bg";
 
@@ -106,6 +119,9 @@ const noindexUntilPlanRouteIds = new Set<RouteId>([
  *     so /activities/ and /stay/ currently render nothing of their own).
  */
 export function isIndexableRoute(routeId: RouteId): boolean {
+  // The entity namespace (M3) renders graph-derived content, not home-section
+  // crops, so it is indexable even though it has no `pageSections` entry.
+  if (routeId === "karst" || routeId === "place") return true;
   return (
     !supersedingGuideSlug(routeId) &&
     !retiredLandingTarget(routeId) &&
@@ -213,6 +229,100 @@ function absoluteBusinessUrl(lang: LanguageCode, slug: string): string {
 
 function absoluteGuideUrl(lang: LanguageCode, slug: string): string {
   return `${SITE_URL}${buildGuidePath(lang, slug)}`;
+}
+
+// ── Entity pages (M3) ────────────────────────────────────────
+// A `/place/<slug>/` page and `/karst/` are rendered from the knowledge graph.
+// Title, description, image, canonical, breadcrumb and JSON-LD are all derived
+// from the entity — the graph is the source of truth and these are functions of
+// it (Constitution rule 1). Prose is transcluded, never re-authored.
+
+/** The published entity a /place/<slug>/ detail route addresses, if any. */
+function entityForSlug(slug?: string): Entity | undefined {
+  if (!slug) return undefined;
+  const entity = entityBySlug(slug);
+  return entity && entity.page?.status === "published" && entity.page.path.startsWith("/place/") ? entity : undefined;
+}
+
+/** Absolute URL of an entity's page (either /karst/ or /place/<slug>/). */
+function entityAbsoluteUrl(lang: LanguageCode, entity: Entity): string {
+  if (entity.page?.path === "/karst/") return absoluteRouteUrl(lang, "karst");
+  return `${SITE_URL}${buildPlacePath(lang, entity.slug)}`;
+}
+
+// A representative hero for an entity, reusing an existing asset. E1 places carry
+// their own photograph in the locale content; the rest borrow a kind-appropriate
+// image already shipped with the site (no new media, ADR-012 is M4).
+const ENTITY_HERO_BY_KIND: Record<string, string> = {
+  region: "/assets/aglen-hero-river-canyon.png",
+  province: "/assets/aglen-aerial-river.png",
+  municipality: "/assets/aglen-aerial-river.png",
+  settlement: "/assets/aglen-village-church.png",
+  cave: "/assets/aglen-cave-mystery.png",
+  landform: "/assets/aglen-rock-arch.png",
+  waterBody: "/assets/aglen-vit-river-sunset.png",
+  spring: "/assets/aglen-river-pool.png",
+  geopark: "/assets/aglen-aerial-river.png",
+  archaeologicalSite: "/assets/aglen-kaleto-ruins.png",
+  building: "/assets/aglen-village-church.png",
+};
+
+export function entityHeroPath(lang: LanguageCode, entity: Entity): string {
+  if (entity.contentRef?.placeId) {
+    const place = contentByLanguage[lang].placesList.find((candidate) => candidate.id === entity.contentRef!.placeId);
+    if (place) return place.image;
+  }
+  if (entity.contentRef?.guideSlug) {
+    const guide = findGuide(entity.contentRef.guideSlug);
+    if (guide) return guide.heroImage;
+  }
+  return ENTITY_HERO_BY_KIND[entity.kind] ?? OG_IMAGE_PATH;
+}
+
+function entityText(lang: LanguageCode, entity: Entity): { title: string; description: string } {
+  return {
+    title: `${entityName(entity, lang)} | ${contentByLanguage[lang].brand.name}`,
+    description: entityShortText(entity, lang),
+  };
+}
+
+function entityImageEntries(lang: LanguageCode, entity: Entity): ImageSitemapEntry[] {
+  return [
+    { loc: absoluteAssetUrl(entityHeroPath(lang, entity)), title: entityName(entity, lang), caption: entityShortText(entity, lang) },
+  ];
+}
+
+/** Breadcrumb from the containment chain (Constitution rule 19). */
+function entityBreadcrumb(lang: LanguageCode, entity: Entity): Array<{ name: string; url?: string }> {
+  const copy = contentByLanguage[lang];
+  const items: Array<{ name: string; url?: string }> = [{ name: copy.nav.home, url: absoluteRouteUrl(lang, "home") }];
+  for (const node of breadcrumbTrail(entity)) {
+    const url = node.page?.status === "published" ? entityAbsoluteUrl(lang, node) : undefined;
+    items.push({ name: entityName(node, lang), url });
+  }
+  return items;
+}
+
+/** One entity as its honest schema node — a Place/Landform/Cave, never the TouristDestination view type (C6). */
+function entityNode(lang: LanguageCode, entity: Entity, url: string): object {
+  const point = entityPoint(entity);
+  const sameAs = entitySameAs(entity);
+  const parent = entity.parent ? entityById(entity.parent) : undefined;
+  return {
+    "@type": entity.schemaType,
+    ...(entity.additionalType ? { additionalType: entity.additionalType } : {}),
+    "@id": `${url}#entity`,
+    name: entityName(entity, lang),
+    description: entityShortText(entity, lang),
+    url,
+    ...(point ? { geo: { "@type": "GeoCoordinates", latitude: point.lat, longitude: point.lon } } : {}),
+    ...(sameAs.length > 0 ? { sameAs } : {}),
+    ...(parent
+      ? { containedInPlace: { "@type": "Place", name: entityName(parent, lang), ...(entitySameAs(parent).length ? { sameAs: entitySameAs(parent) } : {}) } }
+      : {}),
+    image: absoluteAssetUrl(entityHeroPath(lang, entity)),
+    isPartOf: { "@id": `${SITE_URL}/#website` },
+  };
 }
 
 // schema.org type per business category — a specific supported subtype where
@@ -323,6 +433,15 @@ function routeText(lang: LanguageCode, routeId: RouteId): { title: string; descr
     quests: { title: `${copy.quests.title} | ${copy.brand.name}`, description: copy.quests.text },
     app: { title: `${copy.app.title} | ${copy.brand.name}`, description: copy.app.text },
     arMissions: { title: `${copy.ub.hubTitle} | ${copy.brand.name}`, description: copy.ub.homeText },
+    // The entity namespace index pages. /karst/ is the knowledge subject itself,
+    // titled from the root entity; /place/ lists the entities.
+    karst: (() => {
+      const root = entityById("karst-lukovit");
+      return root
+        ? { title: `${entityName(root, lang)} | ${copy.brand.name}`, description: entityShortText(root, lang) }
+        : { title: `${copy.landmarks.title} | ${copy.brand.name}`, description: copy.landmarks.text };
+    })(),
+    place: { title: `${copy.landmarks.title} | ${copy.brand.name}`, description: copy.landmarks.text },
     travelGuide: { title: `${copy.hub.title} | ${copy.brand.name}`, description: copy.hub.text },
     seasonal: { title: `${copy.guides.seasonal.label} | ${copy.brand.name}`, description: copy.guides.seasonal.text },
     events: { title: `${trust.events} | ${copy.brand.name}`, description: copy.hub.text },
@@ -356,16 +475,19 @@ function routeText(lang: LanguageCode, routeId: RouteId): { title: string; descr
 export function getSEOConfig(lang: LanguageCode, routeId: RouteId = "home", detailSlug?: string): SEOConfig {
   const business = detailSlug && routeId === "localBusinesses" ? findBusiness(detailSlug) : undefined;
   const guide = detailSlug && routeId === "guides" ? findGuide(detailSlug) : undefined;
-  const text = business
-    ? businessText(lang, business)
-    : guide
-      ? {
-          title: `${localizeGuide(guide.title, lang)} | ${contentByLanguage[lang].brand.name}`,
-          description: localizeGuide(guide.summary, lang),
-        }
-      : routeText(lang, routeId);
+  const entity = detailSlug && routeId === "place" ? entityForSlug(detailSlug) : undefined;
+  const text = entity
+    ? entityText(lang, entity)
+    : business
+      ? businessText(lang, business)
+      : guide
+        ? {
+            title: `${localizeGuide(guide.title, lang)} | ${contentByLanguage[lang].brand.name}`,
+            description: localizeGuide(guide.summary, lang),
+          }
+        : routeText(lang, routeId);
   const primaryImage = getRouteImageEntries(lang, routeId, detailSlug)[0];
-  const pageImagePath = business?.coverImage ?? guide?.heroImage;
+  const pageImagePath = (entity ? entityHeroPath(lang, entity) : undefined) ?? business?.coverImage ?? guide?.heroImage;
   const pageImage = pageImagePath ? absoluteAssetUrl(pageImagePath) : undefined;
 
   // A legacy route resolves to the guide that replaced it, so the canonical and
@@ -374,6 +496,7 @@ export function getSEOConfig(lang: LanguageCode, routeId: RouteId = "home", deta
   const retiredTo = detailSlug ? undefined : retiredLandingTarget(routeId);
 
   const urlFor = (code: LanguageCode) => {
+    if (entity) return entityAbsoluteUrl(code, entity);
     if (business) return absoluteBusinessUrl(code, business.slug);
     if (guide) return absoluteGuideUrl(code, guide.slug);
     if (supersededBy) return absoluteGuideUrl(code, supersededBy);
@@ -382,7 +505,7 @@ export function getSEOConfig(lang: LanguageCode, routeId: RouteId = "home", deta
   };
 
   const social = socialImage(pageImagePath ?? (isLandingPageId(routeId) ? getLandingPage(lang, routeId)?.image : undefined));
-  const isArticle = Boolean(business || guide || isLandingPageId(routeId));
+  const isArticle = Boolean(entity || business || guide || isLandingPageId(routeId));
 
   return {
     title: text.title,
@@ -391,11 +514,13 @@ export function getSEOConfig(lang: LanguageCode, routeId: RouteId = "home", deta
     author: seoTextByLanguage[lang].organizationName,
     siteName: seoTextByLanguage[lang].organizationName,
     imageUrl: pageImage ?? primaryImage?.loc ?? OG_IMAGE,
-    imageAlt: business
-      ? localizeText(business.coverImageAlt ?? business.shortDescription, lang)
-      : guide
-        ? localizeGuide(guide.heroImageAlt, lang)
-        : primaryImage?.caption ?? contentByLanguage[lang].hero.imageAlt,
+    imageAlt: entity
+      ? entityName(entity, lang)
+      : business
+        ? localizeText(business.coverImageAlt ?? business.shortDescription, lang)
+        : guide
+          ? localizeGuide(guide.heroImageAlt, lang)
+          : primaryImage?.caption ?? contentByLanguage[lang].hero.imageAlt,
     socialImageUrl: social.url,
     socialImageWidth: social.width,
     socialImageHeight: social.height,
@@ -454,6 +579,9 @@ function routeImages(lang: LanguageCode, routeId: RouteId, detailSlug?: string):
     ];
   }
 
+  const entity = detailSlug && routeId === "place" ? entityForSlug(detailSlug) : undefined;
+  if (entity) return entityImageEntries(lang, entity);
+
   const landing = isLandingPageId(routeId) ? getLandingPage(lang, routeId) : undefined;
   if (landing) {
     return [
@@ -483,6 +611,12 @@ function routeImages(lang: LanguageCode, routeId: RouteId, detailSlug?: string):
     quests: [{ loc: OG_IMAGE, title: copy.quests.title, caption: copy.quests.text }, { loc: `${SITE_URL}/assets/aglen-cave-mystery.png`, title: copy.ar.title, caption: copy.ar.text }],
     app: [{ loc: OG_IMAGE, title: copy.app.title, caption: copy.app.text }],
     arMissions: [{ loc: OG_IMAGE, title: copy.ub.hubTitle, caption: copy.ub.homeText }, { loc: `${SITE_URL}/assets/aglen-cave-mystery.png`, title: copy.quests.title, caption: copy.quests.text }],
+    karst: (() => {
+      const root = entityById("karst-lukovit");
+      const rt = routeText(lang, "karst");
+      return [{ loc: absoluteAssetUrl("/assets/aglen-hero-river-canyon.png"), title: root ? entityName(root, lang) : rt.title, caption: rt.description }];
+    })(),
+    place: [{ loc: `${SITE_URL}/assets/aglen-aerial-river.png`, title: routeText(lang, "place").title, caption: routeText(lang, "place").description }],
     travelGuide: [{ loc: OG_IMAGE, title: copy.hub.title, caption: copy.hub.text }],
     seasonal: [{ loc: `${SITE_URL}/assets/aglen-aerial-river.png`, title: copy.guides.seasonal.label, caption: copy.guides.seasonal.text }],
     events: [{ loc: `${SITE_URL}/assets/aglen-village-church.png`, title: routeText(lang, "events").title, caption: copy.hub.text }],
@@ -983,6 +1117,52 @@ export function buildJSONLD(lang: LanguageCode, routeId: RouteId = "home", detai
     };
   }
 
+  // Entity detail page (M3): the node is its honest schema type, the breadcrumb
+  // is the containment chain, and both are derived from the graph.
+  const entity = detailSlug && routeId === "place" ? entityForSlug(detailSlug) : undefined;
+  if (entity) {
+    const url = entityAbsoluteUrl(lang, entity);
+    const heroUrl = absoluteAssetUrl(entityHeroPath(lang, entity));
+    const crumbs = entityBreadcrumb(lang, entity);
+    return {
+      "@context": "https://schema.org",
+      "@graph": [
+        ...identityNodes(lang),
+        {
+          "@type": "WebPage",
+          "@id": url,
+          url,
+          name: entityName(entity, lang),
+          description: entityShortText(entity, lang),
+          inLanguage: lang,
+          isPartOf: { "@id": `${SITE_URL}/#website` },
+          about: { "@id": `${url}#entity` },
+          primaryImageOfPage: { "@id": `${url}#primaryimage` },
+          dateModified: SITE_CONTENT_UPDATED,
+        },
+        {
+          "@type": "ImageObject",
+          "@id": `${url}#primaryimage`,
+          contentUrl: heroUrl,
+          url: heroUrl,
+          caption: entityName(entity, lang),
+          representativeOfPage: true,
+        },
+        entityNode(lang, entity, url),
+        {
+          "@type": "BreadcrumbList",
+          "@id": `${url}#breadcrumbs`,
+          itemListElement: crumbs.map((crumb, index) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            name: crumb.name,
+            ...(crumb.url ? { item: crumb.url } : {}),
+          })),
+        },
+      ],
+    };
+  }
+
   const meta = getSEOConfig(lang, routeId);
   const seoText = seoTextByLanguage[lang];
   const homeUrl = absoluteRouteUrl(lang, "home");
@@ -1089,6 +1269,31 @@ export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "hom
   const meta = getSEOConfig(lang, routeId, detailSlug);
   const business = detailSlug && routeId === "localBusinesses" ? findBusiness(detailSlug) : undefined;
   const guide = detailSlug && routeId === "guides" ? findGuide(detailSlug) : undefined;
+  const entity = detailSlug && routeId === "place" ? entityForSlug(detailSlug) : undefined;
+
+  if (entity) {
+    const parent = entity.parent ? entityById(entity.parent) : undefined;
+    const karst = entityById("karst-lukovit");
+    const eyebrow = parent ? entityName(parent, lang) : karst ? entityName(karst, lang) : "";
+    const long = entityLongText(entity, lang);
+    const links = derivedLinks(entity, lang);
+    return `
+      <main id="static-seo-content" class="static-fallback" lang="${lang}">
+        <article class="content-hub section-shell">
+          <div class="section-heading">
+            <p class="eyebrow">${escapeHtml(eyebrow)}</p>
+            <h1>${escapeHtml(entityName(entity, lang))}</h1>
+            ${paragraph(entityShortText(entity, lang))}
+            ${long ? paragraph(long) : ""}
+            <a href="${buildRoutePath(lang, "karst")}">${escapeHtml(karst ? entityName(karst, lang) : "")}</a>
+          </div>
+          <div class="hub-grid">
+            ${links.map((link) => `<a class="hub-card" href="/${lang}${link.path}"><span>${escapeHtml(link.label)}</span></a>`).join("")}
+          </div>
+        </article>
+      </main>
+    `;
+  }
 
   if (guide) {
     const gui = guidesUiByLanguage[lang];

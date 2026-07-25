@@ -2,10 +2,12 @@ import { useEffect, useMemo, useRef, useState, type MouseEvent, type ReactNode, 
 import { contentByLanguage, languages, type Accommodation, type LanguageCode, type PlaceId, type TimelineItem } from "./content";
 import { getLandingPage, getLandingPages, isLandingPageId } from "./landingPages";
 import { placeExperienceLinks, type PlaceExperienceLink } from "./placeLinks";
-import { buildBusinessPath, buildGuidePath, buildRoutePath, getStaticRoute, resolveRoute, type RouteId, type ResolvedRoute } from "./routes";
+import { buildBusinessPath, buildGuidePath, buildPlacePath, buildRoutePath, getStaticRoute, resolveRoute, type RouteId, type ResolvedRoute } from "./routes";
 import { guideByLegacyRoute, guides, localizeGuide } from "./guides";
 import { publishedBusinesses } from "./localBusinesses";
 import GuidesPage from "./GuidesPage";
+import { KarstPage, PlacePage } from "./graph/EntityPages";
+import { breadcrumbTrail, entityBySlug, entityName as graphEntityName } from "./graph";
 import { imageProps } from "./images";
 import { updateDocumentSEO } from "./seo";
 import { uiTextByLanguage } from "./uiText";
@@ -116,7 +118,7 @@ export function App() {
   const timelineCloseRef = useRef<HTMLButtonElement | null>(null);
   const languageSwitchRef = useRef<HTMLDivElement | null>(null);
   const languageTriggerRef = useRef<HTMLButtonElement | null>(null);
-  const { language, routeId, businessSlug, guideSlug } = pageRoute;
+  const { language, routeId, businessSlug, guideSlug, placeSlug } = pageRoute;
   const copy = contentByLanguage[language];
   const localizedUi = uiTextByLanguage[language];
   const currentRoute = getStaticRoute(routeId);
@@ -130,6 +132,9 @@ export function App() {
   // render the same hub so a direct hit before the redirect never shows the old
   // standalone promo (ADR-013).
   const isArMissionsPage = routeId === "arMissions" || routeId === "quests" || routeId === "app";
+  // The entity namespace (M3): /karst/ is the subject root, /place/<slug>/ an entity.
+  const isKarstPage = routeId === "karst";
+  const isPlacePage = routeId === "place";
   // Routes whose query string is shareable state rather than tracking noise.
   const keepsSearch = isEventsPage || (isBusinessPage && !businessSlug);
   const selectedLanguage = languages.find((item) => item.code === language) ?? languages[0];
@@ -137,7 +142,7 @@ export function App() {
   // The home-page sections this route owns, from pageSections.ts. A legacy
   // duplicate route falls back to the full set so it still shows something if its
   // 301 has not applied yet; the noindex keeps it out of the index either way.
-  const hasOwnComponent = Boolean(currentLandingPage) || isEventsPage || isBusinessPage || isGuidesPage || isTrustPage || isArMissionsPage;
+  const hasOwnComponent = Boolean(currentLandingPage) || isEventsPage || isBusinessPage || isGuidesPage || isTrustPage || isArMissionsPage || isKarstPage || isPlacePage;
   // Already in document order and with feature flags applied.
   const visibleSections = hasOwnComponent ? [] : sectionsForRoute(routeId);
   const showSection = (section: HomeSection) => visibleSections.includes(section);
@@ -153,6 +158,7 @@ export function App() {
   const routePath = (route: ResolvedRoute) => {
     if (route.businessSlug) return buildBusinessPath(route.language, route.businessSlug);
     if (route.guideSlug) return buildGuidePath(route.language, route.guideSlug);
+    if (route.placeSlug) return buildPlacePath(route.language, route.placeSlug);
     return buildRoutePath(route.language, route.routeId);
   };
 
@@ -242,20 +248,22 @@ export function App() {
 
   useEffect(() => {
     document.documentElement.lang = language;
-    updateDocumentSEO(language, routeId, businessSlug ?? guideSlug);
+    updateDocumentSEO(language, routeId, businessSlug ?? guideSlug ?? placeSlug);
 
     const canonicalPath = businessSlug
       ? buildBusinessPath(language, businessSlug)
       : guideSlug
         ? buildGuidePath(language, guideSlug)
-        : buildRoutePath(language, routeId);
+        : placeSlug
+          ? buildPlacePath(language, placeSlug)
+          : buildRoutePath(language, routeId);
     // Preserve query params where they carry shareable state (events views,
     // business filters); strip them everywhere else so canonicals stay clean.
     const keepSearch = keepsSearch ? window.location.search : "";
     if (window.location.pathname !== canonicalPath || (!keepsSearch && window.location.search)) {
       history.replaceState(null, "", canonicalPath + keepSearch);
     }
-  }, [language, routeId, businessSlug, guideSlug, keepsSearch]);
+  }, [language, routeId, businessSlug, guideSlug, placeSlug, keepsSearch]);
 
   useEffect(() => {
     const onPopState = () => {
@@ -753,6 +761,7 @@ export function App() {
           routeId={routeId}
           businessSlug={businessSlug}
           guideSlug={guideSlug}
+          placeSlug={placeSlug}
           onNavigate={navigateToPath}
         />
       )}
@@ -1221,6 +1230,10 @@ export function App() {
 
       {isGuidesPage && <GuidesPage language={language} guideSlug={guideSlug} onNavigate={navigateToPath} />}
 
+      {isKarstPage && <KarstPage language={language} onNavigate={navigateToPath} />}
+
+      {isPlacePage && <PlacePage language={language} placeSlug={placeSlug} onNavigate={navigateToPath} />}
+
       {isTrustPage && <TrustPage language={language} routeId={routeId} onNavigate={navigateToPath} />}
 
       {/* The one local Unlocking Bulgaria hub. Its whole job: say what UB is (an
@@ -1330,36 +1343,37 @@ function Breadcrumbs({
   routeId,
   businessSlug,
   guideSlug,
+  placeSlug,
   onNavigate,
 }: {
   language: LanguageCode;
   routeId: RouteId;
   businessSlug?: string;
   guideSlug?: string;
+  placeSlug?: string;
   onNavigate: (path: string) => void;
 }) {
   const copy = contentByLanguage[language];
   const ui = uiTextByLanguage[language];
-  const parentLabel = crumbLabel(language, routeId);
-  if (!parentLabel) return null;
 
-  // A detail page is three levels deep, matching the BreadcrumbList in its
-  // JSON-LD: home → index → this page.
-  const guide = guideSlug ? guides.find((item) => item.slug === guideSlug) : undefined;
-  const business = businessSlug ? publishedBusinesses().find((item) => item.slug === businessSlug) : undefined;
-  const leaf = guide
-    ? localizeGuide(guide.title, language)
-    : business
-      ? business.name
-      : undefined;
-
-  const trail: Array<{ label: string; href?: string }> = [
-    { label: copy.nav.home, href: buildRoutePath(language, "home") },
-    leaf
-      ? { label: parentLabel, href: buildRoutePath(language, routeId) }
-      : { label: parentLabel },
-    ...(leaf ? [{ label: leaf }] : []),
-  ];
+  // Entity pages (M3) render the containment chain of the graph, never the route
+  // tree (Constitution rule 19). The chain matches the JSON-LD BreadcrumbList.
+  const entityTrail = entityBreadcrumbTrail(language, routeId, placeSlug);
+  const trail = entityTrail ?? (() => {
+    const parentLabel = crumbLabel(language, routeId);
+    if (!parentLabel) return null;
+    // A detail page is three levels deep, matching the BreadcrumbList in its
+    // JSON-LD: home → index → this page.
+    const guide = guideSlug ? guides.find((item) => item.slug === guideSlug) : undefined;
+    const business = businessSlug ? publishedBusinesses().find((item) => item.slug === businessSlug) : undefined;
+    const leaf = guide ? localizeGuide(guide.title, language) : business ? business.name : undefined;
+    return [
+      { label: copy.nav.home, href: buildRoutePath(language, "home") },
+      leaf ? { label: parentLabel, href: buildRoutePath(language, routeId) } : { label: parentLabel },
+      ...(leaf ? [{ label: leaf }] : []),
+    ] as Array<{ label: string; href?: string }>;
+  })();
+  if (!trail) return null;
 
   return (
     <nav className="breadcrumbs section-shell" aria-label={ui.aria.breadcrumbs}>
@@ -1387,6 +1401,39 @@ function Breadcrumbs({
       </ol>
     </nav>
   );
+}
+
+// The breadcrumb of an entity page, walked from the graph's containment chain
+// (Constitution rule 19). Returns null for non-entity routes so the caller uses
+// its route-tree fallback. The trail mirrors the JSON-LD BreadcrumbList in seo.ts.
+function entityBreadcrumbTrail(
+  language: LanguageCode,
+  routeId: RouteId,
+  placeSlug?: string,
+): Array<{ label: string; href?: string }> | null {
+  const home = { label: contentByLanguage[language].nav.home, href: buildRoutePath(language, "home") };
+  if (routeId === "karst") {
+    const karst = entityBySlug("karst");
+    return karst ? [home, { label: graphEntityName(karst, language) }] : null;
+  }
+  if (routeId === "place") {
+    const entity = placeSlug ? entityBySlug(placeSlug) : undefined;
+    if (!entity || entity.page?.status !== "published") return null;
+    return [
+      home,
+      ...breadcrumbTrail(entity).map((node) => {
+        const isSelf = node.id === entity.id;
+        const href =
+          !isSelf && node.page?.status === "published"
+            ? node.page.path === "/karst/"
+              ? buildRoutePath(language, "karst")
+              : buildPlacePath(language, node.slug)
+            : undefined;
+        return { label: graphEntityName(node, language), href };
+      }),
+    ];
+  }
+  return null;
 }
 
 function crumbLabel(language: LanguageCode, routeId: RouteId): string | undefined {

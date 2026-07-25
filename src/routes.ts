@@ -3,6 +3,7 @@ import type { LanguageCode } from "./locales/types";
 import { landingPages, type LandingPageId } from "./landingPages";
 import { publishedBusinesses } from "./localBusinesses";
 import { guides } from "./guides";
+import { placePageEntities } from "./graph";
 
 export type CoreRouteId =
   | "home"
@@ -20,6 +21,11 @@ export type CoreRouteId =
   | "quests"
   | "app"
   | "arMissions"
+  // The entity namespace (M3): /karst/ is the knowledge-subject root (ADR-008),
+  // /place/ its index; individual entities are /place/<slug>/ detail pages that
+  // hang off the "place" route the way businesses hang off "localBusinesses".
+  | "karst"
+  | "place"
   | "travelGuide"
   | "seasonal"
   | "events"
@@ -46,10 +52,13 @@ export type ResolvedRoute = {
   businessSlug?: string;
   // Set when the path addresses a single guide: /<lang>/guides/<slug>/
   guideSlug?: string;
+  // Set when the path addresses a single entity: /<lang>/place/<slug>/
+  placeSlug?: string;
 };
 
 export const BUSINESS_ROUTE_SLUG = "local-businesses";
 export const GUIDES_ROUTE_SLUG = "guides";
+export const PLACE_ROUTE_SLUG = "place";
 
 export const DEFAULT_LANGUAGE: LanguageCode = "bg";
 
@@ -72,6 +81,10 @@ const coreRoutes: StaticRoute[] = [
   { id: "arMissions", slug: "ar-missions", sectionId: "ar-missions" },
   { id: "quests", slug: "unlockingbulgaria", sectionId: "ar-missions" },
   { id: "app", slug: "app", sectionId: "ar-missions" },
+  // The entity namespace (M3). Detail pages /place/<slug>/ resolve to routeId
+  // "place" with a placeSlug, like businesses and guides.
+  { id: "karst", slug: "karst", sectionId: "karst" },
+  { id: "place", slug: "place", sectionId: "place" },
   { id: "travelGuide", slug: "travel-guide", sectionId: "travel-guide" },
   { id: "seasonal", slug: "travel-guide/seasonal-guide", sectionId: "travel-guide" },
   { id: "events", slug: "events", sectionId: "events" },
@@ -145,6 +158,12 @@ export function resolveRoute(pathname: string, search = ""): ResolvedRoute {
     if (guideSlug) return { language, routeId: "guides", guideSlug };
   }
 
+  // Entity detail pages hang off the /place/ index: /<lang>/place/<slug>/.
+  if (slug.startsWith(`${PLACE_ROUTE_SLUG}/`)) {
+    const placeSlug = slug.slice(PLACE_ROUTE_SLUG.length + 1).replace(/\/$/, "");
+    if (placeSlug) return { language, routeId: "place", placeSlug };
+  }
+
   const route = routesBySlug.get(slug) ?? getStaticRoute("home");
 
   return { language, routeId: route.id };
@@ -158,11 +177,19 @@ export function buildGuidePath(language: LanguageCode, guideSlug: string): strin
   return `/${language}/${GUIDES_ROUTE_SLUG}/${guideSlug}/`;
 }
 
+export function buildPlacePath(language: LanguageCode, placeSlug: string): string {
+  return `/${language}/${PLACE_ROUTE_SLUG}/${placeSlug}/`;
+}
+
+/** Published entity pages under /place/, one detail route per entity. */
+export const placeRouteSlugs: string[] = placePageEntities().map((entity) => entity.slug);
+
 export function getAllStaticRoutePaths(): string[] {
   const businesses = publishedBusinesses();
   return allLanguageCodes.flatMap((language) => [
     ...staticRoutes.map((route) => buildRoutePath(language, route.id)),
     ...businesses.map((business) => buildBusinessPath(language, business.slug)),
     ...guides.map((guide) => buildGuidePath(language, guide.slug)),
+    ...placeRouteSlugs.map((slug) => buildPlacePath(language, slug)),
   ]);
 }

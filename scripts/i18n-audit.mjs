@@ -335,11 +335,13 @@ function validateRuntimeData(routes, seo, landing) {
     }
   }
 
-  // Every language gets every static route plus one page per published business.
+  // Every language gets every static route, one page per published business and
+  // guide, and one per published entity (the /place/<slug>/ pages of M3).
   const publishedBusinesses = localBusinesses.publishedBusinesses();
   const allGuides = guidesModule.guides;
+  const placeSlugs = routes.placeRouteSlugs;
   const expectedPathCount =
-    (routes.staticRoutes.length + publishedBusinesses.length + allGuides.length) * expectedLanguages.length;
+    (routes.staticRoutes.length + publishedBusinesses.length + allGuides.length + placeSlugs.length) * expectedLanguages.length;
   const paths = routes.getAllStaticRoutePaths();
   if (paths.length !== expectedPathCount) addIssue("route parity", `Expected ${expectedPathCount} static paths, got ${paths.length}.`);
   for (const lang of expectedLanguages) {
@@ -354,6 +356,10 @@ function validateRuntimeData(routes, seo, landing) {
     for (const guide of allGuides) {
       const guidePath = routes.buildGuidePath(lang, guide.slug);
       if (!paths.includes(guidePath)) addIssue("route parity", `Missing guide path ${guidePath}.`);
+    }
+    for (const slug of placeSlugs) {
+      const placePath = routes.buildPlacePath(lang, slug);
+      if (!paths.includes(placePath)) addIssue("route parity", `Missing place path ${placePath}.`);
     }
   }
   if (paths.some((routePath) => routePath.startsWith("/pl/"))) addIssue("route parity", "Generated route list includes /pl/.");

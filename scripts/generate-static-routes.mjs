@@ -133,8 +133,8 @@ function renderOpenGraphLocaleAlternates(locales) {
 }
 
 function renderPageHtml(routePath) {
-  const { language, routeId, businessSlug, guideSlug } = routes.resolveRoute(routePath);
-  const detailSlug = businessSlug ?? guideSlug;
+  const { language, routeId, businessSlug, guideSlug, placeSlug } = routes.resolveRoute(routePath);
+  const detailSlug = businessSlug ?? guideSlug ?? placeSlug;
   const pageSeo = seo.getSEOConfig(language, routeId, detailSlug);
   let html = template;
 
@@ -248,6 +248,8 @@ function renderLanguageSitemap(language) {
     // …and per guide. These pages were generated and linked but appeared in no
     // sitemap at all, leaving 84 URLs to be found by crawling alone.
     ...guides.map((guide) => renderSitemapUrl(language, "guides", guide.slug)),
+    // …and one per published entity page (the /place/<slug>/ namespace, M3).
+    ...routes.placeRouteSlugs.map((slug) => renderSitemapUrl(language, "place", slug)),
   ].join("\n");
 
   return [
