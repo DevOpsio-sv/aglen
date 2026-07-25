@@ -2,7 +2,7 @@ import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const it: PageCopy = {
-  nav: { home: "Home", about: "Su Aglen", landmarks: "Luoghi", stay: "Dormire", quests: "Missioni AR", events: "Eventi", business: "Attività locali", placesNature: "Luoghi e natura", visit: "Visita Aglen", visitGettingHere: "Come arrivare", visitRoutes: "Percorsi", visitChildren: "Con bambini", visitMissions: "Missioni AR con Unlocking Bulgaria", visitWhen: "Quando visitare" },
+  nav: { home: "Home", about: "Su Aglen", landmarks: "Luoghi", stay: "Dormire", quests: "Missioni AR", events: "Eventi", business: "Attività locali", guide: "Guida", arMissions: "Missioni AR", visit: "Visita Aglen", visitGettingHere: "Come arrivare", visitRoutes: "Percorsi", visitChildren: "Con bambini", visitMissions: "Missioni AR con Unlocking Bulgaria", visitWhen: "Quando visitare" },
   ub: {
     homeHeading: "Scopri Aglen con Unlocking Bulgaria",
     homeText: "Missioni AR e GPS in luoghi reali intorno ad Aglen. Unlocking Bulgaria è un'app nazionale indipendente — Aglen è la sua prima destinazione attiva.",

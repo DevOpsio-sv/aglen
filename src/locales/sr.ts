@@ -2,7 +2,7 @@ import { accommodationSr, images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const sr: PageCopy = {
-  nav: { home: "Почетна", about: "О Аглену", landmarks: "Места", stay: "Смештај", quests: "AR мисије", events: "Догађаји", business: "Локални бизниси", placesNature: "Места и природа", visit: "Посети Аглен", visitGettingHere: "Како доћи", visitRoutes: "Руте", visitChildren: "Са децом", visitMissions: "AR мисије са Unlocking Bulgaria", visitWhen: "Када посетити" },
+  nav: { home: "Почетна", about: "О Аглену", landmarks: "Места", stay: "Смештај", quests: "AR мисије", events: "Догађаји", business: "Локални бизниси", guide: "Водич", arMissions: "AR мисије", visit: "Посети Аглен", visitGettingHere: "Како доћи", visitRoutes: "Руте", visitChildren: "Са децом", visitMissions: "AR мисије са Unlocking Bulgaria", visitWhen: "Када посетити" },
   ub: {
     homeHeading: "Откриј Аглен кроз Unlocking Bulgaria",
     homeText: "AR и GPS мисије на стварним местима око Аглена. Unlocking Bulgaria је независна национална апликација — Аглен је њена прва активна дестинација.",

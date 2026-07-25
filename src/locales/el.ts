@@ -2,7 +2,7 @@ import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const el: PageCopy = {
-  nav: { home: "Αρχική", about: "Για το Aglen", landmarks: "Μέρη", stay: "Διαμονή", quests: "AR αποστολές", events: "Εκδηλώσεις", business: "Τοπικές επιχειρήσεις", placesNature: "Μέρη και φύση", visit: "Επισκέψου το Aglen", visitGettingHere: "Πώς θα φτάσεις", visitRoutes: "Διαδρομές", visitChildren: "Με παιδιά", visitMissions: "AR αποστολές με Unlocking Bulgaria", visitWhen: "Πότε να επισκεφθείς" },
+  nav: { home: "Αρχική", about: "Για το Aglen", landmarks: "Μέρη", stay: "Διαμονή", quests: "AR αποστολές", events: "Εκδηλώσεις", business: "Τοπικές επιχειρήσεις", guide: "Οδηγός", arMissions: "AR αποστολές", visit: "Επισκέψου το Aglen", visitGettingHere: "Πώς θα φτάσεις", visitRoutes: "Διαδρομές", visitChildren: "Με παιδιά", visitMissions: "AR αποστολές με Unlocking Bulgaria", visitWhen: "Πότε να επισκεφθείς" },
   ub: {
     homeHeading: "Ανακάλυψε το Aglen μέσα από το Unlocking Bulgaria",
     homeText: "AR και GPS αποστολές σε πραγματικά μέρη γύρω από το Aglen. Το Unlocking Bulgaria είναι ανεξάρτητη εθνική εφαρμογή — το Aglen είναι ο πρώτος ενεργός του προορισμός.",

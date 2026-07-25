@@ -2,7 +2,7 @@ import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const tr: PageCopy = {
-  nav: { home: "Ana sayfa", about: "Aglen Hakkında", landmarks: "Yerler", stay: "Konaklama", quests: "AR görevleri", events: "Etkinlikler", business: "Yerel işletmeler", placesNature: "Yerler ve doğa", visit: "Aglen'i ziyaret et", visitGettingHere: "Nasıl gidilir", visitRoutes: "Rotalar", visitChildren: "Çocuklarla", visitMissions: "Unlocking Bulgaria ile AR görevleri", visitWhen: "Ne zaman ziyaret etmeli" },
+  nav: { home: "Ana sayfa", about: "Aglen Hakkında", landmarks: "Yerler", stay: "Konaklama", quests: "AR görevleri", events: "Etkinlikler", business: "Yerel işletmeler", guide: "Rehber", arMissions: "AR görevleri", visit: "Aglen'i ziyaret et", visitGettingHere: "Nasıl gidilir", visitRoutes: "Rotalar", visitChildren: "Çocuklarla", visitMissions: "Unlocking Bulgaria ile AR görevleri", visitWhen: "Ne zaman ziyaret etmeli" },
   ub: {
     homeHeading: "Unlocking Bulgaria ile Aglen'i keşfet",
     homeText: "Aglen çevresindeki gerçek yerlerde AR ve GPS görevleri. Unlocking Bulgaria bağımsız bir ulusal uygulamadır — Aglen onun ilk aktif destinasyonudur.",

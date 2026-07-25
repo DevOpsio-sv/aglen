@@ -2,7 +2,7 @@ import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const hu: PageCopy = {
-  nav: { home: "Kezdőlap", about: "Aglenről", landmarks: "Látnivalók", stay: "Szállás", quests: "AR-küldetések", events: "Események", business: "Helyi vállalkozások", placesNature: "Helyek és természet", visit: "Látogass Aglenbe", visitGettingHere: "Hogyan juss el", visitRoutes: "Útvonalak", visitChildren: "Gyerekekkel", visitMissions: "AR-küldetések az Unlocking Bulgariával", visitWhen: "Mikor érdemes jönni" },
+  nav: { home: "Kezdőlap", about: "Aglenről", landmarks: "Látnivalók", stay: "Szállás", quests: "AR-küldetések", events: "Események", business: "Helyi vállalkozások", guide: "Útmutató", arMissions: "AR-küldetések", visit: "Látogass Aglenbe", visitGettingHere: "Hogyan juss el", visitRoutes: "Útvonalak", visitChildren: "Gyerekekkel", visitMissions: "AR-küldetések az Unlocking Bulgariával", visitWhen: "Mikor érdemes jönni" },
   ub: {
     homeHeading: "Fedezd fel Aglent az Unlocking Bulgariával",
     homeText: "AR- és GPS-küldetések valódi helyeken Aglen körül. Az Unlocking Bulgaria egy független országos alkalmazás — Aglen az első aktív úti célja.",

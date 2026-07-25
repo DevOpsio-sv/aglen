@@ -2,7 +2,7 @@ import { accommodationBg, images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const bg: PageCopy = {
-  nav: { home: "Начало", about: "За Ъглен", landmarks: "Места", stay: "Нощувки", quests: "AR мисии", events: "Събития", business: "Местен бизнес", placesNature: "Места и природа", visit: "Посети Ъглен", visitGettingHere: "Как да стигна", visitRoutes: "Маршрути", visitChildren: "С деца", visitMissions: "AR мисии с Unlocking Bulgaria", visitWhen: "Кога да посетя" },
+  nav: { home: "Начало", about: "За Ъглен", landmarks: "Места", stay: "Нощувки", quests: "AR мисии", events: "Събития", business: "Местен бизнес", guide: "Справочник", arMissions: "AR мисии", visit: "Посети Ъглен", visitGettingHere: "Как да стигна", visitRoutes: "Маршрути", visitChildren: "С деца", visitMissions: "AR мисии с Unlocking Bulgaria", visitWhen: "Кога да посетя" },
   ub: {
     homeHeading: "Открий Ъглен чрез Unlocking Bulgaria",
     homeText: "AR и GPS мисии на реални места около Ъглен. Unlocking Bulgaria е независимо национално приложение — Ъглен е първата му активна дестинация.",

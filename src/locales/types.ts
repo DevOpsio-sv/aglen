@@ -190,13 +190,15 @@ export type PageCopy = {
     business: string;
     // Village-first primary navigation (ADR-013). `about` stays for existing
     // metadata; these drive the header/mobile nav.
-    placesNature: string;
+    guide: string;
     visit: string;
     visitGettingHere: string;
     visitRoutes: string;
     visitChildren: string;
     visitMissions: string;
     visitWhen: string;
+    // Top-level "AR мисии" button that scrolls to the homepage UB banner.
+    arMissions: string;
   };
   // Unlocking Bulgaria — the one compact home block and the /ar-missions/ hub.
   // UB is an independent national application; Aglen is its first live

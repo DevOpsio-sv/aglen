@@ -2,7 +2,7 @@
 import type { PageCopy } from "./types";
 
 export const en: PageCopy = {
-  nav: { home: "Home", about: "About Aglen", landmarks: "Places", stay: "Stay", quests: "AR Quests", events: "Events", business: "Local business", placesNature: "Places & nature", visit: "Visit Aglen", visitGettingHere: "Getting here", visitRoutes: "Routes", visitChildren: "With children", visitMissions: "AR missions with Unlocking Bulgaria", visitWhen: "When to visit" },
+  nav: { home: "Home", about: "About Aglen", landmarks: "Places", stay: "Stay", quests: "AR Quests", events: "Events", business: "Local business", guide: "Guide", arMissions: "AR Missions", visit: "Visit Aglen", visitGettingHere: "Getting here", visitRoutes: "Routes", visitChildren: "With children", visitMissions: "AR missions with Unlocking Bulgaria", visitWhen: "When to visit" },
   ub: {
     homeHeading: "Discover Aglen through Unlocking Bulgaria",
     homeText: "AR and GPS missions at real places around Aglen. Unlocking Bulgaria is an independent national app — Aglen is its first active destination.",

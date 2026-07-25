@@ -93,11 +93,14 @@ function gatewayKey(link: PlaceExperienceLink): string {
 }
 
 // The one primary navigation. A leaf links to a route; a group opens a small
-// set of leaves (only "Посети Ъглен" uses this). No third structure exists.
+// set of leaves (only "Посети Ъглен" uses this); an anchor scrolls to a section
+// on the homepage (only "AR мисии" uses this).
 type NavLeaf = { label: string; routeId: RouteId; accent?: boolean };
 type NavGroup = { label: string; children: NavLeaf[] };
-type NavEntry = NavLeaf | NavGroup;
+type NavAnchor = { label: string; anchor: string };
+type NavEntry = NavLeaf | NavGroup | NavAnchor;
 const isNavGroup = (entry: NavEntry): entry is NavGroup => "children" in entry;
+const isNavAnchor = (entry: NavEntry): entry is NavAnchor => "anchor" in entry;
 
 export function App() {
   const [pageRoute, setPageRoute] = useState<ResolvedRoute>(() =>
@@ -206,6 +209,23 @@ export function App() {
     window.requestAnimationFrame(() => {
       window.requestAnimationFrame(() => {
         document.getElementById(targetId)?.scrollIntoView({ block: "start" });
+      });
+    });
+  };
+
+  // "AR мисии": from the homepage, scroll straight to the banner; from any other
+  // page, go to the localized homepage first, then to the same #ar-missions
+  // anchor. Reuses the existing hash-navigation + double-rAF scroll pattern.
+  const handleBannerClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+      return;
+    }
+
+    event.preventDefault();
+    navigateTo({ language, routeId: "home" }, false, "#ar-missions");
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        document.getElementById("ar-missions")?.scrollIntoView({ behavior: "smooth", block: "start" });
       });
     });
   };
@@ -399,8 +419,8 @@ export function App() {
   const primaryNav = useMemo<NavEntry[]>(
     () => [
       { label: copy.nav.home, routeId: "home" },
-      { label: copy.brand.name, routeId: "pillars" },
-      { label: copy.nav.placesNature, routeId: "attractions" },
+      // "Справочник" opens the existing guides homepage ("Ръководства за Ъглен").
+      { label: copy.nav.guide, routeId: "guides" },
       {
         label: copy.nav.visit,
         children: [
@@ -411,6 +431,9 @@ export function App() {
           { label: copy.nav.visitWhen, routeId: "bestTime" },
         ],
       },
+      // "AR мисии" scrolls to the Unlocking Bulgaria banner on the homepage
+      // (#ar-missions), not the /ar-missions/ hub and not the external app.
+      { label: copy.nav.arMissions, anchor: "ar-missions" },
       { label: copy.nav.events, routeId: "events", accent: true },
       { label: copy.nav.business, routeId: "localBusinesses" },
     ],
@@ -563,6 +586,14 @@ export function App() {
                   </div>
                 )}
               </div>
+            ) : isNavAnchor(entry) ? (
+              <a
+                key={entry.anchor}
+                href={`${buildRoutePath(language, "home")}#${entry.anchor}`}
+                onClick={handleBannerClick}
+              >
+                {entry.label}
+              </a>
             ) : (
               <a
                 key={entry.routeId}
@@ -668,6 +699,16 @@ export function App() {
                     </a>
                   ))}
                 </div>
+              ) : isNavAnchor(entry) ? (
+                // navigateTo (inside handleBannerClick) closes the sheet, then the
+                // double-rAF scroll brings the banner into view.
+                <a
+                  key={entry.anchor}
+                  href={`${buildRoutePath(language, "home")}#${entry.anchor}`}
+                  onClick={handleBannerClick}
+                >
+                  {entry.label}
+                </a>
               ) : (
                 <a
                   key={entry.routeId}
@@ -1124,7 +1165,7 @@ export function App() {
           banner (copy beside the phone mockup) so it stays a single block —
           no second hero, no repeated product introduction. */}
       {showSection("ub") && (
-      <section id="ub" className="app-section">
+      <section id="ar-missions" className="app-section">
         <div className="app-panel section-shell reveal">
           <div className="app-copy">
             <p className="eyebrow">{copy.quests.eyebrow}</p>

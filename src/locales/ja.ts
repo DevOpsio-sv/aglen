@@ -2,7 +2,7 @@ import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const ja: PageCopy = {
-  nav: { home: "ホーム", about: "アグレンについて", landmarks: "見どころ", stay: "宿泊", quests: "ARミッション", events: "イベント", business: "地元のお店", placesNature: "見どころと自然", visit: "アグレンを訪れる", visitGettingHere: "アクセス", visitRoutes: "ルート", visitChildren: "子ども連れで", visitMissions: "Unlocking Bulgaria の ARミッション", visitWhen: "訪れる時期" },
+  nav: { home: "ホーム", about: "アグレンについて", landmarks: "見どころ", stay: "宿泊", quests: "ARミッション", events: "イベント", business: "地元のお店", guide: "ガイド", arMissions: "ARミッション", visit: "アグレンを訪れる", visitGettingHere: "アクセス", visitRoutes: "ルート", visitChildren: "子ども連れで", visitMissions: "Unlocking Bulgaria の ARミッション", visitWhen: "訪れる時期" },
   ub: {
     homeHeading: "Unlocking Bulgaria でアグレンを発見",
     homeText: "アグレン周辺の実在する場所でのAR・GPSミッション。Unlocking Bulgaria は独立した全国規模のアプリで、アグレンはその最初のアクティブな目的地です。",

@@ -2,7 +2,7 @@ import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const ro: PageCopy = {
-  nav: { home: "Acasă", about: "Despre Aglen", landmarks: "Locuri", stay: "Cazare", quests: "Misiuni AR", events: "Evenimente", business: "Afaceri locale", placesNature: "Locuri și natură", visit: "Vizitează Aglen", visitGettingHere: "Cum ajungi", visitRoutes: "Rute", visitChildren: "Cu copiii", visitMissions: "Misiuni AR cu Unlocking Bulgaria", visitWhen: "Când să vizitezi" },
+  nav: { home: "Acasă", about: "Despre Aglen", landmarks: "Locuri", stay: "Cazare", quests: "Misiuni AR", events: "Evenimente", business: "Afaceri locale", guide: "Ghid", arMissions: "Misiuni AR", visit: "Vizitează Aglen", visitGettingHere: "Cum ajungi", visitRoutes: "Rute", visitChildren: "Cu copiii", visitMissions: "Misiuni AR cu Unlocking Bulgaria", visitWhen: "Când să vizitezi" },
   ub: {
     homeHeading: "Descoperă Aglen prin Unlocking Bulgaria",
     homeText: "Misiuni AR și GPS în locuri reale din jurul Aglen. Unlocking Bulgaria este o aplicație națională independentă — Aglen este prima sa destinație activă.",
