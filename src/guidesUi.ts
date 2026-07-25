@@ -27,6 +27,9 @@ export type GuidesUiText = {
   businessesEmpty: string;
   ctaBusinesses: string;
   ctaEvents: string;
+  /** The wider region this guide covers, from region.ts. */
+  nearbyTitle: string;
+  nearbyNote: string;
 };
 
 const bg: GuidesUiText = {
@@ -55,6 +58,9 @@ const bg: GuidesUiText = {
     "Още няма вписани местни обекти в тези категории. Ако имате бизнес в Ъглен, представете го в раздела „Местен бизнес“.",
   ctaBusinesses: "Разгледай местния бизнес",
   ctaEvents: "Виж предстоящите събития",
+  nearbyTitle: "Наблизо в Луковитския карст",
+  nearbyNote:
+    "Разстоянията са по въздушна линия, изчислени от публикуваните координати. По път разстоянието винаги е по-голямо.",
 };
 
 const en: GuidesUiText = {
@@ -83,6 +89,9 @@ const en: GuidesUiText = {
     "No local listings in these categories yet. If you run a business in Aglen, present it in the Local business section.",
   ctaBusinesses: "Browse local businesses",
   ctaEvents: "See upcoming events",
+  nearbyTitle: "Nearby in the Lukovit karst",
+  nearbyNote:
+    "Distances are straight-line, computed from the published coordinates. By road the distance is always greater.",
 };
 
 const de: GuidesUiText = {
@@ -111,6 +120,9 @@ const de: GuidesUiText = {
     "In diesen Kategorien gibt es noch keine Einträge. Wenn Sie einen Betrieb in Aglen führen, stellen Sie ihn im Bereich „Lokale Betriebe“ vor.",
   ctaBusinesses: "Lokale Betriebe ansehen",
   ctaEvents: "Kommende Veranstaltungen",
+  nearbyTitle: "In der Nähe im Lukovit-Karst",
+  nearbyNote:
+    "Die Entfernungen sind Luftlinie, berechnet aus den veröffentlichten Koordinaten. Auf der Straße ist es immer weiter.",
 };
 
 const fr: GuidesUiText = {
@@ -139,6 +151,9 @@ const fr: GuidesUiText = {
     "Aucun commerce local dans ces catégories pour l’instant. Si vous avez une activité à Aglen, présentez-la dans la section « Commerces locaux ».",
   ctaBusinesses: "Voir les commerces locaux",
   ctaEvents: "Voir les événements à venir",
+  nearbyTitle: "À proximité, dans le karst de Lukovit",
+  nearbyNote:
+    "Les distances sont à vol d'oiseau, calculées depuis les coordonnées publiées. Par la route, la distance est toujours plus longue.",
 };
 
 const es: GuidesUiText = {
@@ -167,6 +182,9 @@ const es: GuidesUiText = {
     "Todavía no hay negocios en estas categorías. Si tienes un negocio en Aglen, preséntalo en la sección «Negocios locales».",
   ctaBusinesses: "Ver negocios locales",
   ctaEvents: "Ver próximos eventos",
+  nearbyTitle: "Cerca, en el karst de Lukovit",
+  nearbyNote:
+    "Las distancias son en línea recta, calculadas a partir de las coordenadas publicadas. Por carretera siempre son mayores.",
 };
 
 const it: GuidesUiText = {
@@ -195,6 +213,9 @@ const it: GuidesUiText = {
     "Ancora nessuna attività in queste categorie. Se hai un’attività ad Aglen, presentala nella sezione «Attività locali».",
   ctaBusinesses: "Vedi le attività locali",
   ctaEvents: "Vedi gli eventi in arrivo",
+  nearbyTitle: "Nei dintorni, nel carso di Lukovit",
+  nearbyNote:
+    "Le distanze sono in linea d'aria, calcolate dalle coordinate pubblicate. Su strada la distanza è sempre maggiore.",
 };
 
 const ro: GuidesUiText = {
@@ -223,6 +244,9 @@ const ro: GuidesUiText = {
     "Încă nu există afaceri în aceste categorii. Dacă aveți o afacere în Aglen, prezentați-o în secțiunea „Afaceri locale”.",
   ctaBusinesses: "Vezi afacerile locale",
   ctaEvents: "Vezi evenimentele următoare",
+  nearbyTitle: "În apropiere, în carstul Lukovit",
+  nearbyNote:
+    "Distanțele sunt în linie dreaptă, calculate din coordonatele publicate. Pe șosea distanța este întotdeauna mai mare.",
 };
 
 const tr: GuidesUiText = {
@@ -251,6 +275,9 @@ const tr: GuidesUiText = {
     "Bu kategorilerde henüz işletme yok. Aglen’de bir işletmeniz varsa „Yerel işletmeler“ bölümünde tanıtın.",
   ctaBusinesses: "Yerel işletmelere göz at",
   ctaEvents: "Yaklaşan etkinlikleri gör",
+  nearbyTitle: "Lukovit karstında yakınlarda",
+  nearbyNote:
+    "Mesafeler kuş uçuşu olup yayımlanan koordinatlardan hesaplanmıştır. Karayoluyla mesafe her zaman daha uzundur.",
 };
 
 const el: GuidesUiText = {
@@ -279,6 +306,9 @@ const el: GuidesUiText = {
     "Δεν υπάρχουν ακόμη επιχειρήσεις σε αυτές τις κατηγορίες. Αν έχετε επιχείρηση στο Άγκλεν, παρουσιάστε την στην ενότητα «Τοπικές επιχειρήσεις».",
   ctaBusinesses: "Δείτε τις τοπικές επιχειρήσεις",
   ctaEvents: "Δείτε τις προσεχείς εκδηλώσεις",
+  nearbyTitle: "Κοντά, στο καρστ του Lukovit",
+  nearbyNote:
+    "Οι αποστάσεις είναι σε ευθεία γραμμή, υπολογισμένες από τις δημοσιευμένες συντεταγμένες. Οδικώς η απόσταση είναι πάντα μεγαλύτερη.",
 };
 
 const ru: GuidesUiText = {
@@ -307,6 +337,9 @@ const ru: GuidesUiText = {
     "В этих категориях пока нет записей. Если у вас есть бизнес в Ъглене, представьте его в разделе «Местный бизнес».",
   ctaBusinesses: "Смотреть местный бизнес",
   ctaEvents: "Смотреть предстоящие события",
+  nearbyTitle: "Рядом, в Луковитском карсте",
+  nearbyNote:
+    "Расстояния указаны по прямой и рассчитаны по опубликованным координатам. По дороге расстояние всегда больше.",
 };
 
 const ja: GuidesUiText = {
@@ -335,6 +368,9 @@ const ja: GuidesUiText = {
     "これらのカテゴリーにはまだお店がありません。アグレンでお店を営んでいる方は「地元のお店」でご紹介ください。",
   ctaBusinesses: "地元のお店を見る",
   ctaEvents: "今後のイベントを見る",
+  nearbyTitle: "ルコヴィト・カルスト周辺",
+  nearbyNote:
+    "距離は公開されている座標から算出した直線距離です。道路経由では常にこれより長くなります。",
 };
 
 const sr: GuidesUiText = {
@@ -363,6 +399,9 @@ const sr: GuidesUiText = {
     "Још нема уписаних места у овим категоријама. Ако имате бизнис у Аглену, представите га у одељку „Локални бизниси“.",
   ctaBusinesses: "Погледајте локалне бизнисе",
   ctaEvents: "Погледајте предстојеће догађаје",
+  nearbyTitle: "У близини, у Луковитском карсту",
+  nearbyNote:
+    "Раздаљине су ваздушном линијом, израчунате из објављених координата. Путем је раздаљина увек већа.",
 };
 
 const zh: GuidesUiText = {
@@ -389,6 +428,9 @@ const zh: GuidesUiText = {
   businessesEmpty: "这些分类下暂时还没有商家。如果你在阿格伦经营，欢迎在“本地商家”栏目介绍。",
   ctaBusinesses: "浏览本地商家",
   ctaEvents: "查看即将举办的活动",
+  nearbyTitle: "卢科维特喀斯特周边",
+  nearbyNote:
+    "距离为依据公开坐标计算的直线距离。实际道路距离总是更长。",
 };
 
 const hu: GuidesUiText = {
@@ -417,6 +459,9 @@ const hu: GuidesUiText = {
     "Ezekben a kategóriákban még nincsenek bejegyzések. Ha vállalkozása van Aglenben, mutassa be a „Helyi vállalkozások” részben.",
   ctaBusinesses: "Helyi vállalkozások böngészése",
   ctaEvents: "Közelgő események megtekintése",
+  nearbyTitle: "A közelben, a Lukovit-karszton",
+  nearbyNote:
+    "A távolságok légvonalban értendők, a közzétett koordinátákból számolva. Közúton a távolság mindig nagyobb.",
 };
 
 export const guidesUiByLanguage: Record<LanguageCode, GuidesUiText> = {

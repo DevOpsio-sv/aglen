@@ -227,8 +227,15 @@ function checkContamination(kind, lang, context, value) {
   }
 }
 
+// `\b` is not Unicode-aware in JavaScript: it treats "ă" and "á" as non-word
+// characters, so `\bpl\b` fired inside ordinary Romanian and Hungarian words
+// ("plăteau", "táplálva"). Digits are excluded too, or the content hash in a
+// font filename ("…SjIa2pL7SUc") reads as a Polish locale reference. What is
+// left still matches what the check is for: "pl", /pl/, hreflang="pl", pl_PL.
+const polishReference = /(?<![\p{L}\p{N}])pl(?![\p{L}\p{N}])|pl_PL|Polski|Polish/iu;
+
 function checkNoPolish(kind, context, value) {
-  if (/\bpl\b|pl_PL|Polski|Polish/i.test(String(value))) {
+  if (polishReference.test(String(value))) {
     addIssue(kind, `${context}: Polish locale reference found.`);
   }
 }

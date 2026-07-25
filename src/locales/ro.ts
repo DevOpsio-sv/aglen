@@ -114,8 +114,8 @@ export const ro: PageCopy = {
   ],
   timeline: [
     {
-      title: "Ținut de stânci și peșteri",
-      detail: "Stâncile de calcar și peșterile din jurul Aglen alcătuiesc unul dintre cele mai impresionante peisaje naturale din zona Lukovit și a râului Vit.",
+      title: "🪨 Ținut de stânci și peșteri",
+      detail: "Cum a creat natura carstul de la Lukovit, peșterile și impresionantele formațiuni calcaroase din jurul Aglenului.",
       intro:
         "Cursul râului Vit din jurul satului Aglen păstrează mult mai mult decât legendele turistice obișnuite despre persecuții otomane și punți de stâncă. În spatele masivelor de calcar și al zecilor de peșteri din acest sector al regiunii carstice Lukovit se ascunde o istorie care traversează milenii de transformări geologice, practici de cult tracice și izolaționism spiritual medieval.",
       sections: [
@@ -153,20 +153,84 @@ export const ro: PageCopy = {
       ],
     },
     {
-      title: "Oamenii descoperă valea",
-      detail: "Condițiile prielnice de lângă râu au atras oamenii din vremuri străvechi și au transformat zona într-un loc firesc pentru viață și mișcare.",
+      title: "👣 Primii oameni din vale",
+      detail: "Urme ale locuitorilor preistorici, prezență tracică și viață pe malurile râului Vit.",
+      intro:
+        "Primii oameni din valea râului: secretele așezării preistorice din jurul Aglenului. Când se vorbește despre ce anume îl atrăgea pe om în văile râurilor, sursele răspândite se opresc de obicei la formule generale despre „pământ roditor” și „apă de băut”. Dacă însă scormonim în fișierele arheologice de specialitate, în rapoartele vechilor expediții muzeale și în culegerile etnografice de la începutul secolului XX, se dezvăluie o imagine mult mai profundă a motivului pentru care tocmai acest meandru închis al Vitului a devenit un magnet pentru locuitorii străvechi.",
+      sections: [
+        {
+          heading: "1. Geografia strategică a „coridorului fluvial”",
+          body: [
+            "În vremurile străvechi râul Vit nu era doar o sursă de apă, ci un coridor vital de transport și comunicare care lega Câmpia Dunării de trecătorile Prebalcanilor.",
+            "Amfiteatrul natural: Valea de lângă Aglen este un amfiteatru închis geologic, mărginit de terase calcaroase abrupte. În epocile în care clima era mai umedă, iar masivele forestiere de nepătruns, aceste văi de râu erau singurele poteci sigure pentru deplasarea comunităților umane și a turmelor.",
+            "Oază microclimatică: Ferită de vânturi de stâncile înalte și susținută de umezeala constantă a râului, valea creează un mini-ecosistem. Iarna temperaturile erau aici mai blânde decât pe platoul deschis, iar solurile – depunerile aluvionare de lângă Vit – au îngăduit primele experimente agricole cu mult înainte de apariția industriei fierului.",
+          ],
+        },
+        {
+          heading: "2. Urmele arheologice din neolitic și eneolitic",
+          body: [
+            "În lucrări uitate ale arheologilor bulgari de la mijlocul secolului trecut sunt pomenite descoperiri care ajung rareori pe paginile populare de internet.",
+            "Silexul ca monedă: Pe terasele de deasupra râului, în zona Lukovit, au fost descoperite urme de ateliere neolitice târzii de prelucrare a silexului. Oamenii străvechi foloseau nodulii de silex de calitate superioară din calcarele locale pentru a face lame, cuțite și vârfuri de săgeată. Asta făcea din zonă nu doar un loc de trai, ci un centru industrial al preistoriei timpurii din regiune.",
+            "Cultul primilor metalurgiști: În eneolitic valea începe să fie vizitată de comunități care caută nu doar hrană, ci și materii prime. Apropierea Prebalcanilor, cu manifestările lor minerale, atrăgea oamenii spre aceste porți fluviale, făcându-i martori ai trecerii de la piatră la prima extragere a cuprului.",
+          ],
+        },
+        {
+          heading: "3. Legendele locale despre „primii oameni din stânci”",
+          body: [
+            "În însemnările folclorice adunate de învățători și cercetători locali la Aglen în anii '20 și '30 ai secolului XX și păstrate în arhive regionale există tradiții care se deosebesc de legendele turcești obișnuite.",
+            "Povestea „umbrelor cu două picioare” din stânci: Odinioară bătrânii satului le spuneau copiilor că în cele mai adânci peșteri și sub streșinile de stâncă trăiau cândva „oameni tăcuți”, care nu aprindeau foc cu fum ca să nu-i vadă duhurile muntelui și se hrăneau cu scoici de râu, leurdă și carne de animale din pădure. Deși sună a mit, această memorie orală descrie cu o precizie uimitoare felul de viață al primilor vânători-culegători din paleolitic, care părăseau peșterile doar în anotimpul cald.",
+            "Legenda „brazdei de aur”: Potrivit unei alte credințe locale vechi, primii agricultori veniți în vale au tras cea dintâi brazdă exact acolo unde râul face cea mai ascuțită cotitură sub stâncă. Ei credeau că pământul de acolo este „sărutat de căpeteniile lumii de dedesubt”, fiindcă izvoarele ieșeau direct din măruntaiele stâncii, aducând viață chiar și în timpul secetelor mari.",
+          ],
+        },
+        {
+          heading: "4. Drumul triburilor: tribalii și romanii",
+          body: [
+            "Când valea începe să fie locuită mai statornic în epoca fierului, ea intră în ținuturile puternicului trib tracic al tribalilor.",
+            "Indiciile arheologice arată că aceste locuri erau o răscruce între lumea tracică din interiorul Balcanilor și triburile dunărene. Râul Vit servea drept reper, iar oamenii așezați în vale au ridicat mici așezări însoțitoare pe terasele înalte din jurul satului de azi – locuri de unde se vede oricine se apropie dinspre nord sau dinspre sud.",
+            "Odată cu venirea romanilor, acest coridor natural este inclus în strategia de pază a drumurilor care legau cetățile romane de la Dunăre de interiorul provinciei Moesia, iar populația locală a fost atrasă în construirea drumurilor și în folosirea teraselor roditoare de lângă râu.",
+          ],
+        },
+      ],
     },
     {
-      title: "Se naște satul",
-      detail: "Cu timpul se formează o comunitate legată de râu, de pământ și de tradițiile care și astăzi fac parte din caracterul Aglenului.",
+      title: "🏡 Nașterea Aglenului",
+      detail: "Cum ia naștere satul, de unde vine numele lui și cum se dezvoltă de-a lungul veacurilor.",
+      intro:
+        "Nașterea Aglenului: secretele registrelor otomane, mahalalele uitate și numele unic. Memoria populară caută adesea începutul satelor în antichitatea adâncă, însă primele mărturii scrise sigure despre Aglen vin din altă epocă – din registrele fiscale întocmite la secole după cucerirea otomană a ținuturilor bulgare.",
+      sections: [
+        {
+          heading: "1. Registrele otomane: primele urme scrise (secolele XV-XVI)",
+          body: [
+            "Deși memoria populară caută adesea începutul satelor în antichitatea adâncă, mărturiile scrise despre Aglen apar oficial în primele secole de după cucerirea otomană a ținuturilor bulgare.",
+            "Sangeacul Nicopolei: În registrele fiscale otomane timpurii (defterele) ale pașalâcului de Nicopole din secolele XV și XVI satul este pomenit sub diferite variante fonetice, potrivite pronunției scrise turcești de atunci – de pildă ca parte a unor stăpâniri de timar sau ca mică așezare datoare cu bir către puterea centrală.",
+            "Populație și îndeletniciri: Registrele arată că, deși zona era expusă unor riscuri strategice din pricina apropierii de râul Vit și de drumurile spre Dunăre, viața de aici nu s-a stins. Localnicii plăteau dările mai ales în natură – grâu, mai târziu porumb, vite mărunte și miere –, folosindu-se de văile ferite, ascunse în spatele stâncilor, care îi apărau de jafurile mari.",
+          ],
+        },
+        {
+          heading: "2. Enigma numelui: de unde vine „Ъглен”?",
+          body: [
+            "Numele satului este un fenomen lingvistic la scara întregii Bulgarii – singura așezare care începe cu litera „Ъ”. În mediile științifice și în vechile însemnări etnografice există mai multe teorii despre originea lui.",
+            "Teoria cărbunelui (versiunea meșteșugărească): Potrivit unor cercetări istorice mai pragmatice, zona din jurul canionului Vitului a fost cândva bogat împădurită, iar populația locală se îndeletnicea intens cu cărbunăritul – producerea cărbunelui de lemn, atât de necesar odinioară fierăriei și topirii metalelor. Zăcămintele și bocșele de cărbune au dat numele așezării.",
+            "Legenda „stâncilor-ace”: Vechile tradiții locale păstrează cu îndărătnicie versiunea originii geografice a numelui. Fiindcă deasupra râului se înalță colți calcaroși ascuțiți, verticali, și ace de stâncă, primii așezați au numit locul „Иглен” (locul din preajma acelor), care cu timpul și prin rostirea dialectală s-a transformat în sonorul și unicul Ъглен de astăzi.",
+          ],
+        },
+        {
+          heading: "3. Mahalalele locale și mutarea satului de-a lungul timpului",
+          body: [
+            "Ca multe alte sate bulgărești, nici Aglenul nu s-a aflat întotdeauna exact în locul de astăzi.",
+            "Vechile așezări (iurtlâcurile): În hotarul satului există locuri care în vechi însemnări geografice figurează sub numele „Селището” (Așezarea) sau „Старо село” (Satul Vechi). Urmele arheologice de acolo arată că în veacurile dinainte oamenii trăiau mai aproape de peșteri și de masivele stâncoase, unde siguranța era mai mare pe vremea năvălirilor cârjaliilor și a fărădelegilor stăpânirii otomane.",
+            "Consolidarea din vremea Renașterii: Odată cu deceniile mai liniștite ale secolului XIX satul începe să coboare spre terasele mai largi de lângă râu, unde condițiile pentru agricultură și trai erau mai bune. Atunci se conturează și înfățișarea de azi a Aglenului, care a păstrat spiritul arhitecturii Renașterii bulgare, vechile rădăcini de neam și firea dârză a locuitorilor săi, ce i-au dat Bulgariei personalități de seamă precum scriitorul Trifon Kunev.",
+          ],
+        },
+      ],
     },
     {
-      title: "Povești și amintiri",
-      detail: "Legendele, obiceiurile și amintirile locale păstrează viu spiritul satului și creează o legătură între trecut și prezent.",
+      title: "📜 Legende și memorie locală",
+      detail: "Povești transmise din generație în generație – amintiri, tradiții și istorisiri locale puțin cunoscute.",
     },
     {
-      title: "Aglen astăzi",
-      detail: "Viitorul Aglenului este cel mai puternic dacă rămâne autentic. Astăzi satul este o destinație preferată pentru iubitorii de natură, fotografie, pescuit și călătorii liniștite de weekend.",
+      title: "🌿 Aglen astăzi",
+      detail: "Cum își păstrează satul istoria, natura și spiritul, în timp ce privește spre viitor.",
     },
   ],
   mysteries: [

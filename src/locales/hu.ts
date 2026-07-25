@@ -114,8 +114,8 @@ export const hu: PageCopy = {
   ],
   timeline: [
     {
-      title: "Sziklák és barlangok földje",
-      detail: "Az Aglen körüli mészkősziklák és barlangok a Lukovit és a Vit folyó vidékének egyik leglenyűgözőbb természeti táját alkotják.",
+      title: "🪨 Sziklák és barlangok földje",
+      detail: "Hogyan formálta a természet a lukoviti karsztot, a barlangokat és az Aglen környéki lenyűgöző mészkőalakzatokat.",
       intro:
         "A Vit folyó völgye Aglen falu környékén sokkal többet őriz a szokásos turistalegendáknál az oszmán üldöztetésekről és a sziklahidakról. A mészkőtömbök és a Lukovit karsztvidék e szakaszának tucatnyi barlangja mögött olyan történelem rejlik, amely évezredes földtani átalakulásokon, trák kultikus szokásokon és középkori szellemi elszigetelődésen ível át.",
       sections: [
@@ -153,20 +153,84 @@ export const hu: PageCopy = {
       ],
     },
     {
-      title: "Az emberek felfedezik a völgyet",
-      detail: "A folyó menti kedvező feltételek ősidők óta vonzzák az embereket, és a vidéket az élet és a mozgás természetes helyévé teszik.",
+      title: "👣 Az első emberek a völgyben",
+      detail: "Őskori lakók nyomai, trák jelenlét és élet a Vit folyó partján.",
+      intro:
+        "Az első emberek a folyóvölgyben: az Aglen környéki őskori megtelepedés titkai. Amikor arról esik szó, mi vonzotta az embert a folyóvölgyekbe, a közkeletű források rendszerint megállnak a „termékeny föld” és az „ivóvíz” általános fordulatainál. Ha azonban beleássuk magunkat a szakmai régészeti nyilvántartásokba, a régi múzeumi expedíciók jelentéseibe és a 20. század eleji néprajzi gyűjteményekbe, sokkal mélyebb kép rajzolódik ki arról, miért éppen a Vit e zárt kanyarulata vált mágnessé az ősi lakók számára.",
+      sections: [
+        {
+          heading: "1. A „folyami folyosó” stratégiai földrajza",
+          body: [
+            "Az ókorban a Vit folyó nem pusztán vízforrás volt, hanem életmentő közlekedési és kommunikációs folyosó, amely a Duna-síkságot kötötte össze az Elő-Balkán hágóival.",
+            "A természetes amfiteátrum: Az Aglen melletti völgy földtanilag zárt amfiteátrum, amelyet meredek mészkőteraszok öveznek. Azokban a korokban, amikor az éghajlat nedvesebb volt és az erdőségek járhatatlanok, ezek a folyóvölgyek voltak az egyetlen biztonságos útvonalak az emberi közösségek és nyájaik számára.",
+            "Mikroklimatikus oázis: A magas szikláktól széltől védve és a folyó állandó nedvességétől táplálva a völgy mini ökoszisztémát alkot. Télen itt enyhébbek voltak a hőmérsékletek, mint a nyílt fennsíkon, a talajok pedig – a Vit menti alluviális hordalékok – jóval a vasipar megjelenése előtt lehetővé tették az első földművelő kísérleteket.",
+          ],
+        },
+        {
+          heading: "2. A neolitikum és a rézkor régészeti nyomai",
+          body: [
+            "A múlt század közepén alkotó bolgár régészek elfeledett munkáiban olyan leletek szerepelnek, amelyek ritkán jutnak el a népszerű internetes oldalakig.",
+            "A kovakő mint fizetőeszköz: A folyó feletti teraszokon, a lukoviti térségben késő neolitikus kovakő-megmunkáló műhelyek nyomaira bukkantak. Az őskori emberek a helyi mészkövekben található kiváló minőségű kovagumókból készítettek pengéket, késeket és nyílhegyeket. Ez a vidéket nem pusztán lakóhellyé, hanem a régió korai őskorának ipari központjává tette.",
+            "Az első fémművesek kultusza: A rézkorban a völgyet olyan közösségek kezdték felkeresni, amelyek nemcsak élelmet, hanem nyersanyagot is kerestek. Az Elő-Balkán közelsége és érclelőhelyei ezekhez a folyami kapukhoz vonzották az embereket, tanúivá téve őket a kőtől a réz első kitermeléséig vezető átmenetnek.",
+          ],
+        },
+        {
+          heading: "3. Helyi legendák a „sziklák első embereiről”",
+          body: [
+            "A tanítók és helytörténészek által Aglenben a 20. század húszas és harmincas éveiben gyűjtött, regionális levéltárakban őrzött néprajzi feljegyzésekben olyan hagyományok élnek, amelyek eltérnek a szokásos török legendáktól.",
+            "A sziklák „kétlábú árnyai”: A falu öregjei hajdan azt mesélték gyermekeiknek, hogy a legmélyebb barlangokban és a sziklaereszek alatt egykor „hallgatag emberek” éltek, akik nem gyújtottak füstölgő tüzet, nehogy meglássák őket a hegy szellemei, és folyami kagylóval, medvehagymával és erdei állatok húsával táplálkoztak. Bár mítosznak hangzik, ez a szóbeli emlékezet meglepő pontossággal írja le a paleolitikum korai vadászó-gyűjtögetőinek életmódját, akik csak a meleg évszakban hagyták el a barlangokat.",
+            "Az „aranybarázda” legendája: Egy másik régi helyi hiedelem szerint a völgybe érkező első földművesek éppen ott húzták az első barázdát, ahol a folyó a szikla alatt a legélesebb kanyart veszi. Úgy hitték, hogy ott a földet „megcsókolták az alvilág fejedelmei”, mert a források közvetlenül a szikla mélyéből törtek elő, és nagy aszályok idején is életet hoztak.",
+          ],
+        },
+        {
+          heading: "4. A törzsek útja: tribalok és rómaiak",
+          body: [
+            "Amikor a vaskorban a völgy tartósabban benépesül, a hatalmas trák törzs, a tribalok földjére kerül.",
+            "A régészeti jelek arra utalnak, hogy ezek a helyek kereszteződést jelentettek a Balkán belsejének trák világa és a Duna menti törzsek között. A Vit folyó tájékozódási pontként szolgált, a völgyben megtelepedők pedig kisebb kísérő településeket építettek a mai falu körüli magas teraszokon – olyan helyeken, ahonnan látszik minden észak vagy dél felől közeledő.",
+            "A rómaiak megérkezésével ez a természetes folyosó bekerült a Duna menti római erődöket Moesia tartomány belsejével összekötő utak őrzésének stratégiájába, a helyi lakosságot pedig bevonták az útépítésbe és a termékeny folyóteraszok művelésébe.",
+          ],
+        },
+      ],
     },
     {
-      title: "Megszületik a falu",
-      detail: "Idővel közösség formálódik, amely a folyóhoz, a földhöz és a hagyományokhoz kötődik, amelyek ma is Aglen jellemének részei.",
+      title: "🏡 Aglen születése",
+      detail: "Hogyan jön létre a falu, honnan ered a neve, és hogyan fejlődik az évszázadok során.",
+      intro:
+        "Aglen születése: az oszmán adójegyzékek titkai, az elfeledett falurészek és az egyedülálló név. A népi emlékezet gyakran a mély ókorban keresi a települések kezdetét, az Aglenre vonatkozó első biztos írásos bizonyítékok azonban más korból származnak – azokból az adójegyzékekből, amelyeket a bolgár földek oszmán meghódítása után évszázadokkal állítottak össze.",
+      sections: [
+        {
+          heading: "1. Az oszmán adójegyzékek: az első írásos nyomok (15-16. század)",
+          body: [
+            "Bár a népi emlékezet gyakran a mély ókorban keresi a települések kezdetét, az Aglenre vonatkozó írásos bizonyítékok hivatalosan a bolgár földek oszmán meghódítását követő első évszázadokban jelennek meg.",
+            "A nikápolyi szandzsák: A nikápolyi pasalik 15. és 16. századi korai oszmán adójegyzékeiben (defterek) a falu különböző hangalakokban szerepel, a korabeli török írásos kiejtéshez igazítva – például timár-birtok részeként vagy a központi hatalomnak adóval tartozó kis településként.",
+            "Népesség és megélhetés: A jegyzékek azt mutatják, hogy bár a vidék a Vit folyó és a Duna felé vezető utak közelsége miatt stratégiai kockázatoknak volt kitéve, az élet itt nem hunyt ki. A helyiek adójukat főként természetben fizették – búzával, később kukoricával, aprójószággal és mézzel –, kihasználva a sziklák mögé rejtett, védett völgyeket, amelyek megóvták őket a nagy fosztogatásoktól.",
+          ],
+        },
+        {
+          heading: "2. A név rejtélye: honnan ered az „Ъглен”?",
+          body: [
+            "A falu neve egész Bulgária léptékében nyelvi jelenség – az egyetlen település, amely a „Ъ” betűvel kezdődik. A tudományos körökben és a régi néprajzi feljegyzésekben több elmélet is él az eredetéről.",
+            "A faszén elmélete (a kézműves változat): Pragmatikusabb történeti kutatások szerint a Vit kanyonja körüli vidék egykor gazdagon erdősült volt, a helyi lakosság pedig intenzíven foglalkozott szénégetéssel – a faszén előállításával, amely hajdan nélkülözhetetlen volt a kovácsmesterséghez és a fémolvasztáshoz. A készletek és a szénégető boksák adták a település nevét.",
+            "A „tűsziklák” legendája: A régi helyi hagyomány makacsul őrzi a név földrajzi eredetének változatát. Mivel a folyó fölé éles, függőleges mészkőfogak és sziklatűk magasodnak, az első letelepülők „Иглен”-nek (a tűk körüli helynek) nevezték a vidéket, ami idővel és a nyelvjárási beszédben a mai zengzetes és egyedülálló Ъглен alakká formálódott.",
+          ],
+        },
+        {
+          heading: "3. A helyi falurészek és a település vándorlása az idők során",
+          body: [
+            "Mint sok más bolgár falu, Aglen sem mindig pontosan a mai helyén állt.",
+            "A régi települések (a jurtlukok): A falu határában vannak olyan dűlők, amelyek a régi földrajzi feljegyzésekben „Селището” (a Település) vagy „Старо село” (az Ófalu) néven szerepelnek. Az ottani régészeti nyomok azt mutatják, hogy a korábbi évszázadokban az emberek közelebb éltek a barlangokhoz és a sziklatömbökhöz, ahol a kirdzsáli-portyák és az oszmán uralom törvénytelen időszakában nagyobb volt a biztonság.",
+            "Összeépülés az újjászületés korában: A 19. század nyugodtabb évtizedeivel a falu elkezd lehúzódni a folyó menti tágasabb teraszokra, ahol jobbak a földművelés és az élet feltételei. Ekkor alakul ki Aglen mai arculata, amely megőrizte az újjászületés kori építészet szellemét, a régi nemzetségi gyökereket és lakóinak harcos jellemét, akik olyan jelentős személyiségeket adtak Bulgáriának, mint Trifon Kunev író.",
+          ],
+        },
+      ],
     },
     {
-      title: "Történetek és emlékek",
-      detail: "A helyi legendák, szokások és emlékek elevenen tartják a falu szellemét, és kapcsolatot teremtenek a múlt és a jelen között.",
+      title: "📜 Legendák és helyi emlékezet",
+      detail: "Nemzedékről nemzedékre szálló történetek – emlékek, hagyományok és kevéssé ismert helyi elbeszélések.",
     },
     {
-      title: "Aglen ma",
-      detail: "Aglen jövője akkor a legerősebb, ha hiteles marad. Ma a falu a természet, a fotózás, a horgászat és a nyugodt hétvégi utazások kedvelőinek kedvenc úti célja.",
+      title: "🌿 Aglen ma",
+      detail: "Hogyan őrzi a falu a történelmét, a természetét és a szellemét, miközben a jövő felé tekint.",
     },
   ],
   mysteries: [

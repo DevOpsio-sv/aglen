@@ -52,7 +52,7 @@ export const de: PageCopy = {
     { label: "Identität", value: "Das einzige „Ъ“", detail: "Aglen ist die einzige Ortschaft in Bulgarien, deren Name mit dem Buchstaben „Ъ“ beginnt." },
   ],
   timeline: [
-    { title: "Land der Felsen und Höhlen", detail: "Die Kalksteinfelsen und Höhlen rund um Aglen prägen eine der beeindruckendsten Naturlandschaften in der Region von Lukovit und dem Fluss Vit.",
+    { title: "🪨 Land der Felsen und Höhlen", detail: "Wie die Natur den Karst von Lukovit, die Höhlen und die beeindruckenden Kalksteinformationen bei Aglen geschaffen hat.",
       intro: "Das Tal des Flusses Vit rund um das Dorf Aglen bewahrt weit mehr als die üblichen touristischen Legenden über osmanische Verfolgungen und Felsbrücken. Hinter den Kalksteinmassiven und den Dutzenden Höhlen in diesem Abschnitt des Lukovit-Karstgebiets verbirgt sich eine Geschichte, die Jahrtausende geologischer Umwandlungen, thrakischer Kultpraktiken und mittelalterlichen geistlichen Isolationismus durchzieht.",
       sections: [
         {
@@ -87,10 +87,72 @@ export const de: PageCopy = {
           ],
         },
       ] },
-    { title: "Die Menschen entdecken das Tal", detail: "Die günstigen Bedingungen am Fluss ziehen die Menschen seit alten Zeiten an und machen die Region zu einem natürlichen Ort zum Leben und für Bewegung." },
-    { title: "Das Dorf entsteht", detail: "Mit der Zeit bildet sich eine Gemeinschaft, verbunden mit dem Fluss, dem Land und den Traditionen, die bis heute Teil des Charakters von Aglen sind." },
-    { title: "Geschichten und Erinnerungen", detail: "Die lokalen Legenden, Bräuche und Erinnerungen halten den Geist des Dorfes lebendig und schaffen eine Verbindung zwischen Vergangenheit und Gegenwart." },
-    { title: "Aglen heute", detail: "Die Zukunft von Aglen ist am stärksten, wenn es authentisch bleibt. Heute ist das Dorf ein beliebtes Reiseziel für Liebhaber von Natur, Fotografie, Angeln und ruhigen Wochenendreisen." },
+    { title: "👣 Die ersten Menschen im Tal", detail: "Spuren prähistorischer Bewohner, thrakische Präsenz und das Leben an den Ufern des Flusses Vit.",
+      intro: "Die ersten Menschen im Flusstal: die Geheimnisse der prähistorischen Besiedlung bei Aglen. Wenn davon die Rede ist, was den Menschen an Flusstäler band, beschränken sich die gängigen Quellen meist auf allgemeine Formeln über „fruchtbares Land“ und „Trinkwasser“. Wühlt man sich jedoch durch archäologische Fachkarteien, Berichte alter Museumsexpeditionen und ethnographische Sammlungen vom Beginn des 20. Jahrhunderts, entsteht ein weit tieferes Bild davon, warum gerade dieser abgeschlossene Mäander des Flusses Vit zum Magneten für die frühen Bewohner wurde.",
+      sections: [
+        {
+          heading: "1. Die strategische Geographie des „Flusskorridors“",
+          body: [
+            "In alten Zeiten war der Fluss Vit nicht bloß eine Wasserquelle, sondern ein lebensrettender Transport- und Kommunikationskorridor, der die Donauebene mit den Pässen des Vorbalkans verband.",
+            "Das natürliche Amphitheater: Das Tal bei Aglen bildet ein geologisch geschlossenes Amphitheater, umgeben von steilen Kalksteinterrassen. In Epochen mit feuchterem Klima und undurchdringlichen Waldmassiven waren solche Flusstäler die einzigen sicheren Wege für die Bewegung menschlicher Gemeinschaften und ihrer Herden.",
+            "Eine mikroklimatische Oase: Von den hohen Felsen vor dem Wind geschützt und von der beständigen Feuchtigkeit des Flusses getragen, bildet das Tal ein Mini-Ökosystem. Die Wintertemperaturen waren hier milder als auf dem offenen Plateau, und die Böden – die alluvialen Ablagerungen am Vit – erlaubten die ersten Experimente mit dem Ackerbau lange vor dem Aufkommen der Eisenverarbeitung.",
+          ],
+        },
+        {
+          heading: "2. Die archäologischen Spuren aus Neolithikum und Chalkolithikum",
+          body: [
+            "In vergessenen Arbeiten bulgarischer Archäologen aus der Mitte des vorigen Jahrhunderts werden Funde erwähnt, die nur selten auf populäre Internetseiten gelangen.",
+            "Feuerstein als Währung: Auf den Terrassen über dem Fluss im Gebiet von Lukovit wurden Spuren spätneolithischer Werkstätten zur Feuersteinbearbeitung entdeckt. Die Menschen der Vorzeit nutzten die hochwertigen Feuersteinknollen aus den örtlichen Kalksteinen, um Klingen, Messer und Pfeilspitzen herzustellen. Das machte die Gegend nicht nur zu einem Ort zum Leben, sondern zu einem industriellen Zentrum der frühen Vorgeschichte in der Region.",
+            "Der Kult der ersten Metallurgen: Im Chalkolithikum begannen Gemeinschaften das Tal aufzusuchen, die nicht nur Nahrung, sondern auch Rohstoffe suchten. Die Nähe des Vorbalkans mit seinen Erzvorkommen zog die Menschen zu diesen Flusstoren und machte sie zu Zeugen des Übergangs vom Stein zur ersten Kupfergewinnung.",
+          ],
+        },
+        {
+          heading: "3. Die lokalen Legenden von den „ersten Menschen in den Felsen“",
+          body: [
+            "In den folkloristischen Aufzeichnungen, die Lehrer und Heimatforscher in den 1920er und 1930er Jahren in Aglen sammelten und die in regionalen Archiven aufbewahrt werden, finden sich Überlieferungen, die von den üblichen türkischen Legenden abweichen.",
+            "Die Überlieferung von den „zweibeinigen Schatten“ in den Felsen: Die Alten im Dorf erzählten ihren Kindern früher, in den tiefsten Höhlen und unter den Felsvorsprüngen hätten einst „schweigsame Menschen“ gelebt, die kein rauchendes Feuer entzündeten, damit die Geister des Berges sie nicht sähen, und die sich von Flussmuscheln, Bärlauch und dem Fleisch von Waldtieren ernährten. So sehr das nach Mythos klingt – diese mündliche Erinnerung beschreibt erstaunlich genau die Lebensweise der frühen Jäger und Sammler des Paläolithikums, die die Höhlen nur in der warmen Jahreszeit verließen.",
+            "Die Legende von der „goldenen Furche“: Nach einem anderen alten örtlichen Glauben zogen die ersten Ackerbauern, die ins Tal kamen, ihre erste Furche genau dort, wo der Fluss unter dem Felsen seine schärfste Biegung macht. Sie glaubten, die Erde dort sei „von den Fürsten der Unterwelt geküsst“, weil die Quellen unmittelbar aus dem Inneren des Felsens traten und selbst in großen Dürren Leben brachten.",
+          ],
+        },
+        {
+          heading: "4. Der Weg der Stämme: Triballer und Römer",
+          body: [
+            "Als sich das Tal in der Eisenzeit dauerhafter zu besiedeln begann, fiel es in das Gebiet des mächtigen thrakischen Stammes der Triballer.",
+            "Die archäologischen Hinweise deuten darauf hin, dass diese Orte eine Kreuzung zwischen der thrakischen Welt im Inneren des Balkans und den Donaustämmen waren. Der Fluss Vit diente als Orientierungslinie, und die Menschen, die sich im Tal niederließen, errichteten kleine begleitende Siedlungen auf den hohen Terrassen rund um das heutige Dorf – Orte, von denen aus jeder Ankömmling aus Norden oder Süden zu sehen ist.",
+            "Mit der Ankunft der Römer wurde dieser natürliche Korridor in die Strategie zur Sicherung der Straßen einbezogen, die die römischen Festungen an der Donau mit dem Inneren der Provinz Mösien verbanden; die einheimische Bevölkerung wurde in den Straßenbau und die Nutzung der fruchtbaren Flussterrassen eingebunden.",
+          ],
+        },
+      ] },
+    { title: "🏡 Die Geburt von Aglen", detail: "Wie das Dorf entsteht, woher sein Name kommt und wie es sich über die Jahrhunderte entwickelt.",
+      intro: "Die Geburt von Aglen: die Geheimnisse der osmanischen Register, der vergessenen Weiler und des einzigartigen Namens. Das Volksgedächtnis sucht die Anfänge der Siedlungen oft in tiefer Vorzeit, doch die ersten sicheren schriftlichen Zeugnisse über Aglen stammen aus einer anderen Epoche – aus den Steuerregistern, die Jahrhunderte nach der osmanischen Eroberung der bulgarischen Länder angelegt wurden.",
+      sections: [
+        {
+          heading: "1. Die osmanischen Register: die ersten schriftlichen Spuren (15.–16. Jahrhundert)",
+          body: [
+            "Obwohl das Volksgedächtnis die Anfänge der Siedlungen oft in tiefer Vorzeit sucht, erscheinen die schriftlichen Zeugnisse über Aglen offiziell erst in den ersten Jahrhunderten nach der osmanischen Eroberung der bulgarischen Länder.",
+            "Der Sandschak von Nikopol: In den frühen osmanischen Steuerregistern (Defter) des Paschaliks von Nikopol aus dem 15. und 16. Jahrhundert wird das Dorf in verschiedenen lautlichen Varianten erwähnt, angepasst an die damalige türkische Schreibaussprache – etwa als Teil von Timar-Besitzungen oder als kleine Siedlung, die der Zentralgewalt Abgaben schuldete.",
+            "Bevölkerung und Broterwerb: Die Register zeigen, dass das Leben hier nicht erlosch, obwohl die Gegend wegen der Nähe zum Fluss Vit und zu den Wegen zur Donau strategischen Risiken ausgesetzt war. Die Einheimischen zahlten ihre Abgaben vor allem in Naturalien – Weizen, später Mais, Kleinvieh und Bienenzucht – und nutzten dabei die hinter den Felsen verborgenen, geschützten Täler, die sie vor großen Raubzügen bewahrten.",
+          ],
+        },
+        {
+          heading: "2. Das Rätsel des Namens: Woher kommt „Aglen“?",
+          body: [
+            "Der Name des Dorfes ist ein sprachliches Phänomen im Maßstab ganz Bulgariens – die einzige Siedlung, die mit dem Buchstaben „Ъ“ beginnt. In der Wissenschaft und in alten ethnographischen Aufzeichnungen existieren mehrere Theorien zu seiner Herkunft.",
+            "Die Kohlen-Theorie (die handwerkliche Version): Pragmatischeren historischen Untersuchungen zufolge war die Gegend um den Canyon des Flusses Vit einst dicht bewaldet, und die örtliche Bevölkerung betrieb intensiv die Köhlerei – die Herstellung von Holzkohle, die für das Schmiedehandwerk und das Schmelzen von Metallen unentbehrlich war. Die Vorkommen und die Kohlenmeiler gaben der Siedlung ihren Namen.",
+            "Die Legende von den „Nadelfelsen“: Die alten örtlichen Überlieferungen halten hartnäckig an der geographischen Herkunft des Namens fest. Da sich über dem Fluss scharfe, senkrechte Kalksteinzacken und Felsnadeln erheben, nannten die ersten Siedler den Ort „Iglen“ (der Ort um die Nadeln), was sich mit der Zeit und im mundartlichen Gebrauch in das heutige klangvolle und einzigartige Aglen verwandelte.",
+          ],
+        },
+        {
+          heading: "3. Die örtlichen Weiler und die Verlegung des Dorfes im Lauf der Zeit",
+          body: [
+            "Wie viele andere bulgarische Dörfer lag auch Aglen nicht immer genau an seinem heutigen Platz.",
+            "Die alten Siedlungen (die Jurtluks): In der Gemarkung des Dorfes gibt es Fluren, die in alten geographischen Aufzeichnungen unter den Namen „Selischteto“ (die Siedlung) oder „Staro selo“ (das alte Dorf) geführt werden. Die archäologischen Spuren dort zeigen, dass die Menschen in früheren Jahrhunderten näher an den Höhlen und Felsmassiven lebten, wo die Sicherheit in den Zeiten der Kirdschali-Überfälle und der Rechtlosigkeit der osmanischen Herrschaft größer war.",
+            "Die Konsolidierung während der Wiedergeburt: Mit den ruhigeren Jahrzehnten des 19. Jahrhunderts begann das Dorf hinab zu den weiteren Terrassen am Fluss zu ziehen, wo die Bedingungen für Landwirtschaft und Leben besser waren. Damals formte sich das heutige Bild von Aglen, das den Geist der Wiedergeburtsarchitektur, die alten Geschlechterwurzeln und den kämpferischen Charakter seiner Bewohner bewahrt hat, die Bulgarien bemerkenswerte Persönlichkeiten wie den Schriftsteller Trifon Kunew schenkten.",
+          ],
+        },
+      ] },
+    { title: "📜 Legenden und lokales Gedächtnis", detail: "Geschichten, die von Generation zu Generation weitergegeben werden – Erinnerungen, Überlieferungen und wenig bekannte lokale Erzählungen." },
+    { title: "🌿 Aglen heute", detail: "Wie das Dorf seine Geschichte, seine Natur und seinen Geist bewahrt, während es in die Zukunft blickt." },
   ],
   mysteries: [
     { title: "Dorthin, wohin der Fluss führt", tag: "Verborgene Wege", image: images.hero, description: "Der Vit zeigt nicht alles auf einmal. Die Biegungen, Schatten und Felsen machen den Spaziergang zu einer Suche." },

@@ -13,8 +13,10 @@ import {
 import { guidesUiByLanguage, type GuidesUiText } from "./guidesUi";
 import { localizeText, publishedBusinesses } from "./localBusinesses";
 import { buildBusinessPath, buildGuidePath, buildRoutePath } from "./routes";
+import { imageProps } from "./images";
+import { distanceFromAglenKm, regionName, regionNote, regionPlaceById } from "./region";
 
-const fallbackImage = "/assets/aglen-hero-river-canyon.png";
+const fallbackImage = "/assets/aglen-hero-river-canyon.webp";
 
 function handleImageError(event: SyntheticEvent<HTMLImageElement>) {
   const image = event.currentTarget;
@@ -61,9 +63,10 @@ function GuideIndex({
       <section className="guides-hero" aria-labelledby="guides-hero-title">
         <img
           className="guides-hero-bg"
-          src="/assets/aglen-aerial-river.png"
+          {...imageProps("/assets/aglen-aerial-river.png")}
           alt=""
           aria-hidden="true"
+          fetchPriority="high"
           decoding="async"
           onError={handleImageError}
         />
@@ -122,7 +125,7 @@ function GuideCard({
       >
         <div className="guide-card-media">
           <img
-            src={guide.heroImage}
+            {...imageProps(guide.heroImage, { variant: "card" })}
             alt={localizeGuide(guide.heroImageAlt, language)}
             loading="lazy"
             decoding="async"
@@ -184,9 +187,10 @@ function GuideDetail({
       <section className="guides-hero is-detail" aria-labelledby="guide-title">
         <img
           className="guides-hero-bg"
-          src={guide.heroImage}
+          {...imageProps(guide.heroImage)}
           alt=""
           aria-hidden="true"
+          fetchPriority="high"
           decoding="async"
           onError={handleImageError}
         />
@@ -243,7 +247,7 @@ function GuideDetail({
             <div className="guide-places-grid">
               {places.map((place) => (
                 <article className="guide-place" key={place.id}>
-                  <img src={place.image} alt={place.imageAlt} loading="lazy" decoding="async" onError={handleImageError} />
+                  <img {...imageProps(place.image, { variant: "card" })} alt={place.imageAlt} loading="lazy" decoding="async" onError={handleImageError} />
                   <div className="guide-place-body">
                     <p className="guide-place-tag">{place.tag}</p>
                     <h3>{place.title}</h3>
@@ -272,6 +276,10 @@ function GuideDetail({
               ))}
             </ol>
           </section>
+        )}
+
+        {(guide.regionPlaceIds ?? []).length > 0 && (
+          <GuideRegionPlaces guide={guide} language={language} onNavigate={onNavigate} />
         )}
 
         {guide.businessCategories && (
@@ -338,6 +346,73 @@ function GuideDetail({
         )}
       </div>
     </div>
+  );
+}
+
+/**
+ * The places in the wider region this guide covers, each linking to the page
+ * that handles it and to the external record it comes from. This is the visible
+ * counterpart of the `mentions` links in the guide's JSON-LD — the same list,
+ * from the same data, so markup and page agree.
+ */
+function GuideRegionPlaces({
+  guide,
+  language,
+  onNavigate,
+}: {
+  guide: TourismGuide;
+  language: LanguageCode;
+  onNavigate: (path: string) => void;
+}) {
+  const ui = guidesUiByLanguage[language];
+  const places = (guide.regionPlaceIds ?? [])
+    .map((id) => regionPlaceById.get(id))
+    .filter((place): place is NonNullable<typeof place> => Boolean(place))
+    .sort((a, b) => (distanceFromAglenKm(a) ?? Infinity) - (distanceFromAglenKm(b) ?? Infinity));
+
+  if (places.length === 0) return null;
+
+  return (
+    <section className="guide-places" aria-labelledby="guide-region-title">
+      <h2 id="guide-region-title">{ui.nearbyTitle}</h2>
+      <p className="guide-notice" role="note">
+        {ui.nearbyNote}
+      </p>
+      <ul className="trust-nearby">
+        {places.map((place) => {
+          const km = distanceFromAglenKm(place);
+          const href = place.guideSlug
+            ? buildGuidePath(language, place.guideSlug)
+            : place.routeId
+              ? buildRoutePath(language, place.routeId as Parameters<typeof buildRoutePath>[1])
+              : undefined;
+          return (
+            <li key={place.id}>
+              <div>
+                <strong>
+                  {href && place.guideSlug !== guide.slug ? (
+                    <a
+                      href={href}
+                      onClick={(event) => {
+                        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                        event.preventDefault();
+                        onNavigate(href);
+                      }}
+                    >
+                      {regionName(place, language)}
+                    </a>
+                  ) : (
+                    regionName(place, language)
+                  )}
+                </strong>
+                {km !== undefined && <span className="trust-nearby-km">≈ {km} km</span>}
+              </div>
+              <p>{regionNote(place, language)}</p>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
   );
 }
 

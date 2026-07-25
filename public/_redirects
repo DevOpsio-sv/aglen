@@ -1,3 +1,16 @@
 /       /bg/    301
 /play   /bg/#app   302
 /ar     /bg/#ar    302
+
+# ── Legacy topic routes → the guide that replaced them ───────────────────
+# These six routes rendered the same content as a /guides/ page, in all 14
+# languages: 84 near-duplicate URLs competing with the pages that should rank.
+# They now consolidate into the guide. The prerendered HTML is still generated
+# (noindex, canonical → guide) as a fallback if a rule ever fails to match.
+# `:lang` matches one path segment, so one rule covers every language.
+/:lang/attractions/                     /:lang/guides/beautiful-places/    301
+/:lang/attractions/vit-river/           /:lang/guides/vit-river/           301
+/:lang/attractions/caves-rock-forms/    /:lang/guides/caves-and-rocks/     301
+/:lang/travel-guide/food-local-products/ /:lang/guides/local-food/         301
+/:lang/nearby-destinations/             /:lang/guides/nearby-destinations/ 301
+/:lang/travel-guide/seasonal-guide/     /:lang/guides/seasonal-guide/      301

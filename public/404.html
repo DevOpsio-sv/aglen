@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="bg">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Страницата не е намерена | Ъглен</title>
+    <!-- A 404 must never be indexed. Cloudflare Pages serves this file for any
+         path that matches no asset and no redirect; without it the platform's
+         generic error page was returned, which search engines have been known to
+         treat as a soft 404 on the URL that linked to it. -->
+    <meta name="robots" content="noindex, follow" />
+    <meta name="description" content="Тази страница не съществува. Върнете се към началото или разгледайте туристическите ръководства за Ъглен." />
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/icon-32.png" />
+    <style>
+      :root {
+        color-scheme: light;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 2rem;
+        background: #efe4cc;
+        color: #10231c;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+        text-align: center;
+      }
+      main {
+        max-width: 34rem;
+      }
+      h1 {
+        margin: 0 0 0.6rem;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(2rem, 6vw, 3rem);
+        line-height: 1.1;
+      }
+      p {
+        margin: 0 0 1.6rem;
+        line-height: 1.6;
+        color: #5f4632;
+      }
+      nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.7rem;
+        justify-content: center;
+      }
+      a {
+        padding: 0.7rem 1.2rem;
+        border: 1px solid rgba(16, 35, 28, 0.2);
+        border-radius: 999px;
+        background: #f7f2e7;
+        color: #10231c;
+        font-size: 0.95rem;
+        font-weight: 600;
+        text-decoration: none;
+      }
+      a:first-child {
+        background: #20392f;
+        border-color: #20392f;
+        color: #efe4cc;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p lang="bg" style="letter-spacing: 0.14em; font-size: 0.8rem; font-weight: 700; color: #7d5a1f">
+        404
+      </p>
+      <h1>Тази страница не съществува</h1>
+      <p>
+        Възможно е адресът да е сменен или да е въведен с грешка. Оттук може да продължите към началото, към
+        туристическите ръководства или към местния бизнес в Ъглен.
+      </p>
+      <nav aria-label="Основни страници">
+        <a href="/bg/">Начало</a>
+        <a href="/bg/guides/">Ръководства</a>
+        <a href="/bg/local-businesses/">Местен бизнес</a>
+        <a href="/bg/contact/">Контакт</a>
+      </nav>
+    </main>
+  </body>
+</html>

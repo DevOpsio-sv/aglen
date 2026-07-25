@@ -54,6 +54,14 @@ export type TourismGuide = {
   sections?: GuideSection[];
   quickFacts?: GuideQuickFacts;
   relatedGuideIds: string[];
+  /**
+   * ISO date this guide's text last changed. Set by hand — a build-stamped date
+   * would tell Google every guide changed on every deploy, which is the fastest
+   * way to have dateModified discounted entirely.
+   */
+  lastUpdated: string;
+  /** Region entities from region.ts that this guide genuinely covers. */
+  regionPlaceIds?: string[];
 };
 
 export const guides: TourismGuide[] = [
@@ -125,6 +133,8 @@ export const guides: TourismGuide[] = [
       },
     ],
     relatedGuideIds: ["vit-river", "caves-and-rocks", "local-food"],
+    lastUpdated: "2026-07-24",
+    regionPlaceIds: ["vit-river", "lukovit"],
   },
   {
     id: "vit-river",
@@ -155,6 +165,8 @@ export const guides: TourismGuide[] = [
       },
     ],
     relatedGuideIds: ["beautiful-places", "caves-and-rocks", "seasonal-guide"],
+    lastUpdated: "2026-07-24",
+    regionPlaceIds: ["vit-river"],
   },
   {
     id: "caves-and-rocks",
@@ -185,6 +197,8 @@ export const guides: TourismGuide[] = [
       },
     ],
     relatedGuideIds: ["beautiful-places", "nearby-destinations", "vit-river"],
+    lastUpdated: "2026-07-24",
+    regionPlaceIds: ["prohodna", "karlukovo", "devetashka"],
   },
   {
     id: "local-food",
@@ -211,6 +225,8 @@ export const guides: TourismGuide[] = [
       },
     ],
     relatedGuideIds: ["beautiful-places", "seasonal-guide", "nearby-destinations"],
+    lastUpdated: "2026-07-24",
+    regionPlaceIds: ["lukovit"],
   },
   {
     id: "nearby-destinations",
@@ -240,6 +256,8 @@ export const guides: TourismGuide[] = [
       },
     ],
     relatedGuideIds: ["caves-and-rocks", "beautiful-places", "seasonal-guide"],
+    lastUpdated: "2026-07-24",
+    regionPlaceIds: ["prohodna", "karlukovo", "lukovit", "iskar-panega", "zlatna-panega", "devetashka", "krushuna", "lovech"],
   },
   {
     id: "seasonal-guide",
@@ -269,6 +287,7 @@ export const guides: TourismGuide[] = [
       },
     ],
     relatedGuideIds: ["beautiful-places", "vit-river", "nearby-destinations"],
+    lastUpdated: "2026-07-24",
   },
 ];
 

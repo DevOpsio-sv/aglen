@@ -114,8 +114,8 @@ export const it: PageCopy = {
   ],
   timeline: [
     {
-      title: "Terra di rocce e grotte",
-      detail: "Le rocce calcaree e le grotte intorno ad Aglen formano uno dei paesaggi naturali più straordinari della zona di Lukovit e del fiume Vit.",
+      title: "🪨 Terra di rocce e grotte",
+      detail: "Come la natura ha creato il carso di Lukovit, le grotte e le straordinarie formazioni calcaree intorno ad Aglen.",
       intro:
         "Il bacino del fiume Vit intorno al villaggio di Aglen custodisce molto più delle consuete leggende turistiche su persecuzioni ottomane e ponti di roccia. Dietro i massicci calcarei e le decine di grotte di questo tratto della regione carsica di Lukovit si cela una storia che attraversa millenni di trasformazioni geologiche, pratiche cultuali trace e isolazionismo spirituale medievale.",
       sections: [
@@ -153,20 +153,84 @@ export const it: PageCopy = {
       ],
     },
     {
-      title: "Le persone scoprono la valle",
-      detail: "Le condizioni favorevoli lungo il fiume attirano le persone fin dai tempi antichi e rendono la zona un luogo naturale di vita e passaggio.",
+      title: "👣 I primi uomini nella valle",
+      detail: "Tracce di abitanti preistorici, presenza tracia e vita lungo le rive del fiume Vit.",
+      intro:
+        "I primi uomini nella valle fluviale: i segreti dell'insediamento preistorico intorno ad Aglen. Quando si parla di ciò che attirava l'uomo nelle valli dei fiumi, le fonti più diffuse si limitano di solito a formule generiche su « terra fertile » e « acqua potabile ». Ma se si scava negli schedari archeologici specialistici, nei rapporti di vecchie spedizioni museali e nelle raccolte etnografiche dell'inizio del XX secolo, emerge un quadro molto più profondo del perché proprio questa ansa chiusa del Vit sia diventata una calamita per gli abitanti antichi.",
+      sections: [
+        {
+          heading: "1. La geografia strategica del « corridoio fluviale »",
+          body: [
+            "Nell'antichità il fiume Vit non era soltanto una fonte d'acqua, ma un vitale corridoio di trasporto e comunicazione che collegava la pianura del Danubio ai valichi del Prebalcani.",
+            "L'anfiteatro naturale: La valle presso Aglen è un anfiteatro geologicamente chiuso, circondato da ripide terrazze calcaree. Nelle epoche in cui il clima era più umido e i massicci boschivi impenetrabili, queste valli fluviali erano gli unici sentieri sicuri per lo spostamento delle comunità umane e delle loro mandrie.",
+            "Un'oasi microclimatica: Riparata dai venti dalle alte rocce e sostenuta dall'umidità costante del fiume, la valle crea un mini-ecosistema. Qui d'inverno le temperature erano più miti che sull'altopiano aperto, e i suoli — i depositi alluvionali lungo il Vit — hanno permesso i primi esperimenti agricoli molto prima della comparsa dell'industria del ferro.",
+          ],
+        },
+        {
+          heading: "2. Le tracce archeologiche del Neolitico e del Calcolitico",
+          body: [
+            "In lavori dimenticati di archeologi bulgari della metà del secolo scorso si menzionano ritrovamenti che raramente approdano alle pagine internet più popolari.",
+            "La selce come moneta: Sulle terrazze sopra il fiume, nella zona di Lukovit, sono state scoperte tracce di officine tardo-neolitiche per la lavorazione della selce. Gli uomini antichi utilizzavano i noduli di selce di alta qualità presenti nei calcari locali per produrre lame, coltelli e punte di freccia. Ciò faceva della zona non un semplice luogo di vita, ma un centro industriale della prima preistoria della regione.",
+            "Il culto dei primi metallurghi: Durante il Calcolitico la valle inizia a essere frequentata da comunità in cerca non solo di cibo, ma anche di materie prime. La vicinanza del Prebalcani con i suoi affioramenti minerari attirava gli uomini verso queste porte fluviali, rendendoli testimoni del passaggio dalla pietra alla prima estrazione del rame.",
+          ],
+        },
+        {
+          heading: "3. Le leggende locali sui « primi uomini nelle rocce »",
+          body: [
+            "Negli appunti folclorici raccolti da maestri e studiosi locali ad Aglen negli anni Venti e Trenta del XX secolo e conservati negli archivi regionali esistono tradizioni che si discostano dalle consuete leggende turche.",
+            "Il racconto delle « ombre a due gambe » nelle rocce: Un tempo gli anziani del villaggio raccontavano ai figli che nelle grotte più profonde e sotto gli aggetti rocciosi vivevano un tempo « uomini silenziosi » che non accendevano fuochi fumosi per non farsi vedere dagli spiriti della montagna e si nutrivano di cozze di fiume, aglio selvatico e carne di animali del bosco. Per quanto suoni come un mito, questa memoria orale descrive con sorprendente precisione il modo di vivere dei primi cacciatori-raccoglitori del Paleolitico, che lasciavano le grotte solo nella stagione calda.",
+            "La leggenda del « solco d'oro »: Secondo un'altra antica credenza locale, i primi agricoltori giunti nella valle tracciarono il loro primo solco proprio dove il fiume compie la sua curva più stretta sotto la roccia. Credevano che lì la terra fosse « baciata dai signori del mondo sotterraneo », perché le sorgenti uscivano direttamente dalle viscere della roccia, portando vita anche durante le grandi siccità.",
+          ],
+        },
+        {
+          heading: "4. Il cammino delle tribù: Triballi e Romani",
+          body: [
+            "Quando la valle comincia a essere abitata più stabilmente nell'età del ferro, si trova nelle terre della potente tribù tracia dei Triballi.",
+            "Le indicazioni archeologiche suggeriscono che questi luoghi fossero un crocevia tra il mondo tracio dell'interno balcanico e le tribù danubiane. Il fiume Vit fungeva da punto di riferimento, e chi si stabilì nella valle costruì piccoli insediamenti satellite sulle terrazze alte intorno al villaggio odierno: punti da cui si scorge chiunque si avvicini da nord o da sud.",
+            "Con l'arrivo dei Romani questo corridoio naturale viene incluso nella strategia di sorveglianza delle strade che collegavano le fortezze romane del Danubio con l'interno della provincia di Mesia, e la popolazione locale viene coinvolta nella costruzione delle vie e nello sfruttamento delle fertili terrazze fluviali.",
+          ],
+        },
+      ],
     },
     {
-      title: "Nasce il villaggio",
-      detail: "Col tempo si forma una comunità legata al fiume, alla terra e alle tradizioni che ancora oggi fanno parte del carattere di Aglen.",
+      title: "🏡 La nascita di Aglen",
+      detail: "Come nasce il villaggio, da dove viene il suo nome e come si sviluppa nei secoli.",
+      intro:
+        "La nascita di Aglen: i segreti dei registri ottomani, i quartieri dimenticati e il nome unico. La memoria popolare cerca spesso l'origine dei villaggi nell'antichità più remota, ma le prime testimonianze scritte certe su Aglen provengono da un'altra epoca: dai registri fiscali redatti secoli dopo la conquista ottomana delle terre bulgare.",
+      sections: [
+        {
+          heading: "1. I registri ottomani: le prime tracce scritte (XV-XVI secolo)",
+          body: [
+            "Sebbene la memoria popolare cerchi spesso l'origine dei villaggi nell'antichità più remota, le testimonianze scritte su Aglen compaiono ufficialmente nei primi secoli dopo la conquista ottomana delle terre bulgare.",
+            "Il sangiaccato di Nikopol: Nei primi registri fiscali ottomani (defter) del pascialato di Nikopol del XV e XVI secolo il villaggio è menzionato in diverse varianti fonetiche, adattate alla pronuncia scritta turca dell'epoca: per esempio come parte di possedimenti timar o come piccolo abitato debitore di tributi al potere centrale.",
+            "Popolazione e sostentamento: I registri mostrano che, sebbene la zona fosse esposta a rischi strategici per la vicinanza al fiume Vit e alle strade verso il Danubio, la vita qui non si è mai spenta. Gli abitanti pagavano le imposte soprattutto in natura — grano, più tardi mais, bestiame minuto e miele — sfruttando le valli riparate nascoste dietro le rocce, che li proteggevano dalle grandi razzie.",
+          ],
+        },
+        {
+          heading: "2. L'enigma del nome: da dove viene « Ъглен »?",
+          body: [
+            "Il nome del villaggio è un fenomeno linguistico su scala nazionale: è l'unico abitato della Bulgaria che inizia con la lettera « Ъ ». Negli ambienti scientifici e nelle vecchie note etnografiche esistono diverse teorie sulla sua origine.",
+            "La teoria del carbone (la versione artigiana): Secondo ricerche storiche più pragmatiche, la zona intorno al canyon del Vit era un tempo riccamente boscosa e la popolazione locale si dedicava intensamente alla carbonizzazione: la produzione di carbone di legna, un tempo indispensabile per l'arte del fabbro e per la fusione dei metalli. I giacimenti e le carbonaie diedero il nome all'abitato.",
+            "La leggenda delle « rocce ad ago »: Le vecchie tradizioni locali conservano ostinatamente la versione dell'origine geografica del nome. Poiché sopra il fiume si ergono aguzzi denti calcarei verticali e aghi di roccia, i primi coloni chiamarono il luogo « Иглен » (il luogo attorno agli aghi), che con il tempo e la parlata dialettale si trasformò nell'odierno sonoro e unico Ъглен.",
+          ],
+        },
+        {
+          heading: "3. I quartieri locali e gli spostamenti dell'abitato nel tempo",
+          body: [
+            "Come molti altri villaggi bulgari, Aglen non si è sempre trovato esattamente dove sorge oggi.",
+            "Gli antichi insediamenti (gli yurtluk): Nel territorio del villaggio vi sono località che nelle vecchie note geografiche figurano con i nomi « Селището » (l'Insediamento) o « Старо село » (il Vecchio Villaggio). Le tracce archeologiche mostrano che nei secoli precedenti la gente viveva più vicino alle grotte e ai massicci rocciosi, dove la sicurezza era maggiore ai tempi delle incursioni dei kirdžali e dell'anarchia del dominio ottomano.",
+            "Il consolidamento durante il Risorgimento bulgaro: Con i decenni più tranquilli del XIX secolo il villaggio comincia a scendere verso le terrazze più ampie lungo il fiume, dove le condizioni per l'agricoltura e per la vita erano migliori. È allora che prende forma l'aspetto odierno di Aglen, che ha conservato lo spirito dell'architettura del Risorgimento, le antiche radici familiari e il carattere combattivo dei suoi abitanti, che hanno dato alla Bulgaria figure notevoli come lo scrittore Trifon Kunev.",
+          ],
+        },
+      ],
     },
     {
-      title: "Storie e ricordi",
-      detail: "Le leggende, le usanze e i ricordi locali mantengono vivo lo spirito del villaggio e creano un legame tra passato e presente.",
+      title: "📜 Leggende e memoria locale",
+      detail: "Storie tramandate di generazione in generazione: ricordi, tradizioni e racconti locali poco conosciuti.",
     },
     {
-      title: "Aglen oggi",
-      detail: "Il futuro di Aglen è più forte se resta autentico. Oggi il villaggio è una destinazione prediletta dagli amanti della natura, della fotografia, della pesca e dei tranquilli viaggi del weekend.",
+      title: "🌿 Aglen oggi",
+      detail: "Come il villaggio custodisce la sua storia, la sua natura e il suo spirito mentre guarda al futuro.",
     },
   ],
   mysteries: [

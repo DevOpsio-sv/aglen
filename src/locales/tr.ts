@@ -114,8 +114,8 @@ export const tr: PageCopy = {
   ],
   timeline: [
     {
-      title: "Kayalar ve mağaralar diyarı",
-      detail: "Aglen çevresindeki kireçtaşı kayaları ve mağaraları, Lukovit ve Vit Nehri bölgesinin en etkileyici doğal manzaralarından birini oluşturur.",
+      title: "🪨 Kayalar ve mağaralar diyarı",
+      detail: "Doğanın Lukovit karstını, mağaraları ve Aglen çevresindeki etkileyici kireçtaşı oluşumlarını nasıl yarattığı.",
       intro:
         "Aglen köyü çevresindeki Vit Nehri havzası, Osmanlı zulümleri ve kaya köprüleri hakkındaki standart turistik efsanelerden çok daha fazlasını saklar. Lukovit karst bölgesinin bu kesimindeki kireçtaşı kütlelerinin ve onlarca mağaranın ardında, binlerce yıllık jeolojik dönüşümleri, Trak kült uygulamalarını ve ortaçağ manevi izolasyonizmini kesen bir tarih gizlidir.",
       sections: [
@@ -153,20 +153,84 @@ export const tr: PageCopy = {
       ],
     },
     {
-      title: "İnsanlar vadiyi keşfeder",
-      detail: "Nehir kıyısındaki elverişli koşullar, kadim zamanlardan beri insanları çeker ve bölgeyi yaşam ve hareket için doğal bir yere dönüştürür.",
+      title: "👣 Vadideki ilk insanlar",
+      detail: "Tarih öncesi sakinlerin izleri, Trak varlığı ve Vit Nehri kıyılarındaki yaşam.",
+      intro:
+        "Nehir vadisindeki ilk insanlar: Aglen çevresindeki tarih öncesi yerleşimin sırları. İnsanı nehir vadilerine neyin çektiğinden söz edilirken yaygın kaynaklar genellikle „verimli toprak“ ve „içme suyu“ gibi genel ifadelerle yetinir. Oysa uzman arkeoloji kayıtlarını, eski müze seferlerinin raporlarını ve 20. yüzyılın başındaki etnografya derlemelerini karıştırdığımızda, Vit'in tam da bu kapalı menderesinin neden kadim sakinler için bir mıknatısa dönüştüğüne dair çok daha derin bir tablo ortaya çıkar.",
+      sections: [
+        {
+          heading: "1. „Nehir koridoru“nun stratejik coğrafyası",
+          body: [
+            "Kadim çağlarda Vit Nehri yalnızca bir su kaynağı değil, Tuna ovasını Balkan öncesi geçitlere bağlayan hayati bir ulaşım ve iletişim koridoruydu.",
+            "Doğal amfitiyatro: Aglen yakınındaki vadi, dik kireçtaşı teraslarıyla çevrili, jeolojik olarak kapalı bir amfitiyatrodur. İklimin daha nemli, orman kütlelerinin geçilmez olduğu çağlarda bu nehir vadileri, insan topluluklarının ve sürülerinin hareketi için tek güvenli yollardı.",
+            "Mikroklima vahası: Yüksek kayalarla rüzgârdan korunan ve nehrin sürekli neminden beslenen vadi, küçük bir ekosistem yaratır. Kışın sıcaklıklar burada açık platodakinden daha ılımandı; topraklar ise – Vit boyundaki alüvyon birikintileri – demir sanayisinin ortaya çıkışından çok önce ilk tarım denemelerine olanak tanıdı.",
+          ],
+        },
+        {
+          heading: "2. Neolitik ve Kalkolitik dönemin arkeolojik izleri",
+          body: [
+            "Geçen yüzyılın ortasındaki Bulgar arkeologların unutulmuş çalışmalarında, popüler internet sayfalarına nadiren ulaşan buluntulardan söz edilir.",
+            "Para olarak çakmaktaşı: Lukovit bölgesinde nehrin üzerindeki teraslarda, geç Neolitik çakmaktaşı işleme atölyelerinin izleri bulunmuştur. Kadim insanlar, yerel kireçtaşlarındaki yüksek kaliteli çakmaktaşı yumrularını kullanarak bıçak ağızları, bıçaklar ve ok uçları yapıyordu. Bu da bölgeyi yalnızca bir yaşam yeri değil, erken tarih öncesinin bölgedeki bir sanayi merkezi hâline getiriyordu.",
+            "İlk metalürjicilerin kültü: Kalkolitik dönemde vadiyi yalnızca besin değil, hammadde de arayan topluluklar ziyaret etmeye başlar. Cevher oluşumlarıyla Balkan öncesi dağların yakınlığı insanları bu nehir kapılarına çekmiş ve onları taştan ilk bakır çıkarımına geçişin tanığı yapmıştır.",
+          ],
+        },
+        {
+          heading: "3. „Kayalardaki ilk insanlar“ hakkındaki yerel efsaneler",
+          body: [
+            "Aglen'de 20. yüzyılın 20'li ve 30'lu yıllarında öğretmenler ve yöre araştırmacıları tarafından derlenen ve bölge arşivlerinde saklanan folklor notlarında, alışılmış Türk dönemi efsanelerinden ayrılan rivayetler vardır.",
+            "Kayalardaki „iki ayaklı gölgeler“ rivayeti: Köyün yaşlıları eskiden çocuklarına, en derin mağaralarda ve kaya saçaklarının altında bir zamanlar „suskun insanlar“ın yaşadığını; dağın ruhları görmesin diye dumanlı ateş yakmadıklarını, nehir midyeleri, yabani sarımsak ve orman hayvanlarının etiyle beslendiklerini anlatırdı. Mit gibi dursa da bu sözlü bellek, mağaraları yalnızca sıcak mevsimde terk eden Paleolitik dönemin erken avcı-toplayıcılarının yaşam biçimini şaşırtıcı bir doğrulukla tarif eder.",
+            "„Altın karık“ efsanesi: Bir başka eski yerel inanışa göre, vadiye gelen ilk çiftçiler ilk karıklarını tam nehrin kayanın altında en keskin dönüşü yaptığı yerde açmışlardır. Oradaki toprağın „yeraltı dünyasının beylerince öpüldüğüne“ inanıyorlardı; çünkü kaynaklar doğrudan kayanın derinliklerinden çıkıyor ve büyük kuraklıklarda bile yaşam getiriyordu.",
+          ],
+        },
+        {
+          heading: "4. Kabilelerin yolu: Triballer ve Romalılar",
+          body: [
+            "Vadi Demir Çağı'nda daha kalıcı biçimde iskân edilmeye başlandığında, güçlü Trak kabilesi Triballerin topraklarına dâhil olur.",
+            "Arkeolojik veriler, bu yerlerin Balkan içlerindeki Trak dünyası ile Tuna kabileleri arasında bir kavşak olduğunu gösteriyor. Vit Nehri bir yön işareti işlevi görüyordu; vadiye yerleşenler ise bugünkü köyün çevresindeki yüksek teraslarda küçük yardımcı yerleşimler kurdular – kuzeyden ya da güneyden yaklaşan herkesin görülebildiği noktalar.",
+            "Romalıların gelişiyle bu doğal koridor, Tuna boyundaki Roma kalelerini Moesia eyaletinin iç kesimlerine bağlayan yolların korunması stratejisine dâhil edildi; yerel halk da yol yapımına ve verimli nehir teraslarının kullanımına katıldı.",
+          ],
+        },
+      ],
     },
     {
-      title: "Köy ortaya çıkar",
-      detail: "Zamanla nehre, toprağa ve bugün hâlâ Aglen'in karakterinin bir parçası olan geleneklere bağlı bir topluluk oluşur.",
+      title: "🏡 Aglen'in doğuşu",
+      detail: "Köyün nasıl ortaya çıktığı, adının nereden geldiği ve yüzyıllar boyunca nasıl geliştiği.",
+      intro:
+        "Aglen'in doğuşu: Osmanlı defterlerinin sırları, unutulmuş mahalleler ve eşsiz ad. Halk belleği yerleşimlerin başlangıcını çoğu kez derin kadim çağlarda arar; oysa Aglen'e dair ilk kesin yazılı tanıklıklar başka bir çağdan gelir – Bulgar topraklarının Osmanlı fethinden yüzyıllar sonra düzenlenen vergi defterlerinden.",
+      sections: [
+        {
+          heading: "1. Osmanlı defterleri: ilk yazılı izler (15.-16. yüzyıl)",
+          body: [
+            "Halk belleği yerleşimlerin başlangıcını çoğu kez derin kadim çağlarda arasa da, Aglen'e ilişkin yazılı tanıklıklar resmî olarak Bulgar topraklarının Osmanlı fethinden sonraki ilk yüzyıllarda belirir.",
+            "Niğbolu sancağı: Niğbolu paşalığının 15. ve 16. yüzyıla ait erken Osmanlı vergi defterlerinde (tahrir defterleri) köy, dönemin Türkçe yazılı söyleyişine uyarlanmış çeşitli ses varyantlarıyla anılır – örneğin tımar topraklarının bir parçası olarak ya da merkezî otoriteye vergi borçlu küçük bir yerleşim olarak.",
+            "Nüfus ve geçim: Defterler, bölge Vit Nehri'ne ve Tuna'ya giden yollara yakınlığı nedeniyle stratejik risklere açık olsa da buradaki hayatın sönmediğini gösteriyor. Yerel halk vergilerini çoğunlukla ayni ödüyordu – buğday, sonraları mısır, küçükbaş hayvan ve bal – ve kayaların ardına gizlenmiş korunaklı vadilerden yararlanıyordu; bu vadiler onları büyük yağmalardan korumuştu.",
+          ],
+        },
+        {
+          heading: "2. Adın bilmecesi: „Ъглен“ nereden geliyor?",
+          body: [
+            "Köyün adı bütün Bulgaristan ölçeğinde dilbilimsel bir olgudur – „Ъ“ harfiyle başlayan tek yerleşim. Bilim çevrelerinde ve eski etnografya notlarında kökeni hakkında birkaç kuram bulunur.",
+            "Kömür kuramı (zanaatkâr yorumu): Daha pragmatik tarihsel araştırmalara göre Vit kanyonu çevresi bir zamanlar gür ormanlarla kaplıydı ve yerel halk yoğun biçimde kömürcülükle – geçmişte demircilik ve maden eritmek için vazgeçilmez olan odun kömürünün üretimiyle – uğraşıyordu. Bu birikim ve kömür ocakları yerleşime adını vermiştir.",
+            "„İğne kayalar“ efsanesi: Eski yerel rivayetler, adın coğrafi kökenine dair yorumu inatla korur. Nehrin üzerinde keskin, dik kireçtaşı dişleri ve kaya iğneleri yükseldiğinden ilk yerleşenler buraya „Иглен“ (iğnelerin çevresindeki yer) demiş; bu ad zamanla ve ağız söyleyişiyle bugünkü tınılı ve eşsiz Ъглен'e dönüşmüştür.",
+          ],
+        },
+        {
+          heading: "3. Yerel mahalleler ve köyün zaman içinde yer değiştirmesi",
+          body: [
+            "Pek çok başka Bulgar köyü gibi Aglen de her zaman tam olarak bugünkü yerinde bulunmuyordu.",
+            "Eski yerleşimler (yurtluklar): Köyün arazisinde, eski coğrafya notlarında „Селището“ (Yerleşim) ya da „Старо село“ (Eski Köy) adlarıyla geçen mevkiler vardır. Oradaki arkeolojik izler, önceki yüzyıllarda insanların mağaralara ve kaya kütlelerine daha yakın yaşadığını gösteriyor; kırcalı baskınları ve Osmanlı yönetiminin kanunsuz döneminde oralarda güvenlik daha fazlaydı.",
+            "Uyanış Çağı'nda toparlanma: 19. yüzyılın daha sakin on yıllarıyla birlikte köy, tarım ve yaşam koşullarının daha iyi olduğu nehir boyundaki geniş teraslara doğru inmeye başlar. Aglen'in bugünkü görünümü de o zaman biçimlenir; Uyanış Çağı mimarisinin ruhunu, eski soy köklerini ve Bulgaristan'a yazar Trifon Kunev gibi kayda değer kişiler kazandıran halkının mücadeleci karakterini koruyarak.",
+          ],
+        },
+      ],
     },
     {
-      title: "Hikayeler ve anılar",
-      detail: "Yerel efsaneler, gelenekler ve anılar köyün ruhunu canlı tutar ve geçmişle bugün arasında bir bağ kurar.",
+      title: "📜 Efsaneler ve yerel bellek",
+      detail: "Kuşaktan kuşağa aktarılan hikâyeler – anılar, rivayetler ve az bilinen yerel anlatılar.",
     },
     {
-      title: "Bugün Aglen",
-      detail: "Aglen'in geleceği, otantik kaldığı sürece en güçlüsüdür. Bugün köy; doğa, fotoğrafçılık, balıkçılık ve sakin hafta sonu gezileri tutkunları için tercih edilen bir destinasyondur.",
+      title: "🌿 Bugün Aglen",
+      detail: "Köyün geleceğe bakarken tarihini, doğasını ve ruhunu nasıl koruduğu.",
     },
   ],
   mysteries: [

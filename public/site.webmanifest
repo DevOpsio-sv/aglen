@@ -2,8 +2,8 @@
   "name": "Aglen — unlockingbulgaria",
   "short_name": "Aglen",
   "description": "Explore Aglen, Bulgaria's only village starting with Ъ. Limestone canyons, caves, Vit River & the unlockingbulgaria AR adventure.",
-  "start_url": "/?source=pwa",
-  "id": "/?source=pwa",
+  "start_url": "/bg/?source=pwa",
+  "id": "/bg/?source=pwa",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#0e1c14",
@@ -14,27 +14,35 @@
   "categories": ["travel", "tourism", "entertainment", "education"],
   "icons": [
     {
-      "src": "/assets/aglen-logo-mark.png",
-      "sizes": "640x640",
+      "src": "/assets/icon-192.png",
+      "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "/assets/aglen-logo-mark.png",
-      "sizes": "640x640",
+      "src": "/assets/icon-512.png",
+      "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "screenshots": [
     {
-      "src": "/assets/aglen-hero-river-canyon.png",
-      "type": "image/png",
+      "src": "/assets/aglen-hero-river-canyon.webp",
+      "sizes": "1600x900",
+      "type": "image/webp",
       "label": "Aglen — Vit River Canyon at sunrise"
     },
     {
-      "src": "/assets/aglen-aerial-river.png",
-      "type": "image/png",
+      "src": "/assets/aglen-aerial-river.webp",
+      "sizes": "1600x900",
+      "type": "image/webp",
       "label": "Aerial view of Aglen village and canyon"
     }
   ],
@@ -43,15 +51,15 @@
       "name": "Landmarks",
       "short_name": "Landmarks",
       "description": "Explore Aglen's natural landmarks",
-      "url": "/#landmarks",
-      "icons": [{ "src": "/assets/aglen-logo-mark.png", "sizes": "640x640" }]
+      "url": "/bg/attractions/",
+      "icons": [{ "src": "/assets/icon-192.png", "sizes": "192x192" }]
     },
     {
       "name": "unlockingbulgaria",
       "short_name": "AR Quests",
       "description": "Download the AR adventure app",
-      "url": "/#app",
-      "icons": [{ "src": "/assets/aglen-logo-mark.png", "sizes": "640x640" }]
+      "url": "/bg/app/",
+      "icons": [{ "src": "/assets/icon-192.png", "sizes": "192x192" }]
     }
   ],
   "related_applications": [

@@ -12,6 +12,8 @@ export type LocalizedUiText = {
   aria: {
     mobileNav: string;
     footerPolicy: string;
+    breadcrumbs: string;
+    skipToContent: string;
   };
   gateway: {
     exploreFrom: string;
@@ -29,7 +31,7 @@ export const uiTextByLanguage: Record<LanguageCode, LocalizedUiText> = {
       { label: "Събития и актуализации", routeId: "events" },
     ],
     landing: { routeMap: "Виж маршрутната карта", visitorAnswers: "Отговори за посетители", internalLinks: "Вътрешни връзки", relatedGuides: "Свързани ръководства", relatedGuidesAria: "Свързани ръководства за Ъглен" },
-    aria: { mobileNav: "Навигация", footerPolicy: "Страници за доверие и политики" },
+    aria: { mobileNav: "Навигация", footerPolicy: "Страници за доверие и политики", breadcrumbs: "Навигация с пътечка", skipToContent: "Към съдържанието" },
     gateway: { exploreFrom: "Разгледай от", placeContext: "Места" },
   },
   en: {
@@ -41,7 +43,7 @@ export const uiTextByLanguage: Record<LanguageCode, LocalizedUiText> = {
       { label: "Events and updates", routeId: "events" },
     ],
     landing: { routeMap: "View route map", visitorAnswers: "Visitor answers", internalLinks: "Internal links", relatedGuides: "Related guides", relatedGuidesAria: "Related Aglen guides" },
-    aria: { mobileNav: "Navigation", footerPolicy: "Trust and policy pages" },
+    aria: { mobileNav: "Navigation", footerPolicy: "Trust and policy pages", breadcrumbs: "Breadcrumb", skipToContent: "Skip to content" },
     gateway: { exploreFrom: "Explore from", placeContext: "At" },
   },
   de: {
@@ -53,7 +55,7 @@ export const uiTextByLanguage: Record<LanguageCode, LocalizedUiText> = {
       { label: "Events und Updates", routeId: "events" },
     ],
     landing: { routeMap: "Routenkarte ansehen", visitorAnswers: "Antworten für Besucher", internalLinks: "Interne Links", relatedGuides: "Verwandte Führer", relatedGuidesAria: "Verwandte Aglen-Führer" },
-    aria: { mobileNav: "Navigation", footerPolicy: "Vertrauens- und Richtlinienseiten" },
+    aria: { mobileNav: "Navigation", footerPolicy: "Vertrauens- und Richtlinienseiten", breadcrumbs: "Brotkrumen-Navigation", skipToContent: "Zum Inhalt springen" },
     gateway: { exploreFrom: "Entdecken ab", placeContext: "Bei" },
   },
   fr: {
@@ -65,7 +67,7 @@ export const uiTextByLanguage: Record<LanguageCode, LocalizedUiText> = {
       { label: "Événements et mises à jour", routeId: "events" },
     ],
     landing: { routeMap: "Voir la carte d'itinéraire", visitorAnswers: "Réponses visiteurs", internalLinks: "Liens internes", relatedGuides: "Guides associés", relatedGuidesAria: "Guides Aglen associés" },
-    aria: { mobileNav: "Navigation", footerPolicy: "Pages de confiance et politiques" },
+    aria: { mobileNav: "Navigation", footerPolicy: "Pages de confiance et politiques", breadcrumbs: "Fil d'Ariane", skipToContent: "Aller au contenu" },
     gateway: { exploreFrom: "Explorer depuis", placeContext: "À" },
   },
   es: {
@@ -77,7 +79,7 @@ export const uiTextByLanguage: Record<LanguageCode, LocalizedUiText> = {
       { label: "Eventos y novedades", routeId: "events" },
     ],
     landing: { routeMap: "Ver mapa de ruta", visitorAnswers: "Respuestas para visitantes", internalLinks: "Enlaces internos", relatedGuides: "Guías relacionadas", relatedGuidesAria: "Guías relacionadas de Aglen" },
-    aria: { mobileNav: "Navegación", footerPolicy: "Páginas de confianza y políticas" },
+    aria: { mobileNav: "Navegación", footerPolicy: "Páginas de confianza y políticas", breadcrumbs: "Ruta de navegación", skipToContent: "Ir al contenido" },
     gateway: { exploreFrom: "Explorar desde", placeContext: "En" },
   },
   it: {
@@ -89,7 +91,7 @@ export const uiTextByLanguage: Record<LanguageCode, LocalizedUiText> = {
       { label: "Eventi e aggiornamenti", routeId: "events" },
     ],
     landing: { routeMap: "Vedi mappa del percorso", visitorAnswers: "Risposte per visitatori", internalLinks: "Link interni", relatedGuides: "Guide correlate", relatedGuidesAria: "Guide correlate di Aglen" },
-    aria: { mobileNav: "Navigazione", footerPolicy: "Pagine di fiducia e politiche" },
+    aria: { mobileNav: "Navigazione", footerPolicy: "Pagine di fiducia e politiche", breadcrumbs: "Percorso di navigazione", skipToContent: "Vai al contenuto" },
     gateway: { exploreFrom: "Esplora da", placeContext: "A" },
   },
   ro: {
@@ -101,7 +103,7 @@ export const uiTextByLanguage: Record<LanguageCode, LocalizedUiText> = {
       { label: "Evenimente și actualizări", routeId: "events" },
     ],
     landing: { routeMap: "Vezi harta traseului", visitorAnswers: "Răspunsuri pentru vizitatori", internalLinks: "Linkuri interne", relatedGuides: "Ghiduri asociate", relatedGuidesAria: "Ghiduri Aglen asociate" },
-    aria: { mobileNav: "Navigare", footerPolicy: "Pagini de încredere și politici" },
+    aria: { mobileNav: "Navigare", footerPolicy: "Pagini de încredere și politici", breadcrumbs: "Navigare pe firimituri", skipToContent: "Sari la conținut" },
     gateway: { exploreFrom: "Explorează de la", placeContext: "La" },
   },
   tr: {
@@ -113,7 +115,7 @@ export const uiTextByLanguage: Record<LanguageCode, LocalizedUiText> = {
       { label: "Etkinlikler ve güncellemeler", routeId: "events" },
     ],
     landing: { routeMap: "Rota haritasını gör", visitorAnswers: "Ziyaretçi yanıtları", internalLinks: "İç bağlantılar", relatedGuides: "İlgili rehberler", relatedGuidesAria: "İlgili Aglen rehberleri" },
-    aria: { mobileNav: "Gezinme", footerPolicy: "Güven ve politika sayfaları" },
+    aria: { mobileNav: "Gezinme", footerPolicy: "Güven ve politika sayfaları", breadcrumbs: "Sayfa yolu", skipToContent: "İçeriğe geç" },
     gateway: { exploreFrom: "Buradan keşfet", placeContext: "Yer" },
   },
   el: {
@@ -125,7 +127,7 @@ export const uiTextByLanguage: Record<LanguageCode, LocalizedUiText> = {
       { label: "Εκδηλώσεις και ενημερώσεις", routeId: "events" },
     ],
     landing: { routeMap: "Δείτε τον χάρτη διαδρομής", visitorAnswers: "Απαντήσεις επισκεπτών", internalLinks: "Εσωτερικοί σύνδεσμοι", relatedGuides: "Σχετικοί οδηγοί", relatedGuidesAria: "Σχετικοί οδηγοί Aglen" },
-    aria: { mobileNav: "Πλοήγηση", footerPolicy: "Σελίδες εμπιστοσύνης και πολιτικών" },
+    aria: { mobileNav: "Πλοήγηση", footerPolicy: "Σελίδες εμπιστοσύνης και πολιτικών", breadcrumbs: "Διαδρομή πλοήγησης", skipToContent: "Μετάβαση στο περιεχόμενο" },
     gateway: { exploreFrom: "Εξερεύνηση από", placeContext: "Στο" },
   },
   ru: {
@@ -137,7 +139,7 @@ export const uiTextByLanguage: Record<LanguageCode, LocalizedUiText> = {
       { label: "События и обновления", routeId: "events" },
     ],
     landing: { routeMap: "Смотреть карту маршрута", visitorAnswers: "Ответы для посетителей", internalLinks: "Внутренние ссылки", relatedGuides: "Связанные гиды", relatedGuidesAria: "Связанные гиды по Аглену" },
-    aria: { mobileNav: "Навигация", footerPolicy: "Страницы доверия и политик" },
+    aria: { mobileNav: "Навигация", footerPolicy: "Страницы доверия и политик", breadcrumbs: "Навигационная цепочка", skipToContent: "Перейти к содержанию" },
     gateway: { exploreFrom: "Исследовать от", placeContext: "Места" },
   },
   ja: {
@@ -149,7 +151,7 @@ export const uiTextByLanguage: Record<LanguageCode, LocalizedUiText> = {
       { label: "イベントと更新", routeId: "events" },
     ],
     landing: { routeMap: "ルートマップを見る", visitorAnswers: "訪問者向け回答", internalLinks: "内部リンク", relatedGuides: "関連ガイド", relatedGuidesAria: "アグレン関連ガイド" },
-    aria: { mobileNav: "ナビゲーション", footerPolicy: "信頼とポリシーのページ" },
+    aria: { mobileNav: "ナビゲーション", footerPolicy: "信頼とポリシーのページ", breadcrumbs: "パンくずリスト", skipToContent: "本文へスキップ" },
     gateway: { exploreFrom: "ここから探索", placeContext: "場所" },
   },
   sr: {
@@ -161,7 +163,7 @@ export const uiTextByLanguage: Record<LanguageCode, LocalizedUiText> = {
       { label: "Догађаји и ажурирања", routeId: "events" },
     ],
     landing: { routeMap: "Погледај мапу руте", visitorAnswers: "Одговори за посетиоце", internalLinks: "Унутрашње везе", relatedGuides: "Повезани водичи", relatedGuidesAria: "Повезани водичи за Аглен" },
-    aria: { mobileNav: "Навигација", footerPolicy: "Странице поверења и политика" },
+    aria: { mobileNav: "Навигација", footerPolicy: "Странице поверења и политика", breadcrumbs: "Навигациона путања", skipToContent: "Пређи на садржај" },
     gateway: { exploreFrom: "Истражи од", placeContext: "Места" },
   },
   zh: {
@@ -173,7 +175,7 @@ export const uiTextByLanguage: Record<LanguageCode, LocalizedUiText> = {
       { label: "活动与更新", routeId: "events" },
     ],
     landing: { routeMap: "查看路线地图", visitorAnswers: "访客问答", internalLinks: "内部链接", relatedGuides: "相关指南", relatedGuidesAria: "阿格伦相关指南" },
-    aria: { mobileNav: "导航", footerPolicy: "信任与政策页面" },
+    aria: { mobileNav: "导航", footerPolicy: "信任与政策页面", breadcrumbs: "面包屑导航", skipToContent: "跳到主要内容" },
     gateway: { exploreFrom: "从这里探索", placeContext: "地点" },
   },
   hu: {
@@ -185,7 +187,7 @@ export const uiTextByLanguage: Record<LanguageCode, LocalizedUiText> = {
       { label: "Események és frissítések", routeId: "events" },
     ],
     landing: { routeMap: "Útvonaltérkép megtekintése", visitorAnswers: "Válaszok látogatóknak", internalLinks: "Belső linkek", relatedGuides: "Kapcsolódó kalauzok", relatedGuidesAria: "Kapcsolódó Aglen-kalauzok" },
-    aria: { mobileNav: "Navigáció", footerPolicy: "Bizalmi és irányelv oldalak" },
+    aria: { mobileNav: "Navigáció", footerPolicy: "Bizalmi és irányelv oldalak", breadcrumbs: "Morzsanavigáció", skipToContent: "Ugrás a tartalomra" },
     gateway: { exploreFrom: "Felfedezés innen", placeContext: "Helyszín" },
   },
 };

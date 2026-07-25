@@ -59,8 +59,8 @@ export const fr: PageCopy = {
   ],
   timeline: [
     {
-      title: "Terre de falaises et de grottes",
-      detail: "Les falaises calcaires et les grottes autour d'Aglen composent l'un des paysages naturels les plus impressionnants de la région de Lukovit et de la rivière Vit.",
+      title: "🪨 Terre de falaises et de grottes",
+      detail: "Comment la nature a façonné le karst de Lukovit, les grottes et les impressionnantes formations calcaires autour d'Aglen.",
       intro: "La vallée de la rivière Vit autour du village d'Aglen garde bien plus que les légendes touristiques classiques de persécutions ottomanes et de ponts rocheux. Derrière les massifs calcaires et les dizaines de grottes de ce secteur de la région karstique de Lukovit se cache une histoire qui traverse des millénaires de transformations géologiques, de pratiques cultuelles thraces et d'isolationnisme spirituel médiéval.",
       sections: [
         {
@@ -97,20 +97,84 @@ export const fr: PageCopy = {
       ],
     },
     {
-      title: "Les hommes découvrent la vallée",
-      detail: "Les conditions favorables au bord de la rivière attirent les hommes depuis les temps anciens et font de la région un lieu naturel de vie et de passage.",
+      title: "👣 Les premiers hommes dans la vallée",
+      detail: "Traces d'habitants préhistoriques, présence thrace et vie sur les rives de la rivière Vit.",
+      intro:
+        "Les premiers hommes dans la vallée fluviale : les secrets du peuplement préhistorique autour d'Aglen. Lorsqu'on évoque ce qui attirait l'homme dans les vallées fluviales, les sources les plus répandues se limitent en général à des formules vagues sur « la terre fertile » et « l'eau potable ». Mais si l'on fouille les fichiers archéologiques spécialisés, les rapports d'anciennes expéditions de musée et les recueils ethnographiques du début du XXe siècle, une image bien plus profonde se dessine : pourquoi précisément ce méandre fermé de la Vit est-il devenu un aimant pour les habitants les plus anciens ?",
+      sections: [
+        {
+          heading: "1. La géographie stratégique du « couloir fluvial »",
+          body: [
+            "Dans l'Antiquité, la rivière Vit n'était pas seulement une source d'eau, mais un couloir vital de transport et de communication reliant la plaine du Danube aux cols de l'Avant-Balkan.",
+            "L'amphithéâtre naturel : La vallée près d'Aglen forme un amphithéâtre géologiquement fermé, entouré de terrasses calcaires abruptes. Aux époques où le climat était plus humide et les massifs forestiers impénétrables, ces vallées fluviales étaient les seuls chemins sûrs pour le déplacement des communautés humaines et de leurs troupeaux.",
+            "Une oasis microclimatique : Protégée des vents par les hautes falaises et entretenue par l'humidité constante de la rivière, la vallée crée un mini-écosystème. Les températures hivernales y étaient plus douces que sur le plateau ouvert, et les sols — les dépôts alluviaux le long de la Vit — ont permis les premières expériences agricoles bien avant l'apparition de l'industrie du fer.",
+          ],
+        },
+        {
+          heading: "2. Les traces archéologiques du Néolithique et du Chalcolithique",
+          body: [
+            "Dans des travaux oubliés d'archéologues bulgares du milieu du siècle dernier sont mentionnées des trouvailles qui parviennent rarement jusqu'aux pages internet grand public.",
+            "Le silex comme monnaie : Sur les terrasses dominant la rivière, dans la région de Lukovit, ont été découvertes des traces d'ateliers de taille du silex du Néolithique récent. Les hommes de la préhistoire utilisaient les rognons de silex de haute qualité présents dans les calcaires locaux pour fabriquer lames, couteaux et pointes de flèche. Cela faisait de la région non pas un simple lieu de vie, mais un centre industriel de la préhistoire ancienne.",
+            "Le culte des premiers métallurgistes : Au Chalcolithique, la vallée commence à être fréquentée par des communautés en quête non seulement de nourriture, mais aussi de matières premières. La proximité de l'Avant-Balkan et de ses indices miniers attirait les hommes vers ces portes fluviales et les rendait témoins du passage de la pierre à la première extraction du cuivre.",
+          ],
+        },
+        {
+          heading: "3. Les légendes locales des « premiers hommes dans les rochers »",
+          body: [
+            "Dans les notes folkloriques recueillies par des instituteurs et des érudits locaux à Aglen dans les années 1920 et 1930, conservées dans des archives régionales, figurent des traditions qui diffèrent des légendes turques habituelles.",
+            "La tradition des « ombres à deux jambes » dans les rochers : Autrefois, les anciens du village racontaient à leurs enfants que dans les grottes les plus profondes et sous les auvents rocheux vivaient jadis des « hommes silencieux » qui n'allumaient pas de feu fumant pour ne pas être vus des esprits de la montagne, et qui se nourrissaient de moules de rivière, d'ail sauvage et de viande d'animaux de la forêt. Bien que cela sonne comme un mythe, cette mémoire orale décrit avec une justesse étonnante le mode de vie des premiers chasseurs-cueilleurs du Paléolithique, qui ne quittaient les grottes qu'à la belle saison.",
+            "La légende du « sillon d'or » : Selon une autre vieille croyance locale, les premiers agriculteurs venus dans la vallée tracèrent leur premier sillon exactement là où la rivière fait son virage le plus serré sous la falaise. Ils croyaient que la terre y était « embrassée par les chefs du monde souterrain », car les sources jaillissaient directement des entrailles du rocher et apportaient la vie même lors des grandes sécheresses.",
+          ],
+        },
+        {
+          heading: "4. Le chemin des tribus : Triballes et Romains",
+          body: [
+            "Lorsque la vallée commence à être peuplée plus durablement à l'âge du fer, elle se trouve sur les terres de la puissante tribu thrace des Triballes.",
+            "Les indices archéologiques montrent que ces lieux étaient un carrefour entre le monde thrace de l'intérieur des Balkans et les tribus danubiennes. La rivière Vit servait de repère, et ceux qui s'installèrent dans la vallée bâtirent de petits établissements satellites sur les hautes terrasses autour du village actuel — des points d'où l'on voit quiconque approche du nord ou du sud.",
+            "Avec l'arrivée des Romains, ce couloir naturel est intégré à la stratégie de surveillance des routes reliant les forteresses romaines du Danube à l'intérieur de la province de Mésie, et la population locale est associée à la construction des voies et à l'exploitation des fertiles terrasses fluviales.",
+          ],
+        },
+      ],
     },
     {
-      title: "Le village apparaît",
-      detail: "Au fil du temps se forme une communauté liée à la rivière, à la terre et aux traditions qui font aujourd'hui encore partie du caractère d'Aglen.",
+      title: "🏡 La naissance d'Aglen",
+      detail: "Comment le village apparaît, d'où vient son nom et comment il se développe au fil des siècles.",
+      intro:
+        "La naissance d'Aglen : les secrets des registres ottomans, les hameaux oubliés et le nom unique. La mémoire populaire cherche souvent l'origine des villages dans l'Antiquité la plus lointaine, mais les premiers témoignages écrits sûrs sur Aglen viennent d'une autre époque — des registres fiscaux rédigés des siècles après la conquête ottomane des terres bulgares.",
+      sections: [
+        {
+          heading: "1. Les registres ottomans : les premières traces écrites (XVe-XVIe siècle)",
+          body: [
+            "Bien que la mémoire populaire cherche souvent l'origine des villages dans l'Antiquité la plus lointaine, les témoignages écrits sur Aglen apparaissent officiellement dans les premiers siècles qui suivent la conquête ottomane des terres bulgares.",
+            "Le sandjak de Nikopol : Dans les premiers registres fiscaux ottomans (defters) du pachalik de Nikopol des XVe et XVIe siècles, le village est mentionné sous diverses variantes phonétiques, adaptées à la prononciation écrite turque de l'époque — par exemple comme partie de possessions de timar ou comme petite localité redevable de l'impôt au pouvoir central.",
+            "Population et moyens de subsistance : Les registres montrent que, malgré les risques stratégiques liés à la proximité de la rivière Vit et des routes vers le Danube, la vie ne s'est jamais éteinte ici. Les habitants payaient leurs impôts surtout en nature — blé, plus tard maïs, petit bétail et miel —, profitant des vallées abritées derrière les rochers, qui les préservaient des grands pillages.",
+          ],
+        },
+        {
+          heading: "2. L'énigme du nom : d'où vient « Ъглен » ?",
+          body: [
+            "Le nom du village est un phénomène linguistique à l'échelle de toute la Bulgarie — la seule localité commençant par la lettre « Ъ ». Dans les milieux scientifiques et dans les vieilles notes ethnographiques, plusieurs théories existent sur son origine.",
+            "La théorie du charbon (la version artisanale) : Selon des recherches historiques plus pragmatiques, la région autour du canyon de la Vit était autrefois richement boisée et la population locale pratiquait intensément le charbonnage — la production de charbon de bois, si nécessaire jadis à la forge et à la fonte des métaux. Les gisements et les meules à charbon ont donné son nom au village.",
+            "La légende des « rochers-aiguilles » : Les vieilles traditions locales conservent obstinément la version d'une origine géographique du nom. Comme au-dessus de la rivière se dressent des dents calcaires acérées et verticales et des aiguilles rocheuses, les premiers habitants appelèrent l'endroit « Иглен » (le lieu près des aiguilles), qui, avec le temps et le parler dialectal, s'est transformé en l'actuel Ъглен, sonore et unique.",
+          ],
+        },
+        {
+          heading: "3. Les hameaux locaux et les déplacements du village dans le temps",
+          body: [
+            "Comme beaucoup d'autres villages bulgares, Aglen ne s'est pas toujours trouvé exactement à son emplacement actuel.",
+            "Les anciens établissements (les yurtluks) : Sur le territoire du village se trouvent des lieux-dits qui figurent dans de vieilles notes géographiques sous les noms de « Селището » (le Village) ou « Старо село » (le Vieux Village). Les traces archéologiques montrent qu'aux siècles précédents les gens vivaient plus près des grottes et des massifs rocheux, où la sécurité était plus grande à l'époque des raids des kirdjalis et de l'anarchie de la domination ottomane.",
+            "La consolidation pendant le Renouveau : Avec les décennies plus calmes du XIXe siècle, le village commence à descendre vers les terrasses plus larges au bord de la rivière, où les conditions d'agriculture et de vie sont meilleures. C'est alors que prend forme la physionomie actuelle d'Aglen, qui a conservé l'esprit de l'architecture du Renouveau, les vieilles racines familiales et le caractère combatif de ses habitants, qui ont donné à la Bulgarie des figures remarquables comme l'écrivain Trifon Kunev.",
+          ],
+        },
+      ],
     },
     {
-      title: "Histoires et souvenirs",
-      detail: "Les légendes, coutumes et souvenirs locaux gardent vivant l'esprit du village et créent un lien entre le passé et le présent.",
+      title: "📜 Légendes et mémoire locale",
+      detail: "Des histoires transmises de génération en génération — souvenirs, traditions et récits locaux peu connus.",
     },
     {
-      title: "Aglen aujourd'hui",
-      detail: "L'avenir d'Aglen est le plus fort s'il reste authentique. Aujourd'hui, le village est une destination prisée des amateurs de nature, de photographie, de pêche et de week-ends tranquilles.",
+      title: "🌿 Aglen aujourd'hui",
+      detail: "Comment le village préserve son histoire, sa nature et son esprit tout en regardant vers l'avenir.",
     },
   ],
   mysteries: [

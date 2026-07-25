@@ -9,12 +9,64 @@ import { findGuide, guidePlaces, guides, localizeGuide, readingMinutes } from ".
 import { guidesUiByLanguage } from "./guidesUi";
 import type { BusinessCategory, LocalBusiness } from "./locales/types";
 import { uiTextByLanguage } from "./uiText";
+import { imageAttributes, imageSize, webpSrc } from "./images";
+import {
+  AGLEN,
+  LOVECH_PROVINCE,
+  distanceFromAglenKm,
+  regionName,
+  regionNote,
+  regionPlaces,
+  sameAsUrls,
+} from "./region";
+import { fontFaces } from "./generated/fontManifest";
+import { routeHasOwnSections } from "./pageSections";
+import { localizeTrust, trustPageByRoute } from "./trustPages";
 
 export const SITE_URL = "https://xn--c1aerj5d.com";
-const OG_IMAGE = `${SITE_URL}/assets/aglen-hero-river-canyon.png`;
-const OG_IMAGE_WIDTH = "1200";
-const OG_IMAGE_HEIGHT = "630";
+
+// Social preview. A dedicated 1200×630 JPEG: WebP is still unreliable in the
+// Facebook, LinkedIn and WhatsApp scrapers, and the page image is now WebP.
+const OG_IMAGE = `${SITE_URL}/assets/og-aglen-default.jpg`;
+const OG_IMAGE_PATH = "/assets/og-aglen-default.jpg";
 const APP_SITE_URL = "https://unlockingbulgaria.com/bg/";
+
+// Routes that render the same content as a real guide page. They predate the
+// /guides/ tree and are kept only so old links resolve: each one canonicalises
+// and redirects to its guide, and is excluded from the sitemaps.
+// See public/_redirects for the matching 301s.
+const legacyGuideRouteIds: Partial<Record<CoreRouteId, string>> = {
+  attractions: "beautiful-places",
+  vitRiver: "vit-river",
+  caves: "caves-and-rocks",
+  food: "local-food",
+  nearby: "nearby-destinations",
+  seasonal: "seasonal-guide",
+};
+
+/** The guide a legacy route now duplicates, if any. */
+export function supersedingGuideSlug(routeId: RouteId): string | undefined {
+  return legacyGuideRouteIds[routeId as CoreRouteId];
+}
+
+/**
+ * Whether a route may be indexed and advertised in a sitemap.
+ *
+ * Two kinds of route may not:
+ *   • a legacy duplicate of a /guides/ page, which canonicalises and 301s there;
+ *   • a route whose only section is switched off by a feature flag, which would
+ *     otherwise ship an empty page (SHOW_EXPERIENCES and SHOW_STAY are both off,
+ *     so /activities/ and /stay/ currently render nothing of their own).
+ */
+export function isIndexableRoute(routeId: RouteId): boolean {
+  return !supersedingGuideSlug(routeId) && routeHasOwnSections(routeId);
+}
+
+/** Index pages, which schema.org models as CollectionPage rather than WebPage. */
+const collectionRouteIds = new Set<RouteId>(["guides", "localBusinesses", "events", "travelGuide"]);
+
+/** Landing pages that describe an itinerary, so they can carry TouristTrip. */
+const itineraryRouteIds = new Set<RouteId>(["weekendInAglen", "aglenFromSofia", "routeMap", "howToGet", "familyTrip"]);
 
 function placeById(copy: PageCopy, placeId: PlaceId) {
   return copy.placesList.find((place) => place.id === placeId);
@@ -46,9 +98,22 @@ type SEOConfig = {
   siteName: string;
   imageUrl: string;
   imageAlt: string;
+  /** Absolute URL of the JPEG/PNG used for social previews. */
+  socialImageUrl: string;
+  socialImageWidth: number;
+  socialImageHeight: number;
+  socialImageType: string;
+  /** "article" for guides, landing pages and business detail; "website" elsewhere. */
+  ogType: "website" | "article";
+  /** Robots directive. Duplicate legacy routes are noindex, follow. */
+  robots: string;
   canonicalUrl: string;
   alternates: Array<{ lang: string; href: string }>;
   ogLocaleAlternates: string[];
+  /** ISO date the page's content last changed, for schema and sitemaps. */
+  dateModified: string;
+  /** Self-hosted woff2 files worth preloading for this language's script. */
+  fontPreloads: string[];
 };
 
 export type ImageSitemapEntry = {
@@ -121,7 +186,63 @@ function businessText(lang: LanguageCode, business: LocalBusiness): { title: str
 }
 
 function absoluteAssetUrl(path: string): string {
-  return path.startsWith("http") ? path : `${SITE_URL}${path}`;
+  if (path.startsWith("http")) return path;
+  // Content still points at the PNG/JPEG source; the WebP derivative is what the
+  // site actually serves, so that is what sitemaps and schema should reference.
+  return `${SITE_URL}${webpSrc(path)}`;
+}
+
+/**
+ * Date the page's own content last changed. Stamped by hand rather than by the
+ * build: telling Google every page changed because a deploy happened is the
+ * fastest way to have `dateModified` ignored altogether.
+ */
+const SITE_CONTENT_UPDATED = "2026-07-24";
+
+const SOCIAL_SAFE = /\.(jpe?g|png)$/i;
+
+/** Preview image for social scrapers, which still choke on WebP. */
+function socialImage(candidate?: string): {
+  url: string;
+  width: number;
+  height: number;
+  type: string;
+} {
+  const path = candidate && SOCIAL_SAFE.test(candidate) ? candidate : OG_IMAGE_PATH;
+  const size = imageSize(path) ?? { width: 1200, height: 630 };
+  return {
+    url: `${SITE_URL}${path}`,
+    width: size.width,
+    height: size.height,
+    type: /\.png$/i.test(path) ? "image/png" : "image/jpeg",
+  };
+}
+
+// Which unicode subset a language reads in. ja and zh are absent on purpose:
+// neither Inter nor Cormorant Garamond ships CJK, so those pages render in the
+// system stack and preloading a Latin file would waste the request.
+const scriptByLanguage: Partial<Record<LanguageCode, string>> = {
+  bg: "cyrillic",
+  ru: "cyrillic",
+  sr: "cyrillic",
+  el: "greek",
+  en: "latin",
+  de: "latin",
+  fr: "latin",
+  es: "latin",
+  it: "latin",
+  ro: "latin-ext",
+  tr: "latin-ext",
+  hu: "latin-ext",
+};
+
+/** The body and heading faces this language actually needs, for `rel=preload`. */
+function fontPreloads(language: LanguageCode): string[] {
+  const subset = scriptByLanguage[language];
+  if (!subset) return [];
+  const pick = (family: string, weight: number) =>
+    fontFaces.find((face) => face.family === family && face.weight === weight && face.subset === subset)?.url;
+  return [pick("Inter", 400), pick("Cormorant Garamond", 700)].filter((url): url is string => Boolean(url));
 }
 
 function compact(value: string, max = 158): string {
@@ -211,23 +332,23 @@ export function getSEOConfig(lang: LanguageCode, routeId: RouteId = "home", deta
           description: localizeGuide(guide.summary, lang),
         }
       : routeText(lang, routeId);
-  const primaryImage = getRouteImageEntries(lang, routeId)[0];
-  const businessImage = business?.coverImage
-    ? absoluteAssetUrl(business.coverImage)
-    : guide
-      ? absoluteAssetUrl(guide.heroImage)
-      : undefined;
-  const url = business
-    ? absoluteBusinessUrl(lang, business.slug)
-    : guide
-      ? absoluteGuideUrl(lang, guide.slug)
-      : absoluteRouteUrl(lang, routeId);
-  const alternateUrl = (code: LanguageCode) =>
-    business
-      ? absoluteBusinessUrl(code, business.slug)
-      : guide
-        ? absoluteGuideUrl(code, guide.slug)
-        : absoluteRouteUrl(code, routeId);
+  const primaryImage = getRouteImageEntries(lang, routeId, detailSlug)[0];
+  const pageImagePath = business?.coverImage ?? guide?.heroImage;
+  const pageImage = pageImagePath ? absoluteAssetUrl(pageImagePath) : undefined;
+
+  // A legacy route resolves to the guide that replaced it, so the canonical and
+  // every hreflang alternate point at the URL that should actually rank.
+  const supersededBy = detailSlug ? undefined : supersedingGuideSlug(routeId);
+
+  const urlFor = (code: LanguageCode) => {
+    if (business) return absoluteBusinessUrl(code, business.slug);
+    if (guide) return absoluteGuideUrl(code, guide.slug);
+    if (supersededBy) return absoluteGuideUrl(code, supersededBy);
+    return absoluteRouteUrl(code, routeId);
+  };
+
+  const social = socialImage(pageImagePath ?? (isLandingPageId(routeId) ? getLandingPage(lang, routeId)?.image : undefined));
+  const isArticle = Boolean(business || guide || isLandingPageId(routeId));
 
   return {
     title: text.title,
@@ -238,19 +359,70 @@ export function getSEOConfig(lang: LanguageCode, routeId: RouteId = "home", deta
       : keywordsForRoute(lang, routeId),
     author: seoTextByLanguage[lang].organizationName,
     siteName: contentByLanguage[lang].nav.quests,
-    imageUrl: businessImage ?? primaryImage?.loc ?? OG_IMAGE,
-    imageAlt: business ? business.name : primaryImage?.caption ?? contentByLanguage[lang].hero.imageAlt,
-    canonicalUrl: url,
+    imageUrl: pageImage ?? primaryImage?.loc ?? OG_IMAGE,
+    imageAlt: business
+      ? localizeText(business.coverImageAlt ?? business.shortDescription, lang)
+      : guide
+        ? localizeGuide(guide.heroImageAlt, lang)
+        : primaryImage?.caption ?? contentByLanguage[lang].hero.imageAlt,
+    socialImageUrl: social.url,
+    socialImageWidth: social.width,
+    socialImageHeight: social.height,
+    socialImageType: social.type,
+    ogType: isArticle ? "article" : "website",
+    robots:
+      business || guide || isIndexableRoute(routeId)
+        ? "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+        : "noindex, follow",
+    canonicalUrl: urlFor(lang),
     alternates: [
-      { lang: "x-default", href: alternateUrl(DEFAULT_LANGUAGE) },
-      ...allLanguageCodes.map((code) => ({ lang: code, href: alternateUrl(code) })),
+      { lang: "x-default", href: urlFor(DEFAULT_LANGUAGE) },
+      ...allLanguageCodes.map((code) => ({ lang: code, href: urlFor(code) })),
     ],
     ogLocaleAlternates: allLanguageCodes.filter((code) => code !== lang).map((code) => localeCodes[code]),
+    dateModified: business?.lastUpdated ?? guide?.lastUpdated ?? SITE_CONTENT_UPDATED,
+    fontPreloads: fontPreloads(lang),
   };
 }
 
-function routeImages(lang: LanguageCode, routeId: RouteId): ImageSitemapEntry[] {
+function routeImages(lang: LanguageCode, routeId: RouteId, detailSlug?: string): ImageSitemapEntry[] {
   const copy = contentByLanguage[lang];
+
+  // Detail pages own their images. Without this every business and guide URL
+  // repeated the same section hero in the image sitemap.
+  const business = detailSlug && routeId === "localBusinesses" ? findBusiness(detailSlug) : undefined;
+  if (business) {
+    const cover = business.coverImage
+      ? [
+          {
+            loc: absoluteAssetUrl(business.coverImage),
+            title: business.name,
+            caption: localizeText(business.coverImageAlt ?? business.shortDescription, lang),
+          },
+        ]
+      : [];
+    return [
+      ...cover,
+      ...(business.gallery ?? []).map((image) => ({
+        loc: absoluteAssetUrl(image.src),
+        title: business.name,
+        caption: localizeText(image.alt, lang),
+      })),
+    ];
+  }
+
+  const guide = detailSlug && routeId === "guides" ? findGuide(detailSlug) : undefined;
+  if (guide) {
+    return [
+      { loc: absoluteAssetUrl(guide.heroImage), title: localizeGuide(guide.title, lang), caption: localizeGuide(guide.heroImageAlt, lang) },
+      ...guidePlaces(guide, lang).map((place) => ({
+        loc: absoluteAssetUrl(place.image),
+        title: place.title,
+        caption: place.imageAlt || place.description,
+      })),
+    ];
+  }
+
   const landing = isLandingPageId(routeId) ? getLandingPage(lang, routeId) : undefined;
   if (landing) {
     return [
@@ -306,13 +478,121 @@ function routeImages(lang: LanguageCode, routeId: RouteId): ImageSitemapEntry[] 
   return byRoute[routeId as CoreRouteId] ?? [{ loc: OG_IMAGE, title: text.title, caption: text.description }];
 }
 
-export function getRouteImageEntries(lang: LanguageCode, routeId: RouteId = "home"): ImageSitemapEntry[] {
+export function getRouteImageEntries(
+  lang: LanguageCode,
+  routeId: RouteId = "home",
+  detailSlug?: string,
+): ImageSitemapEntry[] {
   const seen = new Set<string>();
-  return routeImages(lang, routeId).filter((entry) => {
+  return routeImages(lang, routeId, detailSlug).filter((entry) => {
     if (seen.has(entry.loc)) return false;
     seen.add(entry.loc);
     return true;
   });
+}
+
+/** Bare page name — the " | Brand" suffix belongs in <title>, not in schema. */
+function shortName(title: string): string {
+  return title.split(" | ")[0]?.trim() || title;
+}
+
+/** One region entity as a schema node, tied to the ids Google already holds. */
+function regionPlaceNode(lang: LanguageCode, id: string): object | undefined {
+  const place = regionPlaces.find((candidate) => candidate.id === id);
+  if (!place) return undefined;
+  const km = distanceFromAglenKm(place);
+  return {
+    "@type": place.schemaType,
+    "@id": `${SITE_URL}/#place-${place.id}`,
+    name: regionName(place, lang),
+    description: regionNote(place, lang),
+    ...(place.latitude !== undefined && place.longitude !== undefined
+      ? { geo: { "@type": "GeoCoordinates", latitude: place.latitude, longitude: place.longitude } }
+      : {}),
+    ...(sameAsUrls(place).length > 0 ? { sameAs: sameAsUrls(place) } : {}),
+    ...(km !== undefined
+      ? {
+          // Straight-line, from the published coordinates of both places. Road
+          // distance is longer and is not asserted anywhere.
+          distance: `${km} km`,
+        }
+      : {}),
+    // The page on this site that covers the place: the guide if there is one,
+    // otherwise its landing page. A plain URL rather than an `@id` reference to a
+    // node defined on a different document, which strict validators read as a
+    // dangling reference.
+    ...(place.guideSlug
+      ? { url: absoluteGuideUrl(lang, place.guideSlug) }
+      : place.routeId
+        ? { url: `${SITE_URL}${buildRoutePath(lang, place.routeId as RouteId)}` }
+        : {}),
+  };
+}
+
+/**
+ * Aglen itself, plus the province that contains it and the regional cluster.
+ *
+ * On every page, not only the ones built from home-page sections: the guide and
+ * business graphs said `about: { "@id": "…#aglen-village" }` without the node
+ * being present, so the site's primary entity was referenced and never defined
+ * on exactly the pages that describe it in most detail.
+ */
+function placeNodes(lang: LanguageCode): object[] {
+  const copy = contentByLanguage[lang];
+  const seoText = seoTextByLanguage[lang];
+  const homeUrl = absoluteRouteUrl(lang, "home");
+
+  return [
+    {
+      "@type": ["TouristAttraction", "Place"],
+      "@id": `${SITE_URL}/#aglen-village`,
+      name: copy.brand.name,
+      alternateName: ["Ъглен", "Aglen", "Uglen", "с. Ъглен"],
+      description: seoText.destinationDescription,
+      url: homeUrl,
+      image: [
+        absoluteAssetUrl("/assets/aglen-hero-river-canyon.png"),
+        absoluteAssetUrl("/assets/aglen-rock-arch.png"),
+        absoluteAssetUrl("/assets/aglen-aerial-river.png"),
+        absoluteAssetUrl("/assets/aglen-kaleto-ruins.png"),
+        absoluteAssetUrl("/assets/aglen-village-church.png"),
+      ],
+      // Coordinates, postcode and identifiers from Wikidata Q550547. The site
+      // previously carried 43.267, 24.221 — about 11 km off, which pointed both
+      // the schema and the "open map" links at the wrong valley.
+      geo: { "@type": "GeoCoordinates", latitude: AGLEN.latitude, longitude: AGLEN.longitude },
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Ъглен",
+        addressRegion: "Lovech",
+        postalCode: AGLEN.postalCode,
+        addressCountry: "BG",
+      },
+      sameAs: sameAsUrls(AGLEN),
+      containedInPlace: { "@id": `${SITE_URL}/#lovech-province` },
+      touristType: seoText.touristTypes,
+      amenityFeature: [
+        ...copy.placesList.slice(0, 4).map((place) => ({ "@type": "LocationFeatureSpecification", name: place.title, value: true })),
+        ...copy.experiencesList.slice(0, 4).map((experience) => ({ "@type": "LocationFeatureSpecification", name: experience.title, value: true })),
+      ],
+      // The regional cluster: Prohodna, Karlukovo, Lukovit, Iskar-Panega and the
+      // rest, each carrying its own Wikidata/Wikipedia identifiers.
+      nearbyAttraction: regionPlaces.map((place) => ({ "@id": `${SITE_URL}/#place-${place.id}` })),
+      hasMap: `https://www.google.com/maps/search/?api=1&query=${AGLEN.latitude},${AGLEN.longitude}`,
+      publicAccess: true,
+    },
+    {
+      "@type": "AdministrativeArea",
+      "@id": `${SITE_URL}/#lovech-province`,
+      name: regionName(LOVECH_PROVINCE, lang),
+      description: regionNote(LOVECH_PROVINCE, lang),
+      sameAs: sameAsUrls(LOVECH_PROVINCE),
+      containedInPlace: { "@type": "Country", name: "Bulgaria", sameAs: "https://www.wikidata.org/wiki/Q219" },
+    },
+    ...regionPlaces
+      .map((place) => regionPlaceNode(lang, place.id))
+      .filter((node): node is object => Boolean(node)),
+  ];
 }
 
 function buildPageSpecificSchemas(lang: LanguageCode, routeId: RouteId, routeUrl: string): object[] {
@@ -324,57 +604,100 @@ function buildPageSpecificSchemas(lang: LanguageCode, routeId: RouteId, routeUrl
   const imageObjects = images.map((image, index) => ({
     "@type": "ImageObject",
     "@id": `${routeUrl}#image-${index + 1}`,
+    contentUrl: image.loc,
     url: image.loc,
     name: image.title,
     caption: image.caption,
+    representativeOfPage: index === 0,
   }));
-  const isGuidePage = Boolean(landing) || routeId !== "home";
+  const isArticlePage = Boolean(landing) || routeId !== "home";
 
   const schemas: object[] = [
     ...imageObjects,
     {
       "@type": "TouristDestination",
       "@id": `${routeUrl}#destination`,
-      name: meta.title,
+      // The bare page name, not the <title>: a destination is not called
+      // "Nature Around Aglen | Ъглен".
+      name: shortName(landing?.h1 ?? meta.title),
       description: meta.description,
       url: routeUrl,
       inLanguage: lang,
       image: images.map((image) => image.loc),
       touristType: seoText.touristTypes,
-      geo: { "@type": "GeoCoordinates", latitude: 43.267, longitude: 24.221 },
-      containsPlace: copy.placesList.map((place) => ({ "@type": "TouristAttraction", name: place.title, description: place.description, image: absoluteAssetUrl(place.image) })),
-    },
-    {
-      "@type": "FAQPage",
-      "@id": `${routeUrl}#page-faq`,
-      mainEntity: [
-        { "@type": "Question", name: `${seoText.pagePlanQuestion} ${meta.title}`, acceptedAnswer: { "@type": "Answer", text: seoText.pagePlanAnswer } },
-        { "@type": "Question", name: copy.contact.notesTitle, acceptedAnswer: { "@type": "Answer", text: `${copy.contact.noteOne} ${copy.contact.noteTwo}` } },
-      ],
+      geo: { "@type": "GeoCoordinates", latitude: AGLEN.latitude, longitude: AGLEN.longitude },
+      includesAttraction: copy.placesList.map((place) => ({
+        "@type": "TouristAttraction",
+        name: place.title,
+        description: place.description,
+        image: absoluteAssetUrl(place.image),
+      })),
+      containedInPlace: { "@id": `${SITE_URL}/#lovech-province` },
     },
   ];
 
-  if (isGuidePage) {
+  if (isArticlePage) {
     schemas.push({
       "@type": landing?.schemaType ?? "Article",
       "@id": `${routeUrl}#article`,
-      headline: landing?.h1 ?? meta.title,
+      headline: shortName(landing?.h1 ?? meta.title),
       description: meta.description,
       image: images.map((image) => image.loc),
-      author: { "@type": "Organization", name: seoText.organizationName },
+      author: { "@id": `${SITE_URL}/#organization` },
       publisher: { "@id": `${SITE_URL}/#organization` },
-      mainEntityOfPage: routeUrl,
+      mainEntityOfPage: { "@id": routeUrl },
       datePublished: "2026-05-30",
-      dateModified: "2026-05-30",
+      dateModified: meta.dateModified,
       inLanguage: lang,
+      isAccessibleForFree: true,
     });
   }
 
-  if (landing?.faqs.length) {
+  // Exactly one FAQPage per page. Three of them used to be emitted at once — the
+  // page's own, the landing page's and the site-wide block — which is invalid.
+  const faqs = [
+    ...(landing?.faqs ?? []).map((faq) => ({ question: faq.question, answer: faq.answer })),
+    { question: `${seoText.pagePlanQuestion} ${shortName(meta.title)}`, answer: seoText.pagePlanAnswer },
+    { question: copy.contact.notesTitle, answer: `${copy.contact.noteOne} ${copy.contact.noteTwo}` },
+  ];
+  schemas.push({
+    "@type": "FAQPage",
+    "@id": `${routeUrl}#faq`,
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: { "@type": "Answer", text: faq.answer },
+    })),
+  });
+
+  if (collectionRouteIds.has(routeId)) {
     schemas.push({
-      "@type": "FAQPage",
-      "@id": `${routeUrl}#faq`,
-      mainEntity: landing.faqs.map((faq) => ({ "@type": "Question", name: faq.question, acceptedAnswer: { "@type": "Answer", text: faq.answer } })),
+      "@type": "CollectionPage",
+      "@id": `${routeUrl}#collection`,
+      name: shortName(meta.title),
+      url: routeUrl,
+      inLanguage: lang,
+      isPartOf: { "@id": `${SITE_URL}/#website` },
+      about: { "@id": `${SITE_URL}/#aglen-village` },
+    });
+  }
+
+  if (itineraryRouteIds.has(routeId) && landing) {
+    schemas.push({
+      "@type": "TouristTrip",
+      "@id": `${routeUrl}#trip`,
+      name: shortName(landing.h1),
+      description: landing.metaDescription,
+      touristType: seoText.touristTypes,
+      itinerary: {
+        "@type": "ItemList",
+        itemListElement: copy.mapStops.map((stop, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          item: { "@type": "TouristAttraction", name: stop.title, description: stop.detail },
+        })),
+      },
+      provider: { "@id": `${SITE_URL}/#organization` },
     });
   }
 
@@ -416,18 +739,9 @@ function buildPageSpecificSchemas(lang: LanguageCode, routeId: RouteId, routeUrl
     }
   }
 
-  if (routeId === "quests" || routeId === "app") {
-    schemas.push({
-      "@type": "VideoObject",
-      "@id": `${routeUrl}#app-preview-video`,
-      name: copy.quests.title,
-      description: copy.quests.text,
-      thumbnailUrl: [OG_IMAGE],
-      uploadDate: "2026-05-30",
-      contentUrl: routeUrl,
-      embedUrl: routeUrl,
-    });
-  }
+  // A VideoObject used to be emitted here for /quests and /app with contentUrl
+  // and embedUrl both pointing at the HTML page. There is no video: the markup
+  // claimed a rich result the page cannot support, so it is gone.
 
   return schemas;
 }
@@ -485,15 +799,90 @@ function buildBusinessSchema(lang: LanguageCode, business: LocalBusiness): objec
   };
 }
 
+/**
+ * Organization and WebSite. Every page needs them: the detail pages referenced
+ * `#organization` as their publisher without ever defining it, which left a
+ * dangling node reference in the graph.
+ */
+function identityNodes(lang: LanguageCode): object[] {
+  const copy = contentByLanguage[lang];
+  const seoText = seoTextByLanguage[lang];
+  const homeUrl = absoluteRouteUrl(lang, "home");
+
+  return [
+    {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: seoText.organizationName,
+      alternateName: [copy.brand.name, "unlockingbulgaria"],
+      url: SITE_URL,
+      logo: { "@type": "ImageObject", url: OG_IMAGE, width: 1200, height: 630 },
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: copy.contact.cta,
+        email: "info.aglen@gmail.com",
+        availableLanguage: languages.map((language) => language.label),
+      },
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "село Ъглен",
+        addressLocality: "Ъглен",
+        addressRegion: "Lovech",
+        postalCode: AGLEN.postalCode,
+        addressCountry: "BG",
+      },
+      sameAs: [APP_SITE_URL],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: homeUrl,
+      name: copy.brand.name,
+      description: seoTextByLanguage[lang].destinationDescription,
+      publisher: { "@id": `${SITE_URL}/#organization` },
+      inLanguage: allLanguageCodes,
+      potentialAction: {
+        "@type": "SearchAction",
+        target: { "@type": "EntryPoint", urlTemplate: `${homeUrl}?search={search_term_string}` },
+        "query-input": `required name=${seoText.searchInputName}`,
+      },
+    },
+  ];
+}
+
 export function buildJSONLD(lang: LanguageCode, routeId: RouteId = "home", detailSlug?: string): object {
+  const copy = contentByLanguage[lang];
   const guide = detailSlug && routeId === "guides" ? findGuide(detailSlug) : undefined;
   if (guide) {
     const gui = guidesUiByLanguage[lang];
     const url = absoluteGuideUrl(lang, guide.slug);
     const minutes = readingMinutes(guide, lang);
+    const images = getRouteImageEntries(lang, "guides", guide.slug);
     return {
       "@context": "https://schema.org",
       "@graph": [
+        ...identityNodes(lang),
+        ...placeNodes(lang),
+        {
+          "@type": "WebPage",
+          "@id": url,
+          url,
+          name: localizeGuide(guide.title, lang),
+          description: localizeGuide(guide.summary, lang),
+          inLanguage: lang,
+          isPartOf: { "@id": `${SITE_URL}/#website` },
+          about: { "@id": `${SITE_URL}/#aglen-village` },
+          primaryImageOfPage: { "@id": `${url}#primaryimage` },
+          dateModified: guide.lastUpdated,
+        },
+        {
+          "@type": "ImageObject",
+          "@id": `${url}#primaryimage`,
+          contentUrl: absoluteAssetUrl(guide.heroImage),
+          url: absoluteAssetUrl(guide.heroImage),
+          caption: localizeGuide(guide.heroImageAlt, lang),
+          representativeOfPage: true,
+        },
         {
           // TravelGuide only where the guide really is one; the rest stay Article.
           "@type": guide.status === "published" ? "TravelGuide" : "Article",
@@ -503,16 +892,25 @@ export function buildJSONLD(lang: LanguageCode, routeId: RouteId = "home", detai
           description: localizeGuide(guide.summary, lang),
           url,
           inLanguage: lang,
-          image: absoluteAssetUrl(guide.heroImage),
+          image: images.map((image) => image.loc),
           isAccessibleForFree: true,
           ...(minutes > 0 ? { timeRequired: `PT${minutes}M` } : {}),
+          author: { "@id": `${SITE_URL}/#organization` },
           publisher: { "@id": `${SITE_URL}/#organization` },
+          mainEntityOfPage: { "@id": url },
+          dateModified: guide.lastUpdated,
+          about: { "@id": `${SITE_URL}/#aglen-village` },
+          ...(guide.regionPlaceIds?.length
+            ? { mentions: guide.regionPlaceIds.map((id) => ({ "@id": `${SITE_URL}/#place-${id}` })) }
+            : {}),
         },
         {
           "@type": "BreadcrumbList",
+          "@id": `${url}#breadcrumbs`,
           itemListElement: [
-            { "@type": "ListItem", position: 1, name: gui.indexTitle, item: absoluteRouteUrl(lang, "guides") },
-            { "@type": "ListItem", position: 2, name: localizeGuide(guide.title, lang), item: url },
+            { "@type": "ListItem", position: 1, name: copy.nav.home, item: absoluteRouteUrl(lang, "home") },
+            { "@type": "ListItem", position: 2, name: gui.indexTitle, item: absoluteRouteUrl(lang, "guides") },
+            { "@type": "ListItem", position: 3, name: localizeGuide(guide.title, lang), item: url },
           ],
         },
       ],
@@ -522,15 +920,32 @@ export function buildJSONLD(lang: LanguageCode, routeId: RouteId = "home", detai
   const business = detailSlug && routeId === "localBusinesses" ? findBusiness(detailSlug) : undefined;
   if (business) {
     const bui = businessesUiByLanguage[lang];
+    const url = absoluteBusinessUrl(lang, business.slug);
     return {
       "@context": "https://schema.org",
       "@graph": [
+        ...identityNodes(lang),
+        ...placeNodes(lang),
+        {
+          "@type": "WebPage",
+          "@id": url,
+          url,
+          name: business.name,
+          description: localizeText(business.shortDescription, lang),
+          inLanguage: lang,
+          isPartOf: { "@id": `${SITE_URL}/#website` },
+          about: { "@id": `${url}#business` },
+          mainEntity: { "@id": `${url}#business` },
+          ...(business.lastUpdated ? { dateModified: business.lastUpdated } : {}),
+        },
         buildBusinessSchema(lang, business),
         {
           "@type": "BreadcrumbList",
+          "@id": `${url}#breadcrumbs`,
           itemListElement: [
-            { "@type": "ListItem", position: 1, name: bui.heroTitle, item: absoluteRouteUrl(lang, "localBusinesses") },
-            { "@type": "ListItem", position: 2, name: business.name, item: absoluteBusinessUrl(lang, business.slug) },
+            { "@type": "ListItem", position: 1, name: copy.nav.home, item: absoluteRouteUrl(lang, "home") },
+            { "@type": "ListItem", position: 2, name: bui.heroTitle, item: absoluteRouteUrl(lang, "localBusinesses") },
+            { "@type": "ListItem", position: 3, name: business.name, item: url },
           ],
         },
       ],
@@ -538,7 +953,6 @@ export function buildJSONLD(lang: LanguageCode, routeId: RouteId = "home", detai
   }
 
   const meta = getSEOConfig(lang, routeId);
-  const copy = contentByLanguage[lang];
   const seoText = seoTextByLanguage[lang];
   const homeUrl = absoluteRouteUrl(lang, "home");
   const routeUrl = meta.canonicalUrl;
@@ -546,58 +960,21 @@ export function buildJSONLD(lang: LanguageCode, routeId: RouteId = "home", detai
   return {
     "@context": "https://schema.org",
     "@graph": [
+      ...identityNodes(lang),
       {
-        "@type": "Organization",
-        "@id": `${SITE_URL}/#organization`,
-        name: seoText.organizationName,
-        alternateName: [copy.brand.name, "unlockingbulgaria"],
-        url: SITE_URL,
-        logo: { "@type": "ImageObject", url: OG_IMAGE, width: 1200, height: 630 },
-        contactPoint: { "@type": "ContactPoint", contactType: copy.contact.cta, email: "info.aglen@gmail.com", availableLanguage: languages.map((language) => language.label) },
-        address: { "@type": "PostalAddress", streetAddress: "село Ъглен", addressLocality: "Ъглен", addressRegion: "Lovech", postalCode: "5562", addressCountry: "BG" },
-        sameAs: [APP_SITE_URL],
-      },
-      {
-        "@type": "WebSite",
-        "@id": `${SITE_URL}/#website`,
-        url: homeUrl,
-        name: meta.title,
-        description: meta.description,
-        publisher: { "@id": `${SITE_URL}/#organization` },
-        inLanguage: allLanguageCodes,
-        potentialAction: { "@type": "SearchAction", target: { "@type": "EntryPoint", urlTemplate: `${homeUrl}?search={search_term_string}` }, "query-input": `required name=${seoText.searchInputName}` },
-      },
-      {
-        "@type": "WebPage",
+        "@type": collectionRouteIds.has(routeId) ? "CollectionPage" : "WebPage",
         "@id": routeUrl,
         url: routeUrl,
-        name: meta.title,
+        name: shortName(meta.title),
         description: meta.description,
         inLanguage: lang,
         isPartOf: { "@id": `${SITE_URL}/#website` },
         about: { "@id": `${SITE_URL}/#aglen-village` },
-        primaryImageOfPage: { "@type": "ImageObject", url: OG_IMAGE, width: 1200, height: 630 },
+        dateModified: meta.dateModified,
+        primaryImageOfPage: { "@id": `${routeUrl}#image-1` },
       },
       ...buildPageSpecificSchemas(lang, routeId, routeUrl),
-      {
-        "@type": ["TouristAttraction", "Place"],
-        "@id": `${SITE_URL}/#aglen-village`,
-        name: copy.brand.name,
-        alternateName: ["Ъглен", "Aglen", "Uglen"],
-        description: seoText.destinationDescription,
-        url: homeUrl,
-        image: [`${SITE_URL}/assets/aglen-hero-river-canyon.png`, `${SITE_URL}/assets/aglen-rock-arch.png`, `${SITE_URL}/assets/aglen-aerial-river.png`, `${SITE_URL}/assets/aglen-kaleto-ruins.png`, `${SITE_URL}/assets/aglen-village-church.png`],
-        geo: { "@type": "GeoCoordinates", latitude: 43.267, longitude: 24.221 },
-        address: { "@type": "PostalAddress", addressLocality: "Ъглен", addressRegion: "Lovech", addressCountry: "BG" },
-        containedInPlace: { "@type": "AdministrativeArea", name: "Lovech", addressCountry: "BG" },
-        touristType: seoText.touristTypes,
-        amenityFeature: [
-          ...copy.placesList.slice(0, 4).map((place) => ({ "@type": "LocationFeatureSpecification", name: place.title, value: true })),
-          ...copy.experiencesList.slice(0, 4).map((experience) => ({ "@type": "LocationFeatureSpecification", name: experience.title, value: true })),
-        ],
-        hasMap: "https://maps.google.com/?q=Aglen+Bulgaria+Lovech",
-        publicAccess: true,
-      },
+      ...placeNodes(lang),
       {
         "@type": "MobileApplication",
         "@id": `${SITE_URL}/#unlockingbulgaria`,
@@ -624,8 +1001,15 @@ export function buildJSONLD(lang: LanguageCode, routeId: RouteId = "home", detai
         url: SITE_URL,
         email: "info.aglen@gmail.com",
         image: OG_IMAGE,
-        address: { "@type": "PostalAddress", addressLocality: "Ъглен", addressRegion: "Lovech", addressCountry: "BG" },
-        geo: { "@type": "GeoCoordinates", latitude: 43.267, longitude: 24.221 },
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Ъглен",
+          addressRegion: "Lovech",
+          postalCode: AGLEN.postalCode,
+          addressCountry: "BG",
+        },
+        geo: { "@type": "GeoCoordinates", latitude: AGLEN.latitude, longitude: AGLEN.longitude },
+        areaServed: [{ "@id": `${SITE_URL}/#lovech-province` }, ...regionPlaces.map((place) => ({ "@id": `${SITE_URL}/#place-${place.id}` }))],
         openingHours: "Mo-Su 08:00-20:00",
         paymentAccepted: "Cash",
         hasOfferCatalog: {
@@ -637,22 +1021,22 @@ export function buildJSONLD(lang: LanguageCode, routeId: RouteId = "home", detai
           })),
         },
       },
-      {
-        "@type": "FAQPage",
-        "@id": `${SITE_URL}/#faq`,
-        mainEntity: [
-          { "@type": "Question", name: copy.contact.notesTitle, acceptedAnswer: { "@type": "Answer", text: `${copy.contact.noteOne} ${copy.contact.noteTwo}` } },
-          { "@type": "Question", name: copy.quests.title, acceptedAnswer: { "@type": "Answer", text: copy.quests.text } },
-          { "@type": "Question", name: copy.landmarks.title, acceptedAnswer: { "@type": "Answer", text: copy.landmarks.text } },
-          { "@type": "Question", name: copy.stay.title, acceptedAnswer: { "@type": "Answer", text: copy.stay.text } },
-        ],
-      },
+      // The site-wide FAQPage that used to live here is gone: it collided with
+      // the per-page FAQPage from buildPageSpecificSchemas, and two FAQPage
+      // entities on one URL is invalid markup. Those four questions are now part
+      // of the single page-level FAQ where they belong.
       {
         "@type": "BreadcrumbList",
-        "@id": `${SITE_URL}/#breadcrumbs`,
-        itemListElement: routeId === "home"
-          ? [{ "@type": "ListItem", position: 1, name: copy.nav.home, item: homeUrl }]
-          : [{ "@type": "ListItem", position: 1, name: copy.nav.home, item: homeUrl }, { "@type": "ListItem", position: 2, name: meta.title, item: routeUrl }],
+        "@id": `${routeUrl}#breadcrumbs`,
+        itemListElement:
+          routeId === "home"
+            ? [{ "@type": "ListItem", position: 1, name: copy.nav.home, item: homeUrl }]
+            : [
+                { "@type": "ListItem", position: 1, name: copy.nav.home, item: homeUrl },
+                // The bare page name; the breadcrumb used to repeat the full
+                // <title> including the " | Ъглен" suffix.
+                { "@type": "ListItem", position: 2, name: shortName(meta.title), item: routeUrl },
+              ],
       },
     ],
   };
@@ -734,6 +1118,39 @@ export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "hom
   const landing = isLandingPageId(routeId) ? getLandingPage(lang, routeId) : undefined;
   const ui = uiTextByLanguage[lang];
 
+  // The four trust pages. Without this branch a crawler that does not run
+  // JavaScript saw only the two source notes on the editorial-policy page.
+  const trustPage = trustPageByRoute.get(routeId as "trust" | "editorial" | "localSeo" | "crawlerPolicy");
+  if (trustPage) {
+    const lines = trustPage.sections.flatMap((section) => [
+      `${localizeTrust(section.heading, lang)}: ${section.body.map((paragraph) => localizeTrust(paragraph, lang)).join(" ")}`,
+      ...(section.list ?? []).map((item) => localizeTrust(item, lang)),
+    ]);
+    const nearby =
+      trustPage.routeId === "localSeo"
+        ? regionPlaces.map((place) => {
+            const km = distanceFromAglenKm(place);
+            return `${regionName(place, lang)}${km !== undefined ? ` — ≈ ${km} km` : ""}: ${regionNote(place, lang)}`;
+          })
+        : [];
+
+    return `
+      <main id="static-seo-content" class="static-fallback" lang="${lang}">
+        <article class="content-hub section-shell">
+          <div class="section-heading">
+            <p class="eyebrow">${escapeHtml(localizeTrust(trustPage.eyebrow, lang))}</p>
+            <h1>${escapeHtml(localizeTrust(trustPage.h1, lang))}</h1>
+            ${paragraph(localizeTrust(trustPage.intro, lang))}
+            <p><time datetime="${trustPage.lastReviewed}">${trustPage.lastReviewed}</time></p>
+          </div>
+          <div class="hub-grid">
+            ${[...lines, ...nearby].map((item) => `<div class="hub-card"><span>${escapeHtml(item)}</span></div>`).join("")}
+          </div>
+        </article>
+      </main>
+    `;
+  }
+
   if (landing) {
     return `
       <main id="static-seo-content" class="static-fallback" lang="${lang}">
@@ -749,7 +1166,7 @@ export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "hom
                   <a class="button ghost" href="${buildRoutePath(lang, "routeMap")}">${escapeHtml(ui.landing.routeMap)}</a>
                 </div>
               </div>
-              <img src="${landing.image}" alt="${escapeHtml(landing.imageAlt)}" loading="eager" />
+              <img ${imageAttributes(landing.image, { sizes: "(max-width: 900px) 92vw, 42vw" })} alt="${escapeHtml(landing.imageAlt)}" loading="eager" fetchpriority="high" />
             </div>
             <div class="seo-section-grid">
               ${landing.sections.map((section) => `<section class="seo-section-card"><h2>${escapeHtml(section.heading)}</h2>${paragraph(section.body)}</section>`).join("")}
@@ -841,9 +1258,9 @@ function setCanonical(href: string): void {
   el.href = href;
 }
 
-function setHreflangLinks(lang: LanguageCode, routeId: RouteId): void {
+function setHreflangLinks(alternates: SEOConfig["alternates"]): void {
   document.querySelectorAll('link[rel="alternate"][hreflang]').forEach((n) => n.remove());
-  getSEOConfig(lang, routeId).alternates.forEach((alternate) => {
+  alternates.forEach((alternate) => {
     const link = document.createElement("link");
     link.rel = "alternate";
     link.setAttribute("hreflang", alternate.lang);
@@ -873,37 +1290,45 @@ function injectJSONLD(data: object): void {
   el.textContent = JSON.stringify(data);
 }
 
-export function updateDocumentSEO(lang: LanguageCode, routeId: RouteId = "home", businessSlug?: string): void {
-  const meta = getSEOConfig(lang, routeId, businessSlug);
-  const copy = contentByLanguage[lang];
+/**
+ * Keeps the head in sync after a client-side navigation.
+ *
+ * `detailSlug` has to reach every call below. It used to be passed to
+ * getSEOConfig only, so on a business or guide detail page the SPA replaced the
+ * correct prerendered hreflang set and JSON-LD with the parent index page's —
+ * meaning Google's rendered view of every detail page carried the wrong
+ * canonical alternates and no LocalBusiness or TravelGuide markup at all.
+ */
+export function updateDocumentSEO(lang: LanguageCode, routeId: RouteId = "home", detailSlug?: string): void {
+  const meta = getSEOConfig(lang, routeId, detailSlug);
 
   document.title = meta.title;
   setMeta("description", meta.description);
   setMeta("keywords", meta.keywords);
   setMeta("author", meta.author);
-  setMeta("robots", "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1");
-  setMeta("googlebot", "index, follow");
-  setMeta("og:type", "website", true);
+  setMeta("robots", meta.robots);
+  setMeta("googlebot", meta.robots);
+  setMeta("og:type", meta.ogType, true);
   setMeta("og:site_name", meta.siteName, true);
   setMeta("og:url", meta.canonicalUrl, true);
   setMeta("og:title", meta.title, true);
   setMeta("og:description", meta.description, true);
-  setMeta("og:image", meta.imageUrl, true);
-  setMeta("og:image:url", meta.imageUrl, true);
-  setMeta("og:image:secure_url", meta.imageUrl, true);
-  setMeta("og:image:width", OG_IMAGE_WIDTH, true);
-  setMeta("og:image:height", OG_IMAGE_HEIGHT, true);
+  setMeta("og:image", meta.socialImageUrl, true);
+  setMeta("og:image:url", meta.socialImageUrl, true);
+  setMeta("og:image:secure_url", meta.socialImageUrl, true);
+  setMeta("og:image:width", String(meta.socialImageWidth), true);
+  setMeta("og:image:height", String(meta.socialImageHeight), true);
   setMeta("og:image:alt", meta.imageAlt, true);
-  setMeta("og:image:type", "image/png", true);
+  setMeta("og:image:type", meta.socialImageType, true);
   setMeta("og:locale", meta.locale, true);
   setOpenGraphLocaleAlternates(meta.ogLocaleAlternates);
   setMeta("twitter:card", "summary_large_image");
   setMeta("twitter:site", "@unlockingbulgaria");
   setMeta("twitter:title", meta.title);
   setMeta("twitter:description", meta.description);
-  setMeta("twitter:image", meta.imageUrl);
+  setMeta("twitter:image", meta.socialImageUrl);
   setMeta("twitter:image:alt", meta.imageAlt);
   setCanonical(meta.canonicalUrl);
-  setHreflangLinks(lang, routeId);
-  injectJSONLD(buildJSONLD(lang, routeId));
+  setHreflangLinks(meta.alternates);
+  injectJSONLD(buildJSONLD(lang, routeId, detailSlug));
 }

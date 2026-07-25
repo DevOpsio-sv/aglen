@@ -1,17 +1,23 @@
-import { useEffect, useMemo, useRef, useState, type MouseEvent, type SyntheticEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type MouseEvent, type ReactNode, type SyntheticEvent } from "react";
 import { contentByLanguage, languages, type Accommodation, type LanguageCode, type PlaceId, type TimelineItem } from "./content";
 import { getLandingPage, getLandingPages, isLandingPageId } from "./landingPages";
 import { placeExperienceLinks, type PlaceExperienceLink } from "./placeLinks";
 import { buildBusinessPath, buildGuidePath, buildRoutePath, getStaticRoute, resolveRoute, type RouteId, type ResolvedRoute } from "./routes";
 import { guideByLegacyRoute, guides, localizeGuide } from "./guides";
+import { publishedBusinesses } from "./localBusinesses";
 import GuidesPage from "./GuidesPage";
+import { imageProps } from "./images";
 import { updateDocumentSEO } from "./seo";
 import { uiTextByLanguage } from "./uiText";
+import { guidesUiByLanguage } from "./guidesUi";
 import EventsPage from "./EventsPage";
 import LocalBusinessesPage from "./LocalBusinessesPage";
+import TrustPage from "./TrustPage";
+import { isTrustRouteId } from "./trustPages";
 import { SHOW_EXPERIENCES, SHOW_STAY } from "./featureFlags";
+import { sectionsForRoute, type HomeSection } from "./pageSections";
 
-const fallbackImage = "/assets/aglen-hero-river-canyon.png";
+const fallbackImage = "/assets/aglen-hero-river-canyon.webp";
 const curatedLandingPageRouteIds = [
   "visitAglen",
   "weekendInAglen",
@@ -20,6 +26,31 @@ const curatedLandingPageRouteIds = [
   "karlukovoGuide",
   "aglenFromSofia",
 ] as const;
+
+/**
+ * The heading of a route's first section is that page's h1; every other heading
+ * stays an h2. Printing a separate page title above the section would state the
+ * same words twice, since each section already names its subject.
+ */
+function SectionTitle({
+  level,
+  id,
+  children,
+}: {
+  level: "h1" | "h2";
+  id?: string;
+  children: ReactNode;
+}) {
+  // h1.section-title is styled to match h2 exactly, so promoting a heading
+  // changes the document outline and nothing about the design.
+  return level === "h1" ? (
+    <h1 className="section-title" id={id}>
+      {children}
+    </h1>
+  ) : (
+    <h2 id={id}>{children}</h2>
+  );
+}
 
 function LanguageIcon() {
   return (
@@ -80,9 +111,26 @@ export function App() {
   const isEventsPage = routeId === "events";
   const isBusinessPage = routeId === "localBusinesses";
   const isGuidesPage = routeId === "guides";
+  const isTrustPage = isTrustRouteId(routeId);
   // Routes whose query string is shareable state rather than tracking noise.
   const keepsSearch = isEventsPage || (isBusinessPage && !businessSlug);
   const selectedLanguage = languages.find((item) => item.code === language) ?? languages[0];
+
+  // The home-page sections this route owns, from pageSections.ts. A legacy
+  // duplicate route falls back to the full set so it still shows something if its
+  // 301 has not applied yet; the noindex keeps it out of the index either way.
+  const hasOwnComponent = Boolean(currentLandingPage) || isEventsPage || isBusinessPage || isGuidesPage || isTrustPage;
+  // Already in document order and with feature flags applied.
+  const visibleSections = hasOwnComponent ? [] : sectionsForRoute(routeId);
+  const showSection = (section: HomeSection) => visibleSections.includes(section);
+  const isHomeRoute = !hasOwnComponent && routeId === "home";
+
+  // The first section in document order carries the h1. The home page keeps its
+  // hero h1, and a route left with no sections of its own falls through to the
+  // contact section, which renders on every page.
+  const titleSection = isHomeRoute || hasOwnComponent ? undefined : visibleSections[0];
+  const headingLevel = (section: HomeSection): "h1" | "h2" => (section === titleSection ? "h1" : "h2");
+  const contactHeadingLevel: "h1" | "h2" = !hasOwnComponent && !titleSection && !isHomeRoute ? "h1" : "h2";
 
   const routePath = (route: ResolvedRoute) => {
     if (route.businessSlug) return buildBusinessPath(route.language, route.businessSlug);
@@ -112,8 +160,13 @@ export function App() {
     }
   };
 
-  const routeHref = (nextRouteId: RouteId, nextLanguage = language) =>
-    buildRoutePath(nextLanguage, nextRouteId);
+  // A link to a legacy topic route resolves to the guide that replaced it, so no
+  // internal link points at a 301. This covers the main navigation ("Места" →
+  // attractions) and the hero call to action, which both did.
+  const routeHref = (nextRouteId: RouteId, nextLanguage = language) => {
+    const guide = guideByLegacyRoute(nextRouteId);
+    return guide ? buildGuidePath(nextLanguage, guide.slug) : buildRoutePath(nextLanguage, nextRouteId);
+  };
 
   const handleRouteClick = (event: MouseEvent<HTMLAnchorElement>, nextRouteId: RouteId) => {
     if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
@@ -121,7 +174,8 @@ export function App() {
     }
 
     event.preventDefault();
-    navigateTo({ language, routeId: nextRouteId });
+    const guide = guideByLegacyRoute(nextRouteId);
+    navigateTo(guide ? { language, routeId: "guides", guideSlug: guide.slug } : { language, routeId: nextRouteId });
   };
 
   const handleGatewayClick = (event: MouseEvent<HTMLAnchorElement>, link: PlaceExperienceLink) => {
@@ -179,13 +233,19 @@ export function App() {
 
   useEffect(() => {
     const hashTarget = window.location.hash ? decodeURIComponent(window.location.hash.slice(1)) : "";
-    const target = document.getElementById(hashTarget) ?? document.getElementById(currentRoute.sectionId);
+    // Only an explicit hash scrolls now. The old fallback to the route's
+    // sectionId existed because every route rendered the whole home page and had
+    // to be scrolled to the right part; each route renders its own content from
+    // the top instead. The fallback was also actively wrong for the four trust
+    // routes, whose sectionId "trust" matches the footer's id — they opened
+    // scrolled to the bottom of the page.
+    const target = hashTarget ? document.getElementById(hashTarget) : null;
     if (!target) return;
 
     window.requestAnimationFrame(() => {
       target.scrollIntoView({ block: "start" });
     });
-  }, [currentRoute.sectionId, routeId]);
+  }, [currentRoute.sectionId, routeId, hasOwnComponent]);
 
   useEffect(() => {
     let observer: IntersectionObserver | undefined;
@@ -389,7 +449,13 @@ export function App() {
   const appUrl = `https://unlockingbulgaria.com/${language}/`;
 
   return (
-    <main>
+    // The whole page used to sit inside <main>, header and navigation included,
+    // so a screen reader found no banner landmark and one enormous main. The
+    // header is now a sibling and <main> holds only the page content.
+    <>
+      <a className="skip-link" href="#main-content">
+        {localizedUi.aria.skipToContent}
+      </a>
       <header className="site-header" aria-label={copy.nav.home}>
         <a
           className="brand"
@@ -397,7 +463,7 @@ export function App() {
           aria-label={`${copy.brand.name} - ${copy.nav.home}`}
           onClick={(event) => handleRouteClick(event, "home")}
         >
-          <img className="brand-mark" src="/assets/aglen-logo-mark.png" alt="" width="44" height="44" decoding="async" />
+          <img className="brand-mark" src="/assets/brand-mark-96.webp" alt="" width="44" height="44" decoding="async" />
           <span>
             <strong>{copy.brand.name}</strong>
             <small>{copy.brand.subtitle}</small>
@@ -526,6 +592,17 @@ export function App() {
         </>
       )}
 
+      <main id="main-content">
+      {!isHomeRoute && (
+        <Breadcrumbs
+          language={language}
+          routeId={routeId}
+          businessSlug={businessSlug}
+          guideSlug={guideSlug}
+          onNavigate={navigateToPath}
+        />
+      )}
+
       {currentLandingPage && (
         <section id="seo-guide" className="seo-landing route-landing section-shell">
           <article className="seo-landing-panel reveal">
@@ -543,7 +620,14 @@ export function App() {
                   </a>
                 </div>
               </div>
-              <img src={currentLandingPage.image || fallbackImage} alt={currentLandingPage.imageAlt} width="1200" height="900" loading="eager" decoding="async" onError={handleImageError} />
+              <img
+                {...imageProps(currentLandingPage.image || fallbackImage, { sizes: "(max-width: 900px) 92vw, 42vw" })}
+                alt={currentLandingPage.imageAlt}
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
+                onError={handleImageError}
+              />
             </div>
 
             <div className="seo-section-grid">
@@ -584,10 +668,11 @@ export function App() {
         </section>
       )}
 
-      {!currentLandingPage && !isEventsPage && !isBusinessPage && !isGuidesPage && (
+      {!hasOwnComponent && (
         <>
+      {showSection("hero") && (
       <section id="home" className="hero">
-        <img className="hero-image" src="/assets/aglen-hero-river-canyon.png" alt={copy.hero.imageAlt} width="1200" height="630" fetchPriority="high" decoding="async" onError={handleImageError} />
+        <img className="hero-image" {...imageProps("/assets/aglen-hero-river-canyon.png")} alt={copy.hero.imageAlt} fetchPriority="high" decoding="async" onError={handleImageError} />
         <div className="hero-overlay" aria-hidden="true" />
         <div className="hero-copy section-shell reveal">
           <p className="eyebrow">{copy.hero.meta}</p>
@@ -607,7 +692,9 @@ export function App() {
           {copy.hero.cue}
         </div>
       </section>
+      )}
 
+      {showSection("stats") && (
       <section className="stats section-shell" aria-label={copy.statsLabel}>
         {copy.highlights.map((item) => (
           <article className="stat-card reveal" key={item.label}>
@@ -617,11 +704,13 @@ export function App() {
           </article>
         ))}
       </section>
+      )}
 
+      {showSection("story") && (
       <section id="about" className="story section-shell">
         <div className="section-heading reveal">
           <p className="eyebrow">{copy.about.eyebrow}</p>
-          <h2>{copy.about.title}</h2>
+          <SectionTitle level={headingLevel("story")}>{copy.about.title}</SectionTitle>
           <p>{copy.about.text}</p>
         </div>
         <ol className="timeline">
@@ -635,18 +724,20 @@ export function App() {
           ))}
         </ol>
       </section>
+      )}
 
+      {showSection("legends") && (
       <section className="legends">
         <div className="section-shell">
           <div className="section-heading reveal">
             <p className="eyebrow">{copy.legends.eyebrow}</p>
-            <h2>{copy.legends.title}</h2>
+            <SectionTitle level={headingLevel("legends")}>{copy.legends.title}</SectionTitle>
             <p>{copy.legends.text}</p>
           </div>
           <div className="mystery-grid">
             {copy.mysteries.map((item) => (
               <article className="mystery-card reveal" key={item.title}>
-                <img src={item.image || fallbackImage} alt={`${item.title} - ${item.description}`} width="1200" height="900" loading="lazy" decoding="async" onError={handleImageError} />
+                <img {...imageProps(item.image || fallbackImage, { variant: "card" })} alt={`${item.title} - ${item.description}`} loading="lazy" decoding="async" onError={handleImageError} />
                 <div>
                   <p>{item.tag}</p>
                   <h3>{item.title}</h3>
@@ -657,6 +748,7 @@ export function App() {
           </div>
         </div>
       </section>
+      )}
 
       {selectedTimeline && (
         <div className="timeline-modal" onClick={() => setSelectedTimeline(null)}>
@@ -698,10 +790,11 @@ export function App() {
         </div>
       )}
 
+      {showSection("places") && (
       <section id="landmarks" className="places section-shell">
         <div className="section-heading reveal">
           <p className="eyebrow">{copy.landmarks.eyebrow}</p>
-          <h2>{copy.landmarks.title}</h2>
+          <SectionTitle level={headingLevel("places")}>{copy.landmarks.title}</SectionTitle>
           <p>{copy.landmarks.text}</p>
         </div>
         <div className="place-grid">
@@ -712,7 +805,7 @@ export function App() {
 
             return (
               <article className="place-card reveal" key={place.id}>
-                <img src={place.image || fallbackImage} alt={place.imageAlt} width="1200" height="900" loading="lazy" decoding="async" onError={handleImageError} />
+                <img {...imageProps(place.image || fallbackImage, { variant: "card" })} alt={place.imageAlt} loading="lazy" decoding="async" onError={handleImageError} />
                 <div>
                   <p>{place.tag}</p>
                   <h3>{place.title}</h3>
@@ -736,27 +829,31 @@ export function App() {
           })}
         </div>
       </section>
+      )}
 
+      {showSection("gallery") && (
       <section id="media" className="gallery section-shell">
         <div className="section-heading reveal">
           <p className="eyebrow">{copy.gallery.eyebrow}</p>
-          <h2>{copy.gallery.title}</h2>
+          <SectionTitle level={headingLevel("gallery")}>{copy.gallery.title}</SectionTitle>
         </div>
         <div className="gallery-grid" aria-label={copy.gallery.aria}>
           {copy.galleryItems.map((item) => (
             <figure className={`gallery-item ${item.size} reveal`} key={item.title}>
-              <img src={item.image || fallbackImage} alt={item.alt} width="1200" height="900" loading="lazy" decoding="async" onError={handleImageError} />
+              <img {...imageProps(item.image || fallbackImage, { variant: "card", sizes: "(max-width: 700px) 92vw, 46vw" })} alt={item.alt} loading="lazy" decoding="async" onError={handleImageError} />
               <figcaption>{item.title}</figcaption>
             </figure>
           ))}
         </div>
       </section>
+      )}
 
+      {showSection("map") && (
       <section id="location" className="map-section">
         <div className="section-shell map-layout">
           <div className="section-heading reveal">
             <p className="eyebrow">{copy.landmarks.aria}</p>
-            <h2>{copy.landmarks.title}</h2>
+            <SectionTitle level={headingLevel("map")}>{copy.landmarks.title}</SectionTitle>
           </div>
           <div className="route-map reveal" aria-label={copy.landmarks.aria}>
             {copy.mapStops.map((stop, index) => (
@@ -771,11 +868,13 @@ export function App() {
           </div>
         </div>
       </section>
+      )}
 
+      {showSection("hub") && (
       <section id="travel-guide" className="content-hub section-shell">
         <div className="section-heading reveal">
           <p className="eyebrow">{copy.hub.eyebrow}</p>
-          <h2>{copy.hub.title}</h2>
+          <SectionTitle level={headingLevel("hub")}>{copy.hub.title}</SectionTitle>
           <p>{copy.hub.text}</p>
         </div>
         <div className="hub-grid">
@@ -837,12 +936,13 @@ export function App() {
             </p>
           ))}
       </section>
+      )}
 
-      {SHOW_EXPERIENCES && (
+      {SHOW_EXPERIENCES && showSection("experiences") && (
       <section id="experiences" className="experiences section-shell">
         <div className="section-heading reveal">
           <p className="eyebrow">{copy.experiences.eyebrow}</p>
-          <h2>{copy.experiences.title}</h2>
+          <SectionTitle level={headingLevel("experiences")}>{copy.experiences.title}</SectionTitle>
           <p>{copy.experiences.text}</p>
         </div>
         <div className="experience-grid">
@@ -878,17 +978,17 @@ export function App() {
       </section>
       )}
 
-      {SHOW_STAY && (
+      {SHOW_STAY && showSection("stay") && (
       <section id="stay" className="stay section-shell">
         <div className="section-heading reveal">
           <p className="eyebrow">{copy.stay.eyebrow}</p>
-          <h2>{copy.stay.title}</h2>
+          <SectionTitle level={headingLevel("stay")}>{copy.stay.title}</SectionTitle>
           <p>{copy.stay.text}</p>
         </div>
         <div className="place-grid">
           {copy.accommodationList.map((item: Accommodation) => (
             <article className="place-card reveal" key={item.title}>
-              <img src={item.image || fallbackImage} alt={`${item.title} - ${item.description}`} width="1200" height="900" loading="lazy" decoding="async" onError={handleImageError} />
+              <img {...imageProps(item.image || fallbackImage, { variant: "card" })} alt={`${item.title} - ${item.description}`} loading="lazy" decoding="async" onError={handleImageError} />
               <div>
                 <p>{item.type}</p>
                 <h3>{item.title}</h3>
@@ -905,11 +1005,12 @@ export function App() {
       </section>
       )}
 
+      {showSection("quests") && (
       <section id="quests" className="quests">
         <div className="section-shell">
           <div className="quests-header reveal">
             <p className="eyebrow">{copy.quests.eyebrow}</p>
-            <h2>{copy.quests.title}</h2>
+            <SectionTitle level={headingLevel("quests")}>{copy.quests.title}</SectionTitle>
             <p className="quests-lede">{copy.quests.text}</p>
           </div>
           <div className="quests-features">
@@ -937,11 +1038,13 @@ export function App() {
           </div>
         </div>
       </section>
+      )}
 
+      {showSection("ar") && (
       <section id="ar" className="ar-section section-shell">
         <div className="section-heading reveal">
           <p className="eyebrow">{copy.ar.eyebrow}</p>
-          <h2>{copy.ar.title}</h2>
+          <SectionTitle level={headingLevel("ar")}>{copy.ar.title}</SectionTitle>
           <p>{copy.ar.text}</p>
         </div>
         <ol className="ar-steps reveal">
@@ -958,12 +1061,14 @@ export function App() {
           </a>
         </div>
       </section>
+      )}
 
+      {showSection("app") && (
       <section id="app" className="app-section">
         <div className="app-panel section-shell reveal">
           <div className="app-copy">
             <p className="eyebrow">{copy.app.eyebrow}</p>
-            <h2>{copy.app.title}</h2>
+            <SectionTitle level={headingLevel("app")}>{copy.app.title}</SectionTitle>
             <p>{copy.app.text}</p>
             <div className="app-download">
               <a
@@ -988,10 +1093,8 @@ export function App() {
                 <div className="phone-screen">
                   <div className="phone-dynamic-island" />
                   <img
-                    src="/assets/unlocking-bulgaria-quest-banner.png"
+                    {...imageProps("/assets/unlocking-bulgaria-quest-banner.png", { variant: "card", sizes: "(max-width: 900px) 60vw, 320px" })}
                     alt="Unlocking Bulgaria – мобилно AR приключение в Ъглен"
-                    width="1024"
-                    height="550"
                     loading="lazy"
                     decoding="async"
                     onError={handleImageError}
@@ -1010,6 +1113,7 @@ export function App() {
           </div>
         </div>
       </section>
+      )}
 
         </>
       )}
@@ -1022,10 +1126,12 @@ export function App() {
 
       {isGuidesPage && <GuidesPage language={language} guideSlug={guideSlug} onNavigate={navigateToPath} />}
 
+      {isTrustPage && <TrustPage language={language} routeId={routeId} onNavigate={navigateToPath} />}
+
       <section id="contact" className="contact section-shell">
         <div className="section-heading reveal">
           <p className="eyebrow">{copy.contact.eyebrow}</p>
-          <h2>{copy.contact.title}</h2>
+          <SectionTitle level={contactHeadingLevel}>{copy.contact.title}</SectionTitle>
           <p>{copy.contact.text}</p>
         </div>
         <div className="contact-card reveal">
@@ -1038,7 +1144,9 @@ export function App() {
             {copy.contact.cta}
           </a>
         </div>
-        <footer id="trust" className="site-footer">
+        {/* role="contentinfo" promotes this to the page's footer landmark. It
+            stays inside the contact section so the layout is untouched. */}
+        <footer id="trust" className="site-footer" role="contentinfo">
           {copy.sourceNotes.map((note) => (
             <span key={note}>{note}</span>
           ))}
@@ -1055,6 +1163,98 @@ export function App() {
           </nav>
         </footer>
       </section>
-    </main>
+      </main>
+    </>
   );
+}
+
+/**
+ * Visible breadcrumb trail. Matches the BreadcrumbList in the page's JSON-LD —
+ * Google wants the markup to describe a trail the reader can actually see.
+ */
+function Breadcrumbs({
+  language,
+  routeId,
+  businessSlug,
+  guideSlug,
+  onNavigate,
+}: {
+  language: LanguageCode;
+  routeId: RouteId;
+  businessSlug?: string;
+  guideSlug?: string;
+  onNavigate: (path: string) => void;
+}) {
+  const copy = contentByLanguage[language];
+  const ui = uiTextByLanguage[language];
+  const parentLabel = crumbLabel(language, routeId);
+  if (!parentLabel) return null;
+
+  // A detail page is three levels deep, matching the BreadcrumbList in its
+  // JSON-LD: home → index → this page.
+  const guide = guideSlug ? guides.find((item) => item.slug === guideSlug) : undefined;
+  const business = businessSlug ? publishedBusinesses().find((item) => item.slug === businessSlug) : undefined;
+  const leaf = guide
+    ? localizeGuide(guide.title, language)
+    : business
+      ? business.name
+      : undefined;
+
+  const trail: Array<{ label: string; href?: string }> = [
+    { label: copy.nav.home, href: buildRoutePath(language, "home") },
+    leaf
+      ? { label: parentLabel, href: buildRoutePath(language, routeId) }
+      : { label: parentLabel },
+    ...(leaf ? [{ label: leaf }] : []),
+  ];
+
+  return (
+    <nav className="breadcrumbs section-shell" aria-label={ui.aria.breadcrumbs}>
+      <ol>
+        {trail.map((crumb) =>
+          crumb.href ? (
+            <li key={crumb.label}>
+              <a
+                href={crumb.href}
+                onClick={(event) => {
+                  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                  event.preventDefault();
+                  onNavigate(crumb.href!);
+                }}
+              >
+                {crumb.label}
+              </a>
+            </li>
+          ) : (
+            <li key={crumb.label} aria-current="page">
+              {crumb.label}
+            </li>
+          ),
+        )}
+      </ol>
+    </nav>
+  );
+}
+
+function crumbLabel(language: LanguageCode, routeId: RouteId): string | undefined {
+  const copy = contentByLanguage[language];
+  const ui = uiTextByLanguage[language];
+  const landing = isLandingPageId(routeId) ? getLandingPage(language, routeId) : undefined;
+  if (landing) return landing.h1.split(" | ")[0];
+  const trust = ui.trustLinks.find((link) => link.routeId === routeId)?.label;
+  if (trust) return trust;
+  const byRoute: Partial<Record<RouteId, string>> = {
+    pillars: copy.about.title,
+    activities: copy.experiences.title,
+    geo: copy.landmarks.aria,
+    stay: copy.stay.title,
+    quests: copy.quests.title,
+    app: copy.app.title,
+    travelGuide: copy.hub.title,
+    contact: copy.contact.title,
+    events: copy.events.title,
+    localBusinesses: copy.nav.business,
+    guides: guidesUiByLanguage[language].indexTitle,
+  };
+  return byRoute[routeId];
 }

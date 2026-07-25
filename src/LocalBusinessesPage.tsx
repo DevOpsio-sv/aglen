@@ -16,8 +16,9 @@ import {
 } from "./localBusinesses";
 import { businessesUiByLanguage, categoryEmoji, categoryLabel, type BusinessesUiText } from "./localBusinessesUi";
 import { buildBusinessPath, buildRoutePath } from "./routes";
+import { imageProps } from "./images";
 
-const fallbackImage = "/assets/aglen-hero-river-canyon.png";
+const fallbackImage = "/assets/aglen-hero-river-canyon.webp";
 
 function handleImageError(event: SyntheticEvent<HTMLImageElement>) {
   const image = event.currentTarget;
@@ -209,7 +210,7 @@ function BusinessDirectory({
               return (
                 <figure className="business-story" key={business.id}>
                   {story.image && (
-                    <img src={story.image} alt={story.person} loading="lazy" decoding="async" onError={handleImageError} />
+                    <img {...imageProps(story.image, { variant: "card" })} alt={story.person} loading="lazy" decoding="async" onError={handleImageError} />
                   )}
                   <blockquote>„{localizeText(story.quote, language)}“</blockquote>
                   <figcaption>
@@ -273,9 +274,10 @@ function BusinessHero({ ui, onExplore, onAdd }: { ui: BusinessesUiText; onExplor
     <section className="businesses-hero" aria-labelledby="businesses-hero-title">
       <img
         className="businesses-hero-bg"
-        src="/assets/local-businesses-hero.jpg"
+        {...imageProps("/assets/local-businesses-hero.jpg")}
         alt=""
         aria-hidden="true"
+        fetchPriority="high"
         decoding="async"
         onError={handleImageError}
       />
@@ -326,7 +328,7 @@ function BusinessCard({
         <div className="business-card-media">
           {business.coverImage ? (
             <img
-              src={business.coverImage}
+              {...imageProps(business.coverImage, { variant: "card" })}
               alt={business.coverImageAlt ? localizeText(business.coverImageAlt, language) : business.name}
               loading="lazy"
               decoding="async"
@@ -337,7 +339,7 @@ function BusinessCard({
               {categoryEmoji[business.category]}
             </span>
           )}
-          {business.logo && <img className="business-card-logo" src={business.logo} alt="" aria-hidden="true" loading="lazy" />}
+          {business.logo && <img className="business-card-logo" {...imageProps(business.logo, { variant: "card" })} alt="" aria-hidden="true" loading="lazy" />}
         </div>
 
         <div className="business-card-body">
@@ -501,9 +503,10 @@ function BusinessDetail({
         {business.coverImage && (
           <img
             className="business-detail-cover"
-            src={business.coverImage}
+            {...imageProps(business.coverImage, { sizes: "(max-width: 900px) 94vw, 900px" })}
             alt={business.coverImageAlt ? localizeText(business.coverImageAlt, language) : business.name}
-            loading="lazy"
+            loading="eager"
+            fetchPriority="high"
             decoding="async"
             onError={handleImageError}
           />
@@ -562,7 +565,7 @@ function BusinessDetail({
                   {business.gallery.map((image, index) => (
                     <img
                       key={index}
-                      src={image.src}
+                      {...imageProps(image.src, { variant: "card", sizes: "(max-width: 700px) 45vw, 220px" })}
                       alt={localizeText(image.alt, language)}
                       loading="lazy"
                       decoding="async"

@@ -20,7 +20,9 @@ import {
   seasonOrder,
 } from "./eventsUi";
 
-const fallbackImage = "/assets/aglen-hero-river-canyon.png";
+import { imageProps } from "./images";
+
+const fallbackImage = "/assets/aglen-hero-river-canyon.webp";
 
 function handleImageError(event: SyntheticEvent<HTMLImageElement>) {
   const image = event.currentTarget;
@@ -227,7 +229,7 @@ export default function EventsPage({ language }: { language: LanguageCode }) {
 function EventsHero({ ui, title }: { ui: ReturnType<typeof getUi>; title: string }) {
   return (
     <section className="events-hero" aria-labelledby="events-hero-title">
-      <img className="events-hero-bg" src="/assets/aglen-vit-river-sunset.png" alt="" aria-hidden="true" decoding="async" onError={handleImageError} />
+      <img className="events-hero-bg" {...imageProps("/assets/aglen-vit-river-sunset.png")} alt="" aria-hidden="true" fetchPriority="high" decoding="async" onError={handleImageError} />
       <div className="events-hero-overlay" aria-hidden="true" />
       <div className="events-hero-inner section-shell">
         <p className="eyebrow events-hero-eyebrow">{ui.timelineEyebrow}</p>
@@ -321,8 +323,8 @@ function EventMedia({
   const { poster } = event;
   return (
     <div className={`${className}${poster ? " is-poster" : ""}`}>
-      {poster && <img className="event-media-blur" src={src} alt="" aria-hidden="true" loading="lazy" decoding="async" />}
-      <img className="event-media-img" src={src} alt={alt} loading="lazy" decoding="async" onError={handleImageError} />
+      {poster && <img className="event-media-blur" {...imageProps(src, { variant: "card" })} alt="" aria-hidden="true" loading="lazy" decoding="async" />}
+      <img className="event-media-img" {...imageProps(src, { variant: "card" })} alt={alt} loading="lazy" decoding="async" onError={handleImageError} />
       {poster && onOpenImage && (
         <button type="button" className="event-poster-zoom" onClick={() => onOpenImage([{ src: poster, alt }], 0)}>
           <span aria-hidden="true">⤢</span> {ui.viewPoster}
@@ -570,7 +572,7 @@ function PastView({
               return (
                 <article className="event-card is-past" key={e.id}>
                   <div className="event-card-media">
-                    <img src={e.image || fallbackImage} alt={e.imageAlt ?? localize(e.title, language)} loading="lazy" decoding="async" onError={handleImageError} />
+                    <img {...imageProps(e.image || fallbackImage, { variant: "card" })} alt={e.imageAlt ?? localize(e.title, language)} loading="lazy" decoding="async" onError={handleImageError} />
                     <span className="event-date-badge">{e.dateLabel}</span>
                   </div>
                   <div className="event-card-body">
@@ -918,7 +920,7 @@ function PhotoMemories({
       <div className="memories-masonry">
         {items.map((item, i) => (
           <button key={item.src + i} type="button" className="memory-tile" onClick={() => onOpen(images, i)} aria-label={item.title}>
-            <img src={item.src || fallbackImage} alt={item.alt} loading="lazy" decoding="async" onError={handleImageError} />
+            <img {...imageProps(item.src || fallbackImage, { variant: "card", sizes: "(max-width: 700px) 46vw, 300px" })} alt={item.alt} loading="lazy" decoding="async" onError={handleImageError} />
             <span className="memory-tile-title">{item.title}</span>
           </button>
         ))}
@@ -1102,7 +1104,7 @@ function Lightbox({
         </>
       )}
       <figure className="lightbox-figure" onClick={(e) => e.stopPropagation()}>
-        <img src={current.src || fallbackImage} alt={current.alt} decoding="async" onError={handleImageError} />
+        <img {...imageProps(current.src || fallbackImage)} alt={current.alt} decoding="async" onError={handleImageError} />
       </figure>
     </div>
   );

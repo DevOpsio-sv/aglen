@@ -323,6 +323,47 @@ const businessData: LocalBusiness[] = [
     lastUpdated: "2026-07-24",
   },
   {
+    // Text and contact supplied by the site owner.
+    id: "kosene-motorna-kosa",
+    slug: "kosene-s-motorna-kosa",
+    name: "Косене и почистване на дворове",
+    category: "services",
+    shortDescription: {
+      bg: "Косене с моторна коса и почистване на дворове, градини и запустели терени.",
+      en: "Strimmer mowing and clearing of yards, gardens and overgrown plots.",
+    },
+    description: {
+      bg: "Предлагаме професионално косене и почистване на дворове, градини, овощни градини и запустели терени със съвременна моторна коса. Работим бързо, прецизно и с внимание към всеки обект, независимо дали става въпрос за малък двор или голям обрасъл имот.\n\nИзвършваме сезонна поддръжка, както и еднократно почистване на силно обрасли площи, за да върнем добрия вид и функционалността на вашия имот.\n\nРаботим в с. Ъглен и района, с коректно отношение, бърза реакция и качествено изпълнение. Оглед по всяко време. Бързо, чисто и на достъпни цени.",
+      en: "Professional mowing and clearing of yards, gardens, orchards and neglected plots with a modern brushcutter. The work is quick and precise, with care for every site, whether it is a small yard or a large overgrown property.\n\nBoth seasonal upkeep and one-off clearing of heavily overgrown ground are offered, to bring your property back to good order and use.\n\nCovering Aglen and the surrounding area, with straight dealing, a quick response and solid workmanship. A site visit at any time. Fast, tidy and at affordable prices.",
+    },
+    highlight: { bg: "Оглед по всяко време", en: "A site visit at any time" },
+    coverImage: "/assets/local-businesses/mown-cover.jpg",
+    coverImageAlt: {
+      bg: "Мъж коси висока трева с моторна коса край телена ограда в двор на селска къща",
+      en: "A man cutting long grass with a brushcutter along a wire fence in a village garden",
+    },
+    phone: "0899 136 110",
+    address: "с. Ъглен",
+    services: [
+      { bg: "Косене на висока трева и бурени", en: "Cutting long grass and weeds" },
+      { bg: "Почистване на запустели дворове и парцели", en: "Clearing neglected yards and plots" },
+      {
+        bg: "Косене около огради, дървета и труднодостъпни места",
+        en: "Mowing around fences, trees and hard-to-reach spots",
+      },
+      { bg: "Почистване на овощни градини и вилни имоти", en: "Clearing orchards and holiday properties" },
+      { bg: "Поддръжка на зелени площи", en: "Upkeep of green areas" },
+      { bg: "Извозване на окосената растителност (при желание)", en: "Removal of the cuttings (on request)" },
+      { bg: "Оглед по всяко време", en: "A site visit at any time" },
+    ],
+    bookingRequired: true,
+    status: "published",
+    verified: false,
+    featured: false,
+    displayOrder: 65, // between the building work and the mini excavator
+    lastUpdated: "2026-07-24",
+  },
+  {
     // Text supplied by the site owner. No phone or email was given, so none is
     // published — add one here once the tutor agrees which to show.
     id: "prevodi-uroci",
@@ -401,44 +442,6 @@ const businessData: LocalBusiness[] = [
   },
   {
     // Text and contact supplied by the site owner.
-    id: "minerali-kristali",
-    slug: "minerali-i-kristali",
-    name: "Минерали и кристали",
-    category: "shops",
-    shortDescription: {
-      bg: "Сурови кристали, минерали и полускъпоценни камъни от България и света.",
-      en: "Raw crystals, minerals and semi-precious stones from Bulgaria and around the world.",
-    },
-    description: {
-      bg: "Предлагаме богат избор от естествени минерали, сурови кристали, полускъпоценни камъни и уникални минерални образци от България и света. Всеки камък е подбран с внимание към неговата естествена красота, структура и произход.\n\nПри нас ще откриете както колекционерски минерали, така и кристали, подходящи за подарък, интериорна декорация, медитация, бижута и лични колекции. С удоволствие ще ви помогнем да изберете най-подходящия камък според вашите предпочитания.\n\nВсеки минерал е уникален – създаден от природата в продължение на милиони години и неповторим по своята форма, цвят и структура. Възможен е избор на конкретен образец и консултация преди покупка.",
-      en: "A wide selection of natural minerals, raw crystals, semi-precious stones and unusual mineral specimens from Bulgaria and around the world. Every stone is chosen with an eye to its natural beauty, structure and origin.\n\nYou will find both collector-grade minerals and crystals suited to a gift, interior decoration, meditation, jewellery or a personal collection. We are glad to help you pick the stone that fits what you are after.\n\nEvery mineral is unique — shaped by nature over millions of years, and unrepeatable in form, colour and structure. You can choose a specific specimen and talk it through before buying.",
-    },
-    highlight: { bg: "Изпращаме в цялата страна", en: "We ship nationwide" },
-    coverImage: "/assets/local-businesses/minerali-kristali-cover.jpg",
-    coverImageAlt: {
-      bg: "Сурови кристали и минерали върху дървена маса до кутия с образци",
-      en: "Raw crystals and minerals on a wooden table beside a box of specimens",
-    },
-    phone: "0879 339 636",
-    address: "с. Ъглен",
-    products: [
-      { bg: "Естествени сурови кристали", en: "Natural raw crystals" },
-      { bg: "Минерали и полускъпоценни камъни", en: "Minerals and semi-precious stones" },
-      { bg: "Колекционерски образци", en: "Collector-grade specimens" },
-      { bg: "Геоди и кварцови друзи", en: "Geodes and quartz druses" },
-      { bg: "Камъни за бижута и творчество", en: "Stones for jewellery and craft" },
-      { bg: "Подаръчни минерални комплекти", en: "Mineral gift sets" },
-    ],
-    services: [{ bg: "Консултация при избор на минерали", en: "Help choosing a mineral" }],
-    delivery: true,
-    status: "published",
-    verified: false,
-    featured: false,
-    displayOrder: 175, // just ahead of the guide walks and the meat plant
-    lastUpdated: "2026-07-24",
-  },
-  {
-    // Text and contact supplied by the site owner.
     id: "elektrouslugi",
     slug: "elektrotehnicheski-uslugi",
     name: "Електротехнически услуги",
@@ -495,7 +498,7 @@ const businessData: LocalBusiness[] = [
       bg: "Домашен офис с лаптоп, показващ облачна архитектура, глобус и карта на света, с планинска гледка през прозореца",
       en: "A home office with a laptop showing a cloud architecture diagram, a globe and a world map, with a mountain view through the window",
     },
-    phone: "0896 136 110",
+    phone: "0899 136 110",
     website: "https://devopsio.co/",
     address: "с. Ъглен",
     services: [
