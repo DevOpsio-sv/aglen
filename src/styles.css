@@ -3805,37 +3805,9 @@ h1.section-title {
 }
 
 /* ── M2: one compact Unlocking Bulgaria home block ───────────────────────────
-   Replaces the former quests + ar + app promo trio. One heading, one line, a
-   CTA to the local hub, one clearly-labelled external CTA. */
-.ub-block {
-  padding: clamp(2.5rem, 5vw, 4rem) 0;
-}
-
-.ub-panel {
-  border-radius: 26px;
-  padding: clamp(1.8rem, 4vw, 3rem);
-  background: linear-gradient(135deg, #15523c, var(--forest-deep));
-  color: #fff;
-}
-
-.ub-copy {
-  max-width: 60ch;
-}
-
-.ub-copy .eyebrow {
-  color: var(--gold-soft);
-}
-
-.ub-copy h1,
-.ub-copy h2 {
-  margin: 0.4rem 0 0.6rem;
-  color: #fff;
-}
-
-.ub-copy p {
-  color: rgba(255, 255, 255, 0.88);
-}
-
+   Replaces the former quests + ar + app promo trio with a single block. It
+   reuses the original app-section banner (copy beside the phone mockup); only
+   the actions row and the external-app note are block-specific. */
 .ub-actions {
   display: flex;
   flex-wrap: wrap;

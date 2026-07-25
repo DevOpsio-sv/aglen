@@ -1118,14 +1118,15 @@ export function App() {
       </section>
       )}
 
-      {/* One compact Unlocking Bulgaria block (ADR-013). It replaces the former
-          quests + ar + app promo sections: one heading, one short explanation,
-          a CTA to the local /ar-missions/ hub, and a clearly-labelled external
-          CTA to the app. No second hero, no repeated product introduction. */}
+      {/* One compact Unlocking Bulgaria block (ADR-013): one heading, one short
+          explanation, a CTA to the local /ar-missions/ hub, and a clearly-
+          labelled external CTA to the app. It reuses the original app-section
+          banner (copy beside the phone mockup) so it stays a single block —
+          no second hero, no repeated product introduction. */}
       {showSection("ub") && (
-      <section id="ub" className="ub-block">
-        <div className="section-shell ub-panel reveal">
-          <div className="ub-copy">
+      <section id="ub" className="app-section">
+        <div className="app-panel section-shell reveal">
+          <div className="app-copy">
             <p className="eyebrow">{copy.quests.eyebrow}</p>
             <SectionTitle level={headingLevel("ub")}>{copy.ub.homeHeading}</SectionTitle>
             <p>{copy.ub.homeText}</p>
@@ -1138,6 +1139,31 @@ export function App() {
               </a>
             </div>
             <p className="ub-external-note">{copy.ub.externalLabel}</p>
+          </div>
+
+          <div className="app-showcase" aria-hidden="true">
+            <figure className="phone-mockup">
+              <div className="phone-frame">
+                <div className="phone-screen">
+                  <div className="phone-dynamic-island" />
+                  <img
+                    {...imageProps("/assets/unlocking-bulgaria-quest-banner.png", { variant: "card", sizes: "(max-width: 900px) 60vw, 320px" })}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    onError={handleImageError}
+                  />
+                  <div className="phone-home-indicator" />
+                </div>
+                <div className="phone-btn phone-btn-vol-up" />
+                <div className="phone-btn phone-btn-vol-down" />
+                <div className="phone-btn phone-btn-power" />
+              </div>
+              <figcaption>
+                <span>{copy.quests.eyebrow}</span>
+                <strong>{copy.quests.features[0]?.title}</strong>
+              </figcaption>
+            </figure>
           </div>
         </div>
       </section>
