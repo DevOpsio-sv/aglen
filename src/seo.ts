@@ -49,17 +49,64 @@ export function supersedingGuideSlug(routeId: RouteId): string | undefined {
   return legacyGuideRouteIds[routeId as CoreRouteId];
 }
 
+// ── M1: thin keyword/marketing landing pages retired to an existing page ──────
+// Each 301s to a route that returns 200 today (see public/_redirects), renders
+// noindex with a canonical + hreflang pointing at that target, and drops from the
+// sitemaps. Only existing routes are used as targets; entity, karst and plan
+// targets are deferred until those routes exist (M3/M4).
+const retiredLandingRouteIds: Partial<Record<RouteId, CoreRouteId>> = {
+  visitAglen: "home",
+  thingsToDo: "home",
+  natureAroundAglen: "home",
+  natureTourism: "home",
+  ecoTourismBulgaria: "home",
+  ruralTourismBulgaria: "home",
+  slowTravelBulgaria: "home",
+  culturalTourism: "home",
+  adventureTourism: "home",
+  hiddenPlaces: "geo",
+  routeMap: "geo",
+  traditionalFood: "localBusinesses",
+  accommodationNearAglen: "localBusinesses",
+  aiAnswerHub: "trust",
+};
+
+/** The existing route a retired landing page now 301s and canonicalises to. */
+export function retiredLandingTarget(routeId: RouteId): CoreRouteId | undefined {
+  return retiredLandingRouteIds[routeId];
+}
+
+// ── M1: travel-planning landing pages kept live but noindex until /plan/* exists.
+// No redirect — there is no real target yet — but excluded from the sitemaps and
+// marked noindex with a self-referencing canonical. Removed from this set as each
+// /plan/* view ships.
+const noindexUntilPlanRouteIds = new Set<RouteId>([
+  "weekendInAglen",
+  "aglenFromSofia",
+  "howToGet",
+  "familyTrip",
+  "bestTime",
+  "campingNearAglen",
+]);
+
 /**
  * Whether a route may be indexed and advertised in a sitemap.
  *
- * Two kinds of route may not:
+ * Four kinds of route may not:
  *   • a legacy duplicate of a /guides/ page, which canonicalises and 301s there;
+ *   • a retired keyword/marketing landing page, which 301s to an existing page (M1);
+ *   • a travel-planning landing page held noindex until its /plan/* view exists (M1);
  *   • a route whose only section is switched off by a feature flag, which would
  *     otherwise ship an empty page (SHOW_EXPERIENCES and SHOW_STAY are both off,
  *     so /activities/ and /stay/ currently render nothing of their own).
  */
 export function isIndexableRoute(routeId: RouteId): boolean {
-  return !supersedingGuideSlug(routeId) && routeHasOwnSections(routeId);
+  return (
+    !supersedingGuideSlug(routeId) &&
+    !retiredLandingTarget(routeId) &&
+    !noindexUntilPlanRouteIds.has(routeId) &&
+    routeHasOwnSections(routeId)
+  );
 }
 
 /** Index pages, which schema.org models as CollectionPage rather than WebPage. */
@@ -318,11 +365,13 @@ export function getSEOConfig(lang: LanguageCode, routeId: RouteId = "home", deta
   // A legacy route resolves to the guide that replaced it, so the canonical and
   // every hreflang alternate point at the URL that should actually rank.
   const supersededBy = detailSlug ? undefined : supersedingGuideSlug(routeId);
+  const retiredTo = detailSlug ? undefined : retiredLandingTarget(routeId);
 
   const urlFor = (code: LanguageCode) => {
     if (business) return absoluteBusinessUrl(code, business.slug);
     if (guide) return absoluteGuideUrl(code, guide.slug);
     if (supersededBy) return absoluteGuideUrl(code, supersededBy);
+    if (retiredTo) return absoluteRouteUrl(code, retiredTo);
     return absoluteRouteUrl(code, routeId);
   };
 

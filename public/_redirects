@@ -14,3 +14,25 @@
 /:lang/travel-guide/food-local-products/ /:lang/guides/local-food/         301
 /:lang/nearby-destinations/             /:lang/guides/nearby-destinations/ 301
 /:lang/travel-guide/seasonal-guide/     /:lang/guides/seasonal-guide/      301
+
+# ── M1: thin keyword/marketing landing pages → an existing page (301, all langs) ─
+# Retired per IMPLEMENTATION_PLAN M1 (safe scope): every target returns 200 today
+# (home, /location/, /local-businesses/, /about/). Entity/karst/plan targets are
+# deferred until those routes exist (M3/M4). The six entity-content guide landings
+# (Lukovit, Karlukovo, Krushuna, Devetashka, Iskar–Panega, Lovech) stay live.
+# Prerendered HTML is still generated (noindex, canonical → target) as a fallback;
+# these URLs are dropped from the sitemaps by isIndexableRoute.
+/:lang/visit-aglen/                   /:lang/                    301
+/:lang/things-to-do-in-aglen/         /:lang/                    301
+/:lang/nature-around-aglen/           /:lang/                    301
+/:lang/nature-tourism-aglen/          /:lang/                    301
+/:lang/eco-tourism-bulgaria-aglen/    /:lang/                    301
+/:lang/rural-tourism-bulgaria-aglen/  /:lang/                    301
+/:lang/slow-travel-bulgaria-aglen/    /:lang/                    301
+/:lang/cultural-tourism-aglen/        /:lang/                    301
+/:lang/adventure-tourism-aglen/       /:lang/                    301
+/:lang/hidden-places-near-aglen/      /:lang/location/           301
+/:lang/aglen-route-map/               /:lang/location/           301
+/:lang/traditional-food-aglen/        /:lang/local-businesses/   301
+/:lang/accommodation-near-aglen/      /:lang/local-businesses/   301
+/:lang/aglen-answer-hub/              /:lang/about/              301
