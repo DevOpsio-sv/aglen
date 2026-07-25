@@ -283,5 +283,5 @@ export const hu: PageCopy = {
     { title: "Sátorhely", type: "Kemping", description: "Nyitott terület sátraknak, hozzáféréssel a Vit folyóhoz és a természeti útvonalakhoz.", image: images.aerial },
     { title: "Hegyi villa", type: "Villa", description: "Elvonult villa kanyonkilátással, kis csoportoknak és hétvégi pihenéshez.", image: images.pool },
   ],
-  sourceNotes: ["Készítette: DevOpsio - www.devopsio.eu", "Minden kép helyi fotósoktól származik, engedéllyel használva."],
+  sourceNotes: ["Készítette: DevOpsio - devopsio.co", "Minden kép helyi fotósoktól származik, engedéllyel használva."],
 };

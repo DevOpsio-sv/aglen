@@ -279,5 +279,5 @@ export const sr: PageCopy = {
     { title: "Пећине и стеновите појаве", detail: "Откриј скривени свет крашког рељефа – пећине, стеновите формације и места са непоновљивом атмосфером." },
   ],
   accommodationList: accommodationSr,
-  sourceNotes: ["Креирао DevOpsio - www.devopsio.eu", "Све слике су од локалних фотографа и користе се уз дозволу."],
+  sourceNotes: ["Креирао DevOpsio - devopsio.co", "Све слике су од локалних фотографа и користе се уз дозволу."],
 };

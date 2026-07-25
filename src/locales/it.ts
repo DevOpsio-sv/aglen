@@ -283,5 +283,5 @@ export const it: PageCopy = {
     { title: "Area campeggio", type: "Camping", description: "Spazio aperto per tende con accesso al Vit e ai sentieri naturali.", image: images.aerial },
     { title: "Villa di montagna", type: "Villa", description: "Villa appartata con vista canyon, ideale per piccoli gruppi e weekend.", image: images.pool },
   ],
-  sourceNotes: ["Creato da DevOpsio - www.devopsio.eu", "Tutte le immagini sono di fotografi locali e sono usate con autorizzazione."],
+  sourceNotes: ["Creato da DevOpsio - devopsio.co", "Tutte le immagini sono di fotografi locali e sono usate con autorizzazione."],
 };

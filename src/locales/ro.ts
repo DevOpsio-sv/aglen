@@ -283,5 +283,5 @@ export const ro: PageCopy = {
     { title: "Loc de camping", type: "Camping", description: "Spațiu deschis pentru corturi, cu acces la râul Vit și la traseele naturale.", image: images.aerial },
     { title: "Vilă de munte", type: "Vilă", description: "Vilă retrasă cu vedere spre canion, potrivită pentru grupuri mici și escapade de weekend.", image: images.pool },
   ],
-  sourceNotes: ["Creat de DevOpsio - www.devopsio.eu", "Toate imaginile sunt realizate de fotografi locali și sunt folosite cu permisiune."],
+  sourceNotes: ["Creat de DevOpsio - devopsio.co", "Toate imaginile sunt realizate de fotografi locali și sunt folosite cu permisiune."],
 };

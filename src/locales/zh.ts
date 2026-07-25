@@ -283,5 +283,5 @@ export const zh: PageCopy = {
     { title: "露营地", type: "露营", description: "供搭帐篷的开放空间，可通往维特河和自然步道。", image: images.aerial },
     { title: "山间别墅", type: "别墅", description: "一座可俯瞰峡谷的僻静别墅，适合小团体和周末逃离。", image: images.pool },
   ],
-  sourceNotes: ["由 DevOpsio 创建 - www.devopsio.eu", "所有图片来自当地摄影师，并已获授权使用。"],
+  sourceNotes: ["由 DevOpsio 创建 - devopsio.co", "所有图片来自当地摄影师，并已获授权使用。"],
 };

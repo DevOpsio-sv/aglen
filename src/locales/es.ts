@@ -283,5 +283,5 @@ export const es: PageCopy = {
     { title: "Zona de acampada", type: "Camping", description: "Espacio abierto para tiendas con acceso al río Vit y a las rutas naturales.", image: images.aerial },
     { title: "Villa de montaña", type: "Villa", description: "Villa apartada con vistas al cañón, adecuada para grupos pequeños y escapadas de fin de semana.", image: images.pool },
   ],
-  sourceNotes: ["Creado por DevOpsio - www.devopsio.eu", "Todas las imágenes son de fotógrafos locales y se usan con permiso."],
+  sourceNotes: ["Creado por DevOpsio - devopsio.co", "Todas las imágenes son de fotógrafos locales y se usan con permiso."],
 };

@@ -227,5 +227,5 @@ export const fr: PageCopy = {
     { title: "Terrain de camping", type: "Camping", description: "Espace ouvert pour tentes avec accès à la rivière Vit et aux sentiers naturels.", image: images.aerial },
     { title: "Villa de montagne", type: "Villa", description: "Villa isolée avec vue sur le canyon, idéale pour petits groupes et week-ends.", image: images.pool },
   ],
-  sourceNotes: ["Créé par DevOpsio - www.devopsio.eu", "Toutes les images proviennent de photographes locaux et sont utilisées avec autorisation."],
+  sourceNotes: ["Créé par DevOpsio - devopsio.co", "Toutes les images proviennent de photographes locaux et sont utilisées avec autorisation."],
 };

@@ -184,6 +184,6 @@ export const en: PageCopy = {
     { title: "Caves and rock phenomena", detail: "Discover the hidden world of karst relief – caves, rock formations, and places with an incomparable atmosphere." },
   ],
   accommodationList: accommodationEn,
-  sourceNotes: ["Created by DevOpsio - www.devopsio.eu", "All images are by local photographers and are used with permission."],
+  sourceNotes: ["Created by DevOpsio - devopsio.co", "All images are by local photographers and are used with permission."],
 };
 

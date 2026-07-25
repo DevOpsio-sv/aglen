@@ -204,6 +204,6 @@ export const de: PageCopy = {
     { title: "Zeltplatz", type: "Camping", description: "Offene Fläche für Zelte mit Zugang zum Fluss Vit und zu den Naturwegen.", image: images.aerial },
     { title: "Bergvilla", type: "Villa", description: "Abgelegene Villa mit Blick auf den Canyon, geeignet für kleine Gruppen und Wochenendauszeiten.", image: images.pool },
   ],
-  sourceNotes: ["Erstellt von DevOpsio - www.devopsio.eu", "Alle Bilder stammen von lokalen Fotografen und werden mit Genehmigung verwendet."],
+  sourceNotes: ["Erstellt von DevOpsio - devopsio.co", "Alle Bilder stammen von lokalen Fotografen und werden mit Genehmigung verwendet."],
 };
 

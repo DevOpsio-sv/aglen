@@ -283,5 +283,5 @@ export const ja: PageCopy = {
     { title: "キャンプ場", type: "キャンプ", description: "ヴィト川と自然のルートにアクセスできる、テント用の開けた空間。", image: images.aerial },
     { title: "山のヴィラ", type: "ヴィラ", description: "峡谷を望む人里離れたヴィラ。小グループや週末の逃避行に向いています。", image: images.pool },
   ],
-  sourceNotes: ["DevOpsio により作成 - www.devopsio.eu", "すべての画像は地元の写真家によるもので、許可を得て使用しています。"],
+  sourceNotes: ["DevOpsio により作成 - devopsio.co", "すべての画像は地元の写真家によるもので、許可を得て使用しています。"],
 };

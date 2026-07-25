@@ -283,5 +283,5 @@ export const tr: PageCopy = {
     { title: "Kamp alanı", type: "Kamp", description: "Vit Nehri ve doğal rotalara erişimli açık çadır alanı.", image: images.aerial },
     { title: "Dağ villası", type: "Villa", description: "Kanyon manzaralı, küçük gruplar ve hafta sonu kaçamakları için uygun sakin villa.", image: images.pool },
   ],
-  sourceNotes: ["DevOpsio tarafından oluşturuldu - www.devopsio.eu", "Tüm görseller yerel fotoğrafçılara aittir ve izinle kullanılmıştır."],
+  sourceNotes: ["DevOpsio tarafından oluşturuldu - devopsio.co", "Tüm görseller yerel fotoğrafçılara aittir ve izinle kullanılmıştır."],
 };
