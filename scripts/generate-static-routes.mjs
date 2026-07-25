@@ -22,6 +22,7 @@ function resolveSourceModule(specifier, fromFile) {
     `${basePath}.tsx`,
     `${basePath}.js`,
     `${basePath}.mjs`,
+    `${basePath}.json`,
     path.join(basePath, "index.ts"),
   ];
 
@@ -41,6 +42,13 @@ function loadSourceModule(filePath) {
   const resolvedPath = resolveSourceModule(filePath, path.join(rootDir, "scripts", "generate-static-routes.mjs"));
   if (moduleCache.has(resolvedPath)) {
     return moduleCache.get(resolvedPath).exports;
+  }
+
+  // JSON records (the graph's authored data) are parsed, not transpiled.
+  if (resolvedPath.endsWith(".json")) {
+    const parsed = JSON.parse(fs.readFileSync(resolvedPath, "utf8"));
+    moduleCache.set(resolvedPath, { exports: parsed });
+    return parsed;
   }
 
   const source = fs.readFileSync(resolvedPath, "utf8");

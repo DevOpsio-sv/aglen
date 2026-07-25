@@ -156,7 +156,7 @@ function addIssue(category, message) {
 function resolveSourceModule(specifier, fromFile) {
   if (!specifier.startsWith(".")) return specifier;
   const basePath = path.resolve(path.dirname(fromFile), specifier);
-  const candidates = [basePath, `${basePath}.ts`, `${basePath}.tsx`, `${basePath}.js`, `${basePath}.mjs`, path.join(basePath, "index.ts")];
+  const candidates = [basePath, `${basePath}.ts`, `${basePath}.tsx`, `${basePath}.js`, `${basePath}.mjs`, `${basePath}.json`, path.join(basePath, "index.ts")];
   const match = candidates.find((candidate) => fs.existsSync(candidate) && fs.statSync(candidate).isFile());
   if (!match) throw new Error(`Cannot resolve ${specifier} from ${fromFile}`);
   return match;
@@ -166,6 +166,12 @@ function loadSourceModule(filePath) {
   if (!filePath.startsWith(rootDir)) return nodeRequire(filePath);
   const resolvedPath = resolveSourceModule(filePath, path.join(rootDir, "scripts", "i18n-audit.mjs"));
   if (moduleCache.has(resolvedPath)) return moduleCache.get(resolvedPath).exports;
+
+  if (resolvedPath.endsWith(".json")) {
+    const parsed = JSON.parse(fs.readFileSync(resolvedPath, "utf8"));
+    moduleCache.set(resolvedPath, { exports: parsed });
+    return parsed;
+  }
 
   const source = fs.readFileSync(resolvedPath, "utf8");
   const module = { exports: {} };

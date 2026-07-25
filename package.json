@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "i18n:audit": "node scripts/i18n-audit.mjs",
-    "build": "tsc && vite build && node scripts/generate-static-routes.mjs && npm run i18n:audit",
+    "graph:audit": "node scripts/graph-audit.mjs",
+    "build": "tsc && vite build && node scripts/generate-static-routes.mjs && npm run graph:audit && npm run i18n:audit",
     "preview": "vite preview",
     "deploy:cloudflare": "npm run build && wrangler pages deploy dist --project-name aglen-tourism-site"
   },

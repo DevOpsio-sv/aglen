@@ -1,0 +1,355 @@
+{
+  "$schema": "../../schema.ts",
+  "partition": "karst/lukovit",
+  "note": "Entity records for the Lukovit-karst partition (ADR-009). Prose is transcluded from existing verified content via contentRef (regionId → region.ts note, placeId → locale placesList) and is never duplicated here. Coordinates/sameAs for the nine E4/E5 places are absorbed from region.ts. The nine E1 entities have no coordinates yet (field-day work, KNOWLEDGE_GRAPH.md §4); their records omit geo rather than inherit the village fix (Constitution rule 16). Reciprocal edges and straight-line distances are DERIVED in index.ts and must not be hand-authored.",
+  "entities": [
+    {
+      "id": "karst-lukovit",
+      "kind": "region",
+      "slug": "karst",
+      "schemaType": "Landform",
+      "name": { "bg": "Луковитски карст", "en": "The Lukovit Karst" },
+      "shortDescription": {
+        "bg": "Карстовият район на Предбалкана около Луковит — пещери, скални венци, арки и каньонът на река Вит, в който се намира Ъглен.",
+        "en": "The Fore-Balkan karst district around Lukovit — caves, rock cliffs, arches and the Vit River canyon that holds Aglen."
+      },
+      "confidence": "E2",
+      "relations": [
+        { "type": "locatedIn", "target": "lovech-province" }
+      ],
+      "page": { "path": "/karst/", "priority": 1, "status": "published", "breadcrumbRoot": true }
+    },
+    {
+      "id": "karlukovo-district",
+      "kind": "region",
+      "slug": "karlukovski-raion",
+      "schemaType": "Landform",
+      "name": { "bg": "Карлуковски карстов район", "en": "The Karlukovo karst area" },
+      "confidence": "E3",
+      "parent": "karst-lukovit",
+      "relations": []
+    },
+    {
+      "id": "vit-valley-aglen",
+      "kind": "region",
+      "slug": "dolina-na-vit",
+      "schemaType": "Landform",
+      "name": { "bg": "Долина на Вит при Ъглен", "en": "The Vit valley at Aglen" },
+      "confidence": "E2",
+      "parent": "karst-lukovit",
+      "relations": []
+    },
+    {
+      "id": "lovech-province",
+      "kind": "province",
+      "slug": "lovech-province",
+      "schemaType": "AdministrativeArea",
+      "contentRef": { "regionId": "lovech-province" },
+      "confidence": "E4",
+      "relations": [],
+      "page": { "path": "/place/lovech-province/", "priority": 4, "status": "published", "breadcrumbRoot": true }
+    },
+    {
+      "id": "municipality-lukovit",
+      "kind": "municipality",
+      "slug": "lukovit-municipality",
+      "schemaType": "AdministrativeArea",
+      "name": { "bg": "Община Луковит", "en": "Lukovit Municipality" },
+      "confidence": "E3",
+      "parent": "lovech-province",
+      "relations": []
+    },
+    {
+      "id": "aglen",
+      "kind": "settlement",
+      "slug": "aglen",
+      "schemaType": "Place",
+      "name": { "bg": "Ъглен", "en": "Aglen" },
+      "shortDescription": {
+        "bg": "Село в община Луковит, област Ловеч — единственото населено място в България, чието име започва с „Ъ“. Разположено е в долината на река Вит, сред варовиковите скали на Луковитския карст.",
+        "en": "A village in Lukovit municipality, Lovech Province — the only settlement in Bulgaria whose name begins with the letter “Ъ”. It sits in the Vit River valley among the limestone rocks of the Lukovit Karst."
+      },
+      "geo": { "lat": 43.201151, "lon": 24.314943 },
+      "sameAs": { "wikidata": "Q550547", "wikipedia": { "bg": "Ъглен", "en": "Aglen, Bulgaria" } },
+      "confidence": "E3",
+      "parent": "vit-valley-aglen",
+      "relations": [
+        { "type": "locatedIn", "target": "municipality-lukovit" },
+        { "type": "birthPlaceOf", "target": "trifon-kunev" },
+        { "type": "subjectOf", "target": "dvukrakite-senki" },
+        { "type": "subjectOf", "target": "zlatnata-brazdichka" }
+      ],
+      "page": { "path": "/place/aglen/", "priority": 1, "status": "published", "breadcrumbRoot": true }
+    },
+    {
+      "id": "lukovit",
+      "kind": "settlement",
+      "slug": "lukovit",
+      "schemaType": "City",
+      "contentRef": { "regionId": "lukovit" },
+      "geo": { "lat": 43.210186, "lon": 24.16294 },
+      "sameAs": { "wikidata": "Q405585", "wikipedia": { "bg": "Луковит", "en": "Lukovit" } },
+      "confidence": "E4",
+      "parent": "karst-lukovit",
+      "relations": [
+        { "type": "locatedIn", "target": "municipality-lukovit" },
+        { "type": "accessedFrom", "target": "aglen" },
+        { "type": "accessedFrom", "target": "karlukovo" },
+        { "type": "accessedFrom", "target": "iskar-panega" }
+      ],
+      "page": { "path": "/place/lukovit/", "priority": 1, "status": "published" }
+    },
+    {
+      "id": "karlukovo",
+      "kind": "settlement",
+      "slug": "karlukovo",
+      "schemaType": "Place",
+      "contentRef": { "regionId": "karlukovo" },
+      "geo": { "lat": 43.163665, "lon": 24.067091 },
+      "sameAs": { "wikidata": "Q1085214", "wikipedia": { "bg": "Карлуково", "en": "Karlukovo" } },
+      "confidence": "E4",
+      "parent": "karlukovo-district",
+      "relations": [
+        { "type": "locatedIn", "target": "municipality-lukovit" }
+      ],
+      "page": { "path": "/place/karlukovo/", "priority": 1, "status": "published" }
+    },
+    {
+      "id": "prohodna",
+      "kind": "cave",
+      "slug": "prohodna",
+      "schemaType": "TouristAttraction",
+      "additionalType": "https://www.wikidata.org/wiki/Q35509",
+      "contentRef": { "regionId": "prohodna", "guideSlug": "caves-and-rocks" },
+      "geo": { "lat": 43.1758, "lon": 24.0731 },
+      "sameAs": { "wikidata": "Q3657889", "wikipedia": { "bg": "Проходна", "en": "Prohodna" } },
+      "confidence": "E5",
+      "parent": "karlukovo-district",
+      "relations": [],
+      "page": { "path": "/place/prohodna/", "priority": 1, "status": "published" }
+    },
+    {
+      "id": "iskar-panega",
+      "kind": "geopark",
+      "slug": "iskar-panega",
+      "schemaType": "TouristAttraction",
+      "contentRef": { "regionId": "iskar-panega" },
+      "geo": { "linear": true },
+      "confidence": "E3",
+      "parent": "karst-lukovit",
+      "relations": [
+        { "type": "contains", "target": "zlatna-panega" }
+      ],
+      "page": { "path": "/place/iskar-panega/", "priority": 1, "status": "published" }
+    },
+    {
+      "id": "zlatna-panega",
+      "kind": "settlement",
+      "slug": "zlatna-panega",
+      "schemaType": "Place",
+      "contentRef": { "regionId": "zlatna-panega" },
+      "geo": { "lat": 43.091772, "lon": 24.150571 },
+      "sameAs": { "wikidata": "Q2455820", "wikipedia": { "bg": "Златна Панега", "en": "Zlatna Panega (village)" } },
+      "confidence": "E4",
+      "parent": "iskar-panega",
+      "relations": [],
+      "page": { "path": "/place/zlatna-panega/", "priority": 3, "status": "published" }
+    },
+    {
+      "id": "vit-river",
+      "kind": "waterBody",
+      "slug": "vit-river",
+      "schemaType": "RiverBodyOfWater",
+      "contentRef": { "regionId": "vit-river", "guideSlug": "vit-river" },
+      "geo": { "linear": true },
+      "sameAs": { "wikidata": "Q1773449", "wikipedia": { "bg": "Вит", "en": "Vit (river)" } },
+      "confidence": "E4",
+      "parent": "karst-lukovit",
+      "relations": [
+        { "type": "sameWatershed", "target": "rachkov-vir" }
+      ],
+      "page": { "path": "/place/vit-river/", "priority": 1, "status": "published" }
+    },
+    {
+      "id": "devetashka",
+      "kind": "cave",
+      "slug": "devetashka",
+      "schemaType": "TouristAttraction",
+      "contentRef": { "regionId": "devetashka" },
+      "geo": { "lat": 43.232944, "lon": 24.886861 },
+      "sameAs": { "wikidata": "Q2756370", "wikipedia": { "bg": "Деветашка пещера", "en": "Devetashka Cave" } },
+      "confidence": "E5",
+      "parent": "lovech-province",
+      "relations": [],
+      "page": { "path": "/place/devetashka/", "priority": 2, "status": "published" }
+    },
+    {
+      "id": "krushuna",
+      "kind": "waterBody",
+      "slug": "krushuna-falls",
+      "schemaType": "TouristAttraction",
+      "contentRef": { "regionId": "krushuna" },
+      "geo": { "lat": 43.243056, "lon": 25.033333 },
+      "sameAs": { "wikidata": "Q6439432", "wikipedia": { "bg": "Крушунска бигорна каскада", "en": "Krushuna Falls" } },
+      "confidence": "E5",
+      "parent": "lovech-province",
+      "relations": [],
+      "page": { "path": "/place/krushuna-falls/", "priority": 2, "status": "published" }
+    },
+    {
+      "id": "lovech",
+      "kind": "settlement",
+      "slug": "lovech",
+      "schemaType": "City",
+      "contentRef": { "regionId": "lovech" },
+      "geo": { "lat": 43.134777, "lon": 24.711535 },
+      "sameAs": { "wikidata": "Q189328", "wikipedia": { "bg": "Ловеч", "en": "Lovech" } },
+      "confidence": "E5",
+      "parent": "lovech-province",
+      "relations": [],
+      "page": { "path": "/place/lovech/", "priority": 3, "status": "published" }
+    },
+    {
+      "id": "dupkata",
+      "kind": "landform",
+      "slug": "dupkata",
+      "schemaType": "Landform",
+      "contentRef": { "placeId": "dupkata" },
+      "confidence": "E1",
+      "parent": "vit-valley-aglen",
+      "relations": [
+        { "type": "sameFormation", "target": "prohodna" },
+        { "type": "combinesWellWith", "target": "sloncheto", "reason": { "bg": "Двете скални форми са на кратко разстояние над долината и се разглеждат в една разходка.", "en": "The two rock formations lie a short distance apart above the valley and are seen on one walk." } }
+      ],
+      "page": { "path": "/place/dupkata/", "priority": 1, "status": "published" }
+    },
+    {
+      "id": "sloncheto",
+      "kind": "landform",
+      "slug": "sloncheto",
+      "schemaType": "Landform",
+      "contentRef": { "placeId": "sloncheto" },
+      "confidence": "E1",
+      "parent": "vit-valley-aglen",
+      "relations": [],
+      "page": { "path": "/place/sloncheto/", "priority": 2, "status": "published" }
+    },
+    {
+      "id": "chervena-stena",
+      "kind": "landform",
+      "slug": "chervena-stena",
+      "schemaType": "Landform",
+      "contentRef": { "placeId": "chervena-stena" },
+      "confidence": "E1",
+      "parent": "vit-valley-aglen",
+      "relations": [],
+      "page": { "path": "/place/chervena-stena/", "priority": 2, "status": "published" }
+    },
+    {
+      "id": "rachkov-vir",
+      "kind": "waterBody",
+      "slug": "rachkov-vir",
+      "schemaType": "BodyOfWater",
+      "contentRef": { "placeId": "rachkov-vir" },
+      "confidence": "E1",
+      "parent": "vit-valley-aglen",
+      "relations": [],
+      "page": { "path": "/place/rachkov-vir/", "priority": 2, "status": "published" }
+    },
+    {
+      "id": "kaleto",
+      "kind": "archaeologicalSite",
+      "slug": "kaleto",
+      "schemaType": "LandmarksOrHistoricalBuildings",
+      "contentRef": { "placeId": "kaleto" },
+      "confidence": "E1",
+      "parent": "vit-valley-aglen",
+      "relations": [],
+      "page": { "path": "/place/kaleto/", "priority": 2, "status": "published" }
+    },
+    {
+      "id": "st-archangel-michael",
+      "kind": "building",
+      "slug": "st-archangel-michael",
+      "schemaType": "Church",
+      "contentRef": { "placeId": "st-archangel-michael" },
+      "confidence": "E1",
+      "parent": "aglen",
+      "relations": [
+        { "type": "subjectOf", "target": "flint-workshops" }
+      ],
+      "page": { "path": "/place/st-archangel-michael/", "priority": 2, "status": "published" }
+    },
+    {
+      "id": "selishteto",
+      "kind": "archaeologicalSite",
+      "slug": "selishteto",
+      "schemaType": "LandmarksOrHistoricalBuildings",
+      "name": { "bg": "Селището (Старо село)", "en": "Selishteto (the old settlement)" },
+      "shortDescription": {
+        "bg": "Изоставеното старо селище, предшественик на днешния Ъглен — обяснява защо в землището има два обитавани в различно време центъра.",
+        "en": "The abandoned predecessor settlement of today’s Aglen — it explains why the land holds two habitation centres from different periods."
+      },
+      "confidence": "E1",
+      "parent": "vit-valley-aglen",
+      "relations": [
+        { "type": "supersededBy", "target": "aglen" }
+      ]
+    },
+    {
+      "id": "trifon-kunev",
+      "kind": "person",
+      "slug": "trifon-kunev",
+      "schemaType": "Person",
+      "name": { "bg": "Трифон Кунев", "en": "Trifon Kunev" },
+      "shortDescription": {
+        "bg": "Български поет, писател и журналист, роден в Ъглен — най-силната връзка на селото към националната памет.",
+        "en": "A Bulgarian poet, writer and journalist born in Aglen — the village’s strongest tie to the national record."
+      },
+      "sameAs": { "wikipedia": { "bg": "Трифон Кунев" } },
+      "confidence": "E4",
+      "relations": []
+    },
+    {
+      "id": "dvukrakite-senki",
+      "kind": "legend",
+      "slug": "dvukrakite-senki",
+      "schemaType": "CreativeWork",
+      "name": { "bg": "Двукраките сенки", "en": "The two-legged shadows" },
+      "shortDescription": {
+        "bg": "Местно предание, записано така, както се разказва в селото. Разказва се като памет, не като документиран исторически факт.",
+        "en": "A local legend recorded as it is told in the village. It is related as memory, not as documented historical fact."
+      },
+      "confidence": "E1",
+      "relations": []
+    },
+    {
+      "id": "zlatnata-brazdichka",
+      "kind": "legend",
+      "slug": "zlatnata-brazdichka",
+      "schemaType": "CreativeWork",
+      "name": { "bg": "Златната браздичка", "en": "The golden furrow" },
+      "shortDescription": {
+        "bg": "Местно предание от землището на Ъглен, записано както се разказва в селото.",
+        "en": "A local legend from the land of Aglen, recorded as it is told in the village."
+      },
+      "confidence": "E1",
+      "relations": []
+    },
+    {
+      "id": "flint-workshops",
+      "kind": "period",
+      "slug": "flint-workshops",
+      "schemaType": "Event",
+      "name": { "bg": "Кремъчни работилници", "en": "The flint workshops" },
+      "shortDescription": {
+        "bg": "Праисторическите кремъчни работилници по терасите над Вит — материал, който представя района като индустриално значим в праисторията.",
+        "en": "The prehistoric flint workshops on the terraces above the Vit — evidence that frames the area as industrially significant in prehistory."
+      },
+      "confidence": "E2",
+      "relations": [
+        { "type": "locatedIn", "target": "vit-valley-aglen" }
+      ]
+    }
+  ]
+}
