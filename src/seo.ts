@@ -93,7 +93,6 @@ type SEOConfig = {
   title: string;
   description: string;
   locale: string;
-  keywords: string;
   author: string;
   siteName: string;
   imageUrl: string;
@@ -297,26 +296,6 @@ function routeText(lang: LanguageCode, routeId: RouteId): { title: string; descr
   return core[routeId as CoreRouteId];
 }
 
-function keywordsForRoute(lang: LanguageCode, routeId: RouteId): string {
-  const copy = contentByLanguage[lang];
-  const landing = isLandingPageId(routeId) ? getLandingPage(lang, routeId) : undefined;
-  const base = [
-    copy.brand.name,
-    copy.hero.subtitle,
-    copy.guides.vitRiver.label,
-    copy.guides.hiking.label,
-    copy.guides.nearby.label,
-    copy.nav.quests,
-  ];
-
-  if (landing) {
-    return [...base, ...landing.keywords, ...landing.secondaryKeywords, ...landing.bulgarianKeywords].join(", ");
-  }
-
-  const text = routeText(lang, routeId);
-  return [...base, text.title, text.description].join(", ");
-}
-
 /**
  * `detailSlug` addresses a single business or guide beneath its index route.
  * Both share the parameter because a route has at most one kind of detail page.
@@ -354,9 +333,6 @@ export function getSEOConfig(lang: LanguageCode, routeId: RouteId = "home", deta
     title: text.title,
     description: compact(text.description),
     locale: localeCodes[lang],
-    keywords: business
-      ? [business.name, businessCategoryLabel(businessesUiByLanguage[lang], business.category), text.description].join(", ")
-      : keywordsForRoute(lang, routeId),
     author: seoTextByLanguage[lang].organizationName,
     siteName: contentByLanguage[lang].nav.quests,
     imageUrl: pageImage ?? primaryImage?.loc ?? OG_IMAGE,
@@ -1304,7 +1280,6 @@ export function updateDocumentSEO(lang: LanguageCode, routeId: RouteId = "home",
 
   document.title = meta.title;
   setMeta("description", meta.description);
-  setMeta("keywords", meta.keywords);
   setMeta("author", meta.author);
   setMeta("robots", meta.robots);
   setMeta("googlebot", meta.robots);

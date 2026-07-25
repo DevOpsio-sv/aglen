@@ -133,7 +133,6 @@ function renderPageHtml(routePath) {
   html = html.replace(/<html lang="[^"]*">/, `<html lang="${language}">`);
   html = html.replace(/<title>[\s\S]*?<\/title>/, `<title>${escapeText(pageSeo.title)}</title>`);
   html = replaceOrInsert(html, /<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${escapeAttribute(pageSeo.description)}" />`);
-  html = replaceOrInsert(html, /<meta name="keywords" content="[^"]*" \/>/, `<meta name="keywords" content="${escapeAttribute(pageSeo.keywords)}" />`);
   html = replaceOrInsert(html, /<meta name="author" content="[^"]*" \/>/, `<meta name="author" content="${escapeAttribute(pageSeo.author)}" />`);
   // Legacy duplicate routes ship noindex, follow.
   html = replaceOrInsert(html, /<meta name="robots" content="[^"]*" \/>/, `<meta name="robots" content="${escapeAttribute(pageSeo.robots)}" />`);

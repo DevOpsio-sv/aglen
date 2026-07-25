@@ -357,7 +357,7 @@ function validateRuntimeData(routes, seo, landing) {
       const meta = seo.getSEOConfig(lang, route.id);
       checkNoPolish("metadata", `${lang}.${route.id}`, JSON.stringify(meta));
       checkNoPlaceholder("metadata", `${lang}.${route.id}`, JSON.stringify(meta));
-      checkContamination("metadata", lang, `${lang}.${route.id}`, `${meta.title} ${meta.description} ${meta.keywords}`);
+      checkContamination("metadata", lang, `${lang}.${route.id}`, `${meta.title} ${meta.description}`);
       if (meta.locale !== expectedLocaleCodes[lang]) {
         addIssue("metadata", `${lang}.${route.id} locale ${meta.locale} does not match ${expectedLocaleCodes[lang]}.`);
       }
