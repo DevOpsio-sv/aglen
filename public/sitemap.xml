@@ -4,21 +4,21 @@
   The build script (scripts/generate-static-routes.mjs) replaces this in dist/
   with a generated sitemap index + per-language sitemaps that include all routes,
   hreflang alternates, and image entries.
-  Submit https://xn--c1aerj5d.com/sitemap.xml to Google Search Console and Bing Webmaster Tools.
+  Submit https://aglen.bg/sitemap.xml to Google Search Console and Bing Webmaster Tools.
 -->
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <sitemap><loc>https://xn--c1aerj5d.com/sitemap-bg.xml</loc></sitemap>
-  <sitemap><loc>https://xn--c1aerj5d.com/sitemap-en.xml</loc></sitemap>
-  <sitemap><loc>https://xn--c1aerj5d.com/sitemap-de.xml</loc></sitemap>
-  <sitemap><loc>https://xn--c1aerj5d.com/sitemap-fr.xml</loc></sitemap>
-  <sitemap><loc>https://xn--c1aerj5d.com/sitemap-es.xml</loc></sitemap>
-  <sitemap><loc>https://xn--c1aerj5d.com/sitemap-it.xml</loc></sitemap>
-  <sitemap><loc>https://xn--c1aerj5d.com/sitemap-ro.xml</loc></sitemap>
-  <sitemap><loc>https://xn--c1aerj5d.com/sitemap-tr.xml</loc></sitemap>
-  <sitemap><loc>https://xn--c1aerj5d.com/sitemap-el.xml</loc></sitemap>
-  <sitemap><loc>https://xn--c1aerj5d.com/sitemap-ru.xml</loc></sitemap>
-  <sitemap><loc>https://xn--c1aerj5d.com/sitemap-ja.xml</loc></sitemap>
-  <sitemap><loc>https://xn--c1aerj5d.com/sitemap-sr.xml</loc></sitemap>
-  <sitemap><loc>https://xn--c1aerj5d.com/sitemap-zh.xml</loc></sitemap>
-  <sitemap><loc>https://xn--c1aerj5d.com/sitemap-hu.xml</loc></sitemap>
+  <sitemap><loc>https://aglen.bg/sitemap-bg.xml</loc></sitemap>
+  <sitemap><loc>https://aglen.bg/sitemap-en.xml</loc></sitemap>
+  <sitemap><loc>https://aglen.bg/sitemap-de.xml</loc></sitemap>
+  <sitemap><loc>https://aglen.bg/sitemap-fr.xml</loc></sitemap>
+  <sitemap><loc>https://aglen.bg/sitemap-es.xml</loc></sitemap>
+  <sitemap><loc>https://aglen.bg/sitemap-it.xml</loc></sitemap>
+  <sitemap><loc>https://aglen.bg/sitemap-ro.xml</loc></sitemap>
+  <sitemap><loc>https://aglen.bg/sitemap-tr.xml</loc></sitemap>
+  <sitemap><loc>https://aglen.bg/sitemap-el.xml</loc></sitemap>
+  <sitemap><loc>https://aglen.bg/sitemap-ru.xml</loc></sitemap>
+  <sitemap><loc>https://aglen.bg/sitemap-ja.xml</loc></sitemap>
+  <sitemap><loc>https://aglen.bg/sitemap-sr.xml</loc></sitemap>
+  <sitemap><loc>https://aglen.bg/sitemap-zh.xml</loc></sitemap>
+  <sitemap><loc>https://aglen.bg/sitemap-hu.xml</loc></sitemap>
 </sitemapindex>

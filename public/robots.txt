@@ -1,4 +1,4 @@
-# Aglen Tourism — https://xn--c1aerj5d.com
+# Aglen Tourism — https://aglen.bg
 # Crawling and citation policy in prose: /bg/crawler-policy/
 # Machine-readable entry points: /llms.txt
 
@@ -65,4 +65,4 @@ User-agent: Amazonbot
 Disallow: /
 
 # Sitemap index; it lists one sitemap per language.
-Sitemap: https://xn--c1aerj5d.com/sitemap.xml
+Sitemap: https://aglen.bg/sitemap.xml

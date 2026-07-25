@@ -23,7 +23,7 @@ import { fontFaces } from "./generated/fontManifest";
 import { routeHasOwnSections } from "./pageSections";
 import { localizeTrust, trustPageByRoute } from "./trustPages";
 
-export const SITE_URL = "https://xn--c1aerj5d.com";
+export const SITE_URL = "https://aglen.bg";
 
 // Social preview. A dedicated 1200×630 JPEG: WebP is still unreliable in the
 // Facebook, LinkedIn and WhatsApp scrapers, and the page image is now WebP.
