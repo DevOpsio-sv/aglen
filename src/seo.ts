@@ -94,6 +94,28 @@ export function retiredLandingTarget(routeId: RouteId): CoreRouteId | undefined 
   return retiredLandingRouteIds[routeId];
 }
 
+// ── M3: the six guide-content landing pages retire onto their entity pages.
+// Their subject is a real place, now modelled as a /place/<slug>/ entity, so the
+// landing 301s and canonicalises there (see public/_redirects). The pages keep
+// serving noindex as a fallback until the redirect applies; the /place/ target
+// exists first (sequencing rule), so no URL ever breaks.
+const retiredLandingToEntitySlug: Partial<Record<RouteId, string>> = {
+  lukovitGuide: "lukovit",
+  karlukovoGuide: "karlukovo",
+  krushunaGuide: "krushuna-falls",
+  devetashkaCaveGuide: "devetashka",
+  iskarPanegaGuide: "iskar-panega",
+  lovechRegionGuide: "lovech-province",
+};
+
+/** The published entity a retired guide-landing page now 301s and canonicalises to. */
+export function retiredLandingEntity(routeId: RouteId): Entity | undefined {
+  const slug = retiredLandingToEntitySlug[routeId];
+  if (!slug) return undefined;
+  const entity = entityBySlug(slug);
+  return entity && entity.page?.status === "published" ? entity : undefined;
+}
+
 // ── M1: travel-planning landing pages kept live but noindex until /plan/* exists.
 // No redirect — there is no real target yet — but excluded from the sitemaps and
 // marked noindex with a self-referencing canonical. Removed from this set as each
@@ -125,6 +147,7 @@ export function isIndexableRoute(routeId: RouteId): boolean {
   return (
     !supersedingGuideSlug(routeId) &&
     !retiredLandingTarget(routeId) &&
+    !retiredLandingEntity(routeId) &&
     !noindexUntilPlanRouteIds.has(routeId) &&
     routeHasOwnSections(routeId)
   );
@@ -494,9 +517,11 @@ export function getSEOConfig(lang: LanguageCode, routeId: RouteId = "home", deta
   // every hreflang alternate point at the URL that should actually rank.
   const supersededBy = detailSlug ? undefined : supersedingGuideSlug(routeId);
   const retiredTo = detailSlug ? undefined : retiredLandingTarget(routeId);
+  const retiredEntity = detailSlug ? undefined : retiredLandingEntity(routeId);
 
   const urlFor = (code: LanguageCode) => {
     if (entity) return entityAbsoluteUrl(code, entity);
+    if (retiredEntity) return entityAbsoluteUrl(code, retiredEntity);
     if (business) return absoluteBusinessUrl(code, business.slug);
     if (guide) return absoluteGuideUrl(code, guide.slug);
     if (supersededBy) return absoluteGuideUrl(code, supersededBy);

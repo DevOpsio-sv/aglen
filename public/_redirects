@@ -44,3 +44,13 @@
 # these pages render noindex with a canonical → /ar-missions/ as the fallback.
 /:lang/unlockingbulgaria/            /:lang/ar-missions/        301
 /:lang/app/                          /:lang/ar-missions/        301
+
+# ── M3: the six guide-content landing pages retire onto their /place/<slug>/
+# entity, which now exists (sequencing rule). Each renders noindex with a
+# canonical → the entity as the fallback; the entity page is the real subject.
+/:lang/lukovit-travel-guide/         /:lang/place/lukovit/          301
+/:lang/karlukovo-travel-guide/       /:lang/place/karlukovo/        301
+/:lang/krushuna-travel-guide/        /:lang/place/krushuna-falls/   301
+/:lang/devetashka-cave-travel-guide/ /:lang/place/devetashka/       301
+/:lang/iskar-panega-travel-guide/    /:lang/place/iskar-panega/     301
+/:lang/lovech-region-travel-guide/   /:lang/place/lovech-province/  301
