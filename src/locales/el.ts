@@ -2,7 +2,18 @@ import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const el: PageCopy = {
-  nav: { home: "Αρχική", about: "Για το Aglen", landmarks: "Μέρη", stay: "Διαμονή", quests: "AR αποστολές", events: "Εκδηλώσεις", business: "Τοπικές επιχειρήσεις" },
+  nav: { home: "Αρχική", about: "Για το Aglen", landmarks: "Μέρη", stay: "Διαμονή", quests: "AR αποστολές", events: "Εκδηλώσεις", business: "Τοπικές επιχειρήσεις", placesNature: "Μέρη και φύση", visit: "Επισκέψου το Aglen", visitGettingHere: "Πώς θα φτάσεις", visitRoutes: "Διαδρομές", visitChildren: "Με παιδιά", visitMissions: "AR αποστολές με Unlocking Bulgaria", visitWhen: "Πότε να επισκεφθείς" },
+  ub: {
+    homeHeading: "Ανακάλυψε το Aglen μέσα από το Unlocking Bulgaria",
+    homeText: "AR και GPS αποστολές σε πραγματικά μέρη γύρω από το Aglen. Το Unlocking Bulgaria είναι ανεξάρτητη εθνική εφαρμογή — το Aglen είναι ο πρώτος ενεργός του προορισμός.",
+    seeMissions: "Δες τις ενεργές αποστολές",
+    externalLabel: "Εξωτερική εφαρμογή · unlockingbulgaria.com",
+    hubTitle: "AR αποστολές στο Aglen με Unlocking Bulgaria",
+    whatText: "Το Unlocking Bulgaria είναι ανεξάρτητη εθνική εφαρμογή για AR και GPS αποστολές σε πραγματικά μέρη σε όλη τη Βουλγαρία. Το Aglen είναι ο πρώτος ενεργός του προορισμός — η εφαρμογή δεν αποτελεί μέρος του ιστότοπου του χωριού και δεν ανήκει σε αυτόν.",
+    missionsHeading: "Διαθέσιμες αποστολές γύρω από το Aglen",
+    needHeading: "Τι χρειάζεσαι",
+    needItems: ["Ένα smartphone με κάμερα", "Ενεργοποιημένο GPS", "Την εφαρμογή Unlocking Bulgaria"],
+  },
   ui: { languageLabel: "Γλώσσα", languageSelectAria: "Επιλογή γλώσσας", modalCloseAria: "Κλείσιμο", mobileMenuAria: "Μενού" },
   brand: { name: "Aglen", subtitle: "Χωριό δίπλα στον ποταμό Βιτ" },
   hero: {

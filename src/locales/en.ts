@@ -2,7 +2,18 @@
 import type { PageCopy } from "./types";
 
 export const en: PageCopy = {
-  nav: { home: "Home", about: "About Aglen", landmarks: "Places", stay: "Stay", quests: "AR Quests", events: "Events", business: "Local business" },
+  nav: { home: "Home", about: "About Aglen", landmarks: "Places", stay: "Stay", quests: "AR Quests", events: "Events", business: "Local business", placesNature: "Places & nature", visit: "Visit Aglen", visitGettingHere: "Getting here", visitRoutes: "Routes", visitChildren: "With children", visitMissions: "AR missions with Unlocking Bulgaria", visitWhen: "When to visit" },
+  ub: {
+    homeHeading: "Discover Aglen through Unlocking Bulgaria",
+    homeText: "AR and GPS missions at real places around Aglen. Unlocking Bulgaria is an independent national app — Aglen is its first active destination.",
+    seeMissions: "See active missions",
+    externalLabel: "External app · unlockingbulgaria.com",
+    hubTitle: "AR missions in Aglen with Unlocking Bulgaria",
+    whatText: "Unlocking Bulgaria is an independent national app for AR and GPS missions at real places across Bulgaria. Aglen is its first active destination — the app is not part of the village website and is not owned by it.",
+    missionsHeading: "Missions available around Aglen",
+    needHeading: "What you need",
+    needItems: ["A smartphone with a camera", "GPS turned on", "The Unlocking Bulgaria app"],
+  },
   ui: { languageLabel: "Language", languageSelectAria: "Select language", modalCloseAria: "Close", mobileMenuAria: "Menu" },
   brand: { name: "Aglen", subtitle: "Village by the Vit River" },
   hero: { meta: "Northern Bulgaria · Vit River · Lukovit · Karlukovo", title: "AGLEN", subtitle: "The Hidden Treasure of the Vit River", lede: "Discover canyons, caves, river pools, and striking natural phenomena in the heart of Northern Bulgaria. Aglen is an ideal destination for walks, photography, fishing, and a peaceful weekend surrounded by nature.", primary: "Explore Aglen", secondary: "Download the App", cue: "Discover the valley", imageAlt: "Cinematic view of a river canyon and village landscape inspired by Aglen" },

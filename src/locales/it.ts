@@ -2,7 +2,18 @@ import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const it: PageCopy = {
-  nav: { home: "Home", about: "Su Aglen", landmarks: "Luoghi", stay: "Dormire", quests: "Missioni AR", events: "Eventi", business: "Attività locali" },
+  nav: { home: "Home", about: "Su Aglen", landmarks: "Luoghi", stay: "Dormire", quests: "Missioni AR", events: "Eventi", business: "Attività locali", placesNature: "Luoghi e natura", visit: "Visita Aglen", visitGettingHere: "Come arrivare", visitRoutes: "Percorsi", visitChildren: "Con bambini", visitMissions: "Missioni AR con Unlocking Bulgaria", visitWhen: "Quando visitare" },
+  ub: {
+    homeHeading: "Scopri Aglen con Unlocking Bulgaria",
+    homeText: "Missioni AR e GPS in luoghi reali intorno ad Aglen. Unlocking Bulgaria è un'app nazionale indipendente — Aglen è la sua prima destinazione attiva.",
+    seeMissions: "Vedi le missioni attive",
+    externalLabel: "App esterna · unlockingbulgaria.com",
+    hubTitle: "Missioni AR ad Aglen con Unlocking Bulgaria",
+    whatText: "Unlocking Bulgaria è un'app nazionale indipendente per missioni AR e GPS in luoghi reali in tutta la Bulgaria. Aglen è la sua prima destinazione attiva — l'app non fa parte del sito del villaggio e non è di sua proprietà.",
+    missionsHeading: "Missioni disponibili intorno ad Aglen",
+    needHeading: "Cosa ti serve",
+    needItems: ["Uno smartphone con fotocamera", "GPS attivato", "L'app Unlocking Bulgaria"],
+  },
   ui: { languageLabel: "Lingua", languageSelectAria: "Seleziona lingua", modalCloseAria: "Chiudi", mobileMenuAria: "Menu" },
   brand: { name: "Aglen", subtitle: "Villaggio presso il fiume Vit" },
   hero: {

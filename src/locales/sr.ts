@@ -2,7 +2,18 @@ import { accommodationSr, images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const sr: PageCopy = {
-  nav: { home: "Почетна", about: "О Аглену", landmarks: "Места", stay: "Смештај", quests: "AR мисије", events: "Догађаји", business: "Локални бизниси" },
+  nav: { home: "Почетна", about: "О Аглену", landmarks: "Места", stay: "Смештај", quests: "AR мисије", events: "Догађаји", business: "Локални бизниси", placesNature: "Места и природа", visit: "Посети Аглен", visitGettingHere: "Како доћи", visitRoutes: "Руте", visitChildren: "Са децом", visitMissions: "AR мисије са Unlocking Bulgaria", visitWhen: "Када посетити" },
+  ub: {
+    homeHeading: "Откриј Аглен кроз Unlocking Bulgaria",
+    homeText: "AR и GPS мисије на стварним местима око Аглена. Unlocking Bulgaria је независна национална апликација — Аглен је њена прва активна дестинација.",
+    seeMissions: "Погледај активне мисије",
+    externalLabel: "Спољна апликација · unlockingbulgaria.com",
+    hubTitle: "AR мисије у Аглену са Unlocking Bulgaria",
+    whatText: "Unlocking Bulgaria је независна национална апликација за AR и GPS мисије на стварним местима широм Бугарске. Аглен је њена прва активна дестинација — апликација није део сајта села и није у његовом власништву.",
+    missionsHeading: "Доступне мисије око Аглена",
+    needHeading: "Шта ти је потребно",
+    needItems: ["Паметни телефон са камером", "Укључен GPS", "Апликација Unlocking Bulgaria"],
+  },
   ui: { languageLabel: "Језик", languageSelectAria: "Изабери језик", modalCloseAria: "Затвори", mobileMenuAria: "Мени" },
   brand: { name: "Аглен", subtitle: "Село крај реке Вит" },
   hero: {

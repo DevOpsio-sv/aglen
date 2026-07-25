@@ -188,6 +188,29 @@ export type PageCopy = {
     quests: string;
     events: string;
     business: string;
+    // Village-first primary navigation (ADR-013). `about` stays for existing
+    // metadata; these drive the header/mobile nav.
+    placesNature: string;
+    visit: string;
+    visitGettingHere: string;
+    visitRoutes: string;
+    visitChildren: string;
+    visitMissions: string;
+    visitWhen: string;
+  };
+  // Unlocking Bulgaria — the one compact home block and the /ar-missions/ hub.
+  // UB is an independent national application; Aglen is its first live
+  // destination (ADR-013). Nothing here models it as part of the village site.
+  ub: {
+    homeHeading: string;
+    homeText: string;
+    seeMissions: string;
+    externalLabel: string;
+    hubTitle: string;
+    whatText: string;
+    missionsHeading: string;
+    needHeading: string;
+    needItems: [string, string, string];
   };
   ui: {
     languageLabel: string;

@@ -2,7 +2,18 @@ import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const ja: PageCopy = {
-  nav: { home: "ホーム", about: "アグレンについて", landmarks: "見どころ", stay: "宿泊", quests: "ARミッション", events: "イベント", business: "地元のお店" },
+  nav: { home: "ホーム", about: "アグレンについて", landmarks: "見どころ", stay: "宿泊", quests: "ARミッション", events: "イベント", business: "地元のお店", placesNature: "見どころと自然", visit: "アグレンを訪れる", visitGettingHere: "アクセス", visitRoutes: "ルート", visitChildren: "子ども連れで", visitMissions: "Unlocking Bulgaria の ARミッション", visitWhen: "訪れる時期" },
+  ub: {
+    homeHeading: "Unlocking Bulgaria でアグレンを発見",
+    homeText: "アグレン周辺の実在する場所でのAR・GPSミッション。Unlocking Bulgaria は独立した全国規模のアプリで、アグレンはその最初のアクティブな目的地です。",
+    seeMissions: "アクティブなミッションを見る",
+    externalLabel: "外部アプリ · unlockingbulgaria.com",
+    hubTitle: "Unlocking Bulgaria によるアグレンのARミッション",
+    whatText: "Unlocking Bulgaria は、ブルガリア各地の実在する場所でのAR・GPSミッションのための独立した全国規模のアプリです。アグレンはその最初のアクティブな目的地です — アプリは村のウェブサイトの一部ではなく、村が所有するものでもありません。",
+    missionsHeading: "アグレン周辺で利用できるミッション",
+    needHeading: "必要なもの",
+    needItems: ["カメラ付きのスマートフォン", "GPSをオンにする", "Unlocking Bulgaria アプリ"],
+  },
   ui: { languageLabel: "言語", languageSelectAria: "言語を選択", modalCloseAria: "閉じる", mobileMenuAria: "メニュー" },
   brand: { name: "アグレン", subtitle: "ヴィト川のほとりの村" },
   hero: {

@@ -2,7 +2,18 @@
 import type { PageCopy } from "./types";
 
 export const de: PageCopy = {
-  nav: { home: "Start", about: "Über Aglen", landmarks: "Orte", stay: "Übernachten", quests: "AR-Quests", events: "Events", business: "Lokale Betriebe" },
+  nav: { home: "Start", about: "Über Aglen", landmarks: "Orte", stay: "Übernachten", quests: "AR-Quests", events: "Events", business: "Lokale Betriebe", placesNature: "Orte & Natur", visit: "Aglen besuchen", visitGettingHere: "Anreise", visitRoutes: "Routen", visitChildren: "Mit Kindern", visitMissions: "AR-Missionen mit Unlocking Bulgaria", visitWhen: "Wann besuchen" },
+  ub: {
+    homeHeading: "Entdecke Aglen mit Unlocking Bulgaria",
+    homeText: "AR- und GPS-Missionen an realen Orten rund um Aglen. Unlocking Bulgaria ist eine unabhängige nationale App – Aglen ist ihre erste aktive Destination.",
+    seeMissions: "Aktive Missionen ansehen",
+    externalLabel: "Externe App · unlockingbulgaria.com",
+    hubTitle: "AR-Missionen in Aglen mit Unlocking Bulgaria",
+    whatText: "Unlocking Bulgaria ist eine unabhängige nationale App für AR- und GPS-Missionen an realen Orten in ganz Bulgarien. Aglen ist ihre erste aktive Destination – die App ist nicht Teil der Dorf-Website und gehört nicht zu ihr.",
+    missionsHeading: "Verfügbare Missionen rund um Aglen",
+    needHeading: "Was du brauchst",
+    needItems: ["Ein Smartphone mit Kamera", "Aktiviertes GPS", "Die Unlocking Bulgaria App"],
+  },
   ui: { languageLabel: "Sprache", languageSelectAria: "Sprache auswählen", modalCloseAria: "Schließen", mobileMenuAria: "Menü" },
   brand: { name: "Aglen", subtitle: "Dorf am Fluss Vit" },
   hero: { meta: "Nordbulgarien · Fluss Vit · Lukovit · Karlukovo", title: "AGLEN", subtitle: "Der verborgene Schatz am Fluss Vit", lede: "Entdecke Canyons, Höhlen, Flussbecken und beeindruckende Naturphänomene im Herzen Nordbulgariens. Aglen ist ein ideales Reiseziel für Spaziergänge, Fotografie, Angeln und ein ruhiges Wochenende inmitten der Natur.", primary: "Aglen entdecken", secondary: "App herunterladen", cue: "Tal entdecken", imageAlt: "Cinematische Ansicht eines Flusscanyons und einer Dorflandschaft, inspiriert von Aglen" },

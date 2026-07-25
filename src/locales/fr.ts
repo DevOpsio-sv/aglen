@@ -2,7 +2,18 @@ import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const fr: PageCopy = {
-  nav: { home: "Accueil", about: "À propos", landmarks: "Lieux", stay: "Hébergement", quests: "Missions AR", events: "Événements", business: "Commerces locaux" },
+  nav: { home: "Accueil", about: "À propos", landmarks: "Lieux", stay: "Hébergement", quests: "Missions AR", events: "Événements", business: "Commerces locaux", placesNature: "Lieux & nature", visit: "Visiter Aglen", visitGettingHere: "S'y rendre", visitRoutes: "Itinéraires", visitChildren: "Avec des enfants", visitMissions: "Missions AR avec Unlocking Bulgaria", visitWhen: "Quand venir" },
+  ub: {
+    homeHeading: "Découvrez Aglen avec Unlocking Bulgaria",
+    homeText: "Missions AR et GPS dans des lieux réels autour d'Aglen. Unlocking Bulgaria est une application nationale indépendante — Aglen est sa première destination active.",
+    seeMissions: "Voir les missions actives",
+    externalLabel: "Application externe · unlockingbulgaria.com",
+    hubTitle: "Missions AR à Aglen avec Unlocking Bulgaria",
+    whatText: "Unlocking Bulgaria est une application nationale indépendante pour des missions AR et GPS dans des lieux réels partout en Bulgarie. Aglen est sa première destination active — l'application ne fait pas partie du site du village et n'appartient pas à celui-ci.",
+    missionsHeading: "Missions disponibles autour d'Aglen",
+    needHeading: "Ce qu'il vous faut",
+    needItems: ["Un smartphone avec caméra", "Le GPS activé", "L'application Unlocking Bulgaria"],
+  },
   ui: { languageLabel: "Langue", languageSelectAria: "Choisir la langue", modalCloseAria: "Fermer", mobileMenuAria: "Menu" },
   brand: { name: "Aglen", subtitle: "Village au bord de la rivière Vit" },
   hero: { meta: "Nord de la Bulgarie · rivière Vit · Lukovit · Karlukovo", title: "AGLEN", subtitle: "Le trésor caché de la rivière Vit", lede: "Découvrez canyons, grottes, bassins fluviaux et phénomènes naturels impressionnants au cœur du nord de la Bulgarie. Aglen est une destination idéale pour les promenades, la photographie, la pêche et un week-end paisible en pleine nature.", primary: "Explorer Aglen", secondary: "Télécharger l'app", cue: "Découvrir la vallée", imageAlt: "Vue cinématographique d'un canyon fluvial et d'un paysage de village inspirés d'Aglen" },

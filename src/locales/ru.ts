@@ -2,7 +2,18 @@ import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const ru: PageCopy = {
-  nav: { home: "Главная", about: "Об Ъглен", landmarks: "Места", stay: "Ночлег", quests: "AR-миссии", events: "События", business: "Местный бизнес" },
+  nav: { home: "Главная", about: "Об Ъглен", landmarks: "Места", stay: "Ночлег", quests: "AR-миссии", events: "События", business: "Местный бизнес", placesNature: "Места и природа", visit: "Посетить Ъглен", visitGettingHere: "Как добраться", visitRoutes: "Маршруты", visitChildren: "С детьми", visitMissions: "AR-миссии с Unlocking Bulgaria", visitWhen: "Когда приехать" },
+  ub: {
+    homeHeading: "Откройте Ъглен через Unlocking Bulgaria",
+    homeText: "AR- и GPS-миссии на реальных местах вокруг Ъглен. Unlocking Bulgaria — независимое национальное приложение; Ъглен — его первое активное направление.",
+    seeMissions: "Смотреть активные миссии",
+    externalLabel: "Внешнее приложение · unlockingbulgaria.com",
+    hubTitle: "AR-миссии в Ъглен с Unlocking Bulgaria",
+    whatText: "Unlocking Bulgaria — независимое национальное приложение для AR- и GPS-миссий на реальных местах по всей Болгарии. Ъглен — его первое активное направление; приложение не является частью сайта села и не принадлежит ему.",
+    missionsHeading: "Доступные миссии вокруг Ъглен",
+    needHeading: "Что вам понадобится",
+    needItems: ["Смартфон с камерой", "Включённый GPS", "Приложение Unlocking Bulgaria"],
+  },
   ui: { languageLabel: "Язык", languageSelectAria: "Выбрать язык", modalCloseAria: "Закрыть", mobileMenuAria: "Меню" },
   brand: { name: "Ъглен", subtitle: "Село у реки Вит" },
   hero: {

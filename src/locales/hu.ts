@@ -2,7 +2,18 @@ import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const hu: PageCopy = {
-  nav: { home: "Kezdőlap", about: "Aglenről", landmarks: "Látnivalók", stay: "Szállás", quests: "AR-küldetések", events: "Események", business: "Helyi vállalkozások" },
+  nav: { home: "Kezdőlap", about: "Aglenről", landmarks: "Látnivalók", stay: "Szállás", quests: "AR-küldetések", events: "Események", business: "Helyi vállalkozások", placesNature: "Helyek és természet", visit: "Látogass Aglenbe", visitGettingHere: "Hogyan juss el", visitRoutes: "Útvonalak", visitChildren: "Gyerekekkel", visitMissions: "AR-küldetések az Unlocking Bulgariával", visitWhen: "Mikor érdemes jönni" },
+  ub: {
+    homeHeading: "Fedezd fel Aglent az Unlocking Bulgariával",
+    homeText: "AR- és GPS-küldetések valódi helyeken Aglen körül. Az Unlocking Bulgaria egy független országos alkalmazás — Aglen az első aktív úti célja.",
+    seeMissions: "Nézd meg az aktív küldetéseket",
+    externalLabel: "Külső alkalmazás · unlockingbulgaria.com",
+    hubTitle: "AR-küldetések Aglenben az Unlocking Bulgariával",
+    whatText: "Az Unlocking Bulgaria egy független országos alkalmazás AR- és GPS-küldetésekhez valódi helyeken Bulgária-szerte. Aglen az első aktív úti célja — az alkalmazás nem része a falu weboldalának, és nem is annak tulajdona.",
+    missionsHeading: "Elérhető küldetések Aglen környékén",
+    needHeading: "Mire lesz szükséged",
+    needItems: ["Kamerával rendelkező okostelefon", "Bekapcsolt GPS", "Az Unlocking Bulgaria alkalmazás"],
+  },
   ui: { languageLabel: "Nyelv", languageSelectAria: "Nyelv kiválasztása", modalCloseAria: "Bezárás", mobileMenuAria: "Menü" },
   brand: { name: "Aglen", subtitle: "Falu a Vit folyónál" },
   hero: {

@@ -2,7 +2,18 @@ import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const ro: PageCopy = {
-  nav: { home: "Acasă", about: "Despre Aglen", landmarks: "Locuri", stay: "Cazare", quests: "Misiuni AR", events: "Evenimente", business: "Afaceri locale" },
+  nav: { home: "Acasă", about: "Despre Aglen", landmarks: "Locuri", stay: "Cazare", quests: "Misiuni AR", events: "Evenimente", business: "Afaceri locale", placesNature: "Locuri și natură", visit: "Vizitează Aglen", visitGettingHere: "Cum ajungi", visitRoutes: "Rute", visitChildren: "Cu copiii", visitMissions: "Misiuni AR cu Unlocking Bulgaria", visitWhen: "Când să vizitezi" },
+  ub: {
+    homeHeading: "Descoperă Aglen prin Unlocking Bulgaria",
+    homeText: "Misiuni AR și GPS în locuri reale din jurul Aglen. Unlocking Bulgaria este o aplicație națională independentă — Aglen este prima sa destinație activă.",
+    seeMissions: "Vezi misiunile active",
+    externalLabel: "Aplicație externă · unlockingbulgaria.com",
+    hubTitle: "Misiuni AR în Aglen cu Unlocking Bulgaria",
+    whatText: "Unlocking Bulgaria este o aplicație națională independentă pentru misiuni AR și GPS în locuri reale din toată Bulgaria. Aglen este prima sa destinație activă — aplicația nu face parte din site-ul satului și nu este deținută de acesta.",
+    missionsHeading: "Misiuni disponibile în jurul Aglen",
+    needHeading: "De ce ai nevoie",
+    needItems: ["Un smartphone cu cameră", "GPS pornit", "Aplicația Unlocking Bulgaria"],
+  },
   ui: { languageLabel: "Limbă", languageSelectAria: "Selectează limba", modalCloseAria: "Închide", mobileMenuAria: "Meniu" },
   brand: { name: "Aglen", subtitle: "Sat lângă râul Vit" },
   hero: {

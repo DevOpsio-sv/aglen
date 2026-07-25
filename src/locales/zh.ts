@@ -2,7 +2,18 @@ import { images, negotiablePrice } from "./shared";
 import type { PageCopy } from "./types";
 
 export const zh: PageCopy = {
-  nav: { home: "首页", about: "关于阿格伦", landmarks: "地点", stay: "住宿", quests: "AR任务", events: "活动", business: "本地商家" },
+  nav: { home: "首页", about: "关于阿格伦", landmarks: "地点", stay: "住宿", quests: "AR任务", events: "活动", business: "本地商家", placesNature: "地点与自然", visit: "游览阿格伦", visitGettingHere: "如何到达", visitRoutes: "路线", visitChildren: "带孩子出行", visitMissions: "与 Unlocking Bulgaria 的 AR 任务", visitWhen: "何时到访" },
+  ub: {
+    homeHeading: "通过 Unlocking Bulgaria 探索阿格伦",
+    homeText: "在阿格伦周边真实地点体验 AR 和 GPS 任务。Unlocking Bulgaria 是一款独立的全国性应用——阿格伦是它首个活跃的目的地。",
+    seeMissions: "查看活跃任务",
+    externalLabel: "外部应用 · unlockingbulgaria.com",
+    hubTitle: "在阿格伦与 Unlocking Bulgaria 一起体验 AR 任务",
+    whatText: "Unlocking Bulgaria 是一款独立的全国性应用，用于在保加利亚各地真实地点进行 AR 和 GPS 任务。阿格伦是它首个活跃的目的地——该应用不属于村庄网站，也不归其所有。",
+    missionsHeading: "阿格伦周边可用的任务",
+    needHeading: "你需要准备",
+    needItems: ["一部带摄像头的智能手机", "开启 GPS", "Unlocking Bulgaria 应用"],
+  },
   ui: { languageLabel: "语言", languageSelectAria: "选择语言", modalCloseAria: "关闭", mobileMenuAria: "菜单" },
   brand: { name: "阿格伦", subtitle: "维特河畔的村庄" },
   hero: {
