@@ -1,14 +1,17 @@
-# Phase 2 — Knowledge Architecture
+# Architecture documents
 
-Ten design documents. Analysis and architecture only; **no code has been
-changed** and nothing here is implemented.
+Analysis and architecture only; **no code has been changed** and nothing here is
+implemented.
 
-Phase 1 (see `../reports/seo-audit-2026-07-24.md`) fixed the technical layer.
-Phase 2 asks a different question: not *how does this site rank*, but *does this
-site model the Lukovit Karst well enough that a search engine or an AI assistant
-would treat it as the source*.
+- **Phase 1** (see `../reports/seo-audit-2026-07-24.md`) fixed the technical layer.
+- **Phase 2 — Knowledge Architecture** (ten documents) asks a different question:
+  not *how does this site rank*, but *does this site model the Lukovit Karst well
+  enough that a search engine or an AI assistant would treat it as the source*.
+- **Phase 3 — System Architecture** (four documents) turns that model into a
+  buildable system: the human experience, the data pipeline, the editorial
+  institution, and the master blueprint that integrates all of them.
 
-## Read in this order
+## Phase 2 — read in this order
 
 | # | Document | What it decides |
 |---|---|---|
@@ -22,6 +25,29 @@ would treat it as the source*.
 | 8 | [CONTENT_GAP_ANALYSIS.md](CONTENT_GAP_ANALYSIS.md) | Gap by gap, with ROI and blockers |
 | 9 | [EEAT_STRATEGY.md](EEAT_STRATEGY.md) | Author, claim ledger, field evidence, institutions |
 | 10 | [5_YEAR_SEO_ROADMAP.md](5_YEAR_SEO_ROADMAP.md) | Sequencing, relative impact, risks |
+
+## Phase 3 — read after Phase 2
+
+| # | Document | What it decides |
+|---|---|---|
+| 1 | [EXPERIENCE_ARCHITECTURE.md](EXPERIENCE_ARCHITECTURE.md) | How a human progressively discovers and emotionally connects with the karst; the experience layers, loops and 20 experience principles |
+| 2 | [KNOWLEDGE_PIPELINE.md](KNOWLEDGE_PIPELINE.md) | The reality→evidence→claim→entity→graph→pages→AI→correction lifecycle; versioned, traceable, reversible ("Wikipedia + Git") |
+| 3 | [EDITORIAL_OPERATING_SYSTEM.md](EDITORIAL_OPERATING_SYSTEM.md) | Governance, roles, trust ladder, workflows, SLAs, metrics and the 20-rule Editorial Constitution for a 20-year, multi-contributor project |
+| 4 | [MASTER_ARCHITECTURE_BLUEPRINT.md](MASTER_ARCHITECTURE_BLUEPRINT.md) | The single implementation blueprint: subsystems, domain model, graph runtime, build pipeline, ADRs, roadmap and the 50-rule Architectural Constitution — integrates all thirteen documents |
+
+## Reviews (gate artifacts, not architecture)
+
+These review the docs and the live implementation and recommend changes. They are
+**not** architecture documents: per the governance rule (root `CLAUDE.md`),
+architecture changes only through ADRs against the blueprint or editorial RFCs, and
+these reviews' recommendations are written in that form.
+
+| Document | What it assesses |
+|---|---|
+| [SITE_AUDIT.md](SITE_AUDIT.md) | Independent external audit of the live site (technical SEO, performance, content, accessibility) |
+| [MASTER_ARCHITECTURE_REVIEW.md](MASTER_ARCHITECTURE_REVIEW.md) | Architecture Review Board reconciliation of all fourteen docs against the implementation; confirms/refutes the audit; proposes ADR-010–012; ends in an approval recommendation |
+| [INFORMATION_ARCHITECTURE_REVIEW.md](INFORMATION_ARCHITECTURE_REVIEW.md) | User-mental-model review of navigation and content hierarchy; the five competing hierarchies, concept de-duplication, and Unlocking Bulgaria as an integrated external product |
+| [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) | Execution plan for the approved reviews: gap analysis, route classification, canonical URL map, navigation tree, breadcrumb & UB-integration specs, redirect plan, exact files, milestones (M0–M4). No code changed until reviewed |
 
 ## The three findings everything else follows from
 
