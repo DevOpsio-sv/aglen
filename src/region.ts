@@ -254,12 +254,3 @@ export function distanceFromAglenKm(place: RegionPlace): number | undefined {
   if (place.linear || place.latitude === undefined || place.longitude === undefined) return undefined;
   return Math.round(straightLineKm(AGLEN, { latitude: place.latitude, longitude: place.longitude }));
 }
-
-/** The places closest to Aglen first, so "nearby" blocks are genuinely nearby. */
-export function nearbyPlaces(limit = 6): RegionPlace[] {
-  return [...regionPlaces]
-    .map((place) => ({ place, km: distanceFromAglenKm(place) ?? Number.POSITIVE_INFINITY }))
-    .sort((a, b) => a.km - b.km)
-    .slice(0, limit)
-    .map((entry) => entry.place);
-}

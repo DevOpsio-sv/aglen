@@ -97,7 +97,7 @@ export function regionByRootPath(path: string): RegionDef | undefined {
 }
 
 /** Every region root path — the paths a published page may occupy besides a namespace. */
-export const REGION_ROOT_PATHS: string[] = REGIONS.map((region) => region.rootPath);
+const REGION_ROOT_PATHS: string[] = REGIONS.map((region) => region.rootPath);
 
 // ── Namespaces ───────────────────────────────────────────────
 

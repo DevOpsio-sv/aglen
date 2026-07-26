@@ -11,7 +11,7 @@ import {
 } from "../region";
 import { findGuide, localizeGuide } from "../guides";
 import { pick, searchKey } from "./text";
-import { galleryAssets, heroAsset, type MediaAsset } from "./media";
+import { heroAsset, type MediaAsset } from "./media";
 import {
   NAMESPACES,
   REGIONS,
@@ -140,11 +140,6 @@ function nameKeysOf(entity: Entity): string[] {
   return strings.map(searchKey).filter(Boolean);
 }
 
-/** Entities that answer to a folded name key, across every region. */
-export function entitiesNamed(key: string): Entity[] {
-  return (nameOwners.get(key) ?? []).map((id) => byId.get(id)).filter((entity): entity is Entity => Boolean(entity));
-}
-
 /** Every folded name key in the graph, with the entities that answer to it. */
 export function nameKeyIndex(): Array<{ key: string; entityIds: EntityId[] }> {
   return [...nameOwners.entries()].map(([key, entityIds]) => ({ key, entityIds }));
@@ -207,12 +202,7 @@ export function entityById(id: EntityId): Entity | undefined {
 }
 export function entityBySlug(slug: string): Entity | undefined {
   return bySlug.get(slug);
-}
-/** Look up by language-agnostic page path, e.g. "/place/dupkata/". */
-export function entityByPath(path: string): Entity | undefined {
-  return byPath.get(path);
-}
-export function childrenOf(id: EntityId): Entity[] {
+}export function childrenOf(id: EntityId): Entity[] {
   return childrenById.get(id) ?? [];
 }
 export function relationsOf(entity: Entity): Relation[] {
@@ -239,14 +229,6 @@ export function namespaceEntities(prefix: string): Entity[] {
     .sort((a, b) => a.page!.priority - b.page!.priority || a.id.localeCompare(b.id));
 }
 
-/** The namespace root a published entity's page sits under, e.g. "/history/". */
-export function namespaceOf(entity: Entity): string | undefined {
-  const path = entity.page?.path;
-  if (!path) return undefined;
-  const match = /^\/[^/]+\//.exec(path);
-  return match ? match[0] : undefined;
-}
-
 /** The declared namespace an entity publishes under, or undefined for a region root. */
 export function namespaceDefOf(entity: Entity): NamespaceDef | undefined {
   return entity.page ? namespaceForPath(entity.page.path) : undefined;
@@ -268,11 +250,6 @@ export function activeNamespaces(): NamespaceDef[] {
 /** The region partition an entity was authored in. */
 export function regionOf(entity: Entity): RegionDef | undefined {
   return regionOfEntity.get(entity.id);
-}
-
-/** Every region that actually holds records, in registry order. */
-export function activeRegions(): RegionDef[] {
-  return REGIONS.filter((region) => entities.some((entity) => regionOfEntity.get(entity.id)?.id === region.id));
 }
 
 /** The root entity of an entity's region — what `/karst/` is for the Lukovit karst. */
@@ -322,11 +299,6 @@ export function aliasesOfKind(entity: Entity, kind: EntityAlias["kind"]): Entity
 /** The entity's own hero photograph, if it has one rule 45 permits rendering. */
 export function entityHeroAsset(entity: Entity): MediaAsset | undefined {
   return heroAsset(entity.media);
-}
-
-/** The entity's own gallery, rule 45 applied, superseded frames removed. */
-export function entityGallery(entity: Entity): MediaAsset[] {
-  return galleryAssets(entity.media);
 }
 
 /** Every asset the graph holds, with the entity that carries it. For the audits. */

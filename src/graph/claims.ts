@@ -1,5 +1,6 @@
 import type { LanguageCode, LocalizedText } from "../locales/types";
 import type { EntityId } from "./schema";
+import { isLocalizedText } from "./text";
 
 // ─────────────────────────────────────────────────────────────
 // The provenance contract — Claim, Source, Evidence, Dispute (M4).
@@ -284,10 +285,6 @@ const CLAIM_ID_RE = /^clm-[a-z0-9-]+-\d{4}$/;
 const DISPUTE_ID_RE = /^dsp-[a-z0-9-]+-\d{3}$/;
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
-
-function isLocalizedText(value: unknown): value is LocalizedText {
-  return Boolean(value) && typeof value === "object" && typeof (value as { bg?: unknown }).bg === "string";
-}
 
 /** Validate one source record. Returns human-readable problems; never throws. */
 export function validateSource(source: unknown): string[] {

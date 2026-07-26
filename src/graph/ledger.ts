@@ -144,9 +144,6 @@ export function sourceById(id: SourceId): Source | undefined {
 export function claimById(id: ClaimId): Claim | undefined {
   return claimIndex.get(id);
 }
-export function disputeById(id: DisputeId): Dispute | undefined {
-  return disputeIndex.get(id);
-}
 /** A source by its public slug — how `/source/<slug>/` resolves (ADR-015). */
 export function sourceBySlug(slug: string): Source | undefined {
   return sourceSlugIndex.get(slug);
@@ -214,11 +211,6 @@ export function liveClaims(): Claim[] {
 /** Live claims resting on one source — what a `/source/<slug>/` page renders. */
 export function liveClaimsFromSource(id: SourceId): Claim[] {
   return citedBy(id).filter(isLive).sort(byConfidenceThenId);
-}
-
-/** Every claim about an entity including superseded and retracted ones (the ledger view). */
-export function allClaimsFor(entityId: EntityId): Claim[] {
-  return (claimsByEntity.get(entityId) ?? []).slice().sort(byConfidenceThenId);
 }
 
 /** Live claims of one aspect — what a depth-3 aspect page renders. */

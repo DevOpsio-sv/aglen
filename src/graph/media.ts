@@ -114,12 +114,6 @@ export function heroAsset(assets: MediaAsset[] | undefined): MediaAsset | undefi
   return live.find((asset) => asset.role === "hero") ?? live[0];
 }
 
-/** Assets an entity may show in a gallery, newest version of each subject only. */
-export function galleryAssets(assets: MediaAsset[] | undefined): MediaAsset[] {
-  if (!assets) return [];
-  return assets.filter((asset) => !isSuperseded(asset, assets) && isRenderable(asset) && asset.role !== "hero");
-}
-
 function isSuperseded(asset: MediaAsset, all: MediaAsset[]): boolean {
   return Boolean(asset.id) && all.some((other) => other.supersedes === asset.id);
 }

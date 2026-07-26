@@ -27,12 +27,6 @@ export function isLocalizedText(value: unknown): value is LocalizedText {
   return Boolean(value) && typeof value === "object" && typeof (value as { bg?: unknown }).bg === "string";
 }
 
-/** Every string a localized value holds, in no particular order. For indexing. */
-export function localizedValues(text: LocalizedText | undefined): string[] {
-  if (!text) return [];
-  return Object.values(text).filter((value): value is string => typeof value === "string" && value.trim().length > 0);
-}
-
 // ── Search normalisation ─────────────────────────────────────
 // A visitor typing "prohodna", "Проходна", "Prohodná" or "PROHODNA" is asking one
 // question. Without folding, a static index answers three of the four with
@@ -54,7 +48,7 @@ const CYRILLIC_TO_LATIN: Record<string, string> = {
 };
 
 /** Bulgarian Cyrillic transliterated to Latin. Non-Cyrillic passes through. */
-export function transliterate(value: string): string {
+function transliterate(value: string): string {
   let out = "";
   for (const char of value.toLowerCase()) out += CYRILLIC_TO_LATIN[char] ?? char;
   return out;
