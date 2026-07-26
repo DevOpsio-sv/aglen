@@ -13,6 +13,10 @@
         "bg": "Карстовият район на Предбалкана около Луковит — пещери, скални венци, арки и каньонът на река Вит, в който се намира Ъглен.",
         "en": "The Fore-Balkan karst district around Lukovit — caves, rock cliffs, arches and the Vit River canyon that holds Aglen."
       },
+      "longDescription": {
+          "bg": "Луковитският карст е карстовият район на Предбалкана около Луковит: пещерите, скалните венци, арките и каньонът на река Вит, в който се намира Ъглен. Районът носи името на град Луковит — общинският център в област Ловеч, разположен на река Златна Панега.\n\nВаровиците тук се описват като принадлежащи към ломешките и априлските пластове, предимно от долната креда. Това е камъкът, през който водата е работила достатъчно дълго, за да отвори Проходна, да пробие Дупката и да остави след себе си цяла долина от форми.",
+          "en": "The Lukovit Karst is the Fore-Balkan karst district around Lukovit: the caves, rock cliffs, arches and the canyon of the River Vit that holds Aglen. The district takes its name from the town of Lukovit — the municipal centre in Lovech Province, on the Zlatna Panega river.\n\nThe limestones here are described as belonging to the Lomets and April beds, mostly of the Lower Cretaceous. This is the stone the water has worked long enough to open Prohodna, to pierce Dupkata, and to leave a whole valley of forms behind it."
+        },
       "confidence": "E2",
       "relations": [
         { "type": "locatedIn", "target": "lovech-province" },
@@ -97,6 +101,10 @@
           }
         }
       ],
+      "longDescription": {
+          "bg": "Ъглен лежи в долината на река Вит, в община Луковит, област Ловеч. Селото е единственото в България, чието име започва с буквата „Ъ“ — подробност, която мнозина научават първо и помнят най-дълго, и която върви заедно с два различни разказа за произхода на самото име.\n\nМястото е оформено от варовика. Реката е прорязала каньон през пластовете на Луковитския карст и е оставила наоколо скални арки, зъбери и вирове, а по терасите над водата личат следите на по-старо обитаване: местностите „Селището“ и „Старо село“, за които в селото се помни, че там се е живяло, преди хората да слязат към реката.\n\nЪглен е и родното място на писателя и фейлетонист Трифон Кунев. Църквата „Св. Архангел Михаил“, преданията, които още се разказват, и природата наоколо правят селото място, което се разглежда бавно.",
+          "en": "Aglen lies in the valley of the River Vit, in Lukovit municipality, Lovech Province. It is the only settlement in Bulgaria whose name begins with the letter “Ъ” — the detail most people learn first and remember longest, and one that comes with two different accounts of where the name itself came from.\n\nThe place is shaped by limestone. The river has cut a canyon through the beds of the Lukovit Karst, leaving rock arches, teeth and pools around it, while the terraces above the water carry traces of older habitation: the localities of Selishteto and Staro selo, where the village remembers people living before they came down to the river.\n\nAglen is also the birthplace of the writer and feuilletonist Trifon Kunev. The church of St Archangel Michael, the stories still told here, and the country around them make this a village to be seen slowly."
+        },
       "confidence": "E3",
       "parent": "vit-valley-aglen",
       "relations": [
@@ -162,6 +170,10 @@
           }
         }
       ],
+      "longDescription": {
+          "bg": "Проходна е проходна пещера край Карлуково, в сърцето на Карлуковския карстов район. През нея се минава от край до край — оттам идва и името ѝ.\n\nНай-известното в нея е горе: два отвора в свода, през които небето влиза в пещерата като две очи. Наричат ги „Очите на Бога“, а понякога и „Очилата“. Заради тях Проходна е едно от най-снимаваните места в тази част на България.",
+          "en": "Prohodna is a through-cave near Karlukovo, at the heart of the Karlukovo karst area. You can walk it from one end to the other — which is where its name comes from.\n\nWhat it is known for is overhead: two openings in the roof through which the sky enters the cave like a pair of eyes. They are called the Eyes of God, and sometimes the Spectacles. They have made Prohodna one of the most photographed places in this part of Bulgaria."
+        },
       "confidence": "E5",
       "parent": "karlukovo-district",
       "relations": [],
@@ -205,6 +217,10 @@
       "aliases": [
         { "name": { "bg": "Вит", "en": "Vit" }, "kind": "variant" }
       ],
+      "longDescription": {
+          "bg": "Вит е река в Северна България и десен приток на Дунав. При Ъглен тя влиза във варовика и се държи различно от равнинното си течение: тече през каньон и прави тесни меандри, които се свързват с по-стари тектонски разседи в основата на района.\n\nТова е реката, която е изсякла долината и е оставила след себе си арките, вировете и стръмните брегове наоколо. Голяма част от това, което си струва да се види около селото, стои на един хвърлей от нейното корито.",
+          "en": "The Vit is a river of northern Bulgaria and a right tributary of the Danube. At Aglen it enters the limestone and behaves quite unlike its lowland course: it runs through a canyon and makes tight meanders, which are linked to older tectonic faults underlying the area.\n\nThis is the river that cut the valley and left the arches, pools and steep banks around it. Much of what is worth seeing near the village stands within a stone's throw of its bed."
+        },
       "confidence": "E4",
       "parent": "karst-lukovit",
       "relations": [
@@ -260,6 +276,10 @@
       "slug": "dupkata",
       "schemaType": "Landform",
       "contentRef": { "placeId": "dupkata" },
+      "longDescription": {
+          "bg": "Дупката е естествена скална арка над река Вит, в землището на Ъглен. Отворът стои високо над водата и е една от формите, по които се познава долината.\n\nАрката е от същите варовици, които оформят и скалните форми в Карлуковския район — същият пласт, същата вода, същото дълго изтъняване на камъка. Място за гледане и за снимка, а не за катерене: за подхода към нея не се публикуват насоки.",
+          "en": "Dupkata is a natural rock arch above the River Vit, in the land of Aglen. The opening stands high above the water and is one of the forms by which the valley is recognised.\n\nThe arch is of the same limestones that shape the rock forms of the Karlukovo area — the same bed, the same water, the same long thinning of stone. A place to look at and photograph rather than to climb: no route guidance is published for reaching it."
+        },
       "confidence": "E1",
       "parent": "vit-valley-aglen",
       "relations": [

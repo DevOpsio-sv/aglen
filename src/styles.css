@@ -3708,6 +3708,150 @@ h3 {
 .guides-page .ghost:hover,
 .guides-page .ghost:focus-visible { background: rgba(15, 47, 36, 0.14); }
 
+/* ── Entity pages (M5.1 repair) ────────────────────────────────────────────
+   The destination page for a place, a person, a story or a period. No new
+   visual language: the hero, the body width, the cards and the buttons are the
+   guide system's, and everything below only arranges them. What changed is what
+   is on the page, not what the page is made of. */
+
+.entity-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1.4rem;
+}
+/* The hero sits on a photograph, so its buttons need their own contrast rather
+   than the page's ghost treatment, which assumes a parchment background. */
+.entity-page .guides-hero .button.ghost {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.55);
+  background: rgba(7, 26, 20, 0.34);
+  backdrop-filter: blur(2px);
+}
+.entity-page .guides-hero .button.ghost:hover,
+.entity-page .guides-hero .button.ghost:focus-visible { background: rgba(7, 26, 20, 0.5); }
+
+/* The opening paragraphs carry the page. Slightly larger than body copy and a
+   measure short enough to read, because this is the part somebody actually
+   reads rather than scans. */
+.entity-intro p {
+  font-size: 1.06rem;
+  line-height: 1.85;
+  color: var(--ink);
+  max-width: 62ch;
+}
+.entity-intro p:first-of-type { font-size: 1.14rem; }
+
+.entity-story p, .entity-name-question p { line-height: 1.8; max-width: 62ch; }
+.entity-name-question { border-left: 3px solid var(--gold); padding-left: 1.1rem; }
+.entity-name-question h2 { margin-bottom: 0.8rem; }
+
+/* Ways further in. Text cards, not photo cards: these lead to indexes and
+   sections rather than to a single place, and a stock photograph on each would
+   promise something the destination does not have. */
+.entity-highlight-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+  gap: 0.9rem;
+  margin-top: 0.9rem;
+}
+.entity-highlight {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--mist);
+  color: inherit;
+  text-decoration: none;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.entity-highlight:hover,
+.entity-highlight:focus-visible {
+  transform: translateY(-3px);
+  border-color: var(--gold);
+  box-shadow: 0 18px 40px rgba(7, 26, 20, 0.12);
+}
+.entity-highlight-label { font-family: var(--serif); font-size: 1.1rem; color: var(--ink); }
+.entity-highlight-blurb { font-size: 0.9rem; line-height: 1.55; color: var(--muted); }
+
+.entity-cta { border-top: 1px solid var(--border); padding-top: 1.6rem; }
+.entity-cta .guide-ctas { margin-bottom: 0.6rem; }
+
+/* ── The source disclosure ──────────────────────────────────
+   Everything the apparatus has to say, behind one control. `<details>` is
+   keyboard-operable and screen-reader-announced without a line of JavaScript,
+   and it prints open. It is deliberately quiet: a visitor who does not care
+   about provenance should be able to finish the page without meeting it. */
+.entity-sources {
+  margin: 2.4rem 0 2.6rem;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(247, 242, 231, 0.6);
+}
+.entity-sources > summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  padding: 0.5rem 1.1rem;
+  cursor: pointer;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--muted);
+  list-style: none;
+}
+.entity-sources > summary::-webkit-details-marker { display: none; }
+.entity-sources > summary::before {
+  content: "+";
+  font-size: 1.05rem;
+  line-height: 1;
+  color: var(--gold-dark);
+}
+.entity-sources[open] > summary::before { content: "–"; }
+.entity-sources > summary:hover { color: var(--ink); }
+.entity-sources > summary:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: -2px;
+  border-radius: 14px;
+}
+.entity-sources-body { padding: 0 1.1rem 1.2rem; }
+.entity-sources-intro, .entity-sources-note {
+  margin: 0 0 0.8rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.entity-sources .trust-line { margin: 0 0 1rem; }
+.entity-editorial-notes { margin-top: 1.2rem; }
+.entity-editorial-notes h3 {
+  margin: 0 0 0.4rem;
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  color: var(--ink);
+}
+.entity-editorial-notes ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.45rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+@media (max-width: 640px) {
+  /* 390 px: the hero buttons stack full-width rather than wrapping into a ragged
+     second row, and the highlight grid collapses to one column. */
+  .entity-hero-actions { gap: 0.5rem; }
+  .entity-hero-actions .button { flex: 1 1 100%; justify-content: center; }
+  .entity-highlight-grid { grid-template-columns: 1fr; }
+  .entity-intro p, .entity-intro p:first-of-type { font-size: 1.02rem; }
+  .entity-sources-body { padding: 0 0.9rem 1rem; }
+  .entity-name-question { padding-left: 0.85rem; }
+}
+
 @media (max-width: 640px) {
   .guides-hero, .guides-hero.is-detail { min-height: clamp(340px, 56vh, 440px); }
   .guides-page .guides-hero-inner { padding: 7.5rem 0 2.2rem; }
