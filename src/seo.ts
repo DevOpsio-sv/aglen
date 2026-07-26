@@ -25,6 +25,7 @@ import { localizeTrust, trustPageByRoute } from "./trustPages";
 import { buildAspectPath, buildPlacePath, buildSourcePath } from "./routes";
 import { aspectCrumb, aspectLede, aspectTitle, namespacePrefix, namespaceTitle, NAMESPACE_CHROME, PROVENANCE_CHROME, SOURCE_CHROME, localizeChrome, type NamespaceKind } from "./graph/namespaces";
 import { KIND_HERO, NAMESPACES, REGIONS, namespaceForPath, type NamespaceId, type RegionRouteId } from "./graph/registry";
+import { isPublic, nameQuestion, narrateClaims } from "./graph/editorial";
 import {
   breadcrumbTrail,
   derivedLinks,
@@ -516,7 +517,12 @@ function sourceCitationNode(lang: LanguageCode, source: Source): object {
  * confidence word, and an uncertain claim is never emitted as a bare assertion.
  */
 function claimNodes(lang: LanguageCode, entityId: string, url: string): object[] {
-  return claimsFor(entityId).map((claim) => ({
+  // Only claims addressed to a reader. An editorial note ("this site has not
+  // checked X against register Y") is true and belongs in the ledger, but as a
+  // schema.org Claim about the entity it would assert that the *place* has that
+  // property. Confidence itself stays — a machine surface is exactly where the
+  // enum belongs (§8), and flattening it is still forbidden (V15).
+  return claimsFor(entityId).filter(isPublic).map((claim) => ({
     "@type": "Claim",
     "@id": `${url}#${claim.id}`,
     text: claimStatement(claim, lang),
@@ -1732,20 +1738,19 @@ export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "hom
     const long = entityLongText(entity, lang);
     const links = derivedLinks(entity, lang);
     const pageText = entityText(lang, subject);
-    // The claim layer, flattened for a crawler that runs no JavaScript. Every
-    // statement keeps its confidence word — a crawler must not be shown a firmer
-    // version of a fact than a reader is (rule 8 / V15).
-    const claimLines = [
-      ...knownClaims(entity.id, aspect).map((claim) => `${claimStatement(claim, lang)} [${claim.confidence}]`),
-      ...disputesFor(entity.id, aspect).flatMap((dispute) => [
-        disputeQuestion(dispute, lang),
-        ...claimsInDispute(dispute.id).map((claim) => `${claimStatement(claim, lang)} [${claim.confidence}]`),
-      ]),
-      ...uncertainClaims(entity.id, aspect).map((claim) => `${claimStatement(claim, lang)} [${claim.confidence}]`),
-    ];
-    const sourceLines = [...new Map(
-      claimsFor(entity.id).flatMap((claim) => sourcesOf(claim)).map((source) => [source.id, source]),
-    ).values()].map((source) => source.citation);
+    // The claim layer for a crawler that runs no JavaScript — the SAME narrated
+    // sentences a reader gets, from the same editorial layer (rule 33: the
+    // rendered page, the fallback and llms.txt never disagree about a fact).
+    //
+    // This is where `[verified]` and `[uncertain]` used to be emitted, in the raw
+    // English enum, into Bulgarian pages. A crawler is still never shown a firmer
+    // version of a fact than a reader (rule 8 / V15) — the hedge now travels
+    // inside the sentence, which is strictly harder to strip than a suffix was.
+    const claimLines = narrateClaims(entity.id, aspect).map((line) => line.text(lang));
+    const question = aspect ? undefined : nameQuestion(entity.id);
+    const questionLines = question
+      ? [question.question(lang), ...question.readings.map((reading) => reading.text(lang)), question.coda(lang)]
+      : [];
     return `
       <main id="static-seo-content" class="static-fallback" lang="${lang}">
         <article class="content-hub section-shell">
@@ -1756,10 +1761,18 @@ export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "hom
             ${long && !aspect ? paragraph(long) : ""}
             <a href="${buildRoutePath(lang, "karst")}">${escapeHtml(karst ? entityName(karst, lang) : "")}</a>
           </div>
+          ${claimLines.map((line) => paragraph(line)).join("")}
+          ${questionLines.map((line) => paragraph(line)).join("")}
           <div class="hub-grid">
-            ${claimLines.map((line) => `<div class="hub-card"><span>${escapeHtml(line)}</span></div>`).join("")}
-            ${sourceLines.map((line) => `<div class="hub-card"><span>${escapeHtml(line)}</span></div>`).join("")}
-            ${links.map((link) => `<a class="hub-card" href="/${lang}${link.path}"><span>${escapeHtml(link.label)}</span></a>`).join("")}
+            ${links
+              .map((link) => {
+                const target = entityById(link.entityId);
+                if (!target?.page) return "";
+                // The card carries the destination's own name and sentence, never
+                // the edge that produced it — the same rule the React cards obey.
+                return `<a class="hub-card" href="/${lang}${target.page.path}"><span>${escapeHtml(entityName(target, lang))}</span><p>${escapeHtml(entityShortText(target, lang))}</p></a>`;
+              })
+              .join("")}
           </div>
         </article>
       </main>

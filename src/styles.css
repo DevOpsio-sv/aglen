@@ -3569,8 +3569,6 @@ h3 {
   color: var(--muted);
   white-space: nowrap;
 }
-.claim-confidence::before { content: "["; }
-.claim-confidence::after { content: "]"; }
 .claim-confidence[data-confidence="verified"] { color: var(--river); }
 .claim-confidence[data-confidence="reported"] { color: var(--gold-dark); }
 .claim-confidence[data-confidence="uncertain"] { color: var(--earth); }
@@ -3608,8 +3606,6 @@ h3 {
 .source-citation { margin: 0; line-height: 1.65; }
 .source-citation a { color: var(--river); font-weight: 600; }
 .source-verification { font-size: 0.82rem; font-weight: 700; color: var(--muted); white-space: nowrap; }
-.source-verification::before { content: "["; }
-.source-verification::after { content: "]"; }
 .source-verification[data-verification="unverified"] { color: var(--earth); }
 .source-meta, .source-note { margin: 0.3rem 0 0; font-size: 0.9rem; line-height: 1.6; color: var(--muted); }
 

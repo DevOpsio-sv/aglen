@@ -23,8 +23,8 @@
       "entityId": "karst-lukovit",
       "aspect": "identity",
       "statement": {
-        "bg": "„Луковитски карст“ означава в този сайт карстовия район на Предбалкана около Луковит — пещерите, скалните венци, арките и каньона на река Вит, в който се намира Ъглен.",
-        "en": "“The Lukovit Karst” on this site means the Fore-Balkan karst district around Lukovit — the caves, rock cliffs, arches and the Vit River canyon that holds Aglen."
+        "bg": "„Луковитски карст“ е карстовият район на Предбалкана около Луковит — пещерите, скалните венци, арките и каньонът на река Вит, в който се намира Ъглен.",
+        "en": "The Lukovit Karst is the Fore-Balkan karst district around Lukovit — the caves, rock cliffs, arches and the Vit River canyon that holds Aglen."
       },
       "sources": [
         "src-field-0001"
@@ -61,8 +61,8 @@
       "entityId": "karst-lukovit",
       "aspect": "nature",
       "statement": {
-        "bg": "Варовиците в района се описват в текстовете на сайта като принадлежащи към ломешките и априлските пластове, предимно от долната креда.",
-        "en": "The limestones of the district are described in the site's texts as belonging to the Lomech and April beds, mostly of the Lower Cretaceous."
+        "bg": "варовиците в района се описват като принадлежащи към ломешките и априлските пластове, предимно от долната креда.",
+        "en": "the limestones of the district are described as belonging to the Lomech and April beds, mostly of the Lower Cretaceous."
       },
       "sources": [
         "src-oral-0001"
@@ -89,6 +89,7 @@
       ],
       "confidence": "uncertain",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -123,6 +124,7 @@
       ],
       "confidence": "uncertain",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26",
@@ -223,6 +225,7 @@
       ],
       "confidence": "uncertain",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -232,8 +235,8 @@
       "entityId": "aglen",
       "aspect": "history",
       "statement": {
-        "bg": "Текстът на сайта сочи като най-ранни писмени следи ранни варианти на името в османски данъчни регистри на Никополския санджак от XV–XVI век.",
-        "en": "The site's text points to early variants of the name in Ottoman tax registers of the Nikopol sanjak of the 15th–16th centuries as the earliest written traces."
+        "bg": "най-ранните писмени следи от името се свързват с османските данъчни регистри на Никополския санджак от XV–XVI век.",
+        "en": "the earliest written traces of the name are associated with the Ottoman tax registers of the Nikopol sanjak of the 15th–16th centuries."
       },
       "sources": [
         "src-oral-0001"
@@ -256,6 +259,7 @@
       ],
       "confidence": "uncertain",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -283,8 +287,8 @@
       "entityId": "aglen",
       "aspect": "history",
       "statement": {
-        "bg": "В землището на селото се сочат местности „Селището“ и „Старо село“, за които местната памет разказва, че там хората са живели по-близо до пещерите и скалите преди слизането към речните тераси.",
-        "en": "The village land holds localities called “Selishteto” and “Staro selo”, of which local memory relates that people lived there, closer to the caves and rocks, before the move down to the river terraces."
+        "bg": "в землището на селото има местности „Селището“ и „Старо село“, където хората са живели по-близо до пещерите и скалите, преди селото да слезе към речните тераси.",
+        "en": "the village land holds localities called “Selishteto” and “Staro selo”, where people lived closer to the caves and rocks before the village moved down to the river terraces."
       },
       "sources": [
         "src-oral-0001"
@@ -307,6 +311,7 @@
       ],
       "confidence": "verified",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -359,6 +364,7 @@
       ],
       "confidence": "verified",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -410,6 +416,7 @@
       ],
       "confidence": "verified",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -462,6 +469,7 @@
       ],
       "confidence": "verified",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -514,6 +522,7 @@
       ],
       "confidence": "uncertain",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -531,6 +540,7 @@
       ],
       "confidence": "verified",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -557,8 +567,8 @@
       "entityId": "vit-river",
       "aspect": "nature",
       "statement": {
-        "bg": "В участъка при Ъглен реката тече през варовиков каньон и прави тесни меандри; текстът на сайта свързва меандрите с по-стари тектонски разседи.",
-        "en": "In the reach at Aglen the river runs through a limestone canyon and makes tight meanders; the site's text links the meanders to older tectonic faults."
+        "bg": "в участъка при Ъглен реката тече през варовиков каньон и прави тесни меандри, които се свързват с по-стари тектонски разседи.",
+        "en": "in the reach at Aglen the river runs through a limestone canyon and makes tight meanders, which are linked to older tectonic faults."
       },
       "sources": [
         "src-oral-0001"
@@ -581,6 +591,7 @@
       ],
       "confidence": "verified",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -615,6 +626,7 @@
       ],
       "confidence": "verified",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -632,6 +644,7 @@
       ],
       "confidence": "verified",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -683,6 +696,7 @@
       ],
       "confidence": "verified",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -734,6 +748,7 @@
       ],
       "confidence": "verified",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -785,6 +800,7 @@
       ],
       "confidence": "verified",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -837,6 +853,7 @@
       ],
       "confidence": "verified",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -886,6 +903,7 @@
       ],
       "confidence": "verified",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -903,6 +921,7 @@
       ],
       "confidence": "verified",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -952,6 +971,7 @@
       ],
       "confidence": "verified",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -1001,6 +1021,7 @@
       ],
       "confidence": "verified",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -1051,6 +1072,7 @@
       ],
       "confidence": "uncertain",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -1068,6 +1090,7 @@
       ],
       "confidence": "verified",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -1101,6 +1124,7 @@
       ],
       "confidence": "uncertain",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -1118,6 +1142,7 @@
       ],
       "confidence": "verified",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -1171,6 +1196,7 @@
       ],
       "confidence": "uncertain",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -1188,6 +1214,7 @@
       ],
       "confidence": "verified",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -1262,6 +1289,7 @@
       ],
       "confidence": "uncertain",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26",
@@ -1283,6 +1311,7 @@
       ],
       "confidence": "verified",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -1321,6 +1350,7 @@
       ],
       "confidence": "uncertain",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -1338,6 +1368,7 @@
       ],
       "confidence": "uncertain",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -1355,6 +1386,7 @@
       ],
       "confidence": "verified",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -1393,6 +1425,7 @@
       ],
       "confidence": "uncertain",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -1410,6 +1443,7 @@
       ],
       "confidence": "uncertain",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -1427,6 +1461,7 @@
       ],
       "confidence": "verified",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -1465,6 +1500,7 @@
       ],
       "confidence": "uncertain",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -1474,8 +1510,8 @@
       "entityId": "iglen-grad-golyama",
       "aspect": "name",
       "statement": {
-        "bg": "Преданието е една от двете живи версии за произхода на името на селото и се разглежда заедно с въглищарската версия, без сайтът да избира между тях.",
-        "en": "The tradition is one of the two living readings of the village name's origin and is presented together with the charcoal-burning reading, without the site choosing between them."
+        "bg": "преданието е една от двете живи версии за произхода на името на селото и се разказва заедно с въглищарската версия.",
+        "en": "the tradition is one of the two living readings of the village name's origin and is told alongside the charcoal-burning reading."
       },
       "sources": [
         "src-field-0001"
@@ -1507,8 +1543,8 @@
       "entityId": "deep-time",
       "aspect": "nature",
       "statement": {
-        "bg": "Река Вит прави в този участък специфични меандри, които текстът на сайта свързва с по-стари тектонски разседи.",
-        "en": "In this reach the Vit makes distinctive meanders, which the site's text links to older tectonic faults."
+        "bg": "река Вит прави в този участък специфични меандри, които се свързват с по-стари тектонски разседи.",
+        "en": "in this reach the Vit makes distinctive meanders, which are linked to older tectonic faults."
       },
       "sources": [
         "src-oral-0001"
@@ -1563,6 +1599,7 @@
       ],
       "confidence": "uncertain",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -1628,6 +1665,7 @@
       ],
       "confidence": "uncertain",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -1677,6 +1715,7 @@
       ],
       "confidence": "uncertain",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -1694,6 +1733,7 @@
       ],
       "confidence": "reported",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26",
@@ -1763,6 +1803,7 @@
       ],
       "confidence": "uncertain",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -1772,8 +1813,8 @@
       "entityId": "ottoman-registers",
       "aspect": "history",
       "statement": {
-        "bg": "В ранни османски данъчни регистри (тефтери) на Никополския санджак от XV и XVI век селото се споменава според текста на сайта под различни фонетични варианти на името.",
-        "en": "In early Ottoman tax registers (defters) of the Nikopol sanjak of the 15th and 16th centuries the village is, according to the site's text, mentioned under various phonetic variants of the name."
+        "bg": "в ранни османски данъчни регистри (тефтери) на Никополския санджак от XV и XVI век селото се споменава под различни фонетични варианти на името.",
+        "en": "in early Ottoman tax registers (defters) of the Nikopol sanjak of the 15th and 16th centuries the village is mentioned under various phonetic variants of the name."
       },
       "sources": [
         "src-oral-0001"
@@ -1812,6 +1853,7 @@
       ],
       "confidence": "uncertain",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"
@@ -1821,8 +1863,8 @@
       "entityId": "ottoman-registers",
       "aspect": "history",
       "statement": {
-        "bg": "Местната памет свързва с този период и трагедия в местността Селището, за която сайтът не разполага с документ.",
-        "en": "Local memory also connects this period with a tragedy at the locality of Selishteto, for which the site holds no document."
+        "bg": "местната памет свързва с този период и трагедия в местността Селището.",
+        "en": "local memory also connects this period with a tragedy at the locality of Selishteto."
       },
       "sources": [
         "src-oral-0001"
@@ -1857,8 +1899,8 @@
       "entityId": "revival",
       "aspect": "history",
       "statement": {
-        "bg": "Църквата „Св. Архангел Михаил“ се сочи като построена през 1888 година — най-ранната конкретна дата, която сайтът публикува за сграда в селото.",
-        "en": "The church of St Archangel Michael is said to have been built in 1888 — the earliest specific date the site publishes for a building in the village."
+        "bg": "църквата „Св. Архангел Михаил“ се сочи като построена през 1888 година — най-ранната конкретна дата за сграда в селото.",
+        "en": "the church of St Archangel Michael is said to have been built in 1888 — the earliest specific date recorded for a building in the village."
       },
       "sources": [
         "src-oral-0001"
@@ -1898,6 +1940,7 @@
       ],
       "confidence": "uncertain",
       "status": "published",
+      "audience": "editorial",
       "method": "derived",
       "created": "2026-07-26",
       "reviewedAt": "2026-07-26"

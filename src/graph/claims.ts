@@ -131,6 +131,33 @@ export type ClaimAspect = "identity" | "nature" | "history" | "name" | "meaning"
  */
 export type ClaimStatus = "published" | "draft" | "internal";
 
+/**
+ * Who a statement is FOR. The third axis, and the one whose absence produced the
+ * defect this field exists to fix.
+ *
+ * `status` says whether a claim may be shown; `confidence` says how well it is
+ * held. Neither could express the difference between "Ъглен is in Lukovit
+ * municipality" and "this site has not checked the Ъ claim against the EKATTE
+ * register". Both were published, both were well-formed, and both rendered as
+ * page content — so a visitor reading about a village met eleven sentences about
+ * our research method instead.
+ *
+ *   • public    — a statement about the world. It belongs in the prose a visitor
+ *                 reads, phrased according to its confidence.
+ *   • editorial — a statement about THIS SITE: what we checked, what we refuse to
+ *                 publish without a source, which register we have not consulted.
+ *                 It is true, it is worth keeping, and it must never be narrated
+ *                 as if it were a fact about the place. It appears only inside the
+ *                 collapsed "Източници и редакционни бележки" disclosure, on
+ *                 `/sources/`, and in the machine exports.
+ *
+ * Defaults to `public` when absent, so every record written before this field
+ * existed keeps its meaning. `scripts/graph-audit.mjs` warns when a claim resting
+ * only on the site's own editorial record calls itself public, because that is
+ * almost always a note to ourselves that has been mislabelled.
+ */
+export type ClaimAudience = "public" | "editorial";
+
 export type Claim = {
   id: ClaimId;
   entityId: EntityId;
@@ -141,6 +168,8 @@ export type Claim = {
   confidence: ClaimConfidence;
   /** Whether this may be shown. Orthogonal to `confidence` — see `ClaimStatus`. */
   status: ClaimStatus;
+  /** Whom it is for: the visitor, or the record. Defaults to `public`. */
+  audience?: ClaimAudience;
   method?: ClaimMethod;
   aspect?: ClaimAspect;
   /** ISO — when the record entered the ledger. Immutable once written. */
@@ -276,6 +305,8 @@ const CLAIM_ASPECTS = new Set<ClaimAspect>(["identity", "nature", "history", "na
 
 const CLAIM_STATUSES = new Set<ClaimStatus>(["published", "draft", "internal"]);
 
+const CLAIM_AUDIENCES = new Set<ClaimAudience>(["public", "editorial"]);
+
 const EVIDENCE_KINDS = new Set<EvidenceKind>([
   "photograph", "scan", "recording", "track", "measurement", "observation", "clipping", "interview",
 ]);
@@ -323,6 +354,7 @@ export function validateClaim(claim: unknown): string[] {
   if (!isLocalizedText(c.statement)) problems.push(`${id}: statement is not localized text with a bg fallback.`);
   if (!c.confidence || !CLAIM_CONFIDENCES.has(c.confidence)) problems.push(`${id}: invalid confidence "${c.confidence}".`);
   if (!c.status || !CLAIM_STATUSES.has(c.status)) problems.push(`${id}: invalid publication status "${c.status}" (published, draft or internal).`);
+  if (c.audience !== undefined && !CLAIM_AUDIENCES.has(c.audience)) problems.push(`${id}: invalid audience "${c.audience}" (public or editorial).`);
   if (c.method !== undefined && !CLAIM_METHODS.has(c.method)) problems.push(`${id}: invalid method "${c.method}".`);
   if (c.aspect !== undefined && !CLAIM_ASPECTS.has(c.aspect)) problems.push(`${id}: invalid aspect "${c.aspect}".`);
 

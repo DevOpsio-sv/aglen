@@ -3,6 +3,7 @@ import type { LanguageCode } from "../locales/types";
 import { buildRoutePath, buildSourcePath } from "../routes";
 import type { EntityId } from "./schema";
 import { SOURCE_KIND_LABELS, TRUST_SIGNAL_LABELS, localizeChrome } from "./namespaces";
+import { editorialClaims, narrate } from "./editorial";
 import {
   claimInterpretation,
   claimNote,
@@ -159,181 +160,6 @@ function CitedSources({ claim, language, onNavigate }: { claim: Claim; language:
 }
 
 /**
- * One claim. The confidence word is part of the sentence's furniture, not a
- * badge that can be styled away: a reader must not be able to read the statement
- * without meeting the hedge (rule 8). Where an artifact backs the statement, it
- * is named in the same breath — held evidence is the strongest thing this site
- * can say, and it says it in one short line rather than in a table.
- */
-export function ClaimLine({ claim, language, onNavigate }: { claim: Claim; language: LanguageCode; onNavigate?: (path: string) => void }) {
-  const note = claimNote(claim, language);
-  const held = evidenceFor(claim.id);
-  return (
-    <li className={`claim claim--${claim.confidence}`}>
-      <p className="claim-statement">
-        {claimStatement(claim, language)}{" "}
-        <span className="claim-confidence" data-confidence={claim.confidence}>
-          {confidenceLabel(claim.confidence, language)}
-        </span>
-      </p>
-      {note && <p className="claim-note">{note}</p>}
-      {held.length > 0 && (
-        <p className="claim-evidence">
-          {t("heldEvidence", language)}: {held.map((artifact) => evidenceTitle(artifact, language)).join("; ")}
-        </p>
-      )}
-      <CitedSources claim={claim} language={language} onNavigate={onNavigate} />
-    </li>
-  );
-}
-
-/** The "what is known" block. Absent when the entity has no firm claim yet. */
-export function KnownClaims({
-  entityId,
-  aspect,
-  language,
-  onNavigate,
-}: {
-  entityId: EntityId;
-  aspect?: ClaimAspect;
-  language: LanguageCode;
-  onNavigate?: (path: string) => void;
-}) {
-  const claims = knownClaims(entityId, aspect);
-  if (claims.length === 0) return null;
-  return (
-    <section className="guide-section claim-block" aria-labelledby={`known-${entityId}-${aspect ?? "all"}`}>
-      <h2 id={`known-${entityId}-${aspect ?? "all"}`}>{t("knownTitle", language)}</h2>
-      <ul className="claim-list">
-        {claims.map((claim) => (
-          <ClaimLine key={claim.id} claim={claim} language={language} onNavigate={onNavigate} />
-        ))}
-      </ul>
-    </section>
-  );
-}
-
-/**
- * The "what is not known" block. It renders whenever there is a stated unknown,
- * and it is deliberately not visually demoted — an admission printed in grey is
- * an admission the reader is being invited to skip.
- */
-export function UncertainClaims({
-  entityId,
-  aspect,
-  language,
-  onNavigate,
-}: {
-  entityId: EntityId;
-  aspect?: ClaimAspect;
-  language: LanguageCode;
-  onNavigate?: (path: string) => void;
-}) {
-  const claims = uncertainClaims(entityId, aspect);
-  if (claims.length === 0) return null;
-  return (
-    <section className="guide-section claim-block claim-block--uncertain" aria-labelledby={`unknown-${entityId}-${aspect ?? "all"}`}>
-      <h2 id={`unknown-${entityId}-${aspect ?? "all"}`}>{t("uncertainTitle", language)}</h2>
-      <p className="guide-notice" role="note">{t("uncertainNote", language)}</p>
-      <ul className="claim-list">
-        {claims.map((claim) => (
-          <ClaimLine key={claim.id} claim={claim} language={language} onNavigate={onNavigate} />
-        ))}
-      </ul>
-    </section>
-  );
-}
-
-/**
- * A dispute: two or more readings of one question, rendered side by side with
- * identical treatment. Nothing in the markup or the styling ranks them, and the
- * site states in the open what would settle the question (V14).
- */
-export function Disputes({
-  entityId,
-  aspect,
-  language,
-  onNavigate,
-}: {
-  entityId: EntityId;
-  aspect?: ClaimAspect;
-  language: LanguageCode;
-  onNavigate?: (path: string) => void;
-}) {
-  const open = disputesFor(entityId, aspect);
-  if (open.length === 0) return null;
-  return (
-    <>
-      {open.map((dispute) => {
-        const readings = claimsInDispute(dispute.id);
-        const test = disputeResolutionTest(dispute, language);
-        return (
-          <section key={dispute.id} className="guide-section dispute" aria-labelledby={`dispute-${dispute.id}`}>
-            <p className="eyebrow">{t("disputeTitle", language)}</p>
-            <h2 id={`dispute-${dispute.id}`}>{disputeQuestion(dispute, language)}</h2>
-            <p className="guide-notice" role="note">{t("disputeNote", language)}</p>
-            <div className="dispute-readings">
-              {readings.map((claim) => {
-                const note = claimNote(claim, language);
-                return (
-                  <article className="dispute-reading" key={claim.id}>
-                    <h3>{claimInterpretation(claim, language)}</h3>
-                    <p>{claimStatement(claim, language)}</p>
-                    {/* Each reading says how well it is itself held. Without this
-                        the two sit side by side looking equally supported, which
-                        is its own kind of editorialising. */}
-                    {claim.interpretationConfidence && (
-                      <p className="dispute-strength">
-                        <span className="claim-confidence" data-confidence={claim.interpretationConfidence}>
-                          {confidenceLabel(claim.interpretationConfidence, language)}
-                        </span>
-                      </p>
-                    )}
-                    {note && <p className="claim-note">{note}</p>}
-                    <CitedSources claim={claim} language={language} onNavigate={onNavigate} />
-                  </article>
-                );
-              })}
-            </div>
-            {test && (
-              <p className="dispute-test">
-                <strong>{t("resolutionLabel", language)}:</strong> {test}
-              </p>
-            )}
-          </section>
-        );
-      })}
-    </>
-  );
-}
-
-/**
- * The trust line: three or four short phrases and a date, sitting quietly under a
- * page's heading. It is the whole visible surface of the provenance layer for a
- * reader who does not go looking — and it must stay that: no counts, no ids, no
- * vocabulary from this codebase (Part 12). A page with nothing earned renders
- * nothing at all rather than an empty row of reassurances.
- */
-export function TrustLine({ entityId, language }: { entityId: EntityId; language: LanguageCode }) {
-  const summary = provenanceSummary(entityId);
-  if (summary.signals.length === 0 && !summary.lastReviewed) return null;
-  return (
-    <p className="trust-line" aria-label={t("trustLineLabel", language)}>
-      {summary.signals.map((signal) => (
-        <span key={signal} className="trust-signal" data-signal={signal}>
-          {trustSignalLabel(signal, language)}
-        </span>
-      ))}
-      {summary.lastReviewed && (
-        <span className="trust-signal trust-signal--date">
-          {t("reviewedLabel", language)} <time dateTime={summary.lastReviewed}>{summary.lastReviewed}</time>
-        </span>
-      )}
-    </p>
-  );
-}
-
-/**
  * One source, as a citation a reader could actually follow. Anchored by its slug,
  * never by its record id, so a copied link carries a name rather than a key. Where
  * the source has earned a page, the citation links to it.
@@ -358,13 +184,12 @@ export function SourceEntry({
           </a>
         ) : (
           source.citation
-        )}{" "}
-        <span className="source-verification" data-verification={source.verification}>
-          {verificationLabel(source, language)}
-        </span>
+        )}
       </p>
       <p className="source-meta">
-        {[sourceKindLabel(source, language), source.license, source.accessedAt].filter(Boolean).join(" · ")}
+        {[sourceKindLabel(source, language), verificationLabel(source, language), source.license, source.accessedAt]
+          .filter(Boolean)
+          .join(" · ")}
       </p>
       {note && <p className="source-note">{note}</p>}
       {pagePath && onNavigate && (
@@ -378,86 +203,3 @@ export function SourceEntry({
   );
 }
 
-/**
- * The per-page provenance footer (`EEAT_STRATEGY.md` §6.3): what this page rests
- * on, how far it was checked, when a human last looked, and how to tell us we are
- * wrong. It renders on every page that has claims and is the last thing on the
- * page for a reason — it is the apparatus, not the content.
- *
- * M4B removed the counts that used to open it ("N claims · N sources"). They were
- * true and they were the wrong register: a number about itself is a database
- * talking, and the moment a reader notices the machinery the machinery has failed
- * (the absolute rule). What replaced them is the same information in a form a
- * reader can act on — signals in words, a date, the citations themselves, and an
- * invitation to correct us. The counts still exist, on `/sources/`, where a
- * researcher who wants them has gone looking.
- */
-export function ProvenanceFooter({
-  entityId,
-  language,
-  onNavigate,
-  externalRecords = [],
-}: {
-  entityId: EntityId;
-  language: LanguageCode;
-  onNavigate: (path: string) => void;
-  externalRecords?: string[];
-}) {
-  const summary = provenanceSummary(entityId);
-  if (summary.claims === 0 && externalRecords.length === 0) return null;
-  const ledgerHref = buildRoutePath(language, "sources");
-  const correctionsHref = buildRoutePath(language, "corrections");
-
-  return (
-    <section className="guide-section provenance" aria-labelledby={`provenance-${entityId}`}>
-      <h2 id={`provenance-${entityId}`}>{t("sourcesTitle", language)}</h2>
-      <TrustLine entityId={entityId} language={language} />
-      {summary.sources.length > 0 && (
-        <>
-          <p className="guide-notice" role="note">{t("sourcesNote", language)}</p>
-          <ul className="source-list">
-            {summary.sources.map((source) => (
-              <SourceEntry key={source.id} source={source} language={language} onNavigate={onNavigate} />
-            ))}
-          </ul>
-        </>
-      )}
-      {externalRecords.length > 0 && (
-        <div className="provenance-external">
-          <h3>{t("externalTitle", language)}</h3>
-          <p className="guide-notice" role="note">{t("externalNote", language)}</p>
-          <ul className="entity-sources-list">
-            {externalRecords.map((url) => (
-              <li key={url}>
-                <a href={url} target="_blank" rel="noopener noreferrer nofollow">
-                  {hostLabel(url)}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      <p className="provenance-ctas">
-        <a className="entity-inline-link" href={ledgerHref} onClick={onLink(ledgerHref, onNavigate)}>
-          {t("ledgerCta", language)} →
-        </a>
-        <a className="entity-inline-link" href={correctionsHref} onClick={onLink(correctionsHref, onNavigate)}>
-          {t("correctionsCta", language)} →
-        </a>
-        {/* The invitation is the point of the whole layer: a site that can be
-            corrected is a different kind of object from one that cannot. */}
-        <a className="entity-inline-link" href={`${correctionsHref}#report`} onClick={onLink(`${correctionsHref}#report`, onNavigate)}>
-          {t("suggestCta", language)} →
-        </a>
-      </p>
-    </section>
-  );
-}
-
-function hostLabel(url: string): string {
-  try {
-    return new URL(url).hostname.replace(/^www\./, "");
-  } catch {
-    return url;
-  }
-}

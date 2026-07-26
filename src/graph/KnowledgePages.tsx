@@ -3,7 +3,8 @@ import type { LanguageCode } from "../locales/types";
 import { buildRoutePath, buildSourcePath, type CoreRouteId } from "../routes";
 import { imageProps } from "../images";
 import { entityById, entityBySlug, entityName, namespaceEntities } from "./index";
-import { EntityCard, EntityDetail, entityHref } from "./EntityPages";
+import { EntityDetail, entityHref } from "./EntityPages";
+import { EntityCard } from "./EntitySections";
 import { SourceEntry, confidenceLabel, sourceKindLabel } from "./Provenance";
 import { NAMESPACE_CHROME, PROVENANCE_CHROME, SOURCE_CHROME, localizeChrome, namespacePrefix, namespaceTitle, type NamespaceKind } from "./namespaces";
 import {

@@ -25,7 +25,25 @@ import {
 import { REGIONS } from "./registry";
 import { aspectPagesFor, claimsForAspect } from "./ledger";
 import type { ClaimAspect } from "./claims";
-import { Disputes, KnownClaims, ProvenanceFooter, TrustLine, UncertainClaims } from "./Provenance";
+import {
+  EntityCTA,
+  EntityHero,
+  EntityHighlights,
+  EntityIntro,
+  EntityStory,
+  NameQuestion,
+  NearbyPlaces,
+  RelatedEntityGroups,
+  SourceDisclosure,
+  baseFor,
+  entityHighlights,
+  locationLabelFor,
+  mapHref,
+  mapLabel,
+  onLink,
+  EntityCard,
+  type HeroAction,
+} from "./EntitySections";
 import { aspectLede, aspectTitle } from "./namespaces";
 import type { Entity } from "./schema";
 
@@ -89,14 +107,6 @@ function t(key: keyof typeof L, lang: LanguageCode): string {
   return entry[lang] ?? entry.en;
 }
 
-function onLink(href: string, onNavigate: (path: string) => void) {
-  return (event: MouseEvent) => {
-    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-    event.preventDefault();
-    onNavigate(href);
-  };
-}
-
 /**
  * The URL of a published entity, whatever namespace it lives in. The graph
  * carries the language-agnostic path, so a place, a legend, a person and a
@@ -106,23 +116,6 @@ export function entityHref(language: LanguageCode, entity: Entity): string {
   // A node-only entity has no address of its own; it renders as a section of its
   // parent (rule 15), so the fallback is the hub rather than any one region.
   return entity.page ? buildEntityPath(language, entity.page.path) : buildRoutePath(language, "guides");
-}
-
-/** A place card in the site's guide-place style, linking to an entity page. */
-export function EntityCard({ entity, language, onNavigate, tag }: { entity: Entity; language: LanguageCode; onNavigate: (path: string) => void; tag?: string }) {
-  const href = entityHref(language, entity);
-  return (
-    <article className="guide-place">
-      <a className="entity-card-link" href={href} onClick={onLink(href, onNavigate)}>
-        <img {...imageProps(entityHeroPath(language, entity), { variant: "card" })} alt={entityName(entity, language)} loading="lazy" decoding="async" onError={handleImageError} />
-        <div className="guide-place-body">
-          {tag && <p className="guide-place-tag">{tag}</p>}
-          <h3>{entityName(entity, language)}</h3>
-          <p>{entityShortText(entity, language)}</p>
-        </div>
-      </a>
-    </article>
-  );
 }
 
 /** The /place/ index, every /place/<slug>/ detail page and its aspect pages. */
@@ -162,187 +155,72 @@ export function EntityDetail({
   back?: { href: string; label: string };
 }) {
   const gui = guidesUiByLanguage[language];
-  const hubPath = back?.href ?? buildRoutePath(language, "guides");
-  const hubLabel = back?.label ?? gui.indexTitle;
-  const parent = entity.parent ? entityById(entity.parent) : undefined;
-  // The settlement this region measures from — Aglen here, another region's base
-  // in another partition. Asked of the graph rather than named, so the same
-  // component serves Region 2 unchanged (M5, ADR-016).
-  const base = baseEntityOf(entity);
-  const short = entityShortText(entity, language);
+  const hub = back ?? { href: buildRoutePath(language, "guides"), label: gui.indexTitle };
   const long = entityLongText(entity, language);
-  const point = entityPoint(entity);
-  const kmFromBase = base && entity.id !== base.id ? straightLineKmBetween(base, entity) : undefined;
-  const sameAs = entitySameAs(entity);
-
-  // "History & meaning": node relations that have no page of their own render as
-  // context here (a section of their parent, rule 15) — never as raw edges.
-  const meaning = relationsOf(entity)
-    .filter((relation) => relation.type === "birthPlaceOf" || relation.type === "subjectOf" || relation.type === "supersededBy")
-    .map((relation) => entityById(relation.target))
-    .filter((node): node is Entity => Boolean(node) && (!node!.page || node!.page.status !== "published"));
-
-  // Related & nearby: the derived links that point at a real place page.
-  const related = derivedLinks(entity, language)
-    .map((link) => ({ link, target: entityById(link.entityId) }))
-    .filter((entry) => entry.target?.page?.status === "published")
-    .map((entry) => ({ link: entry.link, target: entry.target as Entity }));
-
+  const highlights = entityHighlights(entity, language);
+  const map = mapHref(entity);
   const placeId = entity.contentRef?.placeId as PlaceId | undefined;
   const hasMission = Boolean(placeId && (placeExperienceLinks[placeId] ?? []).some((link) => link.kind === "quest"));
-  const missionHref = buildRoutePath(language, "arMissions");
 
-  // Up: the containment parent, or — for a top-level entity — its own region root.
-  const regionRoot = regionRootOf(entity);
-  const parentHref =
-    parent && parent.page?.status === "published"
-      ? entityHref(language, parent)
-      : regionRoot && regionRoot.page?.status === "published"
-        ? entityHref(language, regionRoot)
-        : buildRoutePath(language, "guides");
-  const next = related[0]?.target;
-  // Aspects that have earned a page of their own (M4). Announced from the entity
-  // page so the entity stays the front door and nothing is reachable only by URL.
-  const aspects = aspectPagesFor(entity.id);
+  // Two ways in from the hero, chosen from destinations that exist. A page that
+  // offers a button to nothing is worse than a page that offers none.
+  const heroActions: HeroAction[] = highlights.slice(0, 2).map((highlight, index) => ({
+    href: highlight.href,
+    label: highlight.label,
+    primary: index === 0,
+  }));
+  if (map) heroActions.push({ href: map, label: mapLabel(language) });
 
-  const facts: { label: string; value: string }[] = [];
-  if (parent) facts.push({ label: t("factRegion", language), value: entityName(parent, language) });
-  if (base && kmFromBase !== undefined) {
-    facts.push({
-      label: `${t("factFrom", language)} ${entityName(base, language)}`,
-      value: `≈ ${Math.round(kmFromBase)} ${t("straightLine", language)}`,
-    });
+  // The way out: the hub, the region, and the base village if this is not it.
+  const base = baseFor(entity);
+  const closing: HeroAction[] = [{ href: hub.href, label: hub.label, primary: true }];
+  const root = regionRootOf(entity);
+  if (root?.page?.status === "published" && root.id !== entity.id) {
+    closing.push({ href: `/${language}${root.page.path}`, label: entityName(root, language) });
+  }
+  if (base?.page?.status === "published") {
+    closing.push({ href: `/${language}${base.page.path}`, label: entityName(base, language) });
   }
 
   return (
-    <div className="guides-page guide-detail-page">
-      <section className="guides-hero is-detail" aria-labelledby="entity-title">
-        <img className="guides-hero-bg" {...imageProps(entityHeroPath(language, entity))} alt="" aria-hidden="true" fetchPriority="high" decoding="async" onError={handleImageError} />
-        <div className="guides-hero-overlay" aria-hidden="true" />
-        <div className="guides-hero-inner section-shell">
-          <a className="guide-back" href={hubPath} onClick={onLink(hubPath, onNavigate)}>
-            ← {hubLabel}
-          </a>
-          {parent && <p className="eyebrow guides-hero-eyebrow">{entityName(parent, language)}</p>}
-          <h1 id="entity-title">{entityName(entity, language)}</h1>
-          <p className="guides-hero-sub">{short}</p>
-        </div>
-      </section>
+    <div className="guides-page guide-detail-page entity-page">
+      <EntityHero
+        entity={entity}
+        language={language}
+        locationLabel={locationLabelFor(entity, language)}
+        back={hub}
+        actions={heroActions}
+        onNavigate={onNavigate}
+      />
 
       <div className="section-shell guide-body">
-        {/* The trust line (M4B): a few words and a date, before anything else on
-            the page, so a reader knows how far to trust what follows without
-            having to go to the foot of the page for it. */}
-        <TrustLine entityId={entity.id} language={language} />
-
-        {facts.length > 0 && (
-          <aside className="guide-facts" aria-label={t("factRegion", language)}>
-            <dl>
-              {facts.map((fact) => (
-                <div key={fact.label}>
-                  <dt>{fact.label}</dt>
-                  <dd>{fact.value}</dd>
-                </div>
-              ))}
-            </dl>
-          </aside>
-        )}
-
-        {long && (
-          <section className="guide-section">
-            {long.split("\n\n").map((paragraph, index) => (
-              <p key={index}>{paragraph}</p>
-            ))}
-          </section>
-        )}
+        <EntityIntro text={long} />
+        <EntityStory entityId={entity.id} language={language} />
+        <NameQuestion entityId={entity.id} language={language} />
 
         {hasMission && (
           <p className="guide-notice entity-ar" role="note">
             <strong>{t("arTitle", language)}</strong> —{" "}
-            <a className="entity-inline-link" href={missionHref} onClick={onLink(missionHref, onNavigate)}>
+            <a
+              className="entity-inline-link"
+              href={buildRoutePath(language, "arMissions")}
+              onClick={onLink(buildRoutePath(language, "arMissions"), onNavigate)}
+            >
               {t("arCta", language)} →
             </a>
           </p>
         )}
 
-        {point && (
-          <section className="guide-section">
-            <h2>{t("whereTitle", language)}</h2>
-            <p>
-              <a className="entity-inline-link" href={`https://www.google.com/maps/search/?api=1&query=${point.lat},${point.lon}`} target="_blank" rel="noopener noreferrer">
-                {t("mapCta", language)} →
-              </a>
-            </p>
-            {kmFromBase !== undefined && <p className="guide-notice" role="note">{t("straightNote", language)}</p>}
-          </section>
-        )}
-
-        {/* The claim layer (M4). Firm ground first, then the open questions, then
-            what is not known — none of the three is allowed to hide the others. */}
-        <KnownClaims entityId={entity.id} language={language} onNavigate={onNavigate} />
-        <Disputes entityId={entity.id} language={language} onNavigate={onNavigate} />
-        <UncertainClaims entityId={entity.id} language={language} onNavigate={onNavigate} />
-
-        {aspects.length > 0 && (
-          <section className="guide-section aspect-links" aria-labelledby="entity-aspects-title">
-            <h2 id="entity-aspects-title">{t("aspectSectionTitle", language)}</h2>
-            <ul className="aspect-link-list">
-              {aspects.map(({ aspect }) => {
-                const href = buildAspectPath(language, entity.slug, aspect);
-                return (
-                  <li key={aspect}>
-                    <a className="entity-inline-link" href={href} onClick={onLink(href, onNavigate)}>
-                      {aspectTitle(aspect, language)} →
-                    </a>
-                    <span> {aspectLede(aspect, language)}</span>
-                  </li>
-                );
-              })}
-            </ul>
-          </section>
-        )}
-
-        {meaning.length > 0 && (
-          <section className="guide-section">
-            <h2>{t("meaningTitle", language)}</h2>
-            {meaning.map((node) => (
-              <p key={node.id}>
-                <strong>{entityName(node, language)}.</strong> {entityShortText(node, language)}
-              </p>
-            ))}
-          </section>
-        )}
-
-        {related.length > 0 && (
-          <section className="guide-places" aria-labelledby="entity-related-title">
-            <h2 id="entity-related-title">{t("relatedTitle", language)}</h2>
-            <div className="guide-places-grid">
-              {related.map(({ link, target }) => {
-                const tag = link.label.includes(" — ") ? link.label.split(" — ").slice(1).join(" — ") : undefined;
-                return <EntityCard key={target.id} entity={target} language={language} onNavigate={onNavigate} tag={tag} />;
-              })}
-            </div>
-          </section>
-        )}
-
-        {/* Sources, last reviewed, and the external records this is linked to —
-            one block instead of two, because a reader asking "how do you know
-            this?" is asking one question. */}
-        <ProvenanceFooter entityId={entity.id} language={language} onNavigate={onNavigate} externalRecords={sameAs} />
-
-        <div className="guide-ctas">
-          <a className="button primary" href={hubPath} onClick={onLink(hubPath, onNavigate)}>
-            {hubLabel}
-          </a>
-          <a className="button ghost" href={parentHref} onClick={onLink(parentHref, onNavigate)}>
-            {parent ? entityName(parent, language) : t("regionCta", language)}
-          </a>
-          {next && next.id !== parent?.id && (
-            <a className="button ghost" href={entityHref(language, next)} onClick={onLink(entityHref(language, next), onNavigate)}>
-              {t("nextPlace", language)}: {entityName(next, language)}
-            </a>
-          )}
-        </div>
+        <EntityHighlights highlights={highlights} language={language} onNavigate={onNavigate} />
+        <RelatedEntityGroups entity={entity} language={language} onNavigate={onNavigate} />
+        <NearbyPlaces entity={entity} language={language} onNavigate={onNavigate} />
+        <EntityCTA language={language} actions={closing} onNavigate={onNavigate} />
+        <SourceDisclosure
+          entityId={entity.id}
+          language={language}
+          onNavigate={onNavigate}
+          externalRecords={entitySameAs(entity)}
+        />
       </div>
     </div>
   );
@@ -397,9 +275,7 @@ export function EntityAspectPage({
       </section>
 
       <div className="section-shell guide-body">
-        <KnownClaims entityId={entity.id} aspect={aspect} language={language} onNavigate={onNavigate} />
-        <Disputes entityId={entity.id} aspect={aspect} language={language} onNavigate={onNavigate} />
-        <UncertainClaims entityId={entity.id} aspect={aspect} language={language} onNavigate={onNavigate} />
+        <EntityStory entityId={entity.id} aspect={aspect} language={language} title={title} />
 
         {chapters.map((chapter) => (
           <section className="guide-section timeline-chapter" key={chapter.title}>
@@ -427,7 +303,7 @@ export function EntityAspectPage({
           </section>
         )}
 
-        {claimCount > 0 && <ProvenanceFooter entityId={entity.id} language={language} onNavigate={onNavigate} />}
+        {claimCount > 0 && <SourceDisclosure entityId={entity.id} language={language} onNavigate={onNavigate} />}
 
         <div className="guide-ctas">
           <a className="button primary" href={entityPath} onClick={onLink(entityPath, onNavigate)}>
@@ -524,8 +400,8 @@ export function RegionRootPage({
             ))}
           </section>
         )}
-        <KnownClaims entityId={karst.id} language={language} />
-        <UncertainClaims entityId={karst.id} language={language} />
+        <EntityStory entityId={karst.id} language={language} />
+        <NameQuestion entityId={karst.id} language={language} />
         <section className="guide-places" aria-labelledby="karst-places-title">
           <h2 id="karst-places-title">{t("relatedTitle", language)}</h2>
           <div className="guide-places-grid">
@@ -534,7 +410,7 @@ export function RegionRootPage({
             ))}
           </div>
         </section>
-        <ProvenanceFooter entityId={karst.id} language={language} onNavigate={onNavigate} externalRecords={entitySameAs(karst)} />
+        <SourceDisclosure entityId={karst.id} language={language} onNavigate={onNavigate} externalRecords={entitySameAs(karst)} />
       </div>
     </div>
   );
