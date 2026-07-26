@@ -15,7 +15,8 @@
       },
       "confidence": "E2",
       "relations": [
-        { "type": "locatedIn", "target": "lovech-province" }
+        { "type": "locatedIn", "target": "lovech-province" },
+        { "type": "subjectOf", "target": "deep-time" }
       ],
       "page": { "path": "/karst/", "priority": 1, "status": "published", "breadcrumbRoot": true }
     },
@@ -37,7 +38,10 @@
       "name": { "bg": "Долина на Вит при Ъглен", "en": "The Vit valley at Aglen" },
       "confidence": "E2",
       "parent": "karst-lukovit",
-      "relations": []
+      "relations": [
+        { "type": "subjectOf", "target": "prehistory" },
+        { "type": "subjectOf", "target": "thracians" }
+      ]
     },
     {
       "id": "lovech-province",
@@ -77,7 +81,10 @@
         { "type": "locatedIn", "target": "municipality-lukovit" },
         { "type": "birthPlaceOf", "target": "trifon-kunev" },
         { "type": "subjectOf", "target": "dvukrakite-senki" },
-        { "type": "subjectOf", "target": "zlatnata-brazdichka" }
+        { "type": "subjectOf", "target": "zlatnata-brazdichka" },
+        { "type": "subjectOf", "target": "iglen-grad-golyama" },
+        { "type": "subjectOf", "target": "ottoman-registers" },
+        { "type": "subjectOf", "target": "revival" }
       ],
       "page": { "path": "/place/aglen/", "priority": 1, "status": "published", "breadcrumbRoot": true }
     },
@@ -276,7 +283,8 @@
       "confidence": "E1",
       "parent": "aglen",
       "relations": [
-        { "type": "subjectOf", "target": "flint-workshops" }
+        { "type": "subjectOf", "target": "flint-workshops" },
+        { "type": "subjectOf", "target": "revival" }
       ],
       "page": { "path": "/place/st-archangel-michael/", "priority": 2, "status": "published" }
     },
@@ -293,7 +301,8 @@
       "confidence": "E1",
       "parent": "vit-valley-aglen",
       "relations": [
-        { "type": "supersededBy", "target": "aglen" }
+        { "type": "supersededBy", "target": "aglen" },
+        { "type": "subjectOf", "target": "ottoman-registers" }
       ]
     },
     {
@@ -308,7 +317,8 @@
       },
       "sameAs": { "wikipedia": { "bg": "Трифон Кунев" } },
       "confidence": "E4",
-      "relations": []
+      "relations": [],
+      "page": { "path": "/person/trifon-kunev/", "priority": 1, "status": "published", "breadcrumbRoot": true }
     },
     {
       "id": "dvukrakite-senki",
@@ -321,7 +331,8 @@
         "en": "A local legend recorded as it is told in the village. It is related as memory, not as documented historical fact."
       },
       "confidence": "E1",
-      "relations": []
+      "relations": [],
+      "page": { "path": "/legend/dvukrakite-senki/", "priority": 2, "status": "published", "breadcrumbRoot": true }
     },
     {
       "id": "zlatnata-brazdichka",
@@ -334,7 +345,55 @@
         "en": "A local legend from the land of Aglen, recorded as it is told in the village."
       },
       "confidence": "E1",
-      "relations": []
+      "relations": [],
+      "page": { "path": "/legend/zlatnata-brazdichka/", "priority": 2, "status": "published", "breadcrumbRoot": true }
+    },
+    {
+      "id": "iglen-grad-golyama",
+      "kind": "legend",
+      "slug": "iglen-grad-golyama",
+      "schemaType": "CreativeWork",
+      "name": { "bg": "Иглен град голяма", "en": "Iglen grad golyama" },
+      "shortDescription": {
+        "bg": "Преданието за първото име на селището — мястото около иглените скали над реката. Едната от двете живи версии за произхода на името „Ъглен“.",
+        "en": "The tradition of the settlement’s first name — the place by the rock needles above the river. One of the two living readings of where the name “Ъглен” comes from."
+      },
+      "confidence": "E1",
+      "relations": [],
+      "page": { "path": "/legend/iglen-grad-golyama/", "priority": 2, "status": "published", "breadcrumbRoot": true }
+    },
+    {
+      "id": "deep-time",
+      "kind": "period",
+      "slug": "deep-time",
+      "schemaType": "Event",
+      "name": { "bg": "Дълбоко време: морето, варовикът и каньонът", "en": "Deep time: the sea, the limestone and the canyon" },
+      "shortDescription": {
+        "bg": "Как варовиците на Луковитския карст се отлагат, как реката ги прорязва и защо под днешния каньон има недокартирана подземна мрежа.",
+        "en": "How the limestones of the Lukovit Karst were laid down, how the river cut through them, and why an unmapped underground network lies beneath today’s canyon."
+      },
+      "confidence": "E2",
+      "relations": [
+        { "type": "locatedIn", "target": "karst-lukovit" }
+      ],
+      "page": { "path": "/history/deep-time/", "priority": 2, "status": "published", "breadcrumbRoot": true }
+    },
+    {
+      "id": "prehistory",
+      "kind": "period",
+      "slug": "prehistory",
+      "schemaType": "Event",
+      "name": { "bg": "Праистория: първите хора в долината", "en": "Prehistory: the first people in the valley" },
+      "shortDescription": {
+        "bg": "Защо затвореният меандър на Вит привлича ранните обитатели, какви следи се съобщават около пещерите и какво все още не е документирано.",
+        "en": "Why the enclosed meander of the Vit drew early inhabitants, what traces are reported around the caves, and what is still undocumented."
+      },
+      "confidence": "E2",
+      "relations": [
+        { "type": "locatedIn", "target": "karst-lukovit" },
+        { "type": "contains", "target": "flint-workshops" }
+      ],
+      "page": { "path": "/history/prehistory/", "priority": 2, "status": "published", "breadcrumbRoot": true }
     },
     {
       "id": "flint-workshops",
@@ -348,8 +407,58 @@
       },
       "confidence": "E2",
       "relations": [
-        { "type": "locatedIn", "target": "vit-valley-aglen" }
-      ]
+        { "type": "locatedIn", "target": "vit-valley-aglen" },
+        { "type": "locatedIn", "target": "karst-lukovit" }
+      ],
+      "page": { "path": "/history/flint-workshops/", "priority": 1, "status": "published", "breadcrumbRoot": true }
+    },
+    {
+      "id": "thracians",
+      "kind": "period",
+      "slug": "thracians",
+      "schemaType": "Event",
+      "name": { "bg": "Траките: трибалите и скалните светилища", "en": "The Thracians: the Triballi and the rock sanctuaries" },
+      "shortDescription": {
+        "bg": "Желязната епоха в долината на Вит: земите на трибалите, скалните тераси като светилища и почитаните карстови извори.",
+        "en": "The Iron Age in the Vit valley: the lands of the Triballi, the rock terraces as sanctuaries, and the revered karst springs."
+      },
+      "confidence": "E2",
+      "relations": [
+        { "type": "locatedIn", "target": "karst-lukovit" }
+      ],
+      "page": { "path": "/history/thracians/", "priority": 3, "status": "published", "breadcrumbRoot": true }
+    },
+    {
+      "id": "ottoman-registers",
+      "kind": "period",
+      "slug": "ottoman",
+      "schemaType": "Event",
+      "name": { "bg": "Османските регистри: Никополският санджак", "en": "The Ottoman registers: the Nikopol sanjak" },
+      "shortDescription": {
+        "bg": "Първите писмени следи, които текстовете за селото сочат — данъчните тефтери на Никополския санджак от XV–XVI век — и това, което все още не е установено за тях.",
+        "en": "The earliest written traces the village’s texts point to — the tax defters of the Nikopol sanjak of the 15th–16th centuries — and what remains unestablished about them."
+      },
+      "confidence": "E2",
+      "relations": [
+        { "type": "locatedIn", "target": "karst-lukovit" }
+      ],
+      "page": { "path": "/history/ottoman/", "priority": 2, "status": "published", "breadcrumbRoot": true }
+    },
+    {
+      "id": "revival",
+      "kind": "period",
+      "slug": "revival",
+      "schemaType": "Event",
+      "name": { "bg": "Възраждането: слизането към терасите", "en": "The Revival: the descent to the terraces" },
+      "shortDescription": {
+        "bg": "XIX век в Ъглен: селото слиза от височините към речните тераси, вдига църквата си и дава на България Трифон Кунев.",
+        "en": "The 19th century in Aglen: the village comes down from the heights to the river terraces, raises its church, and gives Bulgaria Trifon Kunev."
+      },
+      "confidence": "E2",
+      "relations": [
+        { "type": "locatedIn", "target": "karst-lukovit" }
+      ],
+      "page": { "path": "/history/revival/", "priority": 2, "status": "published", "breadcrumbRoot": true }
     }
   ]
 }

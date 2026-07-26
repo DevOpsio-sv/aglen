@@ -3,7 +3,9 @@ import type { LanguageCode } from "./locales/types";
 import { landingPages, type LandingPageId } from "./landingPages";
 import { publishedBusinesses } from "./localBusinesses";
 import { guides } from "./guides";
-import { placePageEntities } from "./graph";
+import { namespaceEntities, placePageEntities } from "./graph";
+import { aspectPagesFor } from "./graph/ledger";
+import type { ClaimAspect } from "./graph/claims";
 
 export type CoreRouteId =
   | "home"
@@ -26,6 +28,15 @@ export type CoreRouteId =
   // hang off the "place" route the way businesses hang off "localBusinesses".
   | "karst"
   | "place"
+  // The knowledge namespaces (M4). Time, people and oral tradition are entities
+  // like any other; they differ only in the namespace their page lives under.
+  // `/sources/` and `/corrections/` are the provenance surfaces: both are
+  // generated from the claim ledger and neither is hand-maintained.
+  | "history"
+  | "legend"
+  | "person"
+  | "sources"
+  | "corrections"
   | "travelGuide"
   | "seasonal"
   | "events"
@@ -52,13 +63,35 @@ export type ResolvedRoute = {
   businessSlug?: string;
   // Set when the path addresses a single guide: /<lang>/guides/<slug>/
   guideSlug?: string;
-  // Set when the path addresses a single entity: /<lang>/place/<slug>/
+  /**
+   * Set when the path addresses a single entity beneath an entity namespace:
+   * /<lang>/place/<slug>/, /<lang>/history/<slug>/, /<lang>/legend/<slug>/ and
+   * /<lang>/person/<slug>/ all resolve here. The routeId names the namespace, so
+   * one field carries the slug for all of them.
+   */
   placeSlug?: string;
+  /** Set for a depth-3 aspect page: /<lang>/place/aglen/history/ (M4). */
+  aspect?: ClaimAspect;
 };
 
 export const BUSINESS_ROUTE_SLUG = "local-businesses";
 export const GUIDES_ROUTE_SLUG = "guides";
 export const PLACE_ROUTE_SLUG = "place";
+
+/**
+ * The entity namespaces and the route each resolves to. `/place/` came with M3;
+ * the other three come with M4 and behave identically — an index at the root and
+ * one detail page per published entity.
+ */
+export const ENTITY_NAMESPACES: Array<{ slug: string; routeId: CoreRouteId }> = [
+  { slug: PLACE_ROUTE_SLUG, routeId: "place" },
+  { slug: "history", routeId: "history" },
+  { slug: "legend", routeId: "legend" },
+  { slug: "person", routeId: "person" },
+];
+
+/** Aspects that may appear as a depth-3 page beneath an entity (`/place/aglen/history/`). */
+const ASPECT_SLUGS = new Set<string>(["history", "name"]);
 
 export const DEFAULT_LANGUAGE: LanguageCode = "bg";
 
@@ -85,6 +118,12 @@ const coreRoutes: StaticRoute[] = [
   // "place" with a placeSlug, like businesses and guides.
   { id: "karst", slug: "karst", sectionId: "karst" },
   { id: "place", slug: "place", sectionId: "place" },
+  // The knowledge namespaces and the two provenance surfaces (M4).
+  { id: "history", slug: "history", sectionId: "history" },
+  { id: "legend", slug: "legend", sectionId: "legend" },
+  { id: "person", slug: "person", sectionId: "person" },
+  { id: "sources", slug: "sources", sectionId: "sources" },
+  { id: "corrections", slug: "corrections", sectionId: "corrections" },
   { id: "travelGuide", slug: "travel-guide", sectionId: "travel-guide" },
   { id: "seasonal", slug: "travel-guide/seasonal-guide", sectionId: "travel-guide" },
   { id: "events", slug: "events", sectionId: "events" },
@@ -158,10 +197,22 @@ export function resolveRoute(pathname: string, search = ""): ResolvedRoute {
     if (guideSlug) return { language, routeId: "guides", guideSlug };
   }
 
-  // Entity detail pages hang off the /place/ index: /<lang>/place/<slug>/.
-  if (slug.startsWith(`${PLACE_ROUTE_SLUG}/`)) {
-    const placeSlug = slug.slice(PLACE_ROUTE_SLUG.length + 1).replace(/\/$/, "");
-    if (placeSlug) return { language, routeId: "place", placeSlug };
+  // Entity detail pages hang off their namespace index the same way in every
+  // namespace: /<lang>/place/<slug>/, /<lang>/history/<slug>/ and so on. A second
+  // segment beneath /place/ is a depth-3 aspect page (/place/aglen/history/) and
+  // never a second entity — the hierarchy stops at three levels
+  // (`CONTENT_HIERARCHY.md` §3).
+  for (const namespace of ENTITY_NAMESPACES) {
+    if (!slug.startsWith(`${namespace.slug}/`)) continue;
+    const rest = slug.slice(namespace.slug.length + 1).replace(/\/$/, "");
+    if (!rest) break;
+    const [entitySlug, aspectSlug] = rest.split("/");
+    if (!entitySlug) break;
+    if (namespace.routeId === "place" && aspectSlug && ASPECT_SLUGS.has(aspectSlug)) {
+      return { language, routeId: "place", placeSlug: entitySlug, aspect: aspectSlug as ClaimAspect };
+    }
+    if (aspectSlug) break; // depth 4 is not a route; fall through to the 404-ish home
+    return { language, routeId: namespace.routeId, placeSlug: entitySlug };
   }
 
   const route = routesBySlug.get(slug) ?? getStaticRoute("home");
@@ -181,8 +232,36 @@ export function buildPlacePath(language: LanguageCode, placeSlug: string): strin
   return `/${language}/${PLACE_ROUTE_SLUG}/${placeSlug}/`;
 }
 
+/**
+ * The URL of any published entity in any namespace. `page.path` is the
+ * language-agnostic path the graph itself carries, so this is the one function
+ * every surface uses and there is nothing to keep in sync (Constitution rule 1).
+ */
+export function buildEntityPath(language: LanguageCode, pagePath: string): string {
+  return `/${language}${pagePath}`;
+}
+
+/** A depth-3 aspect page beneath an entity: /<lang>/place/aglen/history/ (M4). */
+export function buildAspectPath(language: LanguageCode, entitySlug: string, aspect: ClaimAspect): string {
+  return `/${language}/${PLACE_ROUTE_SLUG}/${entitySlug}/${aspect}/`;
+}
+
 /** Published entity pages under /place/, one detail route per entity. */
 export const placeRouteSlugs: string[] = placePageEntities().map((entity) => entity.slug);
+
+/** Published entity pages in the M4 namespaces, as `{ routeId, slug }` pairs. */
+export const knowledgeRouteEntities: Array<{ routeId: CoreRouteId; slug: string }> = ENTITY_NAMESPACES.filter(
+  (namespace) => namespace.routeId !== "place",
+).flatMap((namespace) => namespaceEntities(`/${namespace.slug}/`).map((entity) => ({ routeId: namespace.routeId, slug: entity.slug })));
+
+/**
+ * Aspect pages, derived: an aspect earns a page only where the ledger holds
+ * enough claims for it, so the route table is a function of what is known
+ * (Constitution rule 26) rather than a list somebody keeps up to date.
+ */
+export const aspectRoutes: Array<{ slug: string; aspect: ClaimAspect }> = placePageEntities().flatMap((entity) =>
+  aspectPagesFor(entity.id).map((page) => ({ slug: entity.slug, aspect: page.aspect })),
+);
 
 export function getAllStaticRoutePaths(): string[] {
   const businesses = publishedBusinesses();
@@ -191,5 +270,7 @@ export function getAllStaticRoutePaths(): string[] {
     ...businesses.map((business) => buildBusinessPath(language, business.slug)),
     ...guides.map((guide) => buildGuidePath(language, guide.slug)),
     ...placeRouteSlugs.map((slug) => buildPlacePath(language, slug)),
+    ...knowledgeRouteEntities.map((entry) => `/${language}/${getStaticRoute(entry.routeId).slug}/${entry.slug}/`),
+    ...aspectRoutes.map((entry) => buildAspectPath(language, entry.slug, entry.aspect)),
   ]);
 }

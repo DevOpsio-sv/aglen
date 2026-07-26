@@ -95,6 +95,28 @@ for (const entity of entities) {
   }
 }
 
+// ── Derived inbound edges ────────────────────────────────────
+// A record asserts an edge once, in the direction that reads true in the world:
+// the village is the birthplace of Kunev, the church is the subject of the
+// Revival story. Rendered from the other end those same edges are what stops a
+// person, legend or period page from being a dead end (Constitution rule 23), so
+// the reverse direction is DERIVED here rather than hand-authored on both sides
+// (rule 19). Symmetric edges are already mirrored above and simply dedupe.
+const inboundById = new Map<EntityId, Array<{ from: Entity; type: Relation["type"] }>>();
+for (const entity of entities) {
+  for (const relation of entity.relations) {
+    if (!byId.has(relation.target)) continue; // dangling — graph-audit reports it
+    const inbound = inboundById.get(relation.target) ?? [];
+    inbound.push({ from: entity, type: relation.type });
+    inboundById.set(relation.target, inbound);
+  }
+}
+
+/** Entities that assert an edge pointing at this one, with the edge's type. */
+export function inboundRelationsOf(id: EntityId): Array<{ from: Entity; type: Relation["type"] }> {
+  return inboundById.get(id) ?? [];
+}
+
 // ── Public lookups ───────────────────────────────────────────
 export function entityById(id: EntityId): Entity | undefined {
   return byId.get(id);
@@ -120,6 +142,25 @@ export function pageEntities(): Entity[] {
 /** Published entities whose page lives under /place/. */
 export function placePageEntities(): Entity[] {
   return pageEntities().filter((entity) => entity.page!.path.startsWith("/place/"));
+}
+
+/**
+ * Published entities under one namespace root, e.g. "/legend/" or "/history/".
+ * Ordering is by page priority, then id, so an index page is a stable function of
+ * the graph rather than of the order records happen to sit in a file.
+ */
+export function namespaceEntities(prefix: string): Entity[] {
+  return pageEntities()
+    .filter((entity) => entity.page!.path.startsWith(prefix))
+    .sort((a, b) => a.page!.priority - b.page!.priority || a.id.localeCompare(b.id));
+}
+
+/** The namespace root a published entity's page sits under, e.g. "/history/". */
+export function namespaceOf(entity: Entity): string | undefined {
+  const path = entity.page?.path;
+  if (!path) return undefined;
+  const match = /^\/[^/]+\//.exec(path);
+  return match ? match[0] : undefined;
 }
 
 /** The published entity that transcludes a given locale placeId, if any. */
@@ -274,6 +315,35 @@ function relationFact(type: Relation["type"], lang: LanguageCode): string {
 }
 
 /**
+ * The same edge read from the other end. `aglen birthPlaceOf trifon-kunev` is
+ * "born here" on the village page and "birthplace" on his; both are the one
+ * asserted edge, rendered honestly from each side (rules 19–20).
+ */
+function inverseRelationFact(type: Relation["type"], lang: LanguageCode): string {
+  const bg: Partial<Record<Relation["type"], string>> = {
+    birthPlaceOf: "родно място",
+    subjectOf: "разказва се за",
+    contains: "част от",
+    containedIn: "в него",
+    accessedFrom: "води до",
+    supersededBy: "предшественик",
+    locatedIn: "включва",
+    operatedBy: "стопанисва",
+  };
+  const en: Partial<Record<Relation["type"], string>> = {
+    birthPlaceOf: "birthplace",
+    subjectOf: "told about",
+    contains: "part of",
+    containedIn: "contains",
+    accessedFrom: "leads to",
+    supersededBy: "predecessor",
+    locatedIn: "includes",
+    operatedBy: "operates",
+  };
+  return (lang === "bg" ? bg[type] : en[type]) ?? relationFact(type, lang);
+}
+
+/**
  * Links for an entity page, derived from its edges. Order: containment (parent,
  * then children), typed relations, then derived nearby — each carrying a fact,
  * each pointing at a page that exists (zero 301-hops, the id resolves to the
@@ -298,6 +368,13 @@ export function derivedLinks(entity: Entity, lang: LanguageCode, nearbyLimit = 3
     let fact = relationFact(relation.type, lang);
     if (relation.reason) fact = pick(relation.reason, lang);
     linkTo(target, fact);
+  }
+
+  // The same edges read from the far end. Without these a person, a legend or a
+  // historical period would have nowhere to go: nothing points out of them, and
+  // everything points in.
+  for (const { from, type } of inboundRelationsOf(entity.id)) {
+    linkTo(from, inverseRelationFact(type, lang));
   }
 
   // Derived nearby: nearest point-geo pages by straight-line distance.
