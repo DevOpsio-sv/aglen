@@ -1081,6 +1081,41 @@ schema-validated records with generated types) is elevated from "later" to a **P
 prerequisite** — it is the unlock for all non-engineer contribution
 (`MASTER_ARCHITECTURE_REVIEW.md` §5).
 
+### ADR-014 — The provenance layer: namespaces and two extensions to the Claim model
+**Date.** 2026-07-26. **Status.** Accepted, shipped with M4.
+**Context.** M4 implements the claim ledger. Three details had to be settled before the
+records could be written, and each is a data decision, not a rendering one — so each is
+recorded here rather than resolved in code.
+
+**Decision 1 — oral tradition is published under `/legend/`, not `/story/`.**
+`CONTENT_HIERARCHY.md` §1 sketched `/story/<slug>/`. The entity kind is `legend`
+(`KNOWLEDGE_GRAPH.md` §2), the site's existing section is "Легенди", and a reader
+looking for what the village tells calls it a legend. The namespace now matches the
+kind, which is what makes `/legend/` derivable from `page.path` rather than mapped.
+`/story/` was never published, so nothing is retired and no redirect is owed.
+
+**Decision 2 — a claim carries `sources: SourceId[]`, not a single `source`.**
+`EEAT_STRATEGY.md` §2 typed one source per claim. Several real statements rest on two
+(a birth year attested both in a published biography and in village memory), and the
+ledger must show both or it misrepresents how well a fact is held. The field widens;
+no field is removed and none changes meaning, so every record written against the
+narrower shape is still valid.
+
+**Decision 3 — `SourceKind` widens to the classes this region actually holds**
+(book, academic, archive, museum, municipal, church, map, oral, field, photograph,
+dataset, reference, press). The six-kind list could not name a church register or a
+municipal document without lying about what they are.
+
+**Rejected.** (a) Keeping `/story/` and mapping kind→namespace — a second table to
+keep in sync, which is the defect this architecture exists to remove. (b) Modelling
+multiple sources as multiple claims with identical text — it would inflate the ledger
+and make "how many independent origins support this?" unanswerable.
+**Consequence.** `scripts/graph-audit.mjs` gains the provenance gates (V1/V3/V4/V14,
+rule 15 in the knowledge namespaces, and the rule that a claim may not call itself
+verified when every source it cites has unestablished provenance). Depth-3 aspect
+pages (`/place/aglen/history/`, `/place/aglen/name/`) are derived from the ledger, so
+they appear when the claims do and never before (rule 26).
+
 ---
 
 ## 19. Non-functional requirements
