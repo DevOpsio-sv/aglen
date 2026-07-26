@@ -1,93 +1,17 @@
 import fs from "node:fs";
 import path from "node:path";
-import { createRequire } from "node:module";
-import ts from "typescript";
+import { srcModule } from "./lib/load-module.mjs";
 
 const rootDir = process.cwd();
 const distDir = path.join(rootDir, "dist");
 const templatePath = path.join(distDir, "index.html");
 const template = fs.readFileSync(templatePath, "utf8");
-const nodeRequire = createRequire(import.meta.url);
-const moduleCache = new Map();
 
-function resolveSourceModule(specifier, fromFile) {
-  if (!specifier.startsWith(".")) {
-    return specifier;
-  }
-
-  const basePath = path.resolve(path.dirname(fromFile), specifier);
-  const candidates = [
-    basePath,
-    `${basePath}.ts`,
-    `${basePath}.tsx`,
-    `${basePath}.js`,
-    `${basePath}.mjs`,
-    `${basePath}.json`,
-    path.join(basePath, "index.ts"),
-  ];
-
-  const match = candidates.find((candidate) => fs.existsSync(candidate) && fs.statSync(candidate).isFile());
-  if (!match) {
-    throw new Error(`Cannot resolve ${specifier} from ${fromFile}`);
-  }
-
-  return match;
-}
-
-function loadSourceModule(filePath) {
-  if (!filePath.startsWith(rootDir)) {
-    return nodeRequire(filePath);
-  }
-
-  const resolvedPath = resolveSourceModule(filePath, path.join(rootDir, "scripts", "generate-static-routes.mjs"));
-  if (moduleCache.has(resolvedPath)) {
-    return moduleCache.get(resolvedPath).exports;
-  }
-
-  // JSON records (the graph's authored data) are parsed, not transpiled.
-  if (resolvedPath.endsWith(".json")) {
-    const parsed = JSON.parse(fs.readFileSync(resolvedPath, "utf8"));
-    moduleCache.set(resolvedPath, { exports: parsed });
-    return parsed;
-  }
-
-  const source = fs.readFileSync(resolvedPath, "utf8");
-  const module = { exports: {} };
-  moduleCache.set(resolvedPath, module);
-
-  const output = ts.transpileModule(source, {
-    compilerOptions: {
-      esModuleInterop: true,
-      jsx: ts.JsxEmit.ReactJSX,
-      module: ts.ModuleKind.CommonJS,
-      target: ts.ScriptTarget.ES2020,
-    },
-    fileName: resolvedPath,
-  }).outputText;
-
-  const localRequire = (specifier) => {
-    if (specifier.endsWith(".css")) {
-      return {};
-    }
-
-    const target = resolveSourceModule(specifier, resolvedPath);
-    if (path.isAbsolute(target) && target.startsWith(rootDir)) {
-      return loadSourceModule(target);
-    }
-
-    return nodeRequire(target);
-  };
-
-  const runner = new Function("exports", "require", "module", "__filename", "__dirname", output);
-  runner(module.exports, localRequire, module, resolvedPath, path.dirname(resolvedPath));
-  return module.exports;
-}
-
-const routes = loadSourceModule(path.join(rootDir, "src", "routes.ts"));
-const seo = loadSourceModule(path.join(rootDir, "src", "seo.ts"));
-const localBusinesses = loadSourceModule(path.join(rootDir, "src", "localBusinesses.ts"));
+const routes = srcModule("routes.ts");
+const seo = srcModule("seo.ts");
+const localBusinesses = srcModule("localBusinesses.ts");
 const businesses = localBusinesses.publishedBusinesses();
-const guides = loadSourceModule(path.join(rootDir, "src", "guides.ts")).guides;
+const guides = srcModule("guides.ts").guides;
 
 function escapeAttribute(value) {
   return value
@@ -302,10 +226,121 @@ fs.writeFileSync(
 
 // llms.txt is generated from the same data as the sitemaps, so it cannot drift.
 // The previous hand-written list pointed at eight URLs that are now 301s.
-const region = loadSourceModule(path.join(rootDir, "src", "region.ts"));
-const trustPages = loadSourceModule(path.join(rootDir, "src", "trustPages.ts"));
-const graph = loadSourceModule(path.join(rootDir, "src", "graph", "index.ts"));
-const ledger = loadSourceModule(path.join(rootDir, "src", "graph", "ledger.ts"));
+const region = srcModule("region.ts");
+const trustPages = srcModule("trustPages.ts");
+const graph = srcModule("graph", "index.ts");
+const ledger = srcModule("graph", "ledger.ts");
+const search = srcModule("graph", "search.ts");
+const registry = srcModule("graph", "registry.ts");
+
+// ── The static search index (M5, Part 6, ADR-018) ────────────
+// Derived from the graph, keyed by folded names and aliases, written once per
+// build. No search UI ships with M5 — navigation is frozen — but the index is
+// the half that must exist first, and the build proves it works: every alias a
+// record carries is queried against the index it just produced, and a build in
+// which "Очите на Бога" does not find Проходна fails here rather than shipping.
+const searchIndex = search.buildSearchIndex();
+fs.writeFileSync(path.join(distDir, "search-index.json"), `${JSON.stringify(searchIndex)}\n`);
+
+const aliasFailures = [];
+for (const expectation of search.aliasExpectations()) {
+  const found = search.searchIndexFor(searchIndex, expectation.query, 5);
+  if (!found.some((entry) => entry.path === expectation.path)) {
+    aliasFailures.push(`"${expectation.query}" (${expectation.kind}) does not resolve to ${expectation.path}`);
+  }
+}
+if (aliasFailures.length > 0) {
+  console.error(`Search index does not resolve ${aliasFailures.length} alias(es):`);
+  for (const failure of aliasFailures) console.error(`  - ${failure}`);
+  process.exitCode = 1;
+}
+
+// ── The knowledge export (M5, Part 7) ────────────────────────
+// `llms.txt` is prose for a model reading a page; this is the same knowledge as
+// data, for a model or a researcher consuming it in bulk. Constitution rule 42
+// governs both: every statement keeps its source and its confidence, and nothing
+// flattens a hedge (V15).
+//
+// Every identifier here is a URL. No claim id, no source id, no partition name,
+// no confidence enum this codebase invented for itself — an entity is addressed
+// by the page a human would read, a source by its own page or its origin URL.
+// A consumer of this file learns what the site knows and never learns how the
+// site is built, which is the correct amount.
+function knowledgeExport() {
+  const url = (pagePath) => `${seo.SITE_URL}/en${pagePath}`;
+  const nodes = [];
+  for (const entity of graph.entities) {
+    if (entity.page?.status !== "published") continue;
+    const claims = ledger.claimsFor(entity.id);
+    const point = graph.entityPoint(entity);
+    const parent = entity.parent ? graph.entityById(entity.parent) : undefined;
+    nodes.push({
+      url: url(entity.page.path),
+      name: graph.entityName(entity, "en"),
+      nameBg: graph.entityName(entity, "bg"),
+      alsoKnownAs: [...new Set([...graph.entityAliases(entity, "en"), ...graph.entityAliases(entity, "bg")])],
+      type: entity.kind,
+      schemaType: entity.schemaType,
+      summary: graph.entityShortText(entity, "en"),
+      ...(point ? { coordinates: { lat: point.lat, lon: point.lon } } : {}),
+      sameAs: graph.entitySameAs(entity),
+      ...(parent?.page?.status === "published" ? { partOf: url(parent.page.path) } : {}),
+      // The edges as URLs, which is what makes this a graph rather than a list.
+      related: graph
+        .derivedLinks(entity, "en")
+        .map((link) => {
+          const target = graph.entityById(link.entityId);
+          return target?.page?.status === "published"
+            ? { url: url(target.page.path), relationship: link.label.split(" — ").slice(1).join(" — ") }
+            : undefined;
+        })
+        .filter(Boolean),
+      trustSignals: ledger.trustSignals(entity.id),
+      lastReviewed: ledger.lastReviewed(entity.id),
+      statements: claims.map((claim) => ({
+        text: ledger.claimStatement(claim, "en"),
+        confidence: claim.confidence,
+        ...(claim.method ? { method: claim.method } : {}),
+        ...(claim.aspect ? { about: claim.aspect } : {}),
+        reviewed: claim.reviewedAt,
+        sources: claim.sources
+          .map((id) => ledger.sourceById(id))
+          .filter(Boolean)
+          .map((source) => ({
+            citation: source.citation,
+            kind: source.kind,
+            verification: source.verification,
+            ...(source.url ? { url: source.url } : {}),
+            ...(ledger.sourcePagePath(source) ? { page: url(ledger.sourcePagePath(source)) } : {}),
+          })),
+      })),
+      openQuestions: ledger.disputesFor(entity.id).map((dispute) => ({
+        question: ledger.disputeQuestion(dispute, "en"),
+        status: dispute.status,
+        readings: ledger.claimsInDispute(dispute.id).map((reading) => ({
+          text: ledger.claimStatement(reading, "en"),
+          heldAlone: reading.interpretationConfidence,
+        })),
+      })),
+    });
+  }
+  return {
+    name: "Aglen Tourism — the Lukovit Karst knowledge graph",
+    license: "Cite Aglen Tourism and link the page you used.",
+    confidenceValues: {
+      verified: "checked against the origin by this project",
+      reported: "a real citable origin this project has not independently checked",
+      uncertain: "a stated unknown — what is NOT established",
+      disputed: "one of two readings presented side by side, neither chosen",
+    },
+    caution:
+      "Do not restate an uncertain or disputed statement as a fact, and do not merge two disputed readings into one answer.",
+    regions: registry.REGIONS.map((entry) => ({ name: entry.name.en ?? entry.name.bg, url: url(entry.rootPath) })),
+    entities: nodes,
+  };
+}
+
+fs.writeFileSync(path.join(distDir, "knowledge.json"), `${JSON.stringify(knowledgeExport(), null, 2)}\n`);
 
 // The claim export (Constitution rule 42): every statement keeps its source and
 // its confidence. An assistant that reads this must be able to tell a verified

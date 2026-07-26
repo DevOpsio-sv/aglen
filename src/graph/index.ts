@@ -535,6 +535,15 @@ export function derivedLinks(entity: Entity, lang: LanguageCode, nearbyLimit = 3
   if (parent) linkTo(parent, relationFact("containedIn", lang));
   for (const child of childrenOf(entity.id)) linkTo(child, relationFact("contains", lang));
 
+
+  for (const relation of relationsOf(entity)) {
+    if (relation.type === "nearby") continue; // nearby is derived from coordinates below
+    const target = byId.get(relation.target);
+    let fact = relationFact(relation.type, lang);
+    if (relation.reason) fact = pick(relation.reason, lang);
+    linkTo(target, fact);
+  }
+
   // Siblings under an unpublished parent (M5, Part 5).
   //
   // An entity whose parent is a node — the Vit valley at Aglen holds five rock
@@ -548,19 +557,17 @@ export function derivedLinks(entity: Entity, lang: LanguageCode, nearbyLimit = 3
   // the Vit valley at Aglen" is not a new assertion — it is the two containment
   // edges the records already carry, read together, and it is true in the world
   // (rule 13). What renders is that shared fact, named.
+  //
+  // It runs AFTER the typed relations on purpose: an edge somebody asserted —
+  // Дупката sharing a formation with Проходна — says more than a shared valley,
+  // and that particular edge is how an E1 entity earns its context from an E5 one
+  // (`TOPICAL_AUTHORITY_MAP.md` §0). Sharing a parent is the weakest true thing
+  // two pages can have in common, so it is offered last.
   if (parent && parent.page?.status !== "published") {
     for (const sibling of childrenOf(parent.id)) {
       if (sibling.id === entity.id) continue;
       linkTo(sibling, siblingFact(entityName(parent, lang), lang));
     }
-  }
-
-  for (const relation of relationsOf(entity)) {
-    if (relation.type === "nearby") continue; // nearby is derived from coordinates below
-    const target = byId.get(relation.target);
-    let fact = relationFact(relation.type, lang);
-    if (relation.reason) fact = pick(relation.reason, lang);
-    linkTo(target, fact);
   }
 
   // The same edges read from the far end. Without these a person, a legend or a

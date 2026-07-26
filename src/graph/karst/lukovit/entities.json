@@ -49,6 +49,9 @@
       "slug": "lovech-province",
       "schemaType": "AdministrativeArea",
       "contentRef": { "regionId": "lovech-province" },
+      "aliases": [
+        { "name": { "bg": "Ловешка област", "en": "Lovech region" }, "kind": "variant" }
+      ],
       "confidence": "E4",
       "relations": [],
       "page": { "path": "/place/lovech-province/", "priority": 4, "status": "published", "breadcrumbRoot": true }
@@ -75,6 +78,25 @@
       },
       "geo": { "lat": 43.201151, "lon": 24.314943 },
       "sameAs": { "wikidata": "Q550547", "wikipedia": { "bg": "Ъглен", "en": "Aglen, Bulgaria" } },
+      "aliases": [
+        {
+          "name": { "bg": "Иглен", "en": "Iglen" },
+          "kind": "historical",
+          "period": "по местно предание",
+          "note": {
+            "bg": "Формата, с която според едното от двете живи обяснения първите заселници нарекли мястото — по иглените скали над реката. Не е откривана в регистър, карта или документ; записва се като предание, не като установена форма. Самото предание е отделна страница.",
+            "en": "The form by which, on one of the two living explanations, the first settlers are said to have called the place — after the rock needles above the river. It has not been found in any register, map or document; it is recorded as tradition, not as an established form. The tradition itself has its own page."
+          }
+        },
+        {
+          "name": { "bg": "Углен", "en": "Uglen" },
+          "kind": "variant",
+          "note": {
+            "bg": "Разпространена латинска и кирилска транслитерация на „Ъглен“. Официалната транслитерация на „ъ“ е „a“, тоест Aglen.",
+            "en": "A common rendering of “Ъглен” in both scripts. The official transliteration of “ъ” is “a”, giving Aglen."
+          }
+        }
+      ],
       "confidence": "E3",
       "parent": "vit-valley-aglen",
       "relations": [
@@ -130,6 +152,16 @@
       "contentRef": { "regionId": "prohodna", "guideSlug": "caves-and-rocks" },
       "geo": { "lat": 43.1758, "lon": 24.0731 },
       "sameAs": { "wikidata": "Q3657889", "wikipedia": { "bg": "Проходна", "en": "Prohodna" } },
+      "aliases": [
+        {
+          "name": { "bg": "Очите на Бога", "en": "The Eyes of God" },
+          "kind": "local",
+          "note": {
+            "bg": "Името на двата отвора в свода на пещерата, под което тя е най-широко известна.",
+            "en": "The name of the two openings in the cave roof, under which it is most widely known."
+          }
+        }
+      ],
       "confidence": "E5",
       "parent": "karlukovo-district",
       "relations": [],
@@ -170,6 +202,9 @@
       "contentRef": { "regionId": "vit-river", "guideSlug": "vit-river" },
       "geo": { "linear": true },
       "sameAs": { "wikidata": "Q1773449", "wikipedia": { "bg": "Вит", "en": "Vit (river)" } },
+      "aliases": [
+        { "name": { "bg": "Вит", "en": "Vit" }, "kind": "variant" }
+      ],
       "confidence": "E4",
       "parent": "karst-lukovit",
       "relations": [
@@ -198,6 +233,9 @@
       "contentRef": { "regionId": "krushuna" },
       "geo": { "lat": 43.243056, "lon": 25.033333 },
       "sameAs": { "wikidata": "Q6439432", "wikipedia": { "bg": "Крушунска бигорна каскада", "en": "Krushuna Falls" } },
+      "aliases": [
+        { "name": { "bg": "Крушунска бигорна каскада", "en": "Krushuna travertine cascade" }, "kind": "official" }
+      ],
       "confidence": "E5",
       "parent": "lovech-province",
       "relations": [],
@@ -298,6 +336,16 @@
         "bg": "Изоставеното старо селище, предшественик на днешния Ъглен — обяснява защо в землището има два обитавани в различно време центъра.",
         "en": "The abandoned predecessor settlement of today’s Aglen — it explains why the land holds two habitation centres from different periods."
       },
+      "aliases": [
+        {
+          "name": { "bg": "Старо село", "en": "Staro selo" },
+          "kind": "local",
+          "note": {
+            "bg": "Другото име на местността в землището, както се употребява в селото.",
+            "en": "The other name of the locality in the village land, as it is used locally."
+          }
+        }
+      ],
       "confidence": "E1",
       "parent": "vit-valley-aglen",
       "relations": [
