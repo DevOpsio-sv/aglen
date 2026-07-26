@@ -37,7 +37,7 @@
 /:lang/aglen-route-map/               /:lang/location/           301
 /:lang/traditional-food-aglen/        /:lang/local-businesses/   301
 /:lang/accommodation-near-aglen/      /:lang/local-businesses/   301
-/:lang/aglen-answer-hub/              /:lang/about/              301
+/:lang/aglen-answer-hub/              /:lang/sources/            301
 
 # ── M2: the two legacy standalone Unlocking Bulgaria pages consolidate into the
 # one local mission hub (ADR-013). /ar-missions/ returns 200 in every language;
@@ -54,3 +54,12 @@
 /:lang/devetashka-cave-travel-guide/ /:lang/place/devetashka/       301
 /:lang/iskar-panega-travel-guide/    /:lang/place/iskar-panega/     301
 /:lang/lovech-region-travel-guide/   /:lang/place/lovech-province/  301
+
+# ── M4: the provenance surfaces exist, so the claim ledger becomes a real target.
+# `/aglen-answer-hub/` was retired to /about/ in M1 only because /sources/ did not
+# exist yet; an "answer hub" that is not a source ledger is a keyword page
+# (CONTENT_HIERARCHY.md §4). The rule above now points at /sources/.
+#
+# The M4 namespaces are additive: /history/, /legend/, /person/, /sources/ and
+# /corrections/ are new URLs in every language and retire nothing. No existing
+# URL changes meaning and no redirect is needed for them.

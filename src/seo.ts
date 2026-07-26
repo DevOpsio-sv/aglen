@@ -22,7 +22,8 @@ import {
 import { fontFaces } from "./generated/fontManifest";
 import { routeHasOwnSections } from "./pageSections";
 import { localizeTrust, trustPageByRoute } from "./trustPages";
-import { buildPlacePath } from "./routes";
+import { buildAspectPath, buildPlacePath } from "./routes";
+import { aspectCrumb, aspectLede, aspectTitle, namespaceTitle, NAMESPACE_CHROME, PROVENANCE_CHROME, localizeChrome, type NamespaceKind } from "./graph/namespaces";
 import {
   breadcrumbTrail,
   derivedLinks,
@@ -33,7 +34,25 @@ import {
   entityShortText,
   entityLongText,
   entitySameAs,
+  namespaceEntities,
 } from "./graph";
+import {
+  aspectPagesFor,
+  claimStatement,
+  claimsFor,
+  claimsForAspect,
+  claimsInDispute,
+  corrections,
+  disputeQuestion,
+  disputesFor,
+  knownClaims,
+  lastReviewed,
+  sources as ledgerSources,
+  sourcesOf,
+  uncertainClaims,
+  claims as allLedgerClaims,
+} from "./graph/ledger";
+import type { ClaimAspect } from "./graph/claims";
 import type { Entity } from "./graph/schema";
 
 export const SITE_URL = "https://aglen.bg";
@@ -81,7 +100,9 @@ const retiredLandingRouteIds: Partial<Record<RouteId, CoreRouteId>> = {
   routeMap: "geo",
   traditionalFood: "localBusinesses",
   accommodationNearAglen: "localBusinesses",
-  aiAnswerHub: "trust",
+  // M4: an "answer hub" that is not a source ledger is a keyword page. Now that
+  // `/sources/` exists it is the honest target (`CONTENT_HIERARCHY.md` §4).
+  aiAnswerHub: "sources",
   // ── M2: the two legacy standalone Unlocking Bulgaria pages consolidate into the
   // one local mission hub (ADR-013). Same retirement plumbing: canonical +
   // hreflang → /ar-missions/, noindex, dropped from the sitemaps, 301 in _redirects.
@@ -140,10 +161,34 @@ const noindexUntilPlanRouteIds = new Set<RouteId>([
  *     otherwise ship an empty page (SHOW_EXPERIENCES and SHOW_STAY are both off,
  *     so /activities/ and /stay/ currently render nothing of their own).
  */
+/**
+ * Routes that render the knowledge tier — the graph and its ledger rather than
+ * crops of the home page. Constitution rule 43 restricts the knowledge tier to
+ * `bg` and `en`: the other twelve languages still get a page so that links
+ * resolve, but it is `noindex` and out of the sitemaps until a human has reviewed
+ * the translation. A machine paraphrase of a sourced claim is exactly the thing
+ * this system must not publish as authoritative (V8).
+ */
+const KNOWLEDGE_TIER_ROUTES = new Set<RouteId>(["history", "legend", "person", "sources", "corrections"]);
+const KNOWLEDGE_TIER_LANGUAGES = new Set<LanguageCode>(["bg", "en"]);
+
+export function isKnowledgeTierRoute(routeId: RouteId, detailSlug?: string): boolean {
+  if (KNOWLEDGE_TIER_ROUTES.has(routeId)) return true;
+  // An aspect page beneath /place/ is nothing but claims, so it belongs to the
+  // knowledge tier even though its namespace came with M3.
+  return Boolean(detailSlug && routeId === "place" && detailSlug.includes("/"));
+}
+
+/** Whether this route may be indexed in this language (rule 43). */
+export function isIndexableIn(lang: LanguageCode, routeId: RouteId, detailSlug?: string): boolean {
+  if (!isIndexableRoute(routeId)) return false;
+  return !isKnowledgeTierRoute(routeId, detailSlug) || KNOWLEDGE_TIER_LANGUAGES.has(lang);
+}
+
 export function isIndexableRoute(routeId: RouteId): boolean {
-  // The entity namespace (M3) renders graph-derived content, not home-section
-  // crops, so it is indexable even though it has no `pageSections` entry.
-  if (routeId === "karst" || routeId === "place") return true;
+  // The entity namespaces (M3, M4) render graph-derived content, not home-section
+  // crops, so they are indexable even though they have no `pageSections` entry.
+  if (routeId === "karst" || routeId === "place" || KNOWLEDGE_TIER_ROUTES.has(routeId)) return true;
   return (
     !supersedingGuideSlug(routeId) &&
     !retiredLandingTarget(routeId) &&
@@ -154,7 +199,12 @@ export function isIndexableRoute(routeId: RouteId): boolean {
 }
 
 /** Index pages, which schema.org models as CollectionPage rather than WebPage. */
-const collectionRouteIds = new Set<RouteId>(["guides", "localBusinesses", "events", "travelGuide"]);
+const collectionRouteIds = new Set<RouteId>([
+  "guides", "localBusinesses", "events", "travelGuide",
+  // The M4 index pages list entities and sources rather than describing one
+  // thing, which is exactly what CollectionPage means.
+  "history", "legend", "person", "sources", "corrections",
+]);
 
 /** Landing pages that describe an itinerary, so they can carry TouristTrip. */
 const itineraryRouteIds = new Set<RouteId>(["weekendInAglen", "aglenFromSofia", "routeMap", "howToGet", "familyTrip"]);
@@ -260,17 +310,52 @@ function absoluteGuideUrl(lang: LanguageCode, slug: string): string {
 // from the entity — the graph is the source of truth and these are functions of
 // it (Constitution rule 1). Prose is transcluded, never re-authored.
 
-/** The published entity a /place/<slug>/ detail route addresses, if any. */
-function entityForSlug(slug?: string): Entity | undefined {
-  if (!slug) return undefined;
-  const entity = entityBySlug(slug);
-  return entity && entity.page?.status === "published" && entity.page.path.startsWith("/place/") ? entity : undefined;
+/**
+ * The entity namespaces (M3's `/place/` plus M4's three). Each addresses its
+ * detail pages identically, so one resolver covers all of them and a new
+ * namespace needs no new branch here.
+ */
+const ENTITY_ROUTE_IDS: Partial<Record<RouteId, string>> = {
+  place: "/place/",
+  history: "/history/",
+  legend: "/legend/",
+  person: "/person/",
+};
+
+/** A detail route's subject: the entity, plus the aspect when one is addressed. */
+type EntitySubject = { entity: Entity; aspect?: ClaimAspect };
+
+/**
+ * Resolve `routeId` + `detailSlug` to the entity a page is about. `detailSlug`
+ * is "<slug>" for an entity page and "<slug>/<aspect>" for a depth-3 aspect page;
+ * an aspect that the ledger has not earned resolves to the entity itself rather
+ * than to a page that does not exist.
+ */
+function entitySubject(routeId: RouteId, detailSlug?: string): EntitySubject | undefined {
+  const prefix = ENTITY_ROUTE_IDS[routeId];
+  if (!detailSlug || !prefix) return undefined;
+  const [slug, aspectSlug] = detailSlug.split("/");
+  const entity = slug ? entityBySlug(slug) : undefined;
+  if (!entity || entity.page?.status !== "published" || !entity.page.path.startsWith(prefix)) return undefined;
+  if (!aspectSlug) return { entity };
+  const aspect = aspectSlug as ClaimAspect;
+  return aspectPagesFor(entity.id).some((page) => page.aspect === aspect) ? { entity, aspect } : { entity };
 }
 
-/** Absolute URL of an entity's page (either /karst/ or /place/<slug>/). */
-function entityAbsoluteUrl(lang: LanguageCode, entity: Entity): string {
-  if (entity.page?.path === "/karst/") return absoluteRouteUrl(lang, "karst");
-  return `${SITE_URL}${buildPlacePath(lang, entity.slug)}`;
+/** The published entity a detail route addresses, if any. */
+function entityForSlug(routeId: RouteId, slug?: string): Entity | undefined {
+  return entitySubject(routeId, slug)?.entity;
+}
+
+/**
+ * Absolute URL of an entity's page. The graph carries the language-agnostic
+ * path, so this covers `/karst/`, `/place/<slug>/`, `/history/<slug>/`,
+ * `/legend/<slug>/` and `/person/<slug>/` without a namespace table.
+ */
+function entityAbsoluteUrl(lang: LanguageCode, entity: Entity, aspect?: ClaimAspect): string {
+  if (aspect) return `${SITE_URL}${buildAspectPath(lang, entity.slug, aspect)}`;
+  if (!entity.page) return absoluteRouteUrl(lang, "karst");
+  return `${SITE_URL}/${lang}${entity.page.path}`;
 }
 
 // A representative hero for an entity, reusing an existing asset. E1 places carry
@@ -302,9 +387,17 @@ export function entityHeroPath(lang: LanguageCode, entity: Entity): string {
   return ENTITY_HERO_BY_KIND[entity.kind] ?? OG_IMAGE_PATH;
 }
 
-function entityText(lang: LanguageCode, entity: Entity): { title: string; description: string } {
+function entityText(lang: LanguageCode, subject: EntitySubject): { title: string; description: string } {
+  const { entity, aspect } = subject;
+  const brand = contentByLanguage[lang].brand.name;
+  if (aspect) {
+    return {
+      title: `${aspectTitle(aspect, lang)} — ${entityName(entity, lang)} | ${brand}`,
+      description: aspectLede(aspect, lang),
+    };
+  }
   return {
-    title: `${entityName(entity, lang)} | ${contentByLanguage[lang].brand.name}`,
+    title: `${entityName(entity, lang)} | ${brand}`,
     description: entityShortText(entity, lang),
   };
 }
@@ -315,15 +408,74 @@ function entityImageEntries(lang: LanguageCode, entity: Entity): ImageSitemapEnt
   ];
 }
 
-/** Breadcrumb from the containment chain (Constitution rule 19). */
-function entityBreadcrumb(lang: LanguageCode, entity: Entity): Array<{ name: string; url?: string }> {
+/**
+ * Breadcrumb from the containment chain (Constitution rule 19), mirroring the
+ * visible trail in `App.tsx` exactly. A `/place/` entity walks its containment
+ * chain; a knowledge-namespace entity has no containment and walks
+ * Home → namespace index → entity; an aspect page appends its own crumb.
+ */
+function entityBreadcrumb(lang: LanguageCode, entity: Entity, aspect?: ClaimAspect): Array<{ name: string; url?: string }> {
   const copy = contentByLanguage[lang];
   const items: Array<{ name: string; url?: string }> = [{ name: copy.nav.home, url: absoluteRouteUrl(lang, "home") }];
+  const namespaceKind = (["history", "legend", "person"] as NamespaceKind[]).find((kind) =>
+    entity.page?.path.startsWith(NAMESPACE_CHROME[kind].prefix),
+  );
+  if (namespaceKind) {
+    items.push({ name: namespaceTitle(namespaceKind, lang), url: absoluteRouteUrl(lang, namespaceKind) });
+    // The leaf carries no URL, matching the visible trail exactly.
+    items.push({ name: entityName(entity, lang) });
+    return items;
+  }
   for (const node of breadcrumbTrail(entity)) {
-    const url = node.page?.status === "published" ? entityAbsoluteUrl(lang, node) : undefined;
+    const isSelf = node.id === entity.id;
+    const url = node.page?.status === "published" && (!isSelf || aspect) ? entityAbsoluteUrl(lang, node) : undefined;
     items.push({ name: entityName(node, lang), url });
   }
+  // The same short crumb the visible trail renders — Google wants the markup to
+  // describe a trail the reader can actually see.
+  if (aspect) items.push({ name: aspectCrumb(aspect, lang) });
   return items;
+}
+
+/**
+ * The citations behind a page, as schema.org `CreativeWork` references. Every
+ * source the page's live claims rest on is emitted, with its URL where it has
+ * one — so `llms.txt`, the JSON-LD and the rendered page name the same sources
+ * (Constitution rule 33).
+ */
+function citationNodes(entityId: string): object[] {
+  const cited = new Map<string, { citation: string; url?: string }>();
+  for (const claim of claimsFor(entityId)) {
+    for (const source of sourcesOf(claim)) cited.set(source.id, { citation: source.citation, url: source.url });
+  }
+  return [...cited.values()].map((source) => ({
+    "@type": "CreativeWork",
+    name: source.citation,
+    ...(source.url ? { url: source.url } : {}),
+  }));
+}
+
+/**
+ * The claims a page asserts, as schema.org `Claim` nodes with their confidence
+ * preserved verbatim (rule 8 / V15). A machine reading this must be able to tell
+ * a verified statement from a hedged one; `disambiguatingDescription` carries the
+ * confidence word, and an uncertain claim is never emitted as a bare assertion.
+ */
+function claimNodes(lang: LanguageCode, entityId: string, url: string): object[] {
+  return claimsFor(entityId).map((claim) => ({
+    "@type": "Claim",
+    "@id": `${url}#${claim.id}`,
+    text: claimStatement(claim, lang),
+    disambiguatingDescription: claim.confidence,
+    inLanguage: lang,
+    ...(claim.observedAt ? { dateCreated: claim.observedAt } : {}),
+    appearance: { "@id": `${url}#entity` },
+    citation: sourcesOf(claim).map((source) => ({
+      "@type": "CreativeWork",
+      name: source.citation,
+      ...(source.url ? { url: source.url } : {}),
+    })),
+  }));
 }
 
 /** One entity as its honest schema node — a Place/Landform/Cave, never the TouristDestination view type (C6). */
@@ -331,6 +483,8 @@ function entityNode(lang: LanguageCode, entity: Entity, url: string): object {
   const point = entityPoint(entity);
   const sameAs = entitySameAs(entity);
   const parent = entity.parent ? entityById(entity.parent) : undefined;
+  const citations = citationNodes(entity.id);
+  const reviewed = lastReviewed(entity.id);
   return {
     "@type": entity.schemaType,
     ...(entity.additionalType ? { additionalType: entity.additionalType } : {}),
@@ -343,6 +497,8 @@ function entityNode(lang: LanguageCode, entity: Entity, url: string): object {
     ...(parent
       ? { containedInPlace: { "@type": "Place", name: entityName(parent, lang), ...(entitySameAs(parent).length ? { sameAs: entitySameAs(parent) } : {}) } }
       : {}),
+    ...(citations.length > 0 ? { subjectOf: citations } : {}),
+    ...(reviewed ? { dateModified: reviewed } : {}),
     image: absoluteAssetUrl(entityHeroPath(lang, entity)),
     isPartOf: { "@id": `${SITE_URL}/#website` },
   };
@@ -465,7 +621,15 @@ function routeText(lang: LanguageCode, routeId: RouteId): { title: string; descr
         : { title: `${copy.landmarks.title} | ${copy.brand.name}`, description: copy.landmarks.text };
     })(),
     place: { title: `${copy.landmarks.title} | ${copy.brand.name}`, description: copy.landmarks.text },
-    travelGuide: { title: `${copy.hub.title} | ${copy.brand.name}`, description: copy.hub.text },
+    // The knowledge namespaces and the provenance surfaces (M4). Titles come from
+    // the one chrome module the pages themselves render, so the <title>, the <h1>,
+    // the breadcrumb and the JSON-LD cannot drift apart.
+    history: { title: `${namespaceTitle("history", lang)} | ${copy.brand.name}`, description: localizeChrome(NAMESPACE_CHROME.history.lede, lang) },
+    legend: { title: `${namespaceTitle("legend", lang)} | ${copy.brand.name}`, description: localizeChrome(NAMESPACE_CHROME.legend.lede, lang) },
+    person: { title: `${namespaceTitle("person", lang)} | ${copy.brand.name}`, description: localizeChrome(NAMESPACE_CHROME.person.lede, lang) },
+    sources: { title: `${localizeChrome(PROVENANCE_CHROME.sources.title, lang)} | ${copy.brand.name}`, description: localizeChrome(PROVENANCE_CHROME.sources.lede, lang) },
+    corrections: { title: `${localizeChrome(PROVENANCE_CHROME.corrections.title, lang)} | ${copy.brand.name}`, description: localizeChrome(PROVENANCE_CHROME.corrections.lede, lang) },
+    travelGuide:{ title: `${copy.hub.title} | ${copy.brand.name}`, description: copy.hub.text },
     seasonal: { title: `${copy.guides.seasonal.label} | ${copy.brand.name}`, description: copy.guides.seasonal.text },
     events: { title: `${trust.events} | ${copy.brand.name}`, description: copy.hub.text },
     guides: {
@@ -498,9 +662,10 @@ function routeText(lang: LanguageCode, routeId: RouteId): { title: string; descr
 export function getSEOConfig(lang: LanguageCode, routeId: RouteId = "home", detailSlug?: string): SEOConfig {
   const business = detailSlug && routeId === "localBusinesses" ? findBusiness(detailSlug) : undefined;
   const guide = detailSlug && routeId === "guides" ? findGuide(detailSlug) : undefined;
-  const entity = detailSlug && routeId === "place" ? entityForSlug(detailSlug) : undefined;
-  const text = entity
-    ? entityText(lang, entity)
+  const subject = entitySubject(routeId, detailSlug);
+  const entity = subject?.entity;
+  const text = subject
+    ? entityText(lang, subject)
     : business
       ? businessText(lang, business)
       : guide
@@ -520,7 +685,7 @@ export function getSEOConfig(lang: LanguageCode, routeId: RouteId = "home", deta
   const retiredEntity = detailSlug ? undefined : retiredLandingEntity(routeId);
 
   const urlFor = (code: LanguageCode) => {
-    if (entity) return entityAbsoluteUrl(code, entity);
+    if (subject) return entityAbsoluteUrl(code, subject.entity, subject.aspect);
     if (retiredEntity) return entityAbsoluteUrl(code, retiredEntity);
     if (business) return absoluteBusinessUrl(code, business.slug);
     if (guide) return absoluteGuideUrl(code, guide.slug);
@@ -551,8 +716,11 @@ export function getSEOConfig(lang: LanguageCode, routeId: RouteId = "home", deta
     socialImageHeight: social.height,
     socialImageType: social.type,
     ogType: isArticle ? "article" : "website",
+    // Rule 43: the knowledge tier is indexed in bg and en only. Every other
+    // language still gets the page — links must resolve — but says noindex until
+    // a human has reviewed the translation of a sourced claim (V8).
     robots:
-      business || guide || isIndexableRoute(routeId)
+      (business || guide || isIndexableRoute(routeId)) && isIndexableIn(lang, routeId, detailSlug)
         ? "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
         : "noindex, follow",
     canonicalUrl: urlFor(lang),
@@ -604,7 +772,7 @@ function routeImages(lang: LanguageCode, routeId: RouteId, detailSlug?: string):
     ];
   }
 
-  const entity = detailSlug && routeId === "place" ? entityForSlug(detailSlug) : undefined;
+  const entity = entityForSlug(routeId, detailSlug);
   if (entity) return entityImageEntries(lang, entity);
 
   const landing = isLandingPageId(routeId) ? getLandingPage(lang, routeId) : undefined;
@@ -642,6 +810,11 @@ function routeImages(lang: LanguageCode, routeId: RouteId, detailSlug?: string):
       return [{ loc: absoluteAssetUrl("/assets/aglen-hero-river-canyon.png"), title: root ? entityName(root, lang) : rt.title, caption: rt.description }];
     })(),
     place: [{ loc: `${SITE_URL}/assets/aglen-aerial-river.png`, title: routeText(lang, "place").title, caption: routeText(lang, "place").description }],
+    history: [{ loc: absoluteAssetUrl(NAMESPACE_CHROME.history.hero), title: namespaceTitle("history", lang), caption: localizeChrome(NAMESPACE_CHROME.history.lede, lang) }],
+    legend: [{ loc: absoluteAssetUrl(NAMESPACE_CHROME.legend.hero), title: namespaceTitle("legend", lang), caption: localizeChrome(NAMESPACE_CHROME.legend.lede, lang) }],
+    person: [{ loc: absoluteAssetUrl(NAMESPACE_CHROME.person.hero), title: namespaceTitle("person", lang), caption: localizeChrome(NAMESPACE_CHROME.person.lede, lang) }],
+    sources: [{ loc: absoluteAssetUrl(PROVENANCE_CHROME.sources.hero), title: localizeChrome(PROVENANCE_CHROME.sources.title, lang), caption: localizeChrome(PROVENANCE_CHROME.sources.lede, lang) }],
+    corrections: [{ loc: absoluteAssetUrl(PROVENANCE_CHROME.corrections.hero), title: localizeChrome(PROVENANCE_CHROME.corrections.title, lang), caption: localizeChrome(PROVENANCE_CHROME.corrections.lede, lang) }],
     travelGuide: [{ loc: OG_IMAGE, title: copy.hub.title, caption: copy.hub.text }],
     seasonal: [{ loc: `${SITE_URL}/assets/aglen-aerial-river.png`, title: copy.guides.seasonal.label, caption: copy.guides.seasonal.text }],
     events: [{ loc: `${SITE_URL}/assets/aglen-village-church.png`, title: routeText(lang, "events").title, caption: copy.hub.text }],
@@ -786,7 +959,74 @@ function placeNodes(lang: LanguageCode): object[] {
   ];
 }
 
+/**
+ * The knowledge namespace indexes and the two provenance surfaces as machine
+ * data. `/history/`, `/legend/` and `/person/` are ItemLists over real entities;
+ * `/sources/` is the ledger itself, emitted as the list of citable origins so a
+ * machine can read the provenance without scraping the page.
+ */
+function knowledgeIndexSchemas(lang: LanguageCode, routeId: RouteId, routeUrl: string): object[] {
+  const namespaceKind = (["history", "legend", "person"] as NamespaceKind[]).find((kind) => kind === routeId);
+  if (namespaceKind) {
+    const listed = namespaceEntities(NAMESPACE_CHROME[namespaceKind].prefix);
+    return [
+      {
+        "@type": "ItemList",
+        "@id": `${routeUrl}#list`,
+        name: namespaceTitle(namespaceKind, lang),
+        numberOfItems: listed.length,
+        itemListElement: listed.map((entity, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: entityName(entity, lang),
+          url: entityAbsoluteUrl(lang, entity),
+        })),
+      },
+    ];
+  }
+  if (routeId === "sources") {
+    return [
+      {
+        "@type": "ItemList",
+        "@id": `${routeUrl}#ledger`,
+        name: localizeChrome(PROVENANCE_CHROME.sources.title, lang),
+        numberOfItems: ledgerSources.length,
+        itemListElement: ledgerSources.map((source, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          item: {
+            "@type": "CreativeWork",
+            name: source.citation,
+            ...(source.url ? { url: source.url } : {}),
+            ...(source.license ? { license: source.license } : {}),
+            ...(source.author ? { author: { "@type": "Organization", name: source.author } } : {}),
+            ...(source.publisher ? { publisher: { "@type": "Organization", name: source.publisher } } : {}),
+          },
+        })),
+      },
+    ];
+  }
+  if (routeId === "corrections") {
+    return [
+      {
+        "@type": "ItemList",
+        "@id": `${routeUrl}#corrections`,
+        name: localizeChrome(PROVENANCE_CHROME.corrections.title, lang),
+        numberOfItems: corrections().length,
+        itemListElement: corrections().map((claim, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: claimStatement(claim, lang),
+        })),
+      },
+    ];
+  }
+  return [];
+}
+
 function buildPageSpecificSchemas(lang: LanguageCode, routeId: RouteId, routeUrl: string): object[] {
+  const knowledge = knowledgeIndexSchemas(lang, routeId, routeUrl);
+  if (knowledge.length > 0) return knowledge;
   const copy = contentByLanguage[lang];
   const seoText = seoTextByLanguage[lang];
   const meta = getSEOConfig(lang, routeId);
@@ -1142,13 +1382,18 @@ export function buildJSONLD(lang: LanguageCode, routeId: RouteId = "home", detai
     };
   }
 
-  // Entity detail page (M3): the node is its honest schema type, the breadcrumb
-  // is the containment chain, and both are derived from the graph.
-  const entity = detailSlug && routeId === "place" ? entityForSlug(detailSlug) : undefined;
-  if (entity) {
-    const url = entityAbsoluteUrl(lang, entity);
+  // Entity detail page (M3) and its aspect pages (M4): the node is its honest
+  // schema type, the breadcrumb is the containment chain, the claims carry their
+  // confidence, and all of it is derived from the graph and the ledger.
+  const subject = entitySubject(routeId, detailSlug);
+  if (subject) {
+    const { entity, aspect } = subject;
+    const url = entityAbsoluteUrl(lang, entity, aspect);
+    const entityUrl = entityAbsoluteUrl(lang, entity);
     const heroUrl = absoluteAssetUrl(entityHeroPath(lang, entity));
-    const crumbs = entityBreadcrumb(lang, entity);
+    const crumbs = entityBreadcrumb(lang, entity, aspect);
+    const pageText = entityText(lang, subject);
+    const reviewed = lastReviewed(entity.id);
     return {
       "@context": "https://schema.org",
       "@graph": [
@@ -1157,13 +1402,13 @@ export function buildJSONLD(lang: LanguageCode, routeId: RouteId = "home", detai
           "@type": "WebPage",
           "@id": url,
           url,
-          name: entityName(entity, lang),
-          description: entityShortText(entity, lang),
+          name: shortName(pageText.title),
+          description: pageText.description,
           inLanguage: lang,
           isPartOf: { "@id": `${SITE_URL}/#website` },
-          about: { "@id": `${url}#entity` },
+          about: { "@id": `${entityUrl}#entity` },
           primaryImageOfPage: { "@id": `${url}#primaryimage` },
-          dateModified: SITE_CONTENT_UPDATED,
+          dateModified: reviewed ?? SITE_CONTENT_UPDATED,
         },
         {
           "@type": "ImageObject",
@@ -1173,7 +1418,10 @@ export function buildJSONLD(lang: LanguageCode, routeId: RouteId = "home", detai
           caption: entityName(entity, lang),
           representativeOfPage: true,
         },
-        entityNode(lang, entity, url),
+        // The entity node lives at its own URL, so an aspect page references the
+        // same @id rather than minting a second node for one thing (rule 2).
+        ...(aspect ? [] : [entityNode(lang, entity, url)]),
+        ...claimNodes(lang, entity.id, entityUrl),
         {
           "@type": "BreadcrumbList",
           "@id": `${url}#breadcrumbs`,
@@ -1294,26 +1542,89 @@ export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "hom
   const meta = getSEOConfig(lang, routeId, detailSlug);
   const business = detailSlug && routeId === "localBusinesses" ? findBusiness(detailSlug) : undefined;
   const guide = detailSlug && routeId === "guides" ? findGuide(detailSlug) : undefined;
-  const entity = detailSlug && routeId === "place" ? entityForSlug(detailSlug) : undefined;
+  const subject = entitySubject(routeId, detailSlug);
 
-  if (entity) {
+  if (subject) {
+    const { entity, aspect } = subject;
     const parent = entity.parent ? entityById(entity.parent) : undefined;
     const karst = entityById("karst-lukovit");
     const eyebrow = parent ? entityName(parent, lang) : karst ? entityName(karst, lang) : "";
     const long = entityLongText(entity, lang);
     const links = derivedLinks(entity, lang);
+    const pageText = entityText(lang, subject);
+    // The claim layer, flattened for a crawler that runs no JavaScript. Every
+    // statement keeps its confidence word — a crawler must not be shown a firmer
+    // version of a fact than a reader is (rule 8 / V15).
+    const claimLines = [
+      ...knownClaims(entity.id, aspect).map((claim) => `${claimStatement(claim, lang)} [${claim.confidence}]`),
+      ...disputesFor(entity.id, aspect).flatMap((dispute) => [
+        disputeQuestion(dispute, lang),
+        ...claimsInDispute(dispute.id).map((claim) => `${claimStatement(claim, lang)} [${claim.confidence}]`),
+      ]),
+      ...uncertainClaims(entity.id, aspect).map((claim) => `${claimStatement(claim, lang)} [${claim.confidence}]`),
+    ];
+    const sourceLines = [...new Map(
+      claimsFor(entity.id).flatMap((claim) => sourcesOf(claim)).map((source) => [source.id, source]),
+    ).values()].map((source) => source.citation);
     return `
       <main id="static-seo-content" class="static-fallback" lang="${lang}">
         <article class="content-hub section-shell">
           <div class="section-heading">
-            <p class="eyebrow">${escapeHtml(eyebrow)}</p>
-            <h1>${escapeHtml(entityName(entity, lang))}</h1>
-            ${paragraph(entityShortText(entity, lang))}
-            ${long ? paragraph(long) : ""}
+            <p class="eyebrow">${escapeHtml(aspect ? entityName(entity, lang) : eyebrow)}</p>
+            <h1>${escapeHtml(shortName(pageText.title))}</h1>
+            ${paragraph(pageText.description)}
+            ${long && !aspect ? paragraph(long) : ""}
             <a href="${buildRoutePath(lang, "karst")}">${escapeHtml(karst ? entityName(karst, lang) : "")}</a>
           </div>
           <div class="hub-grid">
+            ${claimLines.map((line) => `<div class="hub-card"><span>${escapeHtml(line)}</span></div>`).join("")}
+            ${sourceLines.map((line) => `<div class="hub-card"><span>${escapeHtml(line)}</span></div>`).join("")}
             ${links.map((link) => `<a class="hub-card" href="/${lang}${link.path}"><span>${escapeHtml(link.label)}</span></a>`).join("")}
+          </div>
+        </article>
+      </main>
+    `;
+  }
+
+  // The knowledge namespace indexes and the two provenance surfaces.
+  const namespaceKind = (["history", "legend", "person"] as NamespaceKind[]).find((kind) => kind === routeId);
+  if (namespaceKind) {
+    const listed = namespaceEntities(NAMESPACE_CHROME[namespaceKind].prefix);
+    return `
+      <main id="static-seo-content" class="static-fallback" lang="${lang}">
+        <article class="content-hub section-shell">
+          <div class="section-heading">
+            <p class="eyebrow">${escapeHtml(localizeChrome(NAMESPACE_CHROME[namespaceKind].eyebrow, lang))}</p>
+            <h1>${escapeHtml(namespaceTitle(namespaceKind, lang))}</h1>
+            ${paragraph(localizeChrome(NAMESPACE_CHROME[namespaceKind].lede, lang))}
+          </div>
+          <div class="hub-grid">
+            ${listed.map((item) => `<a class="hub-card" href="/${lang}${item.page!.path}"><span>${escapeHtml(`${entityName(item, lang)}: ${entityShortText(item, lang)}`)}</span></a>`).join("")}
+          </div>
+        </article>
+      </main>
+    `;
+  }
+
+  if (routeId === "sources" || routeId === "corrections") {
+    const chrome = PROVENANCE_CHROME[routeId];
+    const lines =
+      routeId === "sources"
+        ? ledgerSources.flatMap((source) => [
+            `${source.citation} [${source.verification}]`,
+            ...(source.url ? [source.url] : []),
+          ])
+        : corrections().map((claim) => claimStatement(claim, lang));
+    return `
+      <main id="static-seo-content" class="static-fallback" lang="${lang}">
+        <article class="content-hub section-shell">
+          <div class="section-heading">
+            <p class="eyebrow">${escapeHtml(localizeChrome(chrome.eyebrow, lang))}</p>
+            <h1>${escapeHtml(localizeChrome(chrome.title, lang))}</h1>
+            ${paragraph(localizeChrome(chrome.lede, lang))}
+          </div>
+          <div class="hub-grid">
+            ${(lines.length > 0 ? lines : [localizeChrome(chrome.lede, lang)]).map((line) => `<div class="hub-card"><span>${escapeHtml(line)}</span></div>`).join("")}
           </div>
         </article>
       </main>

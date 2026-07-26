@@ -20,9 +20,14 @@ import ts from "typescript";
 //   • References     — every relation target and parent resolves (V3); symmetric
 //                      edges are reciprocal (V7).
 //
-// Provenance rules (V1/V2/V4/V-hash) are the claim ledger and are deferred with
-// M4. Missing coordinates, media, story and gallery are WARNINGS, not gates —
-// they mark field-day work, not defects.
+//   • Provenance    — the claim ledger (M4): every claim resolves to an entity
+//                      and to real sources (V3/V4); a page in the knowledge
+//                      namespaces has earned its three claims (rule 15); a
+//                      dispute has at least two sides (V14); no claim asserts
+//                      more certainty than its sources allow (rules 6–8).
+//
+// Missing coordinates, media, story and gallery are WARNINGS, not gates — they
+// mark field-day work, not defects.
 // ─────────────────────────────────────────────────────────────
 
 const rootDir = process.cwd();
@@ -76,9 +81,15 @@ const gate = (rule, message) => gates.push({ rule, message });
 const warn = (rule, message) => warnings.push({ rule, message });
 
 const graph = loadSourceModule(path.join(rootDir, "src", "graph", "index.ts"));
+const ledger = loadSourceModule(path.join(rootDir, "src", "graph", "ledger.ts"));
 const content = loadSourceModule(path.join(rootDir, "src", "content.ts"));
 const KARST_ROOT = "karst-lukovit";
 const LANGS = ["bg", "en"]; // the full knowledge tier (Constitution rule 43)
+
+// The namespaces a published page may live in, and which of them are the M4
+// knowledge namespaces (where rule 15 is a gate rather than a warning).
+const PAGE_NAMESPACES = ["/karst/", "/place/", "/history/", "/legend/", "/person/"];
+const KNOWLEDGE_NAMESPACES = ["/history/", "/legend/", "/person/"];
 
 const entities = graph.entities;
 const byId = new Map(entities.map((e) => [e.id, e]));
@@ -130,8 +141,8 @@ for (const entity of entities) {
 for (const entity of entities) {
   const page = entity.page;
   if (!page || page.status !== "published") continue;
-  if (!page.path.startsWith("/place/") && !page.path.startsWith("/karst/")) {
-    gate("generation", `"${entity.id}" page path "${page.path}" is outside the /place/ and /karst/ namespaces (rule 18).`);
+  if (!PAGE_NAMESPACES.some((namespace) => page.path.startsWith(namespace))) {
+    gate("generation", `"${entity.id}" page path "${page.path}" is outside the published namespaces ${PAGE_NAMESPACES.join(", ")} (rule 18).`);
   }
   if (/tourist ?destination/i.test(entity.schemaType)) {
     gate("generation", `"${entity.id}" uses the view type "${entity.schemaType}"; entity pages carry Place/Landform/Cave types (C6).`);
@@ -182,19 +193,145 @@ for (const entity of entities) {
   }
 }
 
-// ── 8. Warnings — field-day gaps, never gates (mission "warnings only")
+// ── 7b. Provenance — the claim ledger (M4) ───────────────────
+// Records that failed structural validation (bad ids, a claim with no source, a
+// dispute with a claim that names no interpretation) never reach the graph.
+for (const problem of ledger.ledgerErrors) gate("ledger", problem);
+
+const sourceIds = new Set(ledger.sources.map((source) => source.id));
+const disputeIds = new Set(ledger.disputes.map((dispute) => dispute.id));
+
+// V3/V4 — every claim resolves to an entity and to real sources, both ways.
+for (const claim of ledger.claims) {
+  if (!byId.has(claim.entityId)) gate("provenance", `Claim "${claim.id}" is about "${claim.entityId}", which is not an entity.`);
+  for (const sourceId of claim.sources) {
+    if (!sourceIds.has(sourceId)) gate("provenance", `Claim "${claim.id}" cites "${sourceId}", which is not a source (V1).`);
+  }
+  if (claim.disputeOf && !disputeIds.has(claim.disputeOf)) {
+    gate("provenance", `Claim "${claim.id}" belongs to dispute "${claim.disputeOf}", which does not exist.`);
+  }
+  if (claim.supersedes && !ledger.claimById(claim.supersedes)) {
+    gate("provenance", `Claim "${claim.id}" supersedes "${claim.supersedes}", which does not exist — a correction must keep what it corrects (rule 10).`);
+  }
+  // Rules 6–8: certainty may not exceed what the sources support. A claim whose
+  // every source has unestablished provenance cannot call itself verified.
+  const cited = claim.sources.map((id) => ledger.sourceById(id)).filter(Boolean);
+  if (claim.confidence === "verified" && cited.length > 0 && cited.every((source) => source.verification === "unverified")) {
+    gate("provenance", `Claim "${claim.id}" is "verified" but every source it cites has unestablished provenance (rule 8).`);
+  }
+}
+
+// V14 — a dispute is two readings shown side by side; one side is not a dispute.
+for (const dispute of ledger.disputes) {
+  if (!byId.has(dispute.entityId)) gate("provenance", `Dispute "${dispute.id}" is about "${dispute.entityId}", which is not an entity.`);
+  const readings = ledger.claimsInDispute(dispute.id);
+  if (readings.length < 2) gate("provenance", `Dispute "${dispute.id}" has ${readings.length} reading(s); a dispute renders at least two, with equal prominence (V14).`);
+}
+
+// Rule 15 — an entity with fewer than three live claims is a section of its
+// parent, not a page. Enforced as a gate in the M4 namespaces, which were built
+// on the ledger; the M3 /place/ pages predate it and are reported as warnings so
+// that a page which already ranks is never silently unpublished by an audit.
 for (const entity of entities) {
   if (entity.page?.status !== "published") continue;
-  if (!graph.entityPoint(entity) && !(entity.geo && entity.geo.linear)) warn("coordinates", `"${entity.id}" has no coordinates yet (needs a GPS fix).`);
+  const count = ledger.claimCount(entity.id);
+  const isKnowledge = KNOWLEDGE_NAMESPACES.some((namespace) => entity.page.path.startsWith(namespace));
+  if (count >= 3) continue;
+  if (isKnowledge) gate("provenance", `"${entity.id}" publishes ${entity.page.path} with ${count} claim(s); three are required to earn a page (rule 15).`);
+  else warn("claims", `"${entity.id}" (${entity.page.path}) has ${count} claim(s); rule 15 wants three.`);
+}
+
+// An aspect page must hang off a published entity page — depth 3 is an aspect of
+// something, never a page in its own right (`CONTENT_HIERARCHY.md` §3).
+for (const entity of entities) {
+  for (const aspectPage of ledger.aspectPagesFor(entity.id)) {
+    if (entity.page?.status !== "published" || !entity.page.path.startsWith("/place/")) {
+      gate("provenance", `"${entity.id}" earns the "${aspectPage.aspect}" aspect page but has no published /place/ page to hang it off.`);
+    }
+  }
+}
+
+// A source nobody cites is dead weight in the ledger, not a failure.
+for (const source of ledger.sources) {
+  if (ledger.citedBy(source.id).length === 0) warn("sources", `Source "${source.id}" is cited by no claim.`);
+}
+
+// ── 7c. Click depth — every page within three clicks of the front door ───────
+// The site's own chrome links each namespace index from the Справочник and the
+// footer, so an index is one click from anywhere. From there an index lists its
+// entities (two) and an entity links its neighbours and its aspects (three).
+// Anything deeper is unreachable in practice however well it is linked.
+const indexed = new Map(); // entityId → clicks from the home page
+const queue = [];
+for (const namespace of PAGE_NAMESPACES) {
+  for (const entity of entities) {
+    if (entity.page?.status !== "published" || !entity.page.path.startsWith(namespace)) continue;
+    // /karst/ is itself an index page (one click); everything it lists is two.
+    const depth = entity.page.path === "/karst/" ? 1 : 2;
+    if (!indexed.has(entity.id) || indexed.get(entity.id) > depth) {
+      indexed.set(entity.id, depth);
+      queue.push(entity.id);
+    }
+  }
+}
+while (queue.length > 0) {
+  const id = queue.shift();
+  const depth = indexed.get(id);
+  if (depth >= 3) continue;
+  for (const link of graph.derivedLinks(byId.get(id), "bg")) {
+    if (!indexed.has(link.entityId) || indexed.get(link.entityId) > depth + 1) {
+      indexed.set(link.entityId, depth + 1);
+      queue.push(link.entityId);
+    }
+  }
+}
+for (const entity of entities) {
+  if (entity.page?.status !== "published") continue;
+  const depth = indexed.get(entity.id);
+  if (depth === undefined || depth > 3) gate("depth", `"${entity.id}" (${entity.page.path}) is ${depth ?? "not"} click(s) from the home page; the limit is three.`);
+  for (const aspectPage of ledger.aspectPagesFor(entity.id)) {
+    if ((depth ?? 99) + 1 > 3) gate("depth", `"${entity.id}" aspect "${aspectPage.aspect}" sits at ${(depth ?? 99) + 1} clicks; the limit is three.`);
+  }
+}
+
+// ── 8. Warnings — field-day gaps, never gates (mission "warnings only")
+// Only things that occupy ground can be missing a GPS fix. A legend, a person or
+// a historical period has no coordinates to lack, and reporting one would train
+// the reader of this report to ignore it.
+const SITED_KINDS = new Set([
+  "region", "province", "municipality", "settlement", "cave", "landform", "waterBody",
+  "spring", "protectedArea", "geopark", "archaeologicalSite", "building", "route", "business",
+]);
+for (const entity of entities) {
+  if (entity.page?.status !== "published") continue;
+  const isSited = SITED_KINDS.has(entity.kind);
+  if (isSited && !graph.entityPoint(entity) && !(entity.geo && entity.geo.linear)) warn("coordinates", `"${entity.id}" has no coordinates yet (needs a GPS fix).`);
   if (graph.derivedLinks(entity, "bg").filter((l) => /км|km/.test(l.label)).length === 0 && graph.entityPoint(entity)) warn("nearby", `"${entity.id}" surfaces no nearby entity.`);
   if (graph.entitySameAs(entity).length === 0) warn("sameAs", `"${entity.id}" has no external identifier (Wikidata/OSM/Commons).`);
 }
 
 // ── Report ───────────────────────────────────────────────────
+const aspectPageCount = entities.reduce((total, entity) => total + ledger.aspectPagesFor(entity.id).length, 0);
+const byConfidence = (value) => ledger.claims.filter((claim) => claim.confidence === value).length;
 const lines = [
   "# Knowledge-graph audit",
   "",
-  `Entities: ${entities.length} · published pages: ${entities.filter((e) => e.page?.status === "published").length} · nodes: ${entities.filter((e) => !e.page || e.page.status === "node").length}`,
+  `Entities: ${entities.length} · published pages: ${entities.filter((e) => e.page?.status === "published").length} · aspect pages: ${aspectPageCount} · nodes: ${entities.filter((e) => !e.page || e.page.status === "node").length}`,
+  "",
+  "## The claim ledger",
+  "",
+  "| Measure | Count |",
+  "| --- | --- |",
+  `| Sources | ${ledger.sources.length} |`,
+  `| Claims | ${ledger.claims.length} |`,
+  `| — verified | ${byConfidence("verified")} |`,
+  `| — reported | ${byConfidence("reported")} |`,
+  `| — uncertain (stated unknowns) | ${byConfidence("uncertain")} |`,
+  `| — disputed | ${byConfidence("disputed")} |`,
+  `| Open questions (disputes) | ${ledger.disputes.filter((d) => d.status === "open").length} |`,
+  `| Corrections published | ${ledger.corrections().length} |`,
+  `| Retractions | ${ledger.retractions().length} |`,
+  `| Entities carrying claims | ${new Set(ledger.claims.map((c) => c.entityId)).size} |`,
   "",
   "## Gates (build fails on any)",
   "",

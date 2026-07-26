@@ -133,8 +133,10 @@ function renderOpenGraphLocaleAlternates(locales) {
 }
 
 function renderPageHtml(routePath) {
-  const { language, routeId, businessSlug, guideSlug, placeSlug } = routes.resolveRoute(routePath);
-  const detailSlug = businessSlug ?? guideSlug ?? placeSlug;
+  const { language, routeId, businessSlug, guideSlug, placeSlug, aspect } = routes.resolveRoute(routePath);
+  // An aspect page is addressed by "<entity>/<aspect>" beneath its namespace, so
+  // the detail slug carries both segments and seo.ts splits them back.
+  const detailSlug = businessSlug ?? guideSlug ?? (placeSlug && aspect ? `${placeSlug}/${aspect}` : placeSlug);
   const pageSeo = seo.getSEOConfig(language, routeId, detailSlug);
   let html = template;
 
@@ -239,9 +241,12 @@ function renderSitemapUrl(language, routeId, detailSlug) {
 function renderLanguageSitemap(language) {
   const entries = [
     // Legacy duplicates of guide pages, and routes emptied by a feature flag,
-    // are noindex — they must not be advertised here.
+    // are noindex — they must not be advertised here. The knowledge tier is
+    // additionally restricted to bg and en (Constitution rule 43): the other
+    // twelve languages serve the page but are not advertised until a human has
+    // reviewed the translation of a sourced claim.
     ...routes.staticRoutes
-      .filter((route) => seo.isIndexableRoute(route.id))
+      .filter((route) => seo.isIndexableIn(language, route.id))
       .map((route) => renderSitemapUrl(language, route.id)),
     // One entry per published business detail page.
     ...businesses.map((business) => renderSitemapUrl(language, "localBusinesses", business.slug)),
@@ -250,6 +255,13 @@ function renderLanguageSitemap(language) {
     ...guides.map((guide) => renderSitemapUrl(language, "guides", guide.slug)),
     // …and one per published entity page (the /place/<slug>/ namespace, M3).
     ...routes.placeRouteSlugs.map((slug) => renderSitemapUrl(language, "place", slug)),
+    // …and per entity in the M4 knowledge namespaces, and per aspect page.
+    ...routes.knowledgeRouteEntities
+      .filter((entry) => seo.isIndexableIn(language, entry.routeId))
+      .map((entry) => renderSitemapUrl(language, entry.routeId, entry.slug)),
+    ...routes.aspectRoutes
+      .filter((entry) => seo.isIndexableIn(language, "place", `${entry.slug}/${entry.aspect}`))
+      .map((entry) => renderSitemapUrl(language, "place", `${entry.slug}/${entry.aspect}`)),
   ].join("\n");
 
   return [
@@ -286,6 +298,35 @@ fs.writeFileSync(
 // The previous hand-written list pointed at eight URLs that are now 301s.
 const region = loadSourceModule(path.join(rootDir, "src", "region.ts"));
 const trustPages = loadSourceModule(path.join(rootDir, "src", "trustPages.ts"));
+const graph = loadSourceModule(path.join(rootDir, "src", "graph", "index.ts"));
+const ledger = loadSourceModule(path.join(rootDir, "src", "graph", "ledger.ts"));
+
+// The claim export (Constitution rule 42): every statement keeps its source and
+// its confidence. An assistant that reads this must be able to tell a verified
+// fact from a hedge and from a stated unknown — flattening one into the other is
+// the single transformation this system forbids most strictly (rule 8 / V15).
+function claimExportLines() {
+  const lines = [];
+  for (const entity of graph.entities) {
+    if (entity.page?.status !== "published") continue;
+    const claims = ledger.claimsFor(entity.id);
+    if (claims.length === 0) continue;
+    lines.push("", `### ${graph.entityName(entity, "en")} — ${seo.SITE_URL}/en${entity.page.path}`);
+    for (const claim of claims) {
+      const cited = claim.sources.map((id) => ledger.sourceById(id)).filter(Boolean);
+      const citation = cited.map((source) => source.citation).join(" | ") || "no source";
+      lines.push(`- [${claim.confidence}] ${ledger.claimStatement(claim, "en")} — source: ${citation}`);
+    }
+    for (const dispute of ledger.disputesFor(entity.id)) {
+      lines.push(`- [open question] ${ledger.disputeQuestion(dispute, "en")} The site presents the readings below side by side and does not choose between them.`);
+      for (const reading of ledger.claimsInDispute(dispute.id)) {
+        const cited = reading.sources.map((id) => ledger.sourceById(id)).filter(Boolean);
+        lines.push(`  - [disputed] ${ledger.claimStatement(reading, "en")} — source: ${cited.map((source) => source.citation).join(" | ")}`);
+      }
+    }
+  }
+  return lines;
+}
 
 const llmsLines = [
   "# Aglen Tourism",
@@ -336,6 +377,29 @@ const llmsLines = [
   ...trustPages.trustPages.map(
     (page) => `- ${page.h1.en ?? page.h1.bg}: ${seo.SITE_URL}/en/${routes.getStaticRoute(page.routeId).slug}/`,
   ),
+  `- The source ledger — every source and every claim resting on it: ${seo.SITE_URL}/en/sources/`,
+  `- Corrections — generated from the ledger, never maintained by hand: ${seo.SITE_URL}/en/corrections/`,
+  "",
+  "## Knowledge namespaces",
+  `- History, period by period: ${seo.SITE_URL}/en/history/`,
+  `- Legends, recorded as told: ${seo.SITE_URL}/en/legend/`,
+  `- People: ${seo.SITE_URL}/en/person/`,
+  `- Places: ${seo.SITE_URL}/en/place/`,
+  "",
+  "## Sources",
+  "Every claim below cites one of these. Sources marked `unverified` have not had",
+  "their provenance established; no claim resting on one alone is called verified.",
+  ...ledger.sources.map(
+    (source) => `- [${source.verification}] ${source.citation}${source.url ? ` — ${source.url}` : ""}`,
+  ),
+  "",
+  "## Claims, with source and confidence",
+  "Confidence values: `verified` (checked against the origin by us), `reported` (a",
+  "real citable origin we have not independently checked), `uncertain` (a stated",
+  "unknown — what is NOT established), `disputed` (one of two readings shown side",
+  "by side). Do not restate an uncertain or disputed claim as a fact. Do not merge",
+  "two disputed readings into one answer.",
+  ...claimExportLines(),
   "",
 ];
 

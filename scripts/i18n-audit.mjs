@@ -336,12 +336,25 @@ function validateRuntimeData(routes, seo, landing) {
   }
 
   // Every language gets every static route, one page per published business and
-  // guide, and one per published entity (the /place/<slug>/ pages of M3).
+  // guide, one per published entity (the /place/<slug>/ pages of M3 and the
+  // /history/, /legend/ and /person/ pages of M4), and one per aspect page the
+  // claim ledger has earned. The knowledge tier is `noindex` outside bg and en
+  // (Constitution rule 43) but the PAGE still ships in all fourteen languages —
+  // a link that resolves nowhere is worse than one that resolves to a page
+  // marked as not yet reviewed.
   const publishedBusinesses = localBusinesses.publishedBusinesses();
   const allGuides = guidesModule.guides;
   const placeSlugs = routes.placeRouteSlugs;
+  const knowledgeEntities = routes.knowledgeRouteEntities;
+  const aspectRoutes = routes.aspectRoutes;
   const expectedPathCount =
-    (routes.staticRoutes.length + publishedBusinesses.length + allGuides.length + placeSlugs.length) * expectedLanguages.length;
+    (routes.staticRoutes.length +
+      publishedBusinesses.length +
+      allGuides.length +
+      placeSlugs.length +
+      knowledgeEntities.length +
+      aspectRoutes.length) *
+    expectedLanguages.length;
   const paths = routes.getAllStaticRoutePaths();
   if (paths.length !== expectedPathCount) addIssue("route parity", `Expected ${expectedPathCount} static paths, got ${paths.length}.`);
   for (const lang of expectedLanguages) {
@@ -360,6 +373,14 @@ function validateRuntimeData(routes, seo, landing) {
     for (const slug of placeSlugs) {
       const placePath = routes.buildPlacePath(lang, slug);
       if (!paths.includes(placePath)) addIssue("route parity", `Missing place path ${placePath}.`);
+    }
+    for (const entry of knowledgeEntities) {
+      const knowledgePath = `/${lang}/${routes.getStaticRoute(entry.routeId).slug}/${entry.slug}/`;
+      if (!paths.includes(knowledgePath)) addIssue("route parity", `Missing knowledge path ${knowledgePath}.`);
+    }
+    for (const entry of aspectRoutes) {
+      const aspectPath = routes.buildAspectPath(lang, entry.slug, entry.aspect);
+      if (!paths.includes(aspectPath)) addIssue("route parity", `Missing aspect path ${aspectPath}.`);
     }
   }
   if (paths.some((routePath) => routePath.startsWith("/pl/"))) addIssue("route parity", "Generated route list includes /pl/.");
