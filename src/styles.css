@@ -3592,7 +3592,13 @@ h3 {
 }
 .dispute-reading h3 { margin: 0 0 0.45rem; font-family: var(--serif); font-size: 1.1rem; color: var(--ink); }
 .dispute-reading p { margin: 0; line-height: 1.65; }
+/* How well one reading is itself held. Identical treatment on every card — the
+   difference between the readings must come from the words, never the styling. */
+.dispute-strength { margin: 0.45rem 0 0 !important; }
+.dispute-reading .claim-note { margin-top: 0.4rem; }
 .dispute-test { margin: 1rem 0 0; line-height: 1.65; color: var(--ink); }
+.claim-evidence { margin: 0.35rem 0 0; font-size: 0.88rem; line-height: 1.6; color: var(--river); }
+.source-more { margin: 0.4rem 0 0; font-size: 0.88rem; }
 
 .source-list { list-style: none; margin: 0.6rem 0 0; padding: 0; display: grid; gap: 0.9rem; }
 .source-entry { padding-left: 0.9rem; border-left: 3px solid var(--border); }
@@ -3607,18 +3613,35 @@ h3 {
 .source-verification[data-verification="unverified"] { color: var(--earth); }
 .source-meta, .source-note { margin: 0.3rem 0 0; font-size: 0.9rem; line-height: 1.6; color: var(--muted); }
 
-.provenance { border-top: 1px solid var(--border); padding-top: 1.4rem; }
-.provenance-line {
-  margin: 0 0 0.8rem;
+/* The trust line (M4B). It carries the whole visible weight of the provenance
+   layer for a reader who never opens the footer, and its styling is therefore an
+   exercise in restraint: one line of small caps under the heading, separated by
+   middots, in the muted colour the rest of the page uses for editorial asides.
+   No badges, no icons, no colour-coded pills — a row of green ticks is a trust
+   signal a reader has learnt to disbelieve, and the moment this looks like a
+   dashboard it has failed the rule it exists to serve. The only differentiated
+   colour is the earth tone on the two honest weaknesses (oral tradition,
+   historical uncertainty), because a site that highlights only its strengths is
+   advertising. */
+.trust-line {
+  margin: 0 0 1.4rem;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem 0.9rem;
-  font-size: 0.88rem;
+  align-items: baseline;
+  gap: 0.2rem 0.75rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
   color: var(--muted);
 }
-.provenance-line > span { display: inline-flex; gap: 0.35rem; }
-.provenance-line > span + span::before { content: "·"; margin-right: 0.55rem; color: var(--stone); }
-.provenance-flag { color: var(--earth); font-weight: 600; }
+.trust-signal { display: inline-flex; gap: 0.3rem; }
+.trust-signal + .trust-signal::before { content: "·"; margin-right: 0.45rem; color: var(--stone); }
+.trust-signal[data-signal="oralTradition"],
+.trust-signal[data-signal="historicalUncertainty"],
+.trust-signal[data-signal="openQuestion"] { color: var(--earth); }
+.trust-signal--date time { font-variant-numeric: tabular-nums; }
+.provenance .trust-line { margin-bottom: 1rem; }
+
+.provenance { border-top: 1px solid var(--border); padding-top: 1.4rem; }
 .provenance-external { margin-top: 1.2rem; }
 .provenance-external h3 { margin: 0 0 0.3rem; font-family: var(--serif); font-size: 1.05rem; color: var(--ink); }
 .provenance-ctas { margin: 1.2rem 0 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.4rem; }

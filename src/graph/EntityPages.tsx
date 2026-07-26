@@ -22,7 +22,7 @@ import {
 } from "./index";
 import { aspectPagesFor, claimsForAspect } from "./ledger";
 import type { ClaimAspect } from "./claims";
-import { Disputes, KnownClaims, ProvenanceFooter, UncertainClaims } from "./Provenance";
+import { Disputes, KnownClaims, ProvenanceFooter, TrustLine, UncertainClaims } from "./Provenance";
 import { aspectLede, aspectTitle } from "./namespaces";
 import type { Entity } from "./schema";
 
@@ -208,6 +208,11 @@ export function EntityDetail({
       </section>
 
       <div className="section-shell guide-body">
+        {/* The trust line (M4B): a few words and a date, before anything else on
+            the page, so a reader knows how far to trust what follows without
+            having to go to the foot of the page for it. */}
+        <TrustLine entityId={entity.id} language={language} />
+
         {facts.length > 0 && (
           <aside className="guide-facts" aria-label={t("factRegion", language)}>
             <dl>
@@ -252,9 +257,9 @@ export function EntityDetail({
 
         {/* The claim layer (M4). Firm ground first, then the open questions, then
             what is not known — none of the three is allowed to hide the others. */}
-        <KnownClaims entityId={entity.id} language={language} />
-        <Disputes entityId={entity.id} language={language} />
-        <UncertainClaims entityId={entity.id} language={language} />
+        <KnownClaims entityId={entity.id} language={language} onNavigate={onNavigate} />
+        <Disputes entityId={entity.id} language={language} onNavigate={onNavigate} />
+        <UncertainClaims entityId={entity.id} language={language} onNavigate={onNavigate} />
 
         {aspects.length > 0 && (
           <section className="guide-section aspect-links" aria-labelledby="entity-aspects-title">
@@ -370,9 +375,9 @@ export function EntityAspectPage({
       </section>
 
       <div className="section-shell guide-body">
-        <KnownClaims entityId={entity.id} aspect={aspect} language={language} />
-        <Disputes entityId={entity.id} aspect={aspect} language={language} />
-        <UncertainClaims entityId={entity.id} aspect={aspect} language={language} />
+        <KnownClaims entityId={entity.id} aspect={aspect} language={language} onNavigate={onNavigate} />
+        <Disputes entityId={entity.id} aspect={aspect} language={language} onNavigate={onNavigate} />
+        <UncertainClaims entityId={entity.id} aspect={aspect} language={language} onNavigate={onNavigate} />
 
         {chapters.map((chapter) => (
           <section className="guide-section timeline-chapter" key={chapter.title}>

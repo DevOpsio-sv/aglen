@@ -85,6 +85,80 @@ export const PROVENANCE_CHROME: Record<"sources" | "corrections", { eyebrow: Loc
   },
 };
 
+/**
+ * The trust line (M4B, Parts 6, 9 and 12). These are the only sentences on the
+ * site that speak about the site's own reliability, so their wording carries the
+ * whole weight of the absolute rule: a visitor must come away feeling the pages
+ * are unusually trustworthy, not that they are reading a database's self-report.
+ *
+ * Every phrase therefore obeys three constraints. It says what was done, not what
+ * was counted — "checked against open records", never "3 verified claims". It
+ * uses no word from this codebase: no claim, no source id, no confidence enum, no
+ * graph. And it is as willing to state a weakness as a strength, because a trust
+ * line that only ever flatters is an advertisement and a reader knows it.
+ */
+export const TRUST_SIGNAL_LABELS: Record<string, LocalizedText> = {
+  primarySources: {
+    bg: "Проверено по първични документи",
+    en: "Checked against primary documents",
+  },
+  openRecords: {
+    bg: "Сверено с отворени регистри",
+    en: "Checked against open records",
+  },
+  fieldChecked: {
+    bg: "Проверено на място",
+    en: "Checked on the ground",
+  },
+  coordinatesVerified: {
+    bg: "Координатите са сверени",
+    en: "Coordinates checked",
+  },
+  oralTradition: {
+    bg: "Съдържа устно предание",
+    en: "Contains oral tradition",
+  },
+  historicalUncertainty: {
+    bg: "Съдържа историческа несигурност",
+    en: "Contains historical uncertainty",
+  },
+  openQuestion: {
+    bg: "Съдържа отворен въпрос",
+    en: "Holds an open question",
+  },
+  corrected: {
+    bg: "Съдържа публикувана поправка",
+    en: "Carries a published correction",
+  },
+};
+
+/** The `/source/<slug>/` chrome. A source page is one entry of the ledger. */
+export const SOURCE_CHROME = {
+  eyebrow: { bg: "Източник", en: "Source" } as LocalizedText,
+  lede: {
+    bg: "Един източник и всичко, което сайтът е извел от него. Страницата съществува, за да може всяко твърдение да бъде проследено до мястото, откъдето идва — и за да се вижда докъде стига този източник и къде свършва.",
+    en: "One source, and everything the site has drawn from it. The page exists so that any statement can be followed back to where it came from — and so that it is visible how far this source reaches and where it stops.",
+  } as LocalizedText,
+  hero: "/assets/aglen-village-church.png",
+};
+
+/** The eleven source classes, in a reader's words rather than the record's. */
+export const SOURCE_KIND_LABELS: Record<string, LocalizedText> = {
+  book: { bg: "книга", en: "book" },
+  academic: { bg: "научна публикация", en: "academic publication" },
+  archive: { bg: "архив", en: "archive" },
+  museum: { bg: "музейна сбирка", en: "museum collection" },
+  municipal: { bg: "общински документ", en: "municipal record" },
+  church: { bg: "църковен регистър", en: "church record" },
+  map: { bg: "историческа карта", en: "historical map" },
+  oral: { bg: "устен разказ", en: "oral account" },
+  field: { bg: "наблюдение на място", en: "field observation" },
+  photograph: { bg: "фотография", en: "photograph" },
+  dataset: { bg: "публичен набор от данни", en: "public dataset" },
+  reference: { bg: "справочен запис", en: "reference record" },
+  press: { bg: "печат", en: "press" },
+};
+
 export type AspectChrome = { title: LocalizedText; lede: LocalizedText; crumb: LocalizedText };
 
 /** Chrome for the depth-3 aspect pages that the ledger can earn. */

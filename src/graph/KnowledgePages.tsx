@@ -1,22 +1,32 @@
 import type { MouseEvent, SyntheticEvent } from "react";
 import type { LanguageCode } from "../locales/types";
-import { buildRoutePath, type CoreRouteId } from "../routes";
+import { buildRoutePath, buildSourcePath, type CoreRouteId } from "../routes";
 import { imageProps } from "../images";
 import { entityById, entityBySlug, entityName, namespaceEntities } from "./index";
 import { EntityCard, EntityDetail, entityHref } from "./EntityPages";
-import { SourceEntry, confidenceLabel } from "./Provenance";
-import { NAMESPACE_CHROME, PROVENANCE_CHROME, localizeChrome, namespaceTitle, type NamespaceKind } from "./namespaces";
+import { SourceEntry, confidenceLabel, sourceKindLabel } from "./Provenance";
+import { NAMESPACE_CHROME, PROVENANCE_CHROME, SOURCE_CHROME, localizeChrome, namespaceTitle, type NamespaceKind } from "./namespaces";
 import {
   claimById,
   claimCorrectionNote,
+  claimNote,
   claimRetractionNote,
   claimStatement,
   claims as allClaims,
   corrections,
   disputes,
+  evidenceFromSource,
+  evidenceNote,
+  evidenceTitle,
   ledgerBySource,
+  liveClaims,
+  liveClaimsFromSource,
   retractions,
+  sourceBySlug,
+  sourceNote,
+  sourceTitle,
   sources as allSources,
+  type Source,
 } from "./ledger";
 
 // ─────────────────────────────────────────────────────────────
@@ -81,6 +91,25 @@ const L = {
   backToCorrections: { bg: "Поправки", en: "Corrections" },
   backToGuide: { bg: "Справочник", en: "Guide" },
   emptyNamespace: { bg: "Тук още няма публикувани страници.", en: "No pages are published here yet." },
+  correctionDate: { bg: "Публикувана поправка", en: "Correction published" },
+  correctionCredit: { bg: "Съобщено от", en: "Reported by" },
+  retractionDate: { bg: "Оттеглено на", en: "Withdrawn on" },
+  reportHeading: { bg: "Как да съобщите за грешка", en: "How to report an error" },
+  // The source page
+  sourceOpen: { bg: "Отвори източника", en: "Open the source" },
+  sourceRests: { bg: "Какво почива на този източник", en: "What rests on this source" },
+  sourceEntities: { bg: "Страници, които го използват", en: "Pages that use it" },
+  sourceHeld: { bg: "Какво държим от него", en: "What we hold from it" },
+  sourceHeldNone: {
+    bg: "От този източник не се съхранява собствен материал — снимка, сканиран документ или запис. Когато такъв постъпи, той се появява тук с дата и с този, който го е направил.",
+    en: "No material of our own is held from this source — no photograph, scan or recording. When one is taken, it appears here with its date and with the person who made it.",
+  },
+  sourceLimits: { bg: "Докъде стига този източник", en: "How far this source reaches" },
+  sourceMissing: {
+    bg: "Такъв източник не е намерен. Регистърът на източниците е тук.",
+    en: "No such source was found. The source ledger is here.",
+  },
+  observedBy: { bg: "Записано от", en: "Recorded by" },
 };
 
 function t(key: keyof typeof L, lang: LanguageCode): string {
@@ -191,7 +220,7 @@ export function SourcesPage({ language, onNavigate }: { language: LanguageCode; 
               </div>
               <div>
                 <dt>{t("countClaims", language)}</dt>
-                <dd>{allClaims.length}</dd>
+                <dd>{liveClaims().length}</dd>
               </div>
               <div>
                 <dt>{t("countDisputes", language)}</dt>
@@ -205,11 +234,19 @@ export function SourcesPage({ language, onNavigate }: { language: LanguageCode; 
           </aside>
         </section>
 
-        {ledger.map(({ source, claims }) => (
-          <section className="guide-section ledger-entry" key={source.id} aria-labelledby={`heading-${source.id}`}>
-            <h2 id={`heading-${source.id}`}>{source.title[language] ?? source.title.en ?? source.title.bg}</h2>
+        {ledger.map(({ source, claims, path }) => (
+          <section className="guide-section ledger-entry" key={source.id} aria-labelledby={`heading-${source.slug}`}>
+            <h2 id={`heading-${source.slug}`}>
+              {path ? (
+                <a href={buildSourcePath(language, source.slug)} onClick={onLink(buildSourcePath(language, source.slug), onNavigate)}>
+                  {sourceTitle(source, language)}
+                </a>
+              ) : (
+                sourceTitle(source, language)
+              )}
+            </h2>
             <ul className="source-list">
-              <SourceEntry source={source} language={language} />
+              <SourceEntry source={source} language={language} onNavigate={onNavigate} />
             </ul>
             <h3>{t("restingClaims", language)}</h3>
             {claims.length === 0 ? (
@@ -252,6 +289,186 @@ export function SourcesPage({ language, onNavigate }: { language: LanguageCode; 
           </a>
           <a className="button ghost" href={guideHref} onClick={onLink(guideHref, onNavigate)}>
             {t("backToGuide", language)}
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * `/source/<slug>/` — one citable origin (M4B, ADR-015).
+ *
+ * The page answers four questions in order, and they are the four a researcher or
+ * a model actually asks: what is this, what has the site drawn from it, what do we
+ * physically hold from it, and how far does it reach before it stops being
+ * evidence. The fourth is the one that matters — a source page that only
+ * advertised a source's strengths would be a bibliography entry with a marketing
+ * voice. Everything on it is derived; nothing is authored here.
+ *
+ * It is not a stop on the visitor journey. A reader arrives from a citation at the
+ * foot of a page, checks one thing and leaves, and the page is built for exactly
+ * that — no hero photography of its own beyond the shared plate, no prose.
+ */
+export function SourcePage({
+  sourceSlug,
+  language,
+  onNavigate,
+}: {
+  sourceSlug?: string;
+  language: LanguageCode;
+  onNavigate: (path: string) => void;
+}) {
+  const source = sourceSlug ? sourceBySlug(sourceSlug) : undefined;
+  const sourcesHref = buildRoutePath(language, "sources");
+
+  if (!source) {
+    return (
+      <div className="guides-page guide-detail-page">
+        <div className="section-shell guide-body">
+          <section className="guide-section">
+            <p className="guide-notice" role="note">{t("sourceMissing", language)}</p>
+            <p>
+              <a className="entity-inline-link" href={sourcesHref} onClick={onLink(sourcesHref, onNavigate)}>
+                {t("backToLedger", language)} →
+              </a>
+            </p>
+          </section>
+        </div>
+      </div>
+    );
+  }
+
+  const resting = liveClaimsFromSource(source.id);
+  const held = evidenceFromSource(source.id);
+  const limits = sourceNote(source, language);
+  const correctionsHref = buildRoutePath(language, "corrections");
+  // Which pages lean on this source, so a reader can see its reach at a glance.
+  const usedBy = [...new Map(resting.map((claim) => [claim.entityId, entityById(claim.entityId)])).values()].filter(
+    (entity): entity is NonNullable<typeof entity> => Boolean(entity) && entity!.page?.status === "published",
+  );
+
+  return (
+    <div className="guides-page guide-detail-page">
+      <section className="guides-hero is-detail" aria-labelledby="source-title">
+        <img className="guides-hero-bg" {...imageProps(SOURCE_CHROME.hero)} alt="" aria-hidden="true" fetchPriority="high" decoding="async" onError={handleImageError} />
+        <div className="guides-hero-overlay" aria-hidden="true" />
+        <div className="guides-hero-inner section-shell">
+          <a className="guide-back" href={sourcesHref} onClick={onLink(sourcesHref, onNavigate)}>
+            ← {t("backToLedger", language)}
+          </a>
+          <p className="eyebrow guides-hero-eyebrow">
+            {localizeChrome(SOURCE_CHROME.eyebrow, language)} · {sourceKindLabel(source, language)}
+          </p>
+          <h1 id="source-title">{sourceTitle(source, language)}</h1>
+          <p className="guides-hero-sub">{localizeChrome(SOURCE_CHROME.lede, language)}</p>
+        </div>
+      </section>
+
+      <div className="section-shell guide-body">
+        <section className="guide-section">
+          <ul className="source-list">
+            <SourceEntry source={source} language={language} />
+          </ul>
+          {source.url && (
+            <p className="guide-ctas">
+              <a className="button ghost" href={source.url} target="_blank" rel="noopener noreferrer">
+                {t("sourceOpen", language)}
+              </a>
+            </p>
+          )}
+        </section>
+
+        <section className="guide-section" aria-labelledby="source-resting">
+          <h2 id="source-resting">{t("sourceRests", language)}</h2>
+          {resting.length === 0 ? (
+            <p className="guide-notice" role="note">{t("noClaims", language)}</p>
+          ) : (
+            <ul className="claim-list ledger-claims">
+              {resting.map((claim) => {
+                const target = entityById(claim.entityId);
+                const href = target?.page?.status === "published" ? entityHref(language, target) : undefined;
+                const note = claimNote(claim, language);
+                return (
+                  <li className={`claim claim--${claim.confidence}`} key={claim.id}>
+                    <p className="claim-statement">
+                      {claimStatement(claim, language)}{" "}
+                      <span className="claim-confidence" data-confidence={claim.confidence}>
+                        {confidenceLabel(claim.confidence, language)}
+                      </span>
+                    </p>
+                    {note && <p className="claim-note">{note}</p>}
+                    {target && (
+                      <p className="claim-sources">
+                        {href ? (
+                          <a className="claim-source" href={href} onClick={onLink(href, onNavigate)}>
+                            {entityName(target, language)}
+                          </a>
+                        ) : (
+                          <span className="claim-source">{entityName(target, language)}</span>
+                        )}
+                      </p>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </section>
+
+        {usedBy.length > 0 && (
+          <section className="guide-section" aria-labelledby="source-entities">
+            <h2 id="source-entities">{t("sourceEntities", language)}</h2>
+            <ul className="entity-sources-list">
+              {usedBy.map((entity) => {
+                const href = entityHref(language, entity);
+                return (
+                  <li key={entity.id}>
+                    <a href={href} onClick={onLink(href, onNavigate)}>
+                      {entityName(entity, language)}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        )}
+
+        <section className="guide-section" aria-labelledby="source-held">
+          <h2 id="source-held">{t("sourceHeld", language)}</h2>
+          {held.length === 0 ? (
+            <p className="guide-notice" role="note">{t("sourceHeldNone", language)}</p>
+          ) : (
+            <ul className="source-list">
+              {held.map((artifact) => {
+                const note = evidenceNote(artifact, language);
+                return (
+                  <li className="source-entry" key={artifact.id}>
+                    <p className="source-citation">{evidenceTitle(artifact, language)}</p>
+                    <p className="source-meta">
+                      {t("observedBy", language)} {artifact.observer} · <time dateTime={artifact.observedAt}>{artifact.observedAt}</time>
+                    </p>
+                    {note && <p className="source-note">{note}</p>}
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </section>
+
+        {limits && (
+          <section className="guide-section" aria-labelledby="source-limits">
+            <h2 id="source-limits">{t("sourceLimits", language)}</h2>
+            <p>{limits}</p>
+          </section>
+        )}
+
+        <div className="guide-ctas">
+          <a className="button primary" href={sourcesHref} onClick={onLink(sourcesHref, onNavigate)}>
+            {t("backToLedger", language)}
+          </a>
+          <a className="button ghost" href={correctionsHref} onClick={onLink(correctionsHref, onNavigate)}>
+            {t("backToCorrections", language)}
           </a>
         </div>
       </div>
@@ -307,6 +524,15 @@ export function CorrectionsPage({ language, onNavigate }: { language: LanguageCo
                     <p className="claim-note">
                       <strong>{t("whatWasWrong", language)}:</strong> {claimCorrectionNote(claim, language)}
                     </p>
+                    {/* Date and credit: a correction with neither is an edit. */}
+                    <p className="source-meta">
+                      {claim.correctedAt && (
+                        <>
+                          {t("correctionDate", language)} <time dateTime={claim.correctedAt}>{claim.correctedAt}</time>
+                        </>
+                      )}
+                      {claim.correctionCredit && ` · ${t("correctionCredit", language)} ${claim.correctionCredit}`}
+                    </p>
                   </li>
                 );
               })}
@@ -325,13 +551,19 @@ export function CorrectionsPage({ language, onNavigate }: { language: LanguageCo
                     <s>{claimStatement(claim, language)}</s>
                   </p>
                   <p className="claim-note">{claimRetractionNote(claim, language)}</p>
+                  {claim.retractedAt && (
+                    <p className="source-meta">
+                      {t("retractionDate", language)} <time dateTime={claim.retractedAt}>{claim.retractedAt}</time>
+                    </p>
+                  )}
                 </li>
               ))}
             </ul>
           </section>
         )}
 
-        <section className="guide-section">
+        {/* Every provenance footer on the site links here by name. */}
+        <section className="guide-section" id="report">
           <h2>{t("correctionsHow", language)}</h2>
           <p>{t("correctionsHowText", language)}</p>
         </section>

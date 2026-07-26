@@ -2,12 +2,12 @@ import { useEffect, useMemo, useRef, useState, type MouseEvent, type ReactNode, 
 import { contentByLanguage, languages, type Accommodation, type LanguageCode, type PlaceId, type TimelineItem } from "./content";
 import { getLandingPage, getLandingPages, isLandingPageId } from "./landingPages";
 import { placeExperienceLinks, type PlaceExperienceLink } from "./placeLinks";
-import { buildAspectPath, buildBusinessPath, buildGuidePath, buildPlacePath, buildRoutePath, getStaticRoute, resolveRoute, type RouteId, type ResolvedRoute } from "./routes";
+import { buildAspectPath, buildBusinessPath, buildGuidePath, buildPlacePath, buildRoutePath, buildSourcePath, getStaticRoute, resolveRoute, type RouteId, type ResolvedRoute } from "./routes";
 import { guideByLegacyRoute, guides, localizeGuide } from "./guides";
 import { publishedBusinesses } from "./localBusinesses";
 import GuidesPage from "./GuidesPage";
 import { KarstPage, PlacePage } from "./graph/EntityPages";
-import { CorrectionsPage, KnowledgePage, SourcesPage } from "./graph/KnowledgePages";
+import { CorrectionsPage, KnowledgePage, SourcePage, SourcesPage } from "./graph/KnowledgePages";
 import { aspectCrumb, namespaceTitle } from "./graph/namespaces";
 import { breadcrumbTrail, entityBySlug, entityForPlaceId, entityName as graphEntityName } from "./graph";
 import { aspectPagesFor } from "./graph/ledger";
@@ -143,7 +143,7 @@ export function App() {
   const timelineCloseRef = useRef<HTMLButtonElement | null>(null);
   const languageSwitchRef = useRef<HTMLDivElement | null>(null);
   const languageTriggerRef = useRef<HTMLButtonElement | null>(null);
-  const { language, routeId, businessSlug, guideSlug, placeSlug, aspect } = pageRoute;
+  const { language, routeId, businessSlug, guideSlug, placeSlug, aspect, sourceSlug } = pageRoute;
   const copy = contentByLanguage[language];
   const localizedUi = uiTextByLanguage[language];
   const currentRoute = getStaticRoute(routeId);
@@ -168,7 +168,10 @@ export function App() {
   const isPersonPage = routeId === "person";
   const isSourcesPage = routeId === "sources";
   const isCorrectionsPage = routeId === "corrections";
-  const isKnowledgePage = isHistoryPage || isLegendPage || isPersonPage || isSourcesPage || isCorrectionsPage;
+  // One source: /source/<slug>/ (M4B). It hangs off the ledger the way a business
+  // detail page hangs off the listing, and shares its component with nothing.
+  const isSourcePage = routeId === "source";
+  const isKnowledgePage = isHistoryPage || isLegendPage || isPersonPage || isSourcesPage || isCorrectionsPage || isSourcePage;
   // The village history aspect page, if the ledger has earned it. Derived rather
   // than hard-coded, so the link appears exactly when the page does (rule 26).
   const villageHistoryPath = aspectPagesFor("aglen").some((page) => page.aspect === "history")
@@ -202,6 +205,7 @@ export function App() {
     // /history/, /legend/ and /person/ alike.
     if (route.placeSlug && route.aspect) return buildAspectPath(route.language, route.placeSlug, route.aspect);
     if (route.placeSlug) return `/${route.language}/${getStaticRoute(route.routeId).slug}/${route.placeSlug}/`;
+    if (route.sourceSlug) return buildSourcePath(route.language, route.sourceSlug);
     return buildRoutePath(route.language, route.routeId);
   };
 
@@ -294,13 +298,13 @@ export function App() {
     // An aspect page is addressed by "<entity>/<aspect>" beneath its namespace,
     // so the detail slug carries both segments and seo.ts splits them back.
     const entityDetail = placeSlug && aspect ? `${placeSlug}/${aspect}` : placeSlug;
-    updateDocumentSEO(language, routeId, businessSlug ?? guideSlug ?? entityDetail);
+    updateDocumentSEO(language, routeId, businessSlug ?? guideSlug ?? entityDetail ?? sourceSlug);
 
     const canonicalPath = businessSlug
       ? buildBusinessPath(language, businessSlug)
       : guideSlug
         ? buildGuidePath(language, guideSlug)
-        : placeSlug
+        : placeSlug || sourceSlug
           ? routePath(pageRoute)
           : buildRoutePath(language, routeId);
     // Preserve query params where they carry shareable state (events views,
@@ -310,7 +314,7 @@ export function App() {
       history.replaceState(null, "", canonicalPath + keepSearch);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [language, routeId, businessSlug, guideSlug, placeSlug, aspect, keepsSearch]);
+  }, [language, routeId, businessSlug, guideSlug, placeSlug, aspect, sourceSlug, keepsSearch]);
 
   useEffect(() => {
     const onPopState = () => {
@@ -1340,6 +1344,8 @@ export function App() {
       {isSourcesPage && <SourcesPage language={language} onNavigate={navigateToPath} />}
 
       {isCorrectionsPage && <CorrectionsPage language={language} onNavigate={navigateToPath} />}
+
+      {isSourcePage && <SourcePage sourceSlug={sourceSlug} language={language} onNavigate={navigateToPath} />}
 
       {isTrustPage && <TrustPage language={language} routeId={routeId} onNavigate={navigateToPath} />}
 
