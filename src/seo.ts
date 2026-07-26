@@ -707,10 +707,6 @@ function routeText(lang: LanguageCode, routeId: RouteId): { title: string; descr
     quests: { title: `${copy.quests.title} | ${copy.brand.name}`, description: copy.quests.text },
     app: { title: `${copy.app.title} | ${copy.brand.name}`, description: copy.app.text },
     arMissions: { title: `${copy.ub.hubTitle} | ${copy.brand.name}`, description: copy.ub.homeText },
-    // `/place/` keeps the wording it shipped with in M3 rather than adopting its
-    // registry chrome: the title is indexed, and an audit is not a reason to
-    // rewrite a page's <title> (standing rule — no SEO regressions).
-    place: { title: `${copy.landmarks.title} | ${copy.brand.name}`, description: copy.landmarks.text },
     sources: { title: `${localizeChrome(PROVENANCE_CHROME.sources.title, lang)} | ${copy.brand.name}`, description: localizeChrome(PROVENANCE_CHROME.sources.lede, lang) },
     // /source/ has no index page of its own; the bare route inherits the ledger's
     // chrome, and a real /source/<slug>/ overrides both title and description
@@ -942,7 +938,6 @@ function routeImages(lang: LanguageCode, routeId: RouteId, detailSlug?: string):
     quests: [{ loc: OG_IMAGE, title: copy.quests.title, caption: copy.quests.text }, { loc: `${SITE_URL}/assets/aglen-cave-mystery.png`, title: copy.ar.title, caption: copy.ar.text }],
     app: [{ loc: OG_IMAGE, title: copy.app.title, caption: copy.app.text }],
     arMissions: [{ loc: OG_IMAGE, title: copy.ub.hubTitle, caption: copy.ub.homeText }, { loc: `${SITE_URL}/assets/aglen-cave-mystery.png`, title: copy.quests.title, caption: copy.quests.text }],
-    place: [{ loc: `${SITE_URL}/assets/aglen-aerial-river.png`, title: routeText(lang, "place").title, caption: routeText(lang, "place").description }],
     sources: [{ loc: absoluteAssetUrl(PROVENANCE_CHROME.sources.hero), title: localizeChrome(PROVENANCE_CHROME.sources.title, lang), caption: localizeChrome(PROVENANCE_CHROME.sources.lede, lang) }],
     source: [{ loc: absoluteAssetUrl(SOURCE_CHROME.hero), title: localizeChrome(SOURCE_CHROME.eyebrow, lang), caption: localizeChrome(SOURCE_CHROME.lede, lang) }],
     corrections: [{ loc: absoluteAssetUrl(PROVENANCE_CHROME.corrections.hero), title: localizeChrome(PROVENANCE_CHROME.corrections.title, lang), caption: localizeChrome(PROVENANCE_CHROME.corrections.lede, lang) }],

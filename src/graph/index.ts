@@ -449,6 +449,46 @@ function distanceFact(km: number, lang: LanguageCode): string {
   return lang === "bg" ? `${rounded} км по права линия` : `${rounded} km in a straight line`;
 }
 
+const CO_RELATED_LIMIT = 3;
+
+/**
+ * Entities standing in the same relation to the same third entity, with the fact
+ * that says so. Both directions count: two records may point at one thing
+ * (`deep-time` and `thracians` are both located in the karst) or one record may
+ * point at two (`aglen` is the subject of three legends).
+ */
+function coRelatedLinks(
+  entity: Entity,
+  lang: LanguageCode,
+  index: Map<EntityId, Entity>,
+): Array<{ target: Entity; fact: string }> {
+  const out: Array<{ target: Entity; fact: string }> = [];
+  const also = (text: string) => (lang === "bg" ? `също ${text}` : `also ${text}`);
+
+  // Shared outbound: this entity and another both assert T → X.
+  for (const relation of relationsOf(entity)) {
+    if (relation.type === "nearby") continue;
+    const hub = index.get(relation.target);
+    if (!hub) continue;
+    for (const { from, type } of inboundRelationsOf(relation.target)) {
+      if (type !== relation.type || from.id === entity.id) continue;
+      out.push({ target: from, fact: also(`${relationFact(relation.type, lang)} ${entityName(hub, lang)}`) });
+    }
+  }
+
+  // Shared inbound: some X asserts T → this entity, and T → another.
+  for (const { from, type } of inboundRelationsOf(entity.id)) {
+    for (const relation of relationsOf(from)) {
+      if (relation.type !== type || relation.target === entity.id) continue;
+      const peer = index.get(relation.target);
+      if (!peer) continue;
+      out.push({ target: peer, fact: also(`${inverseRelationFact(type, lang)} ${entityName(from, lang)}`) });
+    }
+  }
+
+  return out.slice(0, CO_RELATED_LIMIT);
+}
+
 /** "also in the Vit valley at Aglen" — the shared containment two siblings have. */
 function siblingFact(parentName: string, lang: LanguageCode): string {
   return lang === "bg" ? `също в ${parentName}` : `also in ${parentName}`;
@@ -576,6 +616,21 @@ export function derivedLinks(entity: Entity, lang: LanguageCode, nearbyLimit = 3
   for (const { from, type } of inboundRelationsOf(entity.id)) {
     linkTo(from, inverseRelationFact(type, lang));
   }
+
+  // Co-related entities (M5, Part 5).
+  //
+  // Three legends are each told about Ъглен; six periods are each located in the
+  // Lukovit Karst. Every one of those pages had exactly one way out — back to the
+  // thing they hang off — so a reader who arrived at a legend from search met a
+  // dead end (rule 23), and the site's own index was the only route between two
+  // legends of the same village.
+  //
+  // Standing in the same relation to the same third thing is not a new edge. It is
+  // the composition of two edges the records already assert, and the fact it
+  // carries — "also told about Ъглен" — is true in exactly the way rule 20 asks an
+  // anchor to be. Capped, because a place inside a municipality is co-related to
+  // every other place inside it and a page of that is a directory, not a journey.
+  for (const link of coRelatedLinks(entity, lang, byId)) linkTo(link.target, link.fact);
 
   // Derived nearby: nearest point-geo pages by straight-line distance.
   const here = entityPoint(entity);

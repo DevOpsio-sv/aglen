@@ -66,13 +66,6 @@ _None._
 | --- | --- |
 | discovery | "vit-river" has 2 inbound link(s); three is where a page stops depending on its index. |
 | discovery | "trifon-kunev" has 1 inbound link(s); three is where a page stops depending on its index. |
-| discovery | "dvukrakite-senki" has 1 inbound link(s); three is where a page stops depending on its index. |
-| discovery | "zlatnata-brazdichka" has 1 inbound link(s); three is where a page stops depending on its index. |
-| discovery | "iglen-grad-golyama" has 1 inbound link(s); three is where a page stops depending on its index. |
-| discovery | "deep-time" has 1 inbound link(s); three is where a page stops depending on its index. |
-| discovery | "prehistory" has 2 inbound link(s); three is where a page stops depending on its index. |
-| discovery | "thracians" has 1 inbound link(s); three is where a page stops depending on its index. |
-| discovery | "ottoman-registers" has 2 inbound link(s); three is where a page stops depending on its index. |
 | coordinates | "karst-lukovit" has no coordinates yet (needs a GPS fix). |
 | sameAs | "karst-lukovit" has no external identifier (Wikidata/OSM/Commons). |
 | media | "karst-lukovit" has no photograph of its own; the page borrows a plate for its kind. |
@@ -129,5 +122,5 @@ _None._
 
 ## Summary
 
-Gates: 0 · Warnings: 62
+Gates: 0 · Warnings: 55
 

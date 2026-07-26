@@ -1,16 +1,12 @@
 import fs from "node:fs";
 import path from "node:path";
-import { createRequire } from "node:module";
-import ts from "typescript";
+import { publicAssetExists, srcModule } from "./lib/load-module.mjs";
 
 const rootDir = process.cwd();
 const localesDir = path.join(rootDir, "src", "locales");
 const distDir = path.join(rootDir, "dist");
-const publicDir = path.join(rootDir, "public");
 const reportsDir = path.join(rootDir, "reports");
 const reportPath = path.join(reportsDir, "i18n-bg-audit.md");
-const nodeRequire = createRequire(import.meta.url);
-const moduleCache = new Map();
 
 const expectedLanguages = ["bg", "en", "de", "fr", "es", "it", "ro", "tr", "el", "ru", "ja", "sr", "zh", "hu"];
 const expectedLocaleCodes = {
@@ -153,49 +149,6 @@ function addIssue(category, message) {
   issues.push({ category, message });
 }
 
-function resolveSourceModule(specifier, fromFile) {
-  if (!specifier.startsWith(".")) return specifier;
-  const basePath = path.resolve(path.dirname(fromFile), specifier);
-  const candidates = [basePath, `${basePath}.ts`, `${basePath}.tsx`, `${basePath}.js`, `${basePath}.mjs`, `${basePath}.json`, path.join(basePath, "index.ts")];
-  const match = candidates.find((candidate) => fs.existsSync(candidate) && fs.statSync(candidate).isFile());
-  if (!match) throw new Error(`Cannot resolve ${specifier} from ${fromFile}`);
-  return match;
-}
-
-function loadSourceModule(filePath) {
-  if (!filePath.startsWith(rootDir)) return nodeRequire(filePath);
-  const resolvedPath = resolveSourceModule(filePath, path.join(rootDir, "scripts", "i18n-audit.mjs"));
-  if (moduleCache.has(resolvedPath)) return moduleCache.get(resolvedPath).exports;
-
-  if (resolvedPath.endsWith(".json")) {
-    const parsed = JSON.parse(fs.readFileSync(resolvedPath, "utf8"));
-    moduleCache.set(resolvedPath, { exports: parsed });
-    return parsed;
-  }
-
-  const source = fs.readFileSync(resolvedPath, "utf8");
-  const module = { exports: {} };
-  moduleCache.set(resolvedPath, module);
-  const output = ts.transpileModule(source, {
-    compilerOptions: {
-      esModuleInterop: true,
-      jsx: ts.JsxEmit.ReactJSX,
-      module: ts.ModuleKind.CommonJS,
-      target: ts.ScriptTarget.ES2020,
-    },
-    fileName: resolvedPath,
-  }).outputText;
-  const localRequire = (specifier) => {
-    if (specifier.endsWith(".css")) return {};
-    const target = resolveSourceModule(specifier, resolvedPath);
-    if (path.isAbsolute(target) && target.startsWith(rootDir)) return loadSourceModule(target);
-    return nodeRequire(target);
-  };
-  const runner = new Function("exports", "require", "module", "__filename", "__dirname", output);
-  runner(module.exports, localRequire, module, resolvedPath, path.dirname(resolvedPath));
-  return module.exports;
-}
-
 function flattenStrings(value, prefix = "", rows = []) {
   if (typeof value === "string") {
     rows.push({ path: prefix, value });
@@ -253,12 +206,6 @@ function checkNoPlaceholder(kind, context, value) {
   }
 }
 
-function publicAssetExists(assetUrl) {
-  if (!assetUrl || /^https?:\/\//.test(assetUrl)) return true;
-  const cleanPath = assetUrl.split("?")[0].replace(/^\/+/, "");
-  return fs.existsSync(path.join(publicDir, cleanPath));
-}
-
 function validateSourceFiles() {
   const localeFiles = fs.readdirSync(localesDir).filter((file) => file.endsWith(".ts")).map((file) => path.basename(file, ".ts"));
   const content = [
@@ -287,8 +234,8 @@ function validateSourceFiles() {
 }
 
 function validateRuntimeData(routes, seo, landing) {
-  const content = loadSourceModule(path.join(rootDir, "src", "content.ts"));
-  const ui = loadSourceModule(path.join(rootDir, "src", "uiText.ts"));
+  const content = srcModule("content.ts");
+  const ui = srcModule("uiText.ts");
   const languageCodes = routes.allLanguageCodes;
 
   if (JSON.stringify(languageCodes) !== JSON.stringify(expectedLanguages)) {
@@ -496,11 +443,11 @@ function buildReport() {
 }
 
 validateSourceFiles();
-const routes = loadSourceModule(path.join(rootDir, "src", "routes.ts"));
-const seo = loadSourceModule(path.join(rootDir, "src", "seo.ts"));
-const landing = loadSourceModule(path.join(rootDir, "src", "landingPages.ts"));
-const localBusinesses = loadSourceModule(path.join(rootDir, "src", "localBusinesses.ts"));
-const guidesModule = loadSourceModule(path.join(rootDir, "src", "guides.ts"));
+const routes = srcModule("routes.ts");
+const seo = srcModule("seo.ts");
+const landing = srcModule("landingPages.ts");
+const localBusinesses = srcModule("localBusinesses.ts");
+const guidesModule = srcModule("guides.ts");
 validateRuntimeData(routes, seo, landing);
 validateGeneratedHtml(routes);
 

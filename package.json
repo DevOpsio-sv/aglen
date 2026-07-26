@@ -5,9 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "validate": "node scripts/validate-records.mjs",
+    "new:record": "node scripts/new-record.mjs",
     "i18n:audit": "node scripts/i18n-audit.mjs",
     "graph:audit": "node scripts/graph-audit.mjs",
-    "build": "tsc && vite build && node scripts/generate-static-routes.mjs && npm run graph:audit && npm run i18n:audit",
+    "site:audit": "node scripts/site-audit.mjs",
+    "health": "node scripts/health-report.mjs",
+    "audit": "npm run graph:audit && npm run i18n:audit && npm run site:audit && npm run health",
+    "build": "tsc && vite build && node scripts/generate-static-routes.mjs && npm run audit",
     "preview": "vite preview",
     "deploy:cloudflare": "npm run build && wrangler pages deploy dist --project-name aglen-tourism-site"
   },

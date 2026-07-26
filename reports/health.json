@@ -1,0 +1,70 @@
+{
+  "generated": "2026-07-26",
+  "entities": 32,
+  "published": 28,
+  "nodes": 4,
+  "byKind": {
+    "region": 3,
+    "province": 1,
+    "municipality": 1,
+    "settlement": 5,
+    "cave": 2,
+    "geopark": 1,
+    "waterBody": 3,
+    "landform": 3,
+    "archaeologicalSite": 2,
+    "building": 1,
+    "person": 1,
+    "legend": 3,
+    "period": 6
+  },
+  "byNamespace": {
+    "place": 17,
+    "history": 6,
+    "legend": 3,
+    "person": 1,
+    "route": 0,
+    "tradition": 0,
+    "species": 0
+  },
+  "regions": [
+    {
+      "id": "karst/lukovit",
+      "name": "The Lukovit Karst",
+      "entities": 32,
+      "published": 28,
+      "root": "karst-lukovit",
+      "base": "aglen"
+    }
+  ],
+  "claims": 109,
+  "liveClaims": 109,
+  "sources": 15,
+  "evidence": 1,
+  "uncertainClaims": 44,
+  "openDisputes": 1,
+  "corrections": 0,
+  "linkDensity": 4.89,
+  "withSameAs": 11,
+  "withOwnHero": 0,
+  "mediaAssets": 0,
+  "renderableAssets": 0,
+  "brokenAssets": 0,
+  "sited": 18,
+  "sitedWithFix": 10,
+  "staleClaims": 0,
+  "redirects": 32,
+  "searchEntries": 28,
+  "aliasChecks": 12,
+  "aliasResolved": 12,
+  "withAliases": 5,
+  "bundle": {
+    "js": 1236467,
+    "css": 89802,
+    "jsGzip": 376135
+  },
+  "findings": 31,
+  "high": 1,
+  "medium": 21,
+  "low": 9
+}

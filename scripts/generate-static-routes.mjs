@@ -353,6 +353,27 @@ function claimExportLines() {
     const claims = ledger.claimsFor(entity.id);
     if (claims.length === 0) continue;
     lines.push("", `### ${graph.entityName(entity, "en")} — ${seo.SITE_URL}/en${entity.page.path}`);
+    // Identity before statements (M5, Part 7). A model that has just been handed
+    // forty facts about a thing needs to know WHICH thing first: its Bulgarian
+    // name, the names it is also known by, what kind of thing it is, and what it
+    // is part of. Without these three lines an assistant asked about "Очите на
+    // Бога" has no way to connect the question to the page it is reading.
+    const alsoKnownAs = [...new Set([...graph.entityAliases(entity, "en"), ...graph.entityAliases(entity, "bg")])];
+    lines.push(`- Bulgarian name: ${graph.entityName(entity, "bg")} · type: ${entity.kind}`);
+    if (alsoKnownAs.length > 0) lines.push(`- Also known as: ${alsoKnownAs.join(" · ")}`);
+    const parent = entity.parent ? graph.entityById(entity.parent) : undefined;
+    if (parent) lines.push(`- Part of: ${graph.entityName(parent, "en")}`);
+    // The edges, as URLs. Cross-link density is what turns a list of pages into
+    // something a model can traverse rather than merely quote.
+    const related = graph
+      .derivedLinks(entity, "en")
+      .map((link) => graph.entityById(link.entityId))
+      .filter((target) => target?.page?.status === "published")
+      .slice(0, 6)
+      .map((target) => `${graph.entityName(target, "en")} (${seo.SITE_URL}/en${target.page.path})`);
+    if (related.length > 0) lines.push(`- Connected to: ${related.join(" · ")}`);
+    const signals = ledger.trustSignals(entity.id);
+    if (signals.length > 0) lines.push(`- How this page is held: ${signals.join(", ")}`);
     for (const claim of claims) {
       const cited = claim.sources.map((id) => ledger.sourceById(id)).filter(Boolean);
       const citation = cited.map((source) => source.citation).join(" | ") || "no source";
@@ -430,10 +451,25 @@ const llmsLines = [
   "  their sources. It is never a build or deploy date.",
   "",
   "## Knowledge namespaces",
-  `- History, period by period: ${seo.SITE_URL}/en/history/`,
-  `- Legends, recorded as told: ${seo.SITE_URL}/en/legend/`,
-  `- People: ${seo.SITE_URL}/en/person/`,
-  `- Places: ${seo.SITE_URL}/en/place/`,
+  // Derived from the registry, so a namespace added to the graph announces itself
+  // here the day it publishes its first page and never a build before that.
+  ...routes.ENTITY_NAMESPACES.map((namespace) => `- ${namespace.slug}: ${seo.SITE_URL}/en/${namespace.slug}/`),
+  "",
+  "## Machine-readable exports",
+  `- The knowledge graph as JSON — every entity by its URL, every statement with its`,
+  `  confidence and its citation, every open question with both readings: ${seo.SITE_URL}/knowledge.json`,
+  `- A static index of every page with its names and the other names it answers to,`,
+  `  including historical names and spelling variants in both scripts: ${seo.SITE_URL}/search-index.json`,
+  "- Both are generated from the same records as the pages, so they cannot disagree",
+  "  with what a reader sees.",
+  "",
+  "## Names",
+  "Places here are known by more than one name, and the second name is often the",
+  "one people use. Where a page has other names — a historical form, a local name,",
+  "a spelling variant — they are listed on that page's entry below under \"Also",
+  "known as\", and in the machine exports as `alternateName`. A historical name is",
+  "not a claim that the thing was called that: where the evidence is a village",
+  "tradition rather than a document, the entry says so.",
   "",
   "## Sources",
   "Every claim below cites one of these. Sources marked `unverified` have not had",
