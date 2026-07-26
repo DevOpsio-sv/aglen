@@ -23,12 +23,15 @@ import { fontFaces } from "./generated/fontManifest";
 import { routeHasOwnSections } from "./pageSections";
 import { localizeTrust, trustPageByRoute } from "./trustPages";
 import { buildAspectPath, buildPlacePath, buildSourcePath } from "./routes";
-import { aspectCrumb, aspectLede, aspectTitle, namespaceTitle, NAMESPACE_CHROME, PROVENANCE_CHROME, SOURCE_CHROME, localizeChrome, type NamespaceKind } from "./graph/namespaces";
+import { aspectCrumb, aspectLede, aspectTitle, namespacePrefix, namespaceTitle, NAMESPACE_CHROME, PROVENANCE_CHROME, SOURCE_CHROME, localizeChrome, type NamespaceKind } from "./graph/namespaces";
+import { KIND_HERO, NAMESPACES, REGIONS, namespaceForPath, type NamespaceId, type RegionRouteId } from "./graph/registry";
 import {
   breadcrumbTrail,
   derivedLinks,
+  entityAliases,
   entityById,
   entityBySlug,
+  entityHeroAsset,
   entityName,
   entityPoint,
   entityShortText,
@@ -331,16 +334,23 @@ function absoluteGuideUrl(lang: LanguageCode, slug: string): string {
 // it (Constitution rule 1). Prose is transcluded, never re-authored.
 
 /**
- * The entity namespaces (M3's `/place/` plus M4's three). Each addresses its
+ * The entity namespaces, from the registry (M5, ADR-016). Each addresses its
  * detail pages identically, so one resolver covers all of them and a new
- * namespace needs no new branch here.
+ * namespace needs no new branch here — nor a row here.
  */
-const ENTITY_ROUTE_IDS: Partial<Record<RouteId, string>> = {
-  place: "/place/",
-  history: "/history/",
-  legend: "/legend/",
-  person: "/person/",
-};
+const ENTITY_ROUTE_IDS: Partial<Record<RouteId, string>> = Object.fromEntries(
+  NAMESPACES.map((namespace) => [namespace.id, namespace.prefix]),
+);
+
+/**
+ * The knowledge-tier namespace a route id names, if any. `/place/` is excluded by
+ * construction: it is not knowledge tier (it is indexed in all fourteen languages)
+ * and it renders through its own component rather than the generic index.
+ */
+function knowledgeNamespaceIdOf(routeId: RouteId): NamespaceKind | undefined {
+  const namespace = NAMESPACES.find((candidate) => candidate.id === routeId);
+  return namespace?.knowledgeTier ? namespace.id : undefined;
+}
 
 /** A detail route's subject: the entity, plus the aspect when one is addressed. */
 type EntitySubject = { entity: Entity; aspect?: ClaimAspect };
@@ -378,24 +388,24 @@ function entityAbsoluteUrl(lang: LanguageCode, entity: Entity, aspect?: ClaimAsp
   return `${SITE_URL}/${lang}${entity.page.path}`;
 }
 
-// A representative hero for an entity, reusing an existing asset. E1 places carry
-// their own photograph in the locale content; the rest borrow a kind-appropriate
-// image already shipped with the site (no new media, ADR-012 is M4).
-const ENTITY_HERO_BY_KIND: Record<string, string> = {
-  region: "/assets/aglen-hero-river-canyon.png",
-  province: "/assets/aglen-aerial-river.png",
-  municipality: "/assets/aglen-aerial-river.png",
-  settlement: "/assets/aglen-village-church.png",
-  cave: "/assets/aglen-cave-mystery.png",
-  landform: "/assets/aglen-rock-arch.png",
-  waterBody: "/assets/aglen-vit-river-sunset.png",
-  spring: "/assets/aglen-river-pool.png",
-  geopark: "/assets/aglen-aerial-river.png",
-  archaeologicalSite: "/assets/aglen-kaleto-ruins.png",
-  building: "/assets/aglen-village-church.png",
-};
-
+/**
+ * The picture a page leads with, in order of how much it is the entity's own
+ * (M5, ADR-019):
+ *
+ *   1. a media asset the record itself carries, once rule 45 permits it to render
+ *      — a licence, a capture date, a credit and a depicted entity, all four;
+ *   2. the photograph the locale content already publishes for an E1 place;
+ *   3. the guide hero, where the entity's prose is transcluded from one;
+ *   4. the kind's borrowed plate from the registry, which is honest scenery
+ *      rather than a claim to depict this particular thing.
+ *
+ * Step 1 is new and is the whole reason the media contract was widened: the day a
+ * field day produces a dated, credited photograph of Дупката, its page starts
+ * leading with it and nothing else in the codebase has to be told.
+ */
 export function entityHeroPath(lang: LanguageCode, entity: Entity): string {
+  const own = entityHeroAsset(entity);
+  if (own) return own.src;
   if (entity.contentRef?.placeId) {
     const place = contentByLanguage[lang].placesList.find((candidate) => candidate.id === entity.contentRef!.placeId);
     if (place) return place.image;
@@ -404,7 +414,13 @@ export function entityHeroPath(lang: LanguageCode, entity: Entity): string {
     const guide = findGuide(entity.contentRef.guideSlug);
     if (guide) return guide.heroImage;
   }
-  return ENTITY_HERO_BY_KIND[entity.kind] ?? OG_IMAGE_PATH;
+  return KIND_HERO[entity.kind] ?? OG_IMAGE_PATH;
+}
+
+/** The alt text of an entity's hero — its own asset's, or its name as the fallback. */
+export function entityHeroAlt(lang: LanguageCode, entity: Entity): string {
+  const own = entityHeroAsset(entity);
+  return own ? localizeText(own.alt, lang) : entityName(entity, lang);
 }
 
 function entityText(lang: LanguageCode, subject: EntitySubject): { title: string; description: string } {
@@ -437,9 +453,11 @@ function entityImageEntries(lang: LanguageCode, entity: Entity): ImageSitemapEnt
 function entityBreadcrumb(lang: LanguageCode, entity: Entity, aspect?: ClaimAspect): Array<{ name: string; url?: string }> {
   const copy = contentByLanguage[lang];
   const items: Array<{ name: string; url?: string }> = [{ name: copy.nav.home, url: absoluteRouteUrl(lang, "home") }];
-  const namespaceKind = (["history", "legend", "person"] as NamespaceKind[]).find((kind) =>
-    entity.page?.path.startsWith(NAMESPACE_CHROME[kind].prefix),
-  );
+  // A knowledge-tier entity has no containment chain of its own — a legend is not
+  // inside a place — so its trail is Home → namespace index → entity. A `/place/`
+  // entity walks its real containment below (Constitution rule 19).
+  const namespace = entity.page ? namespaceForPath(entity.page.path) : undefined;
+  const namespaceKind = namespace?.knowledgeTier ? (namespace.id as NamespaceKind) : undefined;
   if (namespaceKind) {
     items.push({ name: namespaceTitle(namespaceKind, lang), url: absoluteRouteUrl(lang, namespaceKind) });
     // The leaf carries no URL, matching the visible trail exactly.
@@ -523,6 +541,11 @@ function entityNode(lang: LanguageCode, entity: Entity, url: string): object {
     ...(entity.additionalType ? { additionalType: entity.additionalType } : {}),
     "@id": `${url}#entity`,
     name: entityName(entity, lang),
+    // Historical names, local usage and variant spellings (M5, Part 6/7). This is
+    // how a knowledge base learns that "Иглен" and "Ъглен" are one place instead
+    // of holding them apart as two — the single cheapest thing this site can emit
+    // to make itself reconcilable with the graphs it wants to be part of.
+    ...(entityAliases(entity, lang).length > 0 ? { alternateName: entityAliases(entity, lang) } : {}),
     description: entityShortText(entity, lang),
     url,
     ...(point ? { geo: { "@type": "GeoCoordinates", latitude: point.lat, longitude: point.lon } } : {}),
@@ -622,6 +645,38 @@ function compact(value: string, max = 158): string {
   return value.length <= max ? value : `${value.slice(0, max - 1).trim()}…`;
 }
 
+type RouteText = { title: string; description: string };
+
+/** One title/description per declared namespace, from its chrome (M5, ADR-016). */
+function namespaceRouteText(lang: LanguageCode): Record<NamespaceId, RouteText> {
+  const brand = contentByLanguage[lang].brand.name;
+  return Object.fromEntries(
+    NAMESPACES.map((namespace) => [
+      namespace.id,
+      {
+        title: `${namespaceTitle(namespace.id, lang)} | ${brand}`,
+        description: localizeChrome(NAMESPACE_CHROME[namespace.id].lede, lang),
+      },
+    ]),
+  ) as Record<NamespaceId, RouteText>;
+}
+
+/** One title/description per region root, taken from the root entity itself. */
+function regionRouteText(lang: LanguageCode): Record<RegionRouteId, RouteText> {
+  const copy = contentByLanguage[lang];
+  return Object.fromEntries(
+    REGIONS.map((region) => {
+      const root = entityById(region.rootEntityId);
+      return [
+        region.rootRouteId,
+        root
+          ? { title: `${entityName(root, lang)} | ${copy.brand.name}`, description: entityShortText(root, lang) }
+          : { title: `${copy.landmarks.title} | ${copy.brand.name}`, description: copy.landmarks.text },
+      ];
+    }),
+  ) as Record<RegionRouteId, RouteText>;
+}
+
 function routeText(lang: LanguageCode, routeId: RouteId): { title: string; description: string } {
   const copy = contentByLanguage[lang];
   const ui = uiTextByLanguage[lang];
@@ -630,6 +685,13 @@ function routeText(lang: LanguageCode, routeId: RouteId): { title: string; descr
 
   const trust = Object.fromEntries(ui.trustLinks.map((link) => [link.routeId, link.label]));
   const core: Record<CoreRouteId, { title: string; description: string }> = {
+    // The graph's own routes, derived from the registry (M5, ADR-016). A region
+    // root is titled from its root entity — the karst page IS the karst — and a
+    // namespace index from the one chrome module its page renders, so the <title>,
+    // the <h1>, the breadcrumb and the JSON-LD cannot drift apart. A namespace
+    // added to the registry is titled here without touching this file.
+    ...namespaceRouteText(lang),
+    ...regionRouteText(lang),
     home: { title: `${copy.hero.subtitle} | ${copy.brand.name}`, description: copy.hero.lede },
     pillars: { title: `${copy.about.title} | ${copy.brand.name}`, description: `${copy.about.text} ${copy.legends.text}` },
     attractions: { title: `${copy.landmarks.title} | ${copy.brand.name}`, description: copy.landmarks.text },
@@ -645,21 +707,10 @@ function routeText(lang: LanguageCode, routeId: RouteId): { title: string; descr
     quests: { title: `${copy.quests.title} | ${copy.brand.name}`, description: copy.quests.text },
     app: { title: `${copy.app.title} | ${copy.brand.name}`, description: copy.app.text },
     arMissions: { title: `${copy.ub.hubTitle} | ${copy.brand.name}`, description: copy.ub.homeText },
-    // The entity namespace index pages. /karst/ is the knowledge subject itself,
-    // titled from the root entity; /place/ lists the entities.
-    karst: (() => {
-      const root = entityById("karst-lukovit");
-      return root
-        ? { title: `${entityName(root, lang)} | ${copy.brand.name}`, description: entityShortText(root, lang) }
-        : { title: `${copy.landmarks.title} | ${copy.brand.name}`, description: copy.landmarks.text };
-    })(),
+    // `/place/` keeps the wording it shipped with in M3 rather than adopting its
+    // registry chrome: the title is indexed, and an audit is not a reason to
+    // rewrite a page's <title> (standing rule — no SEO regressions).
     place: { title: `${copy.landmarks.title} | ${copy.brand.name}`, description: copy.landmarks.text },
-    // The knowledge namespaces and the provenance surfaces (M4). Titles come from
-    // the one chrome module the pages themselves render, so the <title>, the <h1>,
-    // the breadcrumb and the JSON-LD cannot drift apart.
-    history: { title: `${namespaceTitle("history", lang)} | ${copy.brand.name}`, description: localizeChrome(NAMESPACE_CHROME.history.lede, lang) },
-    legend: { title: `${namespaceTitle("legend", lang)} | ${copy.brand.name}`, description: localizeChrome(NAMESPACE_CHROME.legend.lede, lang) },
-    person: { title: `${namespaceTitle("person", lang)} | ${copy.brand.name}`, description: localizeChrome(NAMESPACE_CHROME.person.lede, lang) },
     sources: { title: `${localizeChrome(PROVENANCE_CHROME.sources.title, lang)} | ${copy.brand.name}`, description: localizeChrome(PROVENANCE_CHROME.sources.lede, lang) },
     // /source/ has no index page of its own; the bare route inherits the ledger's
     // chrome, and a real /source/<slug>/ overrides both title and description
@@ -780,6 +831,42 @@ export function getSEOConfig(lang: LanguageCode, routeId: RouteId = "home", deta
   };
 }
 
+/** One sitemap image per namespace index — its own chrome hero (M5, ADR-016). */
+function namespaceRouteImages(lang: LanguageCode): Record<NamespaceId, ImageSitemapEntry[]> {
+  return Object.fromEntries(
+    NAMESPACES.map((namespace) => [
+      namespace.id,
+      [
+        {
+          loc: absoluteAssetUrl(NAMESPACE_CHROME[namespace.id].hero),
+          title: namespaceTitle(namespace.id, lang),
+          caption: localizeChrome(NAMESPACE_CHROME[namespace.id].lede, lang),
+        },
+      ],
+    ]),
+  ) as Record<NamespaceId, ImageSitemapEntry[]>;
+}
+
+/** One sitemap image per region root, titled from the root entity. */
+function regionRouteImages(lang: LanguageCode): Record<RegionRouteId, ImageSitemapEntry[]> {
+  return Object.fromEntries(
+    REGIONS.map((region) => {
+      const root = entityById(region.rootEntityId);
+      const text = regionRouteText(lang)[region.rootRouteId];
+      return [
+        region.rootRouteId,
+        [
+          {
+            loc: absoluteAssetUrl(root ? entityHeroPath(lang, root) : "/assets/aglen-hero-river-canyon.png"),
+            title: root ? entityName(root, lang) : text.title,
+            caption: text.description,
+          },
+        ],
+      ];
+    }),
+  ) as Record<RegionRouteId, ImageSitemapEntry[]>;
+}
+
 function routeImages(lang: LanguageCode, routeId: RouteId, detailSlug?: string): ImageSitemapEntry[] {
   const copy = contentByLanguage[lang];
 
@@ -835,6 +922,11 @@ function routeImages(lang: LanguageCode, routeId: RouteId, detailSlug?: string):
   const cave = copy.mysteries[1];
   const church = placeById(copy, "st-archangel-michael");
   const byRoute: Record<CoreRouteId, ImageSitemapEntry[]> = {
+    // Registry-derived rows first, so a namespace or region added to the registry
+    // appears in the image sitemap without a line being written here. The explicit
+    // rows below override the two whose imagery predates the registry.
+    ...namespaceRouteImages(lang),
+    ...regionRouteImages(lang),
     home: [{ loc: OG_IMAGE, title: copy.hero.title, caption: copy.hero.imageAlt }, ...gallery.map((item) => ({ loc: absoluteAssetUrl(item.image), title: item.title, caption: item.alt }))],
     pillars: copy.mysteries.map((item) => ({ loc: absoluteAssetUrl(item.image), title: item.title, caption: item.description })),
     attractions: copy.placesList.map((place) => ({ loc: absoluteAssetUrl(place.image), title: place.title, caption: place.imageAlt || place.description })),
@@ -850,15 +942,7 @@ function routeImages(lang: LanguageCode, routeId: RouteId, detailSlug?: string):
     quests: [{ loc: OG_IMAGE, title: copy.quests.title, caption: copy.quests.text }, { loc: `${SITE_URL}/assets/aglen-cave-mystery.png`, title: copy.ar.title, caption: copy.ar.text }],
     app: [{ loc: OG_IMAGE, title: copy.app.title, caption: copy.app.text }],
     arMissions: [{ loc: OG_IMAGE, title: copy.ub.hubTitle, caption: copy.ub.homeText }, { loc: `${SITE_URL}/assets/aglen-cave-mystery.png`, title: copy.quests.title, caption: copy.quests.text }],
-    karst: (() => {
-      const root = entityById("karst-lukovit");
-      const rt = routeText(lang, "karst");
-      return [{ loc: absoluteAssetUrl("/assets/aglen-hero-river-canyon.png"), title: root ? entityName(root, lang) : rt.title, caption: rt.description }];
-    })(),
     place: [{ loc: `${SITE_URL}/assets/aglen-aerial-river.png`, title: routeText(lang, "place").title, caption: routeText(lang, "place").description }],
-    history: [{ loc: absoluteAssetUrl(NAMESPACE_CHROME.history.hero), title: namespaceTitle("history", lang), caption: localizeChrome(NAMESPACE_CHROME.history.lede, lang) }],
-    legend: [{ loc: absoluteAssetUrl(NAMESPACE_CHROME.legend.hero), title: namespaceTitle("legend", lang), caption: localizeChrome(NAMESPACE_CHROME.legend.lede, lang) }],
-    person: [{ loc: absoluteAssetUrl(NAMESPACE_CHROME.person.hero), title: namespaceTitle("person", lang), caption: localizeChrome(NAMESPACE_CHROME.person.lede, lang) }],
     sources: [{ loc: absoluteAssetUrl(PROVENANCE_CHROME.sources.hero), title: localizeChrome(PROVENANCE_CHROME.sources.title, lang), caption: localizeChrome(PROVENANCE_CHROME.sources.lede, lang) }],
     source: [{ loc: absoluteAssetUrl(SOURCE_CHROME.hero), title: localizeChrome(SOURCE_CHROME.eyebrow, lang), caption: localizeChrome(SOURCE_CHROME.lede, lang) }],
     corrections: [{ loc: absoluteAssetUrl(PROVENANCE_CHROME.corrections.hero), title: localizeChrome(PROVENANCE_CHROME.corrections.title, lang), caption: localizeChrome(PROVENANCE_CHROME.corrections.lede, lang) }],
@@ -1013,9 +1097,9 @@ function placeNodes(lang: LanguageCode): object[] {
  * machine can read the provenance without scraping the page.
  */
 function knowledgeIndexSchemas(lang: LanguageCode, routeId: RouteId, routeUrl: string): object[] {
-  const namespaceKind = (["history", "legend", "person"] as NamespaceKind[]).find((kind) => kind === routeId);
+  const namespaceKind = knowledgeNamespaceIdOf(routeId);
   if (namespaceKind) {
-    const listed = namespaceEntities(NAMESPACE_CHROME[namespaceKind].prefix);
+    const listed = namespaceEntities(namespacePrefix(namespaceKind));
     return [
       {
         "@type": "ItemList",
@@ -1688,9 +1772,9 @@ export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "hom
   }
 
   // The knowledge namespace indexes and the two provenance surfaces.
-  const namespaceKind = (["history", "legend", "person"] as NamespaceKind[]).find((kind) => kind === routeId);
+  const namespaceKind = knowledgeNamespaceIdOf(routeId);
   if (namespaceKind) {
-    const listed = namespaceEntities(NAMESPACE_CHROME[namespaceKind].prefix);
+    const listed = namespaceEntities(namespacePrefix(namespaceKind));
     return `
       <main id="static-seo-content" class="static-fallback" lang="${lang}">
         <article class="content-hub section-shell">

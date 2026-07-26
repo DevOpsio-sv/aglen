@@ -1,4 +1,6 @@
 import type { LanguageCode, LocalizedText } from "../locales/types";
+import { isLocalizedText } from "./text";
+import { validateMedia, type MediaAsset } from "./media";
 
 // ─────────────────────────────────────────────────────────────
 // The entity schema — the one frozen contract (ADR-001, ADR-004).
@@ -92,18 +94,37 @@ export type EntitySameAs = {
 };
 
 /**
- * A media reference. Every asset carries a license, a capture date, a credit and
- * a depicted entity or it does not render (Constitution rule 45); `aiGenerated`
- * assets never reach a place page (rule 45 / V11). Originals move to object
- * storage in M4 (ADR-012); here `src` is the existing public asset path.
+ * A media reference. The contract lives in `media.ts` (ADR-019) — every asset
+ * carries a licence, a capture date, a credit and a depicted entity or it does
+ * not render (Constitution rule 45), and `aiGenerated` assets never reach a
+ * published page (V11). Re-exported here because an entity's `media` field is
+ * part of the entity contract even though its shape is owned elsewhere.
  */
-export type MediaRef = {
-  src: string;
-  alt: LocalizedText;
-  credit?: string;
-  license?: string;
-  capturedAt?: string;
-  aiGenerated?: boolean;
+export type { MediaAsset, MediaRef } from "./media";
+
+/**
+ * A name this thing is also known by (M5, Part 6). Not decoration: the reason a
+ * search for "Иглен" finds Ъглен, the reason `alternateName` in the JSON-LD lets
+ * a knowledge base merge two records it would otherwise hold apart, and the
+ * reason a visitor typing a spelling nobody standardised still arrives.
+ *
+ * An alias is a name, never a claim. "The village was called Иглен" is a sourced
+ * statement and belongs in the ledger; the string "Иглен" belongs here so that
+ * the machinery can find it. Both exist, and neither substitutes for the other.
+ */
+export type AliasKind =
+  | "historical" // a name it went by, no longer current
+  | "variant" // a spelling or transliteration of the current name
+  | "local" // what people here call it, unofficially
+  | "official" // a formal or administrative designation
+  | "scientific"; // a binomial or taxonomic name
+
+export type EntityAlias = {
+  name: LocalizedText;
+  kind: AliasKind;
+  /** When the name was in use: "XV–XVI в.", "until 1934". Free text, not a date. */
+  period?: string;
+  note?: LocalizedText;
 };
 
 /**
@@ -149,13 +170,15 @@ export type Entity = {
   additionalType?: string;
   /** Localized name. Omitted when `contentRef` supplies it. */
   name?: LocalizedText;
+  /** Other names this thing answers to — historical, local, variant spellings. */
+  aliases?: EntityAlias[];
   /** Exactly one containment parent, or none for the root subject. */
   parent?: EntityId;
   relations: Relation[];
   geo?: EntityGeo;
   sameAs?: EntitySameAs;
   confidence: EntityConfidence;
-  media?: MediaRef[];
+  media?: MediaAsset[];
   contentRef?: ContentRef;
   shortDescription?: LocalizedText;
   longDescription?: LocalizedText;
@@ -183,11 +206,9 @@ const RELATION_TYPES = new Set<RelationType>([
 
 const CONFIDENCES = new Set<EntityConfidence>(["E5", "E4", "E3", "E2", "E1"]);
 
-const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const ALIAS_KINDS = new Set<AliasKind>(["historical", "variant", "local", "official", "scientific"]);
 
-function isLocalizedText(value: unknown): value is LocalizedText {
-  return Boolean(value) && typeof value === "object" && typeof (value as { bg?: unknown }).bg === "string";
-}
+const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 /**
  * Validate one record's structure. Returns a list of human-readable problems;
@@ -236,9 +257,27 @@ export function validateEntity(entity: unknown): string[] {
     if (!["published", "draft", "node"].includes(e.page.status as string)) problems.push(`${id}: page.status is invalid.`);
   }
 
+  if (e.aliases !== undefined) {
+    if (!Array.isArray(e.aliases)) {
+      problems.push(`${id}: aliases must be an array.`);
+    } else {
+      e.aliases.forEach((alias, index) => {
+        if (!isLocalizedText(alias?.name)) problems.push(`${id}: aliases[${index}] has no localized name.`);
+        if (!alias || !ALIAS_KINDS.has(alias.kind)) problems.push(`${id}: aliases[${index}] has invalid kind "${alias?.kind}".`);
+        if (alias?.note !== undefined && !isLocalizedText(alias.note)) problems.push(`${id}: aliases[${index}] note is malformed.`);
+      });
+    }
+  }
+
+  // Rule 45 and V11 in the one place a single record can be judged: a machine-made
+  // image may not sit on a published page whatever else it carries. The rest of
+  // rule 45 — licence, date, credit, depicted entity — is a rendering decision
+  // (`media.isRenderable`) and a build gate, not a reason to reject the record.
   (e.media ?? []).forEach((asset, index) => {
-    if (asset?.aiGenerated === true && e.page?.status === "published") problems.push(`${id}: media[${index}] is aiGenerated and may not render on a published page (rule 45).`);
-    if (asset && !isLocalizedText(asset.alt)) problems.push(`${id}: media[${index}] has no localized alt text.`);
+    problems.push(...validateMedia(asset, id, index));
+    if (asset?.aiGenerated === true && e.page?.status === "published") {
+      problems.push(`${id}: media[${index}] is aiGenerated and may not render on a published page (rule 45 / V11).`);
+    }
   });
 
   return problems;

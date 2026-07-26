@@ -3,9 +3,18 @@ import type { LanguageCode } from "./locales/types";
 import { landingPages, type LandingPageId } from "./landingPages";
 import { publishedBusinesses } from "./localBusinesses";
 import { guides } from "./guides";
-import { namespaceEntities, placePageEntities } from "./graph";
-import { aspectPagesFor, sourcePages } from "./graph/ledger";
+import { activeNamespaces, namespaceEntities, placePageEntities } from "./graph";
+import { ASPECT_PAGE_KINDS, aspectPagesFor, sourcePages } from "./graph/ledger";
+import { REGIONS, type NamespaceId, type RegionRouteId } from "./graph/registry";
 import type { ClaimAspect } from "./graph/claims";
+
+/**
+ * The routes the knowledge graph owns, declared by `graph/registry.ts` rather
+ * than listed here (M5, ADR-016): one root route per region and one index route
+ * per namespace. A new region or a new namespace adds itself to this union by
+ * adding a registry row — there is no second list to keep in step.
+ */
+export type GraphRouteId = RegionRouteId | NamespaceId;
 
 export type CoreRouteId =
   | "home"
@@ -23,18 +32,14 @@ export type CoreRouteId =
   | "quests"
   | "app"
   | "arMissions"
-  // The entity namespace (M3): /karst/ is the knowledge-subject root (ADR-008),
-  // /place/ its index; individual entities are /place/<slug>/ detail pages that
-  // hang off the "place" route the way businesses hang off "localBusinesses".
-  | "karst"
-  | "place"
-  // The knowledge namespaces (M4). Time, people and oral tradition are entities
-  // like any other; they differ only in the namespace their page lives under.
-  // `/sources/` and `/corrections/` are the provenance surfaces: both are
-  // generated from the claim ledger and neither is hand-maintained.
-  | "history"
-  | "legend"
-  | "person"
+  // The graph's own routes (M3, M4, generalised in M5): a region root such as
+  // /karst/ — the knowledge-subject root, ADR-008 — and one index per namespace,
+  // /place/, /history/, /legend/, /person/ and the namespaces still dormant.
+  // Individual entities are detail pages hanging off their namespace index, the
+  // way businesses hang off "localBusinesses".
+  | GraphRouteId
+  // The provenance surfaces: both generated from the claim ledger, neither
+  // hand-maintained.
   | "sources"
   | "corrections"
   // A single citable origin: /source/<slug>/ (M4B, ADR-015). `/sources/` is the
@@ -86,19 +91,18 @@ export const PLACE_ROUTE_SLUG = "place";
 export const SOURCE_ROUTE_SLUG = "source";
 
 /**
- * The entity namespaces and the route each resolves to. `/place/` came with M3;
- * the other three come with M4 and behave identically — an index at the root and
- * one detail page per published entity.
+ * The entity namespaces and the route each resolves to — every namespace that
+ * actually holds a published entity, in registry order. Derived rather than
+ * listed, so `/species/` starts resolving the day the first species record
+ * publishes and no empty index ships before that (Constitution rule 26).
  */
-export const ENTITY_NAMESPACES: Array<{ slug: string; routeId: CoreRouteId }> = [
-  { slug: PLACE_ROUTE_SLUG, routeId: "place" },
-  { slug: "history", routeId: "history" },
-  { slug: "legend", routeId: "legend" },
-  { slug: "person", routeId: "person" },
-];
+export const ENTITY_NAMESPACES: Array<{ slug: string; routeId: CoreRouteId }> = activeNamespaces().map((namespace) => ({
+  slug: namespace.slug,
+  routeId: namespace.id,
+}));
 
 /** Aspects that may appear as a depth-3 page beneath an entity (`/place/aglen/history/`). */
-const ASPECT_SLUGS = new Set<string>(["history", "name"]);
+const ASPECT_SLUGS = new Set<string>(ASPECT_PAGE_KINDS);
 
 export const DEFAULT_LANGUAGE: LanguageCode = "bg";
 
@@ -121,14 +125,21 @@ const coreRoutes: StaticRoute[] = [
   { id: "arMissions", slug: "ar-missions", sectionId: "ar-missions" },
   { id: "quests", slug: "unlockingbulgaria", sectionId: "ar-missions" },
   { id: "app", slug: "app", sectionId: "ar-missions" },
-  // The entity namespace (M3). Detail pages /place/<slug>/ resolve to routeId
-  // "place" with a placeSlug, like businesses and guides.
-  { id: "karst", slug: "karst", sectionId: "karst" },
-  { id: "place", slug: "place", sectionId: "place" },
-  // The knowledge namespaces and the two provenance surfaces (M4).
-  { id: "history", slug: "history", sectionId: "history" },
-  { id: "legend", slug: "legend", sectionId: "legend" },
-  { id: "person", slug: "person", sectionId: "person" },
+  // The graph's routes, derived from the registry (M5, ADR-016): one root page
+  // per region, then one index per namespace that holds a published entity.
+  // Detail pages resolve to the namespace's routeId with a placeSlug, like
+  // businesses and guides.
+  ...REGIONS.map((region) => ({
+    id: region.rootRouteId as CoreRouteId,
+    slug: region.rootPath.replace(/^\/|\/$/g, ""),
+    sectionId: region.rootRouteId,
+  })),
+  ...ENTITY_NAMESPACES.map((namespace) => ({
+    id: namespace.routeId,
+    slug: namespace.slug,
+    sectionId: namespace.slug,
+  })),
+  // The two provenance surfaces (M4).
   { id: "sources", slug: "sources", sectionId: "sources" },
   { id: "corrections", slug: "corrections", sectionId: "corrections" },
   // /source/ has no index of its own — /sources/ is that index. The bare path

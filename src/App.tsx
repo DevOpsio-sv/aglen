@@ -6,10 +6,11 @@ import { buildAspectPath, buildBusinessPath, buildGuidePath, buildPlacePath, bui
 import { guideByLegacyRoute, guides, localizeGuide } from "./guides";
 import { publishedBusinesses } from "./localBusinesses";
 import GuidesPage from "./GuidesPage";
-import { KarstPage, PlacePage } from "./graph/EntityPages";
+import { PlacePage, RegionRootPage } from "./graph/EntityPages";
 import { CorrectionsPage, KnowledgePage, SourcePage, SourcesPage } from "./graph/KnowledgePages";
-import { aspectCrumb, namespaceTitle } from "./graph/namespaces";
-import { breadcrumbTrail, entityBySlug, entityForPlaceId, entityName as graphEntityName } from "./graph";
+import { aspectCrumb, namespaceTitle, type NamespaceKind } from "./graph/namespaces";
+import { NAMESPACES, REGIONS, regionByRootPath } from "./graph/registry";
+import { breadcrumbTrail, entityById, entityBySlug, entityForPlaceId, entityName as graphEntityName } from "./graph";
 import { aspectPagesFor } from "./graph/ledger";
 import type { ClaimAspect } from "./graph/claims";
 import { imageProps } from "./images";
@@ -41,6 +42,16 @@ const HOME_ENTITY_LINKS = {
   sources: { bg: "Източници", en: "Sources" },
   corrections: { bg: "Поправки", en: "Corrections" },
 };
+/**
+ * The knowledge namespace a route addresses, from the registry (M5, ADR-016).
+ * `/place/` is excluded: it has its own component because it renders containment
+ * and aspect pages that the generic namespace index does not.
+ */
+function knowledgeNamespaceRouteId(routeId: RouteId): NamespaceKind | undefined {
+  const namespace = NAMESPACES.find((candidate) => candidate.id === routeId);
+  return namespace?.knowledgeTier ? namespace.id : undefined;
+}
+
 function homeEntityLink(key: keyof typeof HOME_ENTITY_LINKS, lang: LanguageCode): string {
   const entry = HOME_ENTITY_LINKS[key] as Record<string, string>;
   return entry[lang] ?? entry.en;
@@ -157,21 +168,24 @@ export function App() {
   // render the same hub so a direct hit before the redirect never shows the old
   // standalone promo (ADR-013).
   const isArMissionsPage = routeId === "arMissions" || routeId === "quests" || routeId === "app";
-  // The entity namespace (M3): /karst/ is the subject root, /place/<slug>/ an entity.
-  const isKarstPage = routeId === "karst";
+  // The entity namespace (M3, generalised M5): a region root page such as /karst/
+  // is the subject root; /place/<slug>/ is an entity within it.
+  const regionRootRouteId = REGIONS.find((region) => region.rootRouteId === routeId)?.rootRouteId;
+  const isKarstPage = Boolean(regionRootRouteId);
   const isPlacePage = routeId === "place";
-  // The knowledge namespaces and the two provenance surfaces (M4). Each is its
-  // own component for the same reason the entity pages are: they render from the
-  // graph and the ledger, not from crops of the home page.
-  const isHistoryPage = routeId === "history";
-  const isLegendPage = routeId === "legend";
-  const isPersonPage = routeId === "person";
+  // The knowledge namespaces and the two provenance surfaces (M4, generalised in
+  // M5). Each renders from the graph and the ledger rather than from crops of the
+  // home page. The namespace is looked up in the registry instead of being one
+  // branch per namespace: `/history/`, `/legend/` and `/person/` all render
+  // through the same component already, and this is what makes a namespace added
+  // to `graph/registry.ts` render with no edit here at all (ADR-016).
+  const knowledgeNamespaceId = knowledgeNamespaceRouteId(routeId);
   const isSourcesPage = routeId === "sources";
   const isCorrectionsPage = routeId === "corrections";
   // One source: /source/<slug>/ (M4B). It hangs off the ledger the way a business
   // detail page hangs off the listing, and shares its component with nothing.
   const isSourcePage = routeId === "source";
-  const isKnowledgePage = isHistoryPage || isLegendPage || isPersonPage || isSourcesPage || isCorrectionsPage || isSourcePage;
+  const isKnowledgePage = Boolean(knowledgeNamespaceId) || isSourcesPage || isCorrectionsPage || isSourcePage;
   // The village history aspect page, if the ledger has earned it. Derived rather
   // than hard-coded, so the link appears exactly when the page does (rule 26).
   const villageHistoryPath = aspectPagesFor("aglen").some((page) => page.aspect === "history")
@@ -1331,15 +1345,13 @@ export function App() {
 
       {isGuidesPage && <GuidesPage language={language} guideSlug={guideSlug} onNavigate={navigateToPath} />}
 
-      {isKarstPage && <KarstPage language={language} onNavigate={navigateToPath} />}
+      {regionRootRouteId && <RegionRootPage language={language} regionRouteId={regionRootRouteId} onNavigate={navigateToPath} />}
 
       {isPlacePage && <PlacePage language={language} placeSlug={placeSlug} aspect={aspect} onNavigate={navigateToPath} />}
 
-      {isHistoryPage && <KnowledgePage kind="history" language={language} entitySlug={placeSlug} onNavigate={navigateToPath} />}
-
-      {isLegendPage && <KnowledgePage kind="legend" language={language} entitySlug={placeSlug} onNavigate={navigateToPath} />}
-
-      {isPersonPage && <KnowledgePage kind="person" language={language} entitySlug={placeSlug} onNavigate={navigateToPath} />}
+      {knowledgeNamespaceId && (
+        <KnowledgePage kind={knowledgeNamespaceId} language={language} entitySlug={placeSlug} onNavigate={navigateToPath} />
+      )}
 
       {isSourcesPage && <SourcesPage language={language} onNavigate={navigateToPath} />}
 
@@ -1541,18 +1553,22 @@ function entityBreadcrumbTrail(
   aspect?: ClaimAspect,
 ): Array<{ label: string; href?: string }> | null {
   const home = { label: contentByLanguage[language].nav.home, href: buildRoutePath(language, "home") };
-  if (routeId === "karst") {
-    const karst = entityBySlug("karst");
-    return karst ? [home, { label: graphEntityName(karst, language) }] : null;
+  // A region root page: the karst today, another region's root tomorrow. Named by
+  // the registry, so the crumb is right for every region without naming any.
+  const rootRegion = REGIONS.find((region) => region.rootRouteId === routeId);
+  if (rootRegion) {
+    const root = entityById(rootRegion.rootEntityId);
+    return root ? [home, { label: graphEntityName(root, language) }] : null;
   }
-  if (routeId === "history" || routeId === "legend" || routeId === "person") {
-    const indexLabel = namespaceTitle(routeId, language);
+  const namespaceId = knowledgeNamespaceRouteId(routeId);
+  if (namespaceId) {
+    const indexLabel = namespaceTitle(namespaceId, language);
     const entity = placeSlug ? entityBySlug(placeSlug) : undefined;
-    const published = entity?.page?.status === "published" && entity.page.path.startsWith(`/${routeId}/`);
+    const published = entity?.page?.status === "published" && entity.page.path.startsWith(`/${namespaceId}/`);
     if (!published) return [home, { label: indexLabel }];
     return [
       home,
-      { label: indexLabel, href: buildRoutePath(language, routeId) },
+      { label: indexLabel, href: buildRoutePath(language, namespaceId) },
       { label: graphEntityName(entity!, language) },
     ];
   }
@@ -1563,10 +1579,11 @@ function entityBreadcrumbTrail(
       const isSelf = node.id === entity.id;
       // On an aspect page the entity itself is no longer the leaf, so it becomes
       // a link like every other ancestor.
+      const nodeRegion = node.page ? regionByRootPath(node.page.path) : undefined;
       const href =
         (!isSelf || aspect) && node.page?.status === "published"
-          ? node.page.path === "/karst/"
-            ? buildRoutePath(language, "karst")
+          ? nodeRegion
+            ? buildRoutePath(language, nodeRegion.rootRouteId)
             : buildPlacePath(language, node.slug)
           : undefined;
       return { label: graphEntityName(node, language), href };

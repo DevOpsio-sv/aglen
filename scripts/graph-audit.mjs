@@ -1,8 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
-import { createRequire } from "node:module";
-import ts from "typescript";
+import { publicAssetExists, srcModule } from "./lib/load-module.mjs";
 
 // ─────────────────────────────────────────────────────────────
 // graph-audit — the single build gate for the knowledge graph (Constitution
@@ -45,77 +44,34 @@ import ts from "typescript";
 // ─────────────────────────────────────────────────────────────
 
 const rootDir = process.cwd();
-const publicDir = path.join(rootDir, "public");
 const reportsDir = path.join(rootDir, "reports");
 const reportPath = path.join(reportsDir, "graph-audit.md");
-const nodeRequire = createRequire(import.meta.url);
-const moduleCache = new Map();
-
-function resolveSourceModule(specifier, fromFile) {
-  if (!specifier.startsWith(".")) return specifier;
-  const basePath = path.resolve(path.dirname(fromFile), specifier);
-  const candidates = [basePath, `${basePath}.ts`, `${basePath}.tsx`, `${basePath}.js`, `${basePath}.mjs`, `${basePath}.json`, path.join(basePath, "index.ts")];
-  const match = candidates.find((candidate) => fs.existsSync(candidate) && fs.statSync(candidate).isFile());
-  if (!match) throw new Error(`Cannot resolve ${specifier} from ${fromFile}`);
-  return match;
-}
-
-function loadSourceModule(filePath) {
-  if (!filePath.startsWith(rootDir)) return nodeRequire(filePath);
-  const resolvedPath = resolveSourceModule(filePath, path.join(rootDir, "scripts", "graph-audit.mjs"));
-  if (moduleCache.has(resolvedPath)) return moduleCache.get(resolvedPath).exports;
-
-  if (resolvedPath.endsWith(".json")) {
-    const parsed = JSON.parse(fs.readFileSync(resolvedPath, "utf8"));
-    moduleCache.set(resolvedPath, { exports: parsed });
-    return parsed;
-  }
-
-  const source = fs.readFileSync(resolvedPath, "utf8");
-  const module = { exports: {} };
-  moduleCache.set(resolvedPath, module);
-  const output = ts.transpileModule(source, {
-    compilerOptions: { esModuleInterop: true, jsx: ts.JsxEmit.ReactJSX, module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
-    fileName: resolvedPath,
-  }).outputText;
-  const localRequire = (specifier) => {
-    if (specifier.endsWith(".css")) return {};
-    const target = resolveSourceModule(specifier, resolvedPath);
-    if (path.isAbsolute(target) && target.startsWith(rootDir)) return loadSourceModule(target);
-    return nodeRequire(target);
-  };
-  const runner = new Function("exports", "require", "module", "__filename", "__dirname", output);
-  runner(module.exports, localRequire, module, resolvedPath, path.dirname(resolvedPath));
-  return module.exports;
-}
 
 const gates = [];
 const warnings = [];
 const gate = (rule, message) => gates.push({ rule, message });
 const warn = (rule, message) => warnings.push({ rule, message });
 
-const graph = loadSourceModule(path.join(rootDir, "src", "graph", "index.ts"));
-const ledger = loadSourceModule(path.join(rootDir, "src", "graph", "ledger.ts"));
-const content = loadSourceModule(path.join(rootDir, "src", "content.ts"));
-const KARST_ROOT = "karst-lukovit";
+const graph = srcModule("graph", "index.ts");
+const ledger = srcModule("graph", "ledger.ts");
+const media = srcModule("graph", "media.ts");
+const registry = srcModule("graph", "registry.ts");
+const content = srcModule("content.ts");
 // The build's own date, used only to reject records dated in the future. Nothing
 // derived from it is ever published — a build date is not a review date.
 const TODAY = new Date().toISOString().slice(0, 10);
 const LANGS = ["bg", "en"]; // the full knowledge tier (Constitution rule 43)
 
-// The namespaces a published page may live in, and which of them are the M4
-// knowledge namespaces (where rule 15 is a gate rather than a warning).
-const PAGE_NAMESPACES = ["/karst/", "/place/", "/history/", "/legend/", "/person/"];
-const KNOWLEDGE_NAMESPACES = ["/history/", "/legend/", "/person/"];
+// Where a published page may live, and where rule 15 gates rather than warns —
+// both read from `src/graph/registry.ts` (M5, ADR-016) rather than restated here.
+// Before M5 this file held its own copy of the namespace list, which is how an
+// audit comes to check four namespaces while the site publishes five.
+const PAGE_NAMESPACES = registry.PUBLISHED_PATH_PREFIXES;
+const KNOWLEDGE_NAMESPACES = registry.NAMESPACES.filter((ns) => ns.claimGate).map((ns) => ns.prefix);
+const REGIONS = registry.REGIONS;
 
 const entities = graph.entities;
 const byId = new Map(entities.map((e) => [e.id, e]));
-
-function publicAssetExists(assetUrl) {
-  if (!assetUrl || /^https?:\/\//.test(assetUrl)) return true;
-  const cleanPath = assetUrl.split("?")[0].replace(/^\/+/, "");
-  return fs.existsSync(path.join(publicDir, cleanPath));
-}
 
 // ── 0. Assembly errors (duplicate ids/slugs/paths, malformed records, bad parents)
 for (const problem of graph.assembleErrors) gate("records", problem);
@@ -144,13 +100,20 @@ for (const entity of entities) {
 }
 
 // ── 3. Coordinate inheritance — an entity claiming geo has its own fix (rule 16)
-const aglen = byId.get("aglen");
-const aglenPoint = aglen && graph.entityPoint(aglen);
-for (const entity of entities) {
-  const point = graph.entityPoint(entity);
-  if (!point) continue;
-  if (entity.id !== "aglen" && aglenPoint && point.lat === aglenPoint.lat && point.lon === aglenPoint.lon) {
-    gate("health", `"${entity.id}" claims the village coordinates — inherited, not its own fix (rule 16).`);
+// The fix a record is most likely to have copied is its region's base settlement,
+// so that is what is compared against — per region, from the registry, rather than
+// against Aglen by name.
+for (const region of REGIONS) {
+  const base = region.baseEntityId ? byId.get(region.baseEntityId) : undefined;
+  const basePoint = base && graph.entityPoint(base);
+  if (!basePoint) continue;
+  for (const entity of entities) {
+    if (entity.id === base.id) continue;
+    if (graph.regionOf(entity)?.id !== region.id) continue;
+    const point = graph.entityPoint(entity);
+    if (point && point.lat === basePoint.lat && point.lon === basePoint.lon) {
+      gate("health", `"${entity.id}" claims the coordinates of "${base.id}" — inherited, not its own fix (rule 16).`);
+    }
   }
 }
 
@@ -182,21 +145,28 @@ for (const entity of entities) {
   }
 }
 
-// ── 6. Orphans — every published page is reachable from /karst/ (rule 17)
+// ── 6. Orphans — every published page is reachable from a region root (rule 17)
 // A hub lists its containment subtree, so a place is reachable via its ancestors;
-// cross-tree entities are reachable through the karst's typed relations.
+// cross-tree entities are reachable through the root's typed relations. The walk
+// starts at every declared region root, so a second region is checked the moment
+// it is registered and nothing has to remember to add it here.
 const reachable = new Set();
-(function walk(id, depth) {
+function walkFrom(id) {
   if (!byId.has(id) || reachable.has(id)) return;
   reachable.add(id);
-  // down the containment subtree (a hub page lists its descendants)
-  for (const child of graph.childrenOf(id)) walk(child.id, depth + 1);
-  // across typed relations (rendered as links)
-  for (const relation of graph.relationsOf(byId.get(id))) walk(relation.target, depth + 1);
-})(KARST_ROOT, 0);
+  for (const child of graph.childrenOf(id)) walkFrom(child.id);
+  for (const relation of graph.relationsOf(byId.get(id))) walkFrom(relation.target);
+}
+for (const region of REGIONS) {
+  if (!byId.has(region.rootEntityId)) {
+    gate("records", `Region "${region.id}" names root entity "${region.rootEntityId}", which is not in the graph (registry.ts).`);
+    continue;
+  }
+  walkFrom(region.rootEntityId);
+}
 for (const entity of entities) {
   if (entity.page?.status === "published" && !reachable.has(entity.id)) {
-    gate("orphan", `"${entity.id}" (${entity.page.path}) is not reachable from /karst/.`);
+    gate("orphan", `"${entity.id}" (${entity.page.path}) is not reachable from any region root.`);
   }
 }
 
@@ -409,20 +379,73 @@ for (const entity of entities) {
   }
 }
 
+// ── 7f. Media (M5, ADR-019) ──────────────────────────────────
+// Constitution rule 45 as a build gate rather than a hope: an asset a page
+// actually renders carries a licence, a capture date, a credit and a depicted
+// entity, and no machine-made image reaches a published page (V11). An asset that
+// carries less is not deleted and is not an error — it is simply not rendered, and
+// is reported below so somebody can go and find its date.
+for (const { entity, asset, index } of graph.allMedia()) {
+  const where = `"${entity.id}" media[${index}] (${asset.src})`;
+  if (!publicAssetExists(asset.src)) gate("media", `${where} is not in public/.`);
+  for (const depicted of asset.depicts ?? []) {
+    if (!byId.has(depicted)) gate("media", `${where} depicts "${depicted}", which is not an entity (V3).`);
+  }
+  if (asset.capturedIn && !byId.has(asset.capturedIn)) gate("media", `${where} was captured in "${asset.capturedIn}", which is not an entity (V3).`);
+  if (asset.evidence && !ledger.evidenceById(asset.evidence)) gate("media", `${where} names evidence "${asset.evidence}", which does not exist (V3).`);
+  if (asset.capturedAt && asset.capturedAt > TODAY) gate("media", `${where} is dated ${asset.capturedAt}, in the future.`);
+  if (asset.supersedes && !(entity.media ?? []).some((other) => other.id === asset.supersedes)) {
+    gate("media", `${where} supersedes "${asset.supersedes}", which is not among this entity's assets — a supersede keeps what it replaces (rule 10).`);
+  }
+  // The hero of a published page is the one asset a visitor cannot avoid seeing.
+  if (entity.page?.status === "published" && asset.role === "hero" && !media.isRenderable(asset)) {
+    gate("media", `${where} is the hero of ${entity.page.path} but is missing ${media.renderBlockers(asset).join(", ")} (rule 45).`);
+  }
+  if (!media.isRenderable(asset) && asset.role !== "hero") {
+    warn("media", `${where} is held but not rendered: it is missing ${media.renderBlockers(asset).join(", ")} (rule 45).`);
+  }
+}
+
+// ── 7g. Discovery (M5, Part 5) ───────────────────────────────
+// Rule 23: nothing ends on a full stop. A published page that nothing else links
+// to is reachable only from its index, which means a reader who is not already
+// looking for it will never meet it. That is the "isolated content" failure, and
+// it is a gate because it is exactly the defect a growing graph produces silently.
+const inboundCount = new Map();
+for (const entity of entities) {
+  if (entity.page?.status !== "published") continue;
+  for (const link of graph.derivedLinks(entity, "bg")) {
+    inboundCount.set(link.entityId, (inboundCount.get(link.entityId) ?? 0) + 1);
+  }
+}
+for (const entity of entities) {
+  if (entity.page?.status !== "published") continue;
+  if (REGIONS.some((region) => region.rootEntityId === entity.id)) continue; // a root is linked from the chrome
+  const inbound = inboundCount.get(entity.id) ?? 0;
+  if (inbound === 0) {
+    gate("discovery", `"${entity.id}" (${entity.page.path}) is linked from no other page — it is reachable only from its index (rule 23).`);
+  } else if (inbound < 3) {
+    warn("discovery", `"${entity.id}" has ${inbound} inbound link(s); three is where a page stops depending on its index.`);
+  }
+}
+
 // ── 8. Warnings — field-day gaps, never gates (mission "warnings only")
 // Only things that occupy ground can be missing a GPS fix. A legend, a person or
 // a historical period has no coordinates to lack, and reporting one would train
-// the reader of this report to ignore it.
-const SITED_KINDS = new Set([
-  "region", "province", "municipality", "settlement", "cave", "landform", "waterBody",
-  "spring", "protectedArea", "geopark", "archaeologicalSite", "building", "route", "business",
-]);
+// the reader of this report to ignore it. Which kinds those are is the registry's
+// answer, not a second list kept here (M5, ADR-016).
 for (const entity of entities) {
   if (entity.page?.status !== "published") continue;
-  const isSited = SITED_KINDS.has(entity.kind);
+  const isSited = registry.KIND_IS_SITED[entity.kind] === true;
   if (isSited && !graph.entityPoint(entity) && !(entity.geo && entity.geo.linear)) warn("coordinates", `"${entity.id}" has no coordinates yet (needs a GPS fix).`);
   if (graph.derivedLinks(entity, "bg").filter((l) => /км|km/.test(l.label)).length === 0 && graph.entityPoint(entity)) warn("nearby", `"${entity.id}" surfaces no nearby entity.`);
   if (graph.entitySameAs(entity).length === 0) warn("sameAs", `"${entity.id}" has no external identifier (Wikidata/OSM/Commons).`);
+  if (!graph.entityHeroAsset(entity)) warn("media", `"${entity.id}" has no photograph of its own; the page borrows a plate for its kind.`);
+  // A historical name that says nothing about when it was used is a name without
+  // a period, which is the one thing a historical name is for.
+  for (const alias of graph.aliasesOfKind(entity, "historical")) {
+    if (!alias.period && !alias.note) warn("aliases", `"${entity.id}" carries the historical name "${alias.name.bg}" with no period and no note.`);
+  }
 }
 
 // ── Report ───────────────────────────────────────────────────

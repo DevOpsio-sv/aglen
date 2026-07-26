@@ -64,33 +64,70 @@ _None._
 
 | Kind | Note |
 | --- | --- |
+| discovery | "vit-river" has 2 inbound link(s); three is where a page stops depending on its index. |
+| discovery | "trifon-kunev" has 1 inbound link(s); three is where a page stops depending on its index. |
+| discovery | "dvukrakite-senki" has 1 inbound link(s); three is where a page stops depending on its index. |
+| discovery | "zlatnata-brazdichka" has 1 inbound link(s); three is where a page stops depending on its index. |
+| discovery | "iglen-grad-golyama" has 1 inbound link(s); three is where a page stops depending on its index. |
+| discovery | "deep-time" has 1 inbound link(s); three is where a page stops depending on its index. |
+| discovery | "prehistory" has 2 inbound link(s); three is where a page stops depending on its index. |
+| discovery | "thracians" has 1 inbound link(s); three is where a page stops depending on its index. |
+| discovery | "ottoman-registers" has 2 inbound link(s); three is where a page stops depending on its index. |
 | coordinates | "karst-lukovit" has no coordinates yet (needs a GPS fix). |
 | sameAs | "karst-lukovit" has no external identifier (Wikidata/OSM/Commons). |
+| media | "karst-lukovit" has no photograph of its own; the page borrows a plate for its kind. |
 | coordinates | "lovech-province" has no coordinates yet (needs a GPS fix). |
+| media | "lovech-province" has no photograph of its own; the page borrows a plate for its kind. |
+| media | "aglen" has no photograph of its own; the page borrows a plate for its kind. |
+| media | "lukovit" has no photograph of its own; the page borrows a plate for its kind. |
+| media | "karlukovo" has no photograph of its own; the page borrows a plate for its kind. |
+| media | "prohodna" has no photograph of its own; the page borrows a plate for its kind. |
 | sameAs | "iskar-panega" has no external identifier (Wikidata/OSM/Commons). |
+| media | "iskar-panega" has no photograph of its own; the page borrows a plate for its kind. |
+| media | "zlatna-panega" has no photograph of its own; the page borrows a plate for its kind. |
+| media | "vit-river" has no photograph of its own; the page borrows a plate for its kind. |
+| media | "devetashka" has no photograph of its own; the page borrows a plate for its kind. |
+| media | "krushuna" has no photograph of its own; the page borrows a plate for its kind. |
+| media | "lovech" has no photograph of its own; the page borrows a plate for its kind. |
 | coordinates | "dupkata" has no coordinates yet (needs a GPS fix). |
 | sameAs | "dupkata" has no external identifier (Wikidata/OSM/Commons). |
+| media | "dupkata" has no photograph of its own; the page borrows a plate for its kind. |
 | coordinates | "sloncheto" has no coordinates yet (needs a GPS fix). |
 | sameAs | "sloncheto" has no external identifier (Wikidata/OSM/Commons). |
+| media | "sloncheto" has no photograph of its own; the page borrows a plate for its kind. |
 | coordinates | "chervena-stena" has no coordinates yet (needs a GPS fix). |
 | sameAs | "chervena-stena" has no external identifier (Wikidata/OSM/Commons). |
+| media | "chervena-stena" has no photograph of its own; the page borrows a plate for its kind. |
 | coordinates | "rachkov-vir" has no coordinates yet (needs a GPS fix). |
 | sameAs | "rachkov-vir" has no external identifier (Wikidata/OSM/Commons). |
+| media | "rachkov-vir" has no photograph of its own; the page borrows a plate for its kind. |
 | coordinates | "kaleto" has no coordinates yet (needs a GPS fix). |
 | sameAs | "kaleto" has no external identifier (Wikidata/OSM/Commons). |
+| media | "kaleto" has no photograph of its own; the page borrows a plate for its kind. |
 | coordinates | "st-archangel-michael" has no coordinates yet (needs a GPS fix). |
 | sameAs | "st-archangel-michael" has no external identifier (Wikidata/OSM/Commons). |
+| media | "st-archangel-michael" has no photograph of its own; the page borrows a plate for its kind. |
+| media | "trifon-kunev" has no photograph of its own; the page borrows a plate for its kind. |
 | sameAs | "dvukrakite-senki" has no external identifier (Wikidata/OSM/Commons). |
+| media | "dvukrakite-senki" has no photograph of its own; the page borrows a plate for its kind. |
 | sameAs | "zlatnata-brazdichka" has no external identifier (Wikidata/OSM/Commons). |
+| media | "zlatnata-brazdichka" has no photograph of its own; the page borrows a plate for its kind. |
 | sameAs | "iglen-grad-golyama" has no external identifier (Wikidata/OSM/Commons). |
+| media | "iglen-grad-golyama" has no photograph of its own; the page borrows a plate for its kind. |
 | sameAs | "deep-time" has no external identifier (Wikidata/OSM/Commons). |
+| media | "deep-time" has no photograph of its own; the page borrows a plate for its kind. |
 | sameAs | "prehistory" has no external identifier (Wikidata/OSM/Commons). |
+| media | "prehistory" has no photograph of its own; the page borrows a plate for its kind. |
 | sameAs | "flint-workshops" has no external identifier (Wikidata/OSM/Commons). |
+| media | "flint-workshops" has no photograph of its own; the page borrows a plate for its kind. |
 | sameAs | "thracians" has no external identifier (Wikidata/OSM/Commons). |
+| media | "thracians" has no photograph of its own; the page borrows a plate for its kind. |
 | sameAs | "ottoman-registers" has no external identifier (Wikidata/OSM/Commons). |
+| media | "ottoman-registers" has no photograph of its own; the page borrows a plate for its kind. |
 | sameAs | "revival" has no external identifier (Wikidata/OSM/Commons). |
+| media | "revival" has no photograph of its own; the page borrows a plate for its kind. |
 
 ## Summary
 
-Gates: 0 · Warnings: 25
+Gates: 0 · Warnings: 62
 

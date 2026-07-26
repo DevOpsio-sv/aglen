@@ -7,6 +7,7 @@ import { guidesUiByLanguage } from "../guidesUi";
 import { placeExperienceLinks } from "../placeLinks";
 import { contentByLanguage } from "../content";
 import {
+  baseEntityOf,
   derivedLinks,
   entityById,
   entityBySlug,
@@ -17,9 +18,11 @@ import {
   entityShortText,
   namespaceEntities,
   placePageEntities,
+  regionRootOf,
   relationsOf,
   straightLineKmBetween,
 } from "./index";
+import { REGIONS } from "./registry";
 import { aspectPagesFor, claimsForAspect } from "./ledger";
 import type { ClaimAspect } from "./claims";
 import { Disputes, KnownClaims, ProvenanceFooter, TrustLine, UncertainClaims } from "./Provenance";
@@ -53,7 +56,9 @@ const L = {
   },
   allPlaces: { bg: "Виж всички места", en: "See all places" },
   factRegion: { bg: "В района на", en: "Within" },
-  factFromAglen: { bg: "От Ъглен", en: "From Aglen" },
+  // "От Ъглен" is composed from the region's base settlement rather than written
+  // out, so Region 2's pages say "From <its own base>" with no edit here.
+  factFrom: { bg: "От", en: "From" },
   straightLine: { bg: "км по права линия", en: "km in a straight line" },
   whereTitle: { bg: "Къде се намира", en: "Where it is" },
   mapCta: { bg: "Виж на картата", en: "View on the map" },
@@ -98,7 +103,9 @@ function onLink(href: string, onNavigate: (path: string) => void) {
  * historical period are all addressed the same way (Constitution rule 1).
  */
 export function entityHref(language: LanguageCode, entity: Entity): string {
-  return entity.page ? buildEntityPath(language, entity.page.path) : buildRoutePath(language, "karst");
+  // A node-only entity has no address of its own; it renders as a section of its
+  // parent (rule 15), so the fallback is the hub rather than any one region.
+  return entity.page ? buildEntityPath(language, entity.page.path) : buildRoutePath(language, "guides");
 }
 
 /** A place card in the site's guide-place style, linking to an entity page. */
@@ -158,11 +165,14 @@ export function EntityDetail({
   const hubPath = back?.href ?? buildRoutePath(language, "guides");
   const hubLabel = back?.label ?? gui.indexTitle;
   const parent = entity.parent ? entityById(entity.parent) : undefined;
-  const aglen = entityById("aglen");
+  // The settlement this region measures from — Aglen here, another region's base
+  // in another partition. Asked of the graph rather than named, so the same
+  // component serves Region 2 unchanged (M5, ADR-016).
+  const base = baseEntityOf(entity);
   const short = entityShortText(entity, language);
   const long = entityLongText(entity, language);
   const point = entityPoint(entity);
-  const kmFromAglen = aglen && entity.id !== "aglen" ? straightLineKmBetween(aglen, entity) : undefined;
+  const kmFromBase = base && entity.id !== base.id ? straightLineKmBetween(base, entity) : undefined;
   const sameAs = entitySameAs(entity);
 
   // "History & meaning": node relations that have no page of their own render as
@@ -182,7 +192,14 @@ export function EntityDetail({
   const hasMission = Boolean(placeId && (placeExperienceLinks[placeId] ?? []).some((link) => link.kind === "quest"));
   const missionHref = buildRoutePath(language, "arMissions");
 
-  const parentHref = parent && parent.page?.status === "published" ? entityHref(language, parent) : buildRoutePath(language, "karst");
+  // Up: the containment parent, or — for a top-level entity — its own region root.
+  const regionRoot = regionRootOf(entity);
+  const parentHref =
+    parent && parent.page?.status === "published"
+      ? entityHref(language, parent)
+      : regionRoot && regionRoot.page?.status === "published"
+        ? entityHref(language, regionRoot)
+        : buildRoutePath(language, "guides");
   const next = related[0]?.target;
   // Aspects that have earned a page of their own (M4). Announced from the entity
   // page so the entity stays the front door and nothing is reachable only by URL.
@@ -190,7 +207,12 @@ export function EntityDetail({
 
   const facts: { label: string; value: string }[] = [];
   if (parent) facts.push({ label: t("factRegion", language), value: entityName(parent, language) });
-  if (kmFromAglen !== undefined) facts.push({ label: t("factFromAglen", language), value: `≈ ${Math.round(kmFromAglen)} ${t("straightLine", language)}` });
+  if (base && kmFromBase !== undefined) {
+    facts.push({
+      label: `${t("factFrom", language)} ${entityName(base, language)}`,
+      value: `≈ ${Math.round(kmFromBase)} ${t("straightLine", language)}`,
+    });
+  }
 
   return (
     <div className="guides-page guide-detail-page">
@@ -251,7 +273,7 @@ export function EntityDetail({
                 {t("mapCta", language)} →
               </a>
             </p>
-            {kmFromAglen !== undefined && <p className="guide-notice" role="note">{t("straightNote", language)}</p>}
+            {kmFromBase !== undefined && <p className="guide-notice" role="note">{t("straightNote", language)}</p>}
           </section>
         )}
 
@@ -452,15 +474,33 @@ export function PlaceIndex({ language, onNavigate }: { language: LanguageCode; o
   );
 }
 
-/** /karst/ — a readable regional overview, then the places within it. */
-export function KarstPage({ language, onNavigate }: { language: LanguageCode; onNavigate: (path: string) => void }) {
-  const karst = entityById("karst-lukovit");
-  if (!karst) return <PlaceIndex language={language} onNavigate={onNavigate} />;
+/**
+ * A region root page — `/karst/` for the Lukovit karst: a readable regional
+ * overview, then the places within it. Which region is a prop, not a constant
+ * (M5, ADR-016): Region 2's root renders through this same component the day its
+ * row is added to the registry.
+ */
+export function RegionRootPage({
+  language,
+  regionRouteId,
+  onNavigate,
+}: {
+  language: LanguageCode;
+  /** The region root route being rendered. Defaults to the first declared region. */
+  regionRouteId?: string;
+  onNavigate: (path: string) => void;
+}) {
+  const region = REGIONS.find((candidate) => candidate.rootRouteId === regionRouteId) ?? REGIONS[0];
+  const root = region ? entityById(region.rootEntityId) : undefined;
+  if (!root) return <PlaceIndex language={language} onNavigate={onNavigate} />;
+  const karst = root;
   const gui = guidesUiByLanguage[language];
   const hubPath = buildRoutePath(language, "guides");
   const long = entityLongText(karst, language);
-  // Places grouped by their containment subtree keeps the overview meaningful.
-  const cards = placePageEntities().filter((entity) => entity.page!.path.startsWith("/place/"));
+  // The places of THIS region, so a second region's root lists its own subtree.
+  const cards = placePageEntities().filter(
+    (entity) => entity.page!.path.startsWith("/place/") && regionRootOf(entity)?.id === karst.id,
+  );
 
   return (
     <div className="guides-page guide-detail-page">

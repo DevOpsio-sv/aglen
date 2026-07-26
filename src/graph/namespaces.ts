@@ -1,5 +1,7 @@
 import type { LanguageCode, LocalizedText } from "../locales/types";
 import type { ClaimAspect } from "./claims";
+import { pick } from "./text";
+import { namespaceDef, type NamespaceId } from "./registry";
 
 // ─────────────────────────────────────────────────────────────
 // The chrome of the knowledge namespaces and the aspect pages (M4).
@@ -15,21 +17,39 @@ import type { ClaimAspect } from "./claims";
 // The knowledge tier is bg + en (rule 43); other languages fall back to en.
 // ─────────────────────────────────────────────────────────────
 
-export type NamespaceKind = "history" | "legend" | "person";
+/**
+ * The namespaces, as the registry declares them (M5, ADR-016). This file holds
+ * their COPY; `registry.ts` holds their SHAPE. A namespace that exists in the
+ * registry and has no chrome here would render an index with no words on it, so
+ * the record type below is total — TypeScript refuses a new namespace until
+ * somebody has written what its index page says.
+ */
+export type NamespaceKind = NamespaceId;
 
 export type NamespaceChrome = {
-  /** The path prefix a published entity of this namespace carries. */
-  prefix: string;
   eyebrow: LocalizedText;
   title: LocalizedText;
   lede: LocalizedText;
-  /** An existing asset; no new media ships in M4 (ADR-012 is a later milestone). */
+  /** An existing asset; no new media ships with a schema (ADR-012, ADR-019). */
   hero: string;
 };
 
+/** The path prefix of a namespace — from the registry, never restated here. */
+export function namespacePrefix(kind: NamespaceKind): string {
+  return namespaceDef(kind).prefix;
+}
+
 export const NAMESPACE_CHROME: Record<NamespaceKind, NamespaceChrome> = {
+  place: {
+    eyebrow: { bg: "Знание", en: "Knowledge" },
+    title: { bg: "Ъглен и Луковитският карст", en: "Aglen & the Lukovit Karst" },
+    lede: {
+      bg: "Реалните места около селото — селото, реката, скалите и района — всяко със своя страница.",
+      en: "The real places around the village — the village, the river, the rocks and the region — each with its own page.",
+    },
+    hero: "/assets/aglen-aerial-river.png",
+  },
   history: {
-    prefix: "/history/",
     eyebrow: { bg: "Време", en: "Time" },
     title: { bg: "Историята на Ъглен и Луковитския карст", en: "The history of Aglen and the Lukovit Karst" },
     lede: {
@@ -39,7 +59,6 @@ export const NAMESPACE_CHROME: Record<NamespaceKind, NamespaceChrome> = {
     hero: "/assets/aglen-kaleto-ruins.png",
   },
   legend: {
-    prefix: "/legend/",
     eyebrow: { bg: "Устно предание", en: "Oral tradition" },
     title: { bg: "Легендите на Ъглен", en: "The legends of Aglen" },
     lede: {
@@ -49,7 +68,6 @@ export const NAMESPACE_CHROME: Record<NamespaceKind, NamespaceChrome> = {
     hero: "/assets/aglen-cave-mystery.png",
   },
   person: {
-    prefix: "/person/",
     eyebrow: { bg: "Хора", en: "People" },
     title: { bg: "Хората на Ъглен", en: "The people of Aglen" },
     lede: {
@@ -57,6 +75,38 @@ export const NAMESPACE_CHROME: Record<NamespaceKind, NamespaceChrome> = {
       en: "The people whose lives are tied to the village and who stand in the national record.",
     },
     hero: "/assets/aglen-village-church.png",
+  },
+  // ── Declared and dormant (M5, ADR-016) ─────────────────────
+  // These three namespaces publish nothing today and ship no page until an entity
+  // claims one (Constitution rule 26). They exist so that the answer to "I have
+  // found a trail / a custom / an orchid — where does it go?" is a record in a
+  // file, not a design discussion. Each costs one registry row and this copy.
+  route: {
+    eyebrow: { bg: "Из землището", en: "Across the land" },
+    title: { bg: "Маршрутите", en: "The routes" },
+    lede: {
+      bg: "Пътищата през землището — какво минава откъде, колко трае и какво се вижда по пътя. Публикува се само маршрут, който е извървян и записан.",
+      en: "The ways through this land — what runs where, how long it takes and what is seen along it. Only a route somebody has walked and recorded is published.",
+    },
+    hero: "/assets/aglen-aerial-river.png",
+  },
+  tradition: {
+    eyebrow: { bg: "Обичай", en: "Custom" },
+    title: { bg: "Обичаите", en: "The traditions" },
+    lede: {
+      bg: "Какво се прави тук и кога — празници, работа, ред на годината. Записано както се практикува, с този, който го помни.",
+      en: "What is done here and when — feasts, work, the order of the year. Recorded as it is practised, with the person who remembers it.",
+    },
+    hero: "/assets/aglen-village-church.png",
+  },
+  species: {
+    eyebrow: { bg: "Живо", en: "Living" },
+    title: { bg: "Растенията и животните", en: "The plants and animals" },
+    lede: {
+      bg: "Видовете, наблюдавани в землището — с дата, с място и с този, който ги е определил. Наблюдение без определител не се публикува като вид.",
+      en: "The species observed in this land — with a date, a place and the person who identified them. An observation without an identification is not published as a species.",
+    },
+    hero: "/assets/aglen-hero-river-canyon.png",
   },
 };
 
@@ -182,7 +232,7 @@ export const ASPECT_CHROME: Partial<Record<ClaimAspect, AspectChrome>> = {
 };
 
 export function localizeChrome(text: LocalizedText, lang: LanguageCode): string {
-  return text[lang] ?? text.en ?? text.bg;
+  return pick(text, lang);
 }
 
 export function namespaceTitle(kind: NamespaceKind, lang: LanguageCode): string {

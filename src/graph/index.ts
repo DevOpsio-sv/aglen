@@ -10,8 +10,18 @@ import {
   type RegionPlace,
 } from "../region";
 import { findGuide, localizeGuide } from "../guides";
-import lukovitRecords from "./karst/lukovit/entities.json";
-import { validateEntity, type Entity, type EntityId, type Relation } from "./schema";
+import { pick, searchKey } from "./text";
+import { galleryAssets, heroAsset, type MediaAsset } from "./media";
+import {
+  NAMESPACES,
+  REGIONS,
+  homeNamespaceOf,
+  namespaceForPath,
+  regionByRootPath,
+  type NamespaceDef,
+  type RegionDef,
+} from "./registry";
+import { validateEntity, type Entity, type EntityAlias, type EntityId, type Relation } from "./schema";
 
 // ─────────────────────────────────────────────────────────────
 // The compiled knowledge graph.
@@ -31,22 +41,24 @@ import { validateEntity, type Entity, type EntityId, type Relation } from "./sch
 // copied into the records.
 // ─────────────────────────────────────────────────────────────
 
-const partitions: Array<{ partition: string; entities: unknown[] }> = [
-  lukovitRecords as { partition: string; entities: unknown[] },
-];
-
 /** Problems found while loading — surfaced by graph-audit, never thrown at runtime. */
 export const assembleErrors: string[] = [];
 
+// Records arrive per region (ADR-009 / ADR-016). The loop is over the region
+// registry rather than over an import list, so a second region is a row of data
+// and this file never learns its name.
 const rawEntities: Entity[] = [];
-for (const partition of partitions) {
-  for (const record of partition.entities ?? []) {
+const regionOfEntity = new Map<EntityId, RegionDef>();
+for (const region of REGIONS) {
+  for (const record of region.entities) {
     const problems = validateEntity(record);
     if (problems.length > 0) {
       assembleErrors.push(...problems);
       continue;
     }
-    rawEntities.push(record as Entity);
+    const entity = record as Entity;
+    rawEntities.push(entity);
+    regionOfEntity.set(entity.id, region);
   }
 }
 
@@ -64,6 +76,78 @@ for (const entity of entities) {
     if (byPath.has(entity.page.path)) assembleErrors.push(`Duplicate page path "${entity.page.path}".`);
     byPath.set(entity.page.path, entity);
   }
+}
+
+// ── Namespace discipline (M5, ADR-016) ───────────────────────
+// A record's kind decides where its page may live. Checked here rather than in
+// `schema.ts` because the answer lives in the registry and the schema is the
+// frozen contract; checked at all because "which namespace does a cave go in?"
+// must have exactly one answer, enforced, rather than a convention that holds
+// until somebody puts a legend under /place/ and nothing complains.
+for (const entity of entities) {
+  const page = entity.page;
+  if (!page || page.status !== "published") continue;
+  const region = regionByRootPath(page.path);
+  if (region) {
+    if (region.rootEntityId !== entity.id) {
+      assembleErrors.push(`"${entity.id}" publishes ${page.path}, which is the root page of region "${region.id}" ("${region.rootEntityId}").`);
+    }
+    continue;
+  }
+  const namespace = namespaceForPath(page.path);
+  if (!namespace) {
+    assembleErrors.push(`"${entity.id}" publishes ${page.path}, which is under no declared namespace or region root (registry.ts).`);
+    continue;
+  }
+  if (!namespace.kinds.includes(entity.kind)) {
+    const home = homeNamespaceOf(entity.kind);
+    const expected = home ? `/${home.slug}/` : "no page namespace — another product owns that URL";
+    assembleErrors.push(`"${entity.id}" is a ${entity.kind} publishing under ${namespace.prefix}; a ${entity.kind} belongs in ${expected} (registry.ts).`);
+  }
+}
+
+// ── Names and aliases (M5, Part 6) ───────────────────────────
+// Every string a thing answers to, folded to one key each — "Проходна",
+// "Prohodna" and "prohodna" are one key, which is what makes a search across two
+// scripts work and what makes a duplicate visible.
+//
+// A collision WITHIN one region is a gate: a region is one physiographic subtree
+// under one editor (ADR-009), and two records answering to the same name inside it
+// are either one thing entered twice or two things whose names need
+// disambiguating — a human decides which, and until then the build stops (rule 2).
+// A collision ACROSS regions is not an error: Bulgaria has many villages called
+// Ново село. Those are reported by the health dashboard, never gated.
+const nameOwners = new Map<string, EntityId[]>();
+for (const entity of entities) {
+  const region = regionOfEntity.get(entity.id);
+  for (const key of new Set(nameKeysOf(entity))) {
+    const owners = nameOwners.get(key) ?? [];
+    const clash = owners.find((owner) => regionOfEntity.get(owner)?.id === region?.id);
+    if (clash) {
+      assembleErrors.push(`"${entity.id}" and "${clash}" both answer to "${key}" inside region "${region?.id}" — one thing, one record (rule 2).`);
+    }
+    owners.push(entity.id);
+    nameOwners.set(key, owners);
+  }
+}
+
+/** Every folded search key an entity answers to: its resolved names plus its aliases. */
+function nameKeysOf(entity: Entity): string[] {
+  const strings: string[] = ["bg", "en"].map((lang) => entityName(entity, lang as LanguageCode));
+  for (const alias of entity.aliases ?? []) {
+    for (const value of Object.values(alias.name)) if (typeof value === "string") strings.push(value);
+  }
+  return strings.map(searchKey).filter(Boolean);
+}
+
+/** Entities that answer to a folded name key, across every region. */
+export function entitiesNamed(key: string): Entity[] {
+  return (nameOwners.get(key) ?? []).map((id) => byId.get(id)).filter((entity): entity is Entity => Boolean(entity));
+}
+
+/** Every folded name key in the graph, with the entities that answer to it. */
+export function nameKeyIndex(): Array<{ key: string; entityIds: EntityId[] }> {
+  return [...nameOwners.entries()].map(([key, entityIds]) => ({ key, entityIds }));
 }
 
 // ── Derived containment ──────────────────────────────────────
@@ -163,6 +247,93 @@ export function namespaceOf(entity: Entity): string | undefined {
   return match ? match[0] : undefined;
 }
 
+/** The declared namespace an entity publishes under, or undefined for a region root. */
+export function namespaceDefOf(entity: Entity): NamespaceDef | undefined {
+  return entity.page ? namespaceForPath(entity.page.path) : undefined;
+}
+
+/**
+ * Namespaces that hold at least one published entity. The route table, the
+ * sitemaps and the site's own indexes are all built from this rather than from
+ * the full registry, so a declared-but-empty namespace ships no page at all —
+ * page count follows what is known (Constitution rule 26). The day the first
+ * species record publishes, `/species/` and its index appear with no code change.
+ */
+export function activeNamespaces(): NamespaceDef[] {
+  return NAMESPACES.filter((namespace) => namespaceEntities(namespace.prefix).length > 0);
+}
+
+// ── Regions (ADR-009 / ADR-016) ──────────────────────────────
+
+/** The region partition an entity was authored in. */
+export function regionOf(entity: Entity): RegionDef | undefined {
+  return regionOfEntity.get(entity.id);
+}
+
+/** Every region that actually holds records, in registry order. */
+export function activeRegions(): RegionDef[] {
+  return REGIONS.filter((region) => entities.some((entity) => regionOfEntity.get(entity.id)?.id === region.id));
+}
+
+/** The root entity of an entity's region — what `/karst/` is for the Lukovit karst. */
+export function regionRootOf(entity: Entity): Entity | undefined {
+  const region = regionOf(entity);
+  return region ? byId.get(region.rootEntityId) : undefined;
+}
+
+/**
+ * The settlement an entity's region measures its distances from. The village a
+ * page says "≈ 12 km from here" about is a property of the region, so the render
+ * layer asks for it instead of naming Aglen — which is what lets Region 2's pages
+ * measure from Region 2's base without a single component knowing either name.
+ */
+export function baseEntityOf(entity: Entity): Entity | undefined {
+  const region = regionOf(entity);
+  return region?.baseEntityId ? byId.get(region.baseEntityId) : undefined;
+}
+
+// ── Aliases (M5, Part 6) ─────────────────────────────────────
+
+/** Every other name this thing answers to, in one language, deduplicated. */
+export function entityAliases(entity: Entity, lang: LanguageCode): string[] {
+  const primary = entityName(entity, lang);
+  const seen = new Set<string>([searchKey(primary)]);
+  const out: string[] = [];
+  for (const alias of entity.aliases ?? []) {
+    const value = pick(alias.name, lang);
+    const key = searchKey(value);
+    if (!value || !key || seen.has(key)) continue;
+    seen.add(key);
+    out.push(value);
+  }
+  return out;
+}
+
+/** The aliases of one kind — historical names, variant spellings, local usage. */
+export function aliasesOfKind(entity: Entity, kind: EntityAlias["kind"]): EntityAlias[] {
+  return (entity.aliases ?? []).filter((alias) => alias.kind === kind);
+}
+
+// ── Media (ADR-019) ──────────────────────────────────────────
+// The graph answers "which picture is this entity's" so no surface has to guess.
+// An entity that carries its own renderable asset uses it; one that does not falls
+// back at the call site to the kind's borrowed plate, exactly as it does today.
+
+/** The entity's own hero photograph, if it has one rule 45 permits rendering. */
+export function entityHeroAsset(entity: Entity): MediaAsset | undefined {
+  return heroAsset(entity.media);
+}
+
+/** The entity's own gallery, rule 45 applied, superseded frames removed. */
+export function entityGallery(entity: Entity): MediaAsset[] {
+  return galleryAssets(entity.media);
+}
+
+/** Every asset the graph holds, with the entity that carries it. For the audits. */
+export function allMedia(): Array<{ entity: Entity; asset: MediaAsset; index: number }> {
+  return entities.flatMap((entity) => (entity.media ?? []).map((asset, index) => ({ entity, asset, index })));
+}
+
 /** The published entity that transcludes a given locale placeId, if any. */
 export function entityForPlaceId(placeId: string): Entity | undefined {
   return entities.find((entity) => entity.contentRef?.placeId === placeId && entity.page?.status === "published");
@@ -174,10 +345,6 @@ export function entityForRegionId(regionId: string): Entity | undefined {
 }
 
 // ── Transcluded text (one source of truth) ───────────────────
-function pick(text: { bg: string } & Partial<Record<LanguageCode, string>>, lang: LanguageCode): string {
-  return text[lang] ?? text.en ?? text.bg;
-}
-
 /** The absorbed `region.ts` record for a contentRef.regionId, incl. the province. */
 function regionRecord(id: string): RegionPlace | undefined {
   if (id === LOVECH_PROVINCE.id) return LOVECH_PROVINCE;
@@ -282,6 +449,11 @@ function distanceFact(km: number, lang: LanguageCode): string {
   return lang === "bg" ? `${rounded} км по права линия` : `${rounded} km in a straight line`;
 }
 
+/** "also in the Vit valley at Aglen" — the shared containment two siblings have. */
+function siblingFact(parentName: string, lang: LanguageCode): string {
+  return lang === "bg" ? `също в ${parentName}` : `also in ${parentName}`;
+}
+
 function relationFact(type: Relation["type"], lang: LanguageCode): string {
   const bg: Partial<Record<Relation["type"], string>> = {
     sameFormation: "обща геология",
@@ -359,8 +531,29 @@ export function derivedLinks(entity: Entity, lang: LanguageCode, nearbyLimit = 3
     links.push({ path: target.page.path, entityId: target.id, label: `${entityName(target, lang)} — ${fact}` });
   };
 
-  if (entity.parent) linkTo(byId.get(entity.parent), relationFact("containedIn", lang));
+  const parent = entity.parent ? byId.get(entity.parent) : undefined;
+  if (parent) linkTo(parent, relationFact("containedIn", lang));
   for (const child of childrenOf(entity.id)) linkTo(child, relationFact("contains", lang));
+
+  // Siblings under an unpublished parent (M5, Part 5).
+  //
+  // An entity whose parent is a node — the Vit valley at Aglen holds five rock
+  // forms and publishes no page of its own (rule 15) — had no containment link
+  // that rendered anywhere: the parent link points at a page that does not exist,
+  // and `linkTo` correctly drops it. The result was a published page nothing led
+  // to, reachable only from its index. That is the isolated-content failure, and
+  // it grows worse with every entity added beneath a node.
+  //
+  // The fix is derivation, not invention. "Дупката and Червена стена are both in
+  // the Vit valley at Aglen" is not a new assertion — it is the two containment
+  // edges the records already carry, read together, and it is true in the world
+  // (rule 13). What renders is that shared fact, named.
+  if (parent && parent.page?.status !== "published") {
+    for (const sibling of childrenOf(parent.id)) {
+      if (sibling.id === entity.id) continue;
+      linkTo(sibling, siblingFact(entityName(parent, lang), lang));
+    }
+  }
 
   for (const relation of relationsOf(entity)) {
     if (relation.type === "nearby") continue; // nearby is derived from coordinates below

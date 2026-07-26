@@ -18,8 +18,8 @@ import {
   type SourceKind,
 } from "./claims";
 import { entityById, entityPoint, entitySameAs } from "./index";
-import claimRecords from "./karst/lukovit/claims.json";
-import sourceRecords from "./karst/lukovit/sources.json";
+import { REGIONS } from "./registry";
+import { pick } from "./text";
 
 // ─────────────────────────────────────────────────────────────
 // The compiled claim ledger.
@@ -47,12 +47,6 @@ import sourceRecords from "./karst/lukovit/sources.json";
 // render as a dispute, side by side, with equal prominence (rule 7 / V14).
 // ─────────────────────────────────────────────────────────────
 
-type SourceFile = { partition: string; sources: unknown[] };
-type ClaimFile = { partition: string; claims: unknown[]; disputes?: unknown[]; evidence?: unknown[] };
-
-const sourcePartitions: SourceFile[] = [sourceRecords as SourceFile];
-const claimPartitions: ClaimFile[] = [claimRecords as ClaimFile];
-
 /** Problems found while loading — surfaced by graph-audit, never thrown at runtime. */
 export const ledgerErrors: string[] = [];
 
@@ -69,10 +63,13 @@ function collect<T>(records: unknown[], validate: (record: unknown) => string[])
   return kept;
 }
 
-export const sources: Source[] = sourcePartitions.flatMap((partition) => collect<Source>(partition.sources, validateSource));
-export const claims: Claim[] = claimPartitions.flatMap((partition) => collect<Claim>(partition.claims, validateClaim));
-export const disputes: Dispute[] = claimPartitions.flatMap((partition) => collect<Dispute>(partition.disputes ?? [], validateDispute));
-export const evidence: Evidence[] = claimPartitions.flatMap((partition) => collect<Evidence>(partition.evidence ?? [], validateEvidence));
+// One pass per region (ADR-009 / ADR-016). The ledger partitions along the same
+// boundary as the entity graph because they are the same boundary: a region is its
+// data shard, its editorial unit and its physiographic subtree at once.
+export const sources: Source[] = REGIONS.flatMap((region) => collect<Source>(region.sources, validateSource));
+export const claims: Claim[] = REGIONS.flatMap((region) => collect<Claim>(region.claims, validateClaim));
+export const disputes: Dispute[] = REGIONS.flatMap((region) => collect<Dispute>(region.disputes, validateDispute));
+export const evidence: Evidence[] = REGIONS.flatMap((region) => collect<Evidence>(region.evidence, validateEvidence));
 
 const sourceIndex = new Map<SourceId, Source>();
 const sourceSlugIndex = new Map<string, Source>();
@@ -453,10 +450,8 @@ export function ledgerBySource(): Array<{ source: Source; claims: Claim[]; path?
 
 // ── Localisation ─────────────────────────────────────────────
 // The knowledge tier is bg + en (Constitution rule 43); other languages fall back
-// to en, exactly as the entity prose already does.
-function pick(text: LocalizedText, lang: LanguageCode): string {
-  return text[lang] ?? text.en ?? text.bg;
-}
+// to en, exactly as the entity prose already does. The fallback itself lives in
+// `text.ts` so the ledger, the graph and the audits cannot drift apart about it.
 
 export function claimStatement(claim: Claim, lang: LanguageCode): string {
   return pick(claim.statement, lang);

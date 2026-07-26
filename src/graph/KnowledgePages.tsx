@@ -5,7 +5,7 @@ import { imageProps } from "../images";
 import { entityById, entityBySlug, entityName, namespaceEntities } from "./index";
 import { EntityCard, EntityDetail, entityHref } from "./EntityPages";
 import { SourceEntry, confidenceLabel, sourceKindLabel } from "./Provenance";
-import { NAMESPACE_CHROME, PROVENANCE_CHROME, SOURCE_CHROME, localizeChrome, namespaceTitle, type NamespaceKind } from "./namespaces";
+import { NAMESPACE_CHROME, PROVENANCE_CHROME, SOURCE_CHROME, localizeChrome, namespacePrefix, namespaceTitle, type NamespaceKind } from "./namespaces";
 import {
   claimById,
   claimCorrectionNote,
@@ -142,10 +142,11 @@ export function KnowledgePage({
   onNavigate: (path: string) => void;
 }) {
   const chrome = NAMESPACE_CHROME[kind];
+  const prefix = namespacePrefix(kind);
   const indexHref = buildRoutePath(language, kind as CoreRouteId);
   const entity = entitySlug ? entityBySlug(entitySlug) : undefined;
 
-  if (entity && entity.page?.status === "published" && entity.page.path.startsWith(chrome.prefix)) {
+  if (entity && entity.page?.status === "published" && entity.page.path.startsWith(prefix)) {
     return (
       <EntityDetail
         entity={entity}
@@ -156,7 +157,7 @@ export function KnowledgePage({
     );
   }
 
-  const listed = namespaceEntities(chrome.prefix);
+  const listed = namespaceEntities(prefix);
   const guideHref = buildRoutePath(language, "guides");
 
   return (
