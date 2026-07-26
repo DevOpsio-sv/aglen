@@ -320,10 +320,19 @@ for (const artifact of ledger.evidence) {
 // project holds is the straight-line distance table, and it is regenerable by
 // construction: anyone with the published coordinates can recompute it. If a
 // coordinate changes, this hash moves and the build stops until a human has
-// looked at the measurement again. That is the whole mechanism, working on real
-// data rather than waiting for a photograph to exist.
-function measurementFingerprint() {
-  const sited = entities.filter((entity) => graph.entityPoint(entity)).sort((a, b) => a.id.localeCompare(b.id));
+// looked at the measurement again.
+//
+// The fingerprint is computed PER REGION (M5). It was global, which coupled every
+// region's evidence to every other region's coordinates: registering a second
+// region — adding entities the first region's measurement never described —
+// invalidated the first region's hash and stopped the build. That is precisely the
+// cross-region coupling ADR-009 exists to prevent, and it was found by adding a
+// second region and watching the build refuse it. A measurement describes the
+// distances inside one partition; nothing outside that partition may move it.
+function measurementFingerprint(regionId) {
+  const sited = entities
+    .filter((entity) => graph.entityPoint(entity) && graph.regionOf(entity)?.id === regionId)
+    .sort((a, b) => a.id.localeCompare(b.id));
   const rows = [];
   for (let i = 0; i < sited.length; i += 1) {
     for (let j = i + 1; j < sited.length; j += 1) {
@@ -333,11 +342,28 @@ function measurementFingerprint() {
   }
   return `sha256:${crypto.createHash("sha256").update(rows.join("\n")).digest("hex").slice(0, 32)}`;
 }
-const measurementHash = measurementFingerprint();
+
+/** The region an artifact describes: the region of the entities its claims are about. */
+function regionOfEvidence(artifact) {
+  for (const claimId of artifact.claims) {
+    const claim = ledger.claimById(claimId);
+    const host = claim && byId.get(claim.entityId);
+    const region = host && graph.regionOf(host);
+    if (region) return region.id;
+  }
+  return undefined;
+}
+
 for (const artifact of ledger.evidence) {
   if (artifact.kind !== "measurement" || !artifact.hash) continue;
-  if (artifact.hash !== measurementHash) {
-    gate("evidence", `Evidence "${artifact.id}" records ${artifact.hash} but the measurement now computes to ${measurementHash} — re-check the measurement and restamp it (V-hash).`);
+  const regionId = regionOfEvidence(artifact);
+  if (!regionId) {
+    gate("evidence", `Evidence "${artifact.id}" is a measurement but its claims resolve to no region, so it cannot be re-derived.`);
+    continue;
+  }
+  const expected = measurementFingerprint(regionId);
+  if (artifact.hash !== expected) {
+    gate("evidence", `Evidence "${artifact.id}" records ${artifact.hash} but the measurement for region "${regionId}" now computes to ${expected} — re-check the measurement and restamp it (V-hash).`);
   }
 }
 
