@@ -12,9 +12,12 @@ import {
 } from "./guides";
 import { guidesUiByLanguage, type GuidesUiText } from "./guidesUi";
 import { localizeText, publishedBusinesses } from "./localBusinesses";
-import { buildBusinessPath, buildGuidePath, buildRoutePath } from "./routes";
+import { buildBusinessPath, buildGuidePath, buildPlacePath, buildRoutePath } from "./routes";
 import { imageProps } from "./images";
 import { distanceFromAglenKm, regionName, regionNote, regionPlaceById } from "./region";
+import { entityById, entityForPlaceId, entityForRegionId, entityName, entityShortText } from "./graph";
+import { entityHeroPath } from "./seo";
+import type { Entity } from "./graph/schema";
 
 const fallbackImage = "/assets/aglen-hero-river-canyon.webp";
 
@@ -78,6 +81,8 @@ function GuideIndex({
         </div>
       </section>
 
+      <KnowledgeGateway language={language} onNavigate={onNavigate} />
+
       <section className="section-shell guides-list" aria-label={ui.indexTitle}>
         <div className="guides-grid">
           {guides.map((guide) => (
@@ -86,6 +91,61 @@ function GuideIndex({
         </div>
       </section>
     </div>
+  );
+}
+
+// The gateway from the Справочник into the entity layer — the one visible entry
+// to the /place/<slug>/ and /karst/ pages. Not a second hub: it lives inside the
+// existing guide index and uses its card style.
+const KNOWLEDGE = {
+  title: { bg: "Знание за Ъглен и района", en: "Knowledge: Aglen and its region" },
+  sub: {
+    bg: "Отделни страници за селото, реката, скалите, пещерите и Луковитския карст — реалните места зад ръководствата.",
+    en: "Dedicated pages for the village, the river, the rocks, the caves and the Lukovit Karst — the real places behind the guides.",
+  },
+  all: { bg: "Виж всички места", en: "See all places" },
+};
+function kt(key: keyof typeof KNOWLEDGE, lang: LanguageCode): string {
+  const entry = KNOWLEDGE[key] as Record<string, string>;
+  return entry[lang] ?? entry.en;
+}
+
+function KnowledgeGateway({ language, onNavigate }: { language: LanguageCode; onNavigate: (path: string) => void }) {
+  const featuredIds = ["karst-lukovit", "aglen", "prohodna", "karlukovo", "vit-river", "dupkata"];
+  const featured = featuredIds.map((id) => entityById(id)).filter((entity): entity is Entity => Boolean(entity) && entity!.page?.status === "published");
+  if (featured.length === 0) return null;
+  const allPath = buildRoutePath(language, "place"); // /<lang>/place/
+  const hrefFor = (entity: Entity) => (entity.page!.path === "/karst/" ? buildRoutePath(language, "karst") : buildPlacePath(language, entity.slug));
+
+  return (
+    <section className="section-shell guides-list" aria-labelledby="knowledge-title">
+      <div className="section-heading">
+        <p className="eyebrow">{kt("title", language).split(":")[0]}</p>
+        <h2 id="knowledge-title">{kt("title", language)}</h2>
+        <p>{kt("sub", language)}</p>
+      </div>
+      <div className="guide-places-grid">
+        {featured.map((entity) => {
+          const href = hrefFor(entity);
+          return (
+            <article className="guide-place" key={entity.id}>
+              <a className="entity-card-link" href={href} onClick={(event) => { if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return; event.preventDefault(); onNavigate(href); }}>
+                <img {...imageProps(entityHeroPath(language, entity), { variant: "card" })} alt={entityName(entity, language)} loading="lazy" decoding="async" onError={handleImageError} />
+                <div className="guide-place-body">
+                  <h3>{entityName(entity, language)}</h3>
+                  <p>{entityShortText(entity, language)}</p>
+                </div>
+              </a>
+            </article>
+          );
+        })}
+      </div>
+      <div className="guide-ctas">
+        <a className="button ghost" href={allPath} onClick={(event) => { if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return; event.preventDefault(); onNavigate(allPath); }}>
+          {kt("all", language)} →
+        </a>
+      </div>
+    </section>
   );
 }
 
@@ -245,16 +305,30 @@ function GuideDetail({
           <section className="guide-places" aria-labelledby="guide-places-title">
             <h2 id="guide-places-title">{ui.placesTitle}</h2>
             <div className="guide-places-grid">
-              {places.map((place) => (
-                <article className="guide-place" key={place.id}>
-                  <img {...imageProps(place.image, { variant: "card" })} alt={place.imageAlt} loading="lazy" decoding="async" onError={handleImageError} />
-                  <div className="guide-place-body">
-                    <p className="guide-place-tag">{place.tag}</p>
-                    <h3>{place.title}</h3>
-                    <p>{place.description}</p>
-                  </div>
-                </article>
-              ))}
+              {places.map((place) => {
+                // Link the card to its canonical /place/<slug>/ entity page (M3)
+                // where one exists; the guide keeps the prose, the entity owns it.
+                const entity = entityForPlaceId(place.id);
+                const inner = (
+                  <>
+                    <img {...imageProps(place.image, { variant: "card" })} alt={place.imageAlt} loading="lazy" decoding="async" onError={handleImageError} />
+                    <div className="guide-place-body">
+                      <p className="guide-place-tag">{place.tag}</p>
+                      <h3>{place.title}</h3>
+                      <p>{place.description}</p>
+                    </div>
+                  </>
+                );
+                if (!entity) return <article className="guide-place" key={place.id}>{inner}</article>;
+                const href = buildPlacePath(language, entity.slug);
+                return (
+                  <article className="guide-place" key={place.id}>
+                    <a className="entity-card-link" href={href} onClick={(event) => { if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return; event.preventDefault(); onNavigate(href); }}>
+                      {inner}
+                    </a>
+                  </article>
+                );
+              })}
             </div>
           </section>
         )}
@@ -381,11 +455,16 @@ function GuideRegionPlaces({
       <ul className="trust-nearby">
         {places.map((place) => {
           const km = distanceFromAglenKm(place);
-          const href = place.guideSlug
-            ? buildGuidePath(language, place.guideSlug)
-            : place.routeId
-              ? buildRoutePath(language, place.routeId as Parameters<typeof buildRoutePath>[1])
-              : undefined;
+          // Prefer the canonical /place/<slug>/ entity page (M3); fall back to the
+          // guide/landing only while an entity page does not exist.
+          const entity = entityForRegionId(place.id);
+          const href = entity
+            ? buildPlacePath(language, entity.slug)
+            : place.guideSlug
+              ? buildGuidePath(language, place.guideSlug)
+              : place.routeId
+                ? buildRoutePath(language, place.routeId as Parameters<typeof buildRoutePath>[1])
+                : undefined;
           return (
             <li key={place.id}>
               <div>

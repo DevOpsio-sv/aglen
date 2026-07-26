@@ -122,6 +122,16 @@ export function placePageEntities(): Entity[] {
   return pageEntities().filter((entity) => entity.page!.path.startsWith("/place/"));
 }
 
+/** The published entity that transcludes a given locale placeId, if any. */
+export function entityForPlaceId(placeId: string): Entity | undefined {
+  return entities.find((entity) => entity.contentRef?.placeId === placeId && entity.page?.status === "published");
+}
+
+/** The published entity that absorbs a given region.ts id, if any. */
+export function entityForRegionId(regionId: string): Entity | undefined {
+  return entities.find((entity) => entity.contentRef?.regionId === regionId && entity.page?.status === "published");
+}
+
 // ── Transcluded text (one source of truth) ───────────────────
 function pick(text: { bg: string } & Partial<Record<LanguageCode, string>>, lang: LanguageCode): string {
   return text[lang] ?? text.en ?? text.bg;

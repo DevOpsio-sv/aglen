@@ -7,7 +7,7 @@ import { guideByLegacyRoute, guides, localizeGuide } from "./guides";
 import { publishedBusinesses } from "./localBusinesses";
 import GuidesPage from "./GuidesPage";
 import { KarstPage, PlacePage } from "./graph/EntityPages";
-import { breadcrumbTrail, entityBySlug, entityName as graphEntityName } from "./graph";
+import { breadcrumbTrail, entityBySlug, entityForPlaceId, entityName as graphEntityName } from "./graph";
 import { imageProps } from "./images";
 import { updateDocumentSEO } from "./seo";
 import { uiTextByLanguage } from "./uiText";
@@ -20,6 +20,19 @@ import { SHOW_EXPERIENCES, SHOW_STAY } from "./featureFlags";
 import { sectionsForRoute, type HomeSection } from "./pageSections";
 
 const fallbackImage = "/assets/aglen-hero-river-canyon.webp";
+
+// Contextual links from homepage sections into the entity layer (M3 integration).
+// Knowledge tier is bg + en (rule 43); other languages fall back to en.
+const HOME_ENTITY_LINKS = {
+  village: { bg: "Отвори страницата на Ъглен", en: "Open the village page" },
+  karst: { bg: "Опознай Луковитския карст", en: "Explore the Lukovit Karst" },
+  river: { bg: "Виж страницата на река Вит", en: "See the Vit River page" },
+  place: { bg: "Виж мястото", en: "See the place" },
+};
+function homeEntityLink(key: keyof typeof HOME_ENTITY_LINKS, lang: LanguageCode): string {
+  const entry = HOME_ENTITY_LINKS[key] as Record<string, string>;
+  return entry[lang] ?? entry.en;
+}
 const curatedLandingPageRouteIds = [
   "visitAglen",
   "weekendInAglen",
@@ -875,6 +888,11 @@ export function App() {
           <p className="eyebrow">{copy.about.eyebrow}</p>
           <SectionTitle level={headingLevel("story")}>{copy.about.title}</SectionTitle>
           <p>{copy.about.text}</p>
+          <p>
+            <a className="entity-inline-link" href={buildPlacePath(language, "aglen")} onClick={(event) => { event.preventDefault(); navigateToPath(buildPlacePath(language, "aglen")); }}>
+              {homeEntityLink("village", language)} →
+            </a>
+          </p>
         </div>
         <ol className="timeline">
           {copy.timeline.map((event) => (
@@ -959,19 +977,35 @@ export function App() {
           <p className="eyebrow">{copy.landmarks.eyebrow}</p>
           <SectionTitle level={headingLevel("places")}>{copy.landmarks.title}</SectionTitle>
           <p>{copy.landmarks.text}</p>
+          <p>
+            <a className="entity-inline-link" href={buildRoutePath(language, "karst")} onClick={(event) => { event.preventDefault(); navigateToPath(buildRoutePath(language, "karst")); }}>
+              {homeEntityLink("karst", language)} →
+            </a>
+          </p>
         </div>
         <div className="place-grid">
           {copy.placesList.map((place) => {
             const gatewayLinks = placeExperienceLinks[place.id].filter(
               (link) => SHOW_EXPERIENCES || link.kind !== "activity",
             );
+            // Each landmark links to its canonical /place/<slug>/ entity page (M3).
+            const placeEntity = entityForPlaceId(place.id);
+            const placeHref = placeEntity ? buildPlacePath(language, placeEntity.slug) : undefined;
 
             return (
               <article className="place-card reveal" key={place.id}>
                 <img {...imageProps(place.image || fallbackImage, { variant: "card" })} alt={place.imageAlt} loading="lazy" decoding="async" onError={handleImageError} />
                 <div>
                   <p>{place.tag}</p>
-                  <h3>{place.title}</h3>
+                  <h3>
+                    {placeHref ? (
+                      <a href={placeHref} onClick={(event) => { if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return; event.preventDefault(); navigateToPath(placeHref); }}>
+                        {place.title}
+                      </a>
+                    ) : (
+                      place.title
+                    )}
+                  </h3>
                   <span>{place.description}</span>
                   {gatewayLinks.length > 0 && (
                     <nav className="place-card-links" aria-label={`${localizedUi.gateway.exploreFrom} ${place.title}`}>
@@ -1017,6 +1051,11 @@ export function App() {
           <div className="section-heading reveal">
             <p className="eyebrow">{copy.landmarks.aria}</p>
             <SectionTitle level={headingLevel("map")}>{copy.landmarks.title}</SectionTitle>
+            <p>
+              <a className="entity-inline-link" href={buildPlacePath(language, "vit-river")} onClick={(event) => { event.preventDefault(); navigateToPath(buildPlacePath(language, "vit-river")); }}>
+                {homeEntityLink("river", language)} →
+              </a>
+            </p>
           </div>
           <div className="route-map reveal" aria-label={copy.landmarks.aria}>
             {copy.mapStops.map((stop, index) => (
