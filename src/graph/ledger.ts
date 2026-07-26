@@ -12,10 +12,12 @@ import {
   type Dispute,
   type DisputeId,
   type Evidence,
+  type EvidenceId,
   type Source,
   type SourceId,
+  type SourceKind,
 } from "./claims";
-import { entityById } from "./index";
+import { entityById, entityPoint, entitySameAs } from "./index";
 import claimRecords from "./karst/lukovit/claims.json";
 import sourceRecords from "./karst/lukovit/sources.json";
 
@@ -27,10 +29,12 @@ import sourceRecords from "./karst/lukovit/sources.json";
 // distances (Constitution rule 19). A record asserts one direction only:
 //
 //   Claim.entityId   ──derives──▶  claimsFor(entity)
-//   Claim.sources[]  ──derives──▶  citedBy(source)
+//   Claim.sources[]  ──derives──▶  citedBy(source)  and  sourcePages()
 //   Claim.disputeOf  ──derives──▶  claimsInDispute(dispute)
-//   Claim.supersedes ──derives──▶  correctionsOf(claim) and the /corrections/ list
+//   Claim.supersedes ──derives──▶  supersederOf(claim) and the /corrections/ list
 //   Evidence.claims  ──derives──▶  evidenceFor(claim)
+//   Evidence.source  ──derives──▶  evidenceFromSource(source)
+//   the whole ledger ──derives──▶  trustSignals(entity) and lastReviewed(entity)
 //
 // Nothing here decides what is true. It decides what is *shown*: which claims
 // belong to a page, which of them are hedged, which are contested, and when the
@@ -71,9 +75,18 @@ export const disputes: Dispute[] = claimPartitions.flatMap((partition) => collec
 export const evidence: Evidence[] = claimPartitions.flatMap((partition) => collect<Evidence>(partition.evidence ?? [], validateEvidence));
 
 const sourceIndex = new Map<SourceId, Source>();
+const sourceSlugIndex = new Map<string, Source>();
 for (const source of sources) {
   if (sourceIndex.has(source.id)) ledgerErrors.push(`Duplicate source id "${source.id}".`);
   sourceIndex.set(source.id, source);
+  if (sourceSlugIndex.has(source.slug)) ledgerErrors.push(`Duplicate source slug "${source.slug}" — two sources would claim /source/${source.slug}/.`);
+  sourceSlugIndex.set(source.slug, source);
+}
+
+const evidenceIndex = new Map<EvidenceId, Evidence>();
+for (const artifact of evidence) {
+  if (evidenceIndex.has(artifact.id)) ledgerErrors.push(`Duplicate evidence id "${artifact.id}".`);
+  evidenceIndex.set(artifact.id, artifact);
 }
 
 const claimIndex = new Map<ClaimId, Claim>();
@@ -115,12 +128,16 @@ for (const claim of claims) {
   if (claim.supersedes) supersededBy.set(claim.supersedes, claim);
 }
 
+const evidenceBySource = new Map<SourceId, Evidence[]>();
 for (const artifact of evidence) {
   for (const claimId of artifact.claims) {
     const supporting = evidenceByClaim.get(claimId) ?? [];
     supporting.push(artifact);
     evidenceByClaim.set(claimId, supporting);
   }
+  const held = evidenceBySource.get(artifact.source) ?? [];
+  held.push(artifact);
+  evidenceBySource.set(artifact.source, held);
 }
 
 // ── Lookups ──────────────────────────────────────────────────
@@ -132,6 +149,17 @@ export function claimById(id: ClaimId): Claim | undefined {
 }
 export function disputeById(id: DisputeId): Dispute | undefined {
   return disputeIndex.get(id);
+}
+/** A source by its public slug — how `/source/<slug>/` resolves (ADR-015). */
+export function sourceBySlug(slug: string): Source | undefined {
+  return sourceSlugIndex.get(slug);
+}
+export function evidenceById(id: EvidenceId): Evidence | undefined {
+  return evidenceIndex.get(id);
+}
+/** The artifacts held under one source — the reverse of `Evidence.source` (V4). */
+export function evidenceFromSource(id: SourceId): Evidence[] {
+  return evidenceBySource.get(id) ?? [];
 }
 export function sourcesOf(claim: Claim): Source[] {
   return claim.sources.map((id) => sourceIndex.get(id)).filter((source): source is Source => Boolean(source));
@@ -159,15 +187,36 @@ function byConfidenceThenId(a: Claim, b: Claim): number {
 }
 
 /**
+ * The one place publication state is decided (M4B). A claim is live when it is
+ * published, not superseded and not retracted. Everything a reader, a crawler or
+ * an AI export can see passes through here, so a `draft` claim cannot leak onto a
+ * page by being imported somewhere else — there is nowhere else to import it from.
+ *
+ * Note what this does NOT filter: confidence. An uncertain claim is live, because
+ * stating an unknown is the point (rule 7).
+ */
+function isLive(claim: Claim): boolean {
+  return claim.status === "published" && !supersededBy.has(claim.id) && claim.retracted !== true;
+}
+
+/**
  * Every live claim about an entity, in render order. A claim that has been
  * superseded stays in the ledger and on `/corrections/` but leaves the page —
  * that is what "corrections supersede, they never delete" means in practice
  * (rule 10). Retractions are handled the same way and are struck, not hidden.
  */
 export function claimsFor(entityId: EntityId): Claim[] {
-  return (claimsByEntity.get(entityId) ?? [])
-    .filter((claim) => !supersededBy.has(claim.id) && claim.retracted !== true)
-    .sort(byConfidenceThenId);
+  return (claimsByEntity.get(entityId) ?? []).filter(isLive).sort(byConfidenceThenId);
+}
+
+/** Every live claim on the site, in id order — what the machine surfaces export. */
+export function liveClaims(): Claim[] {
+  return claims.filter(isLive).sort((a, b) => a.id.localeCompare(b.id));
+}
+
+/** Live claims resting on one source — what a `/source/<slug>/` page renders. */
+export function liveClaimsFromSource(id: SourceId): Claim[] {
+  return citedBy(id).filter(isLive).sort(byConfidenceThenId);
 }
 
 /** Every claim about an entity including superseded and retracted ones (the ledger view). */
@@ -201,9 +250,11 @@ export function disputesFor(entityId: EntityId, aspect?: ClaimAspect): Dispute[]
   });
 }
 
-/** The competing claims under one dispute, in a stable order. Never fewer than two. */
+/** The competing readings under one dispute, in a stable order. Never fewer than two. */
 export function claimsInDispute(id: DisputeId): Claim[] {
-  return (claimsByDispute.get(id) ?? []).slice().sort((a, b) => a.id.localeCompare(b.id));
+  return (claimsByDispute.get(id) ?? [])
+    .filter((claim) => claim.status === "published" && claim.retracted !== true)
+    .sort((a, b) => a.id.localeCompare(b.id));
 }
 
 /** Whether an entity has earned a page at all (Constitution rule 15). */
@@ -235,29 +286,125 @@ export function aspectPagesFor(entityId: EntityId): AspectPage[] {
   }));
 }
 
+// ── Source pages (`/source/<slug>/`, ADR-015) ────────────────
+// Rule 15 applied to the source namespace: a source earns its own address once
+// three live claims rest on it. Below that it is a row in the ledger index, not a
+// page, exactly as an entity with two claims is a section of its parent. The set
+// is derived, so a source page appears when the citing does and never before.
+export const SOURCE_PAGE_THRESHOLD = 3;
+
+/** Whether this source has earned `/source/<slug>/`. */
+export function sourceHasPage(id: SourceId): boolean {
+  return liveClaimsFromSource(id).length >= SOURCE_PAGE_THRESHOLD;
+}
+
+/** The sources that publish a page, in ledger order. */
+export function sourcePages(): Source[] {
+  return sources.filter((source) => sourceHasPage(source.id)).sort((a, b) => a.slug.localeCompare(b.slug));
+}
+
+/** The language-agnostic path of a source page, or undefined when it has none. */
+export function sourcePagePath(source: Source): string | undefined {
+  return sourceHasPage(source.id) ? `/source/${source.slug}/` : undefined;
+}
+
 // ── Corrections and retractions (`/corrections/`, generated) ──
 /** Claims that corrected an earlier one, newest id last. Generated, not maintained. */
 export function corrections(): Claim[] {
-  return claims.filter((claim) => Boolean(claim.supersedes)).sort((a, b) => a.id.localeCompare(b.id));
+  return claims
+    .filter((claim) => Boolean(claim.supersedes) && claim.status === "published")
+    .sort((a, b) => (a.correctedAt ?? "").localeCompare(b.correctedAt ?? "") || a.id.localeCompare(b.id));
 }
 /** Claims that were withdrawn. Struck and kept, never deleted (rule 10). */
 export function retractions(): Claim[] {
-  return claims.filter((claim) => claim.retracted === true).sort((a, b) => a.id.localeCompare(b.id));
+  return claims
+    .filter((claim) => claim.retracted === true && claim.status === "published")
+    .sort((a, b) => (a.retractedAt ?? "").localeCompare(b.retractedAt ?? "") || a.id.localeCompare(b.id));
 }
 
 // ── Editorial transparency (`EEAT_STRATEGY.md` §6.3) ─────────
 /**
- * When a page was last reviewed: the most recent date on which a human went to
- * one of the sources it rests on. Derived from the sources' `accessedAt`, never
- * stamped by the build — a build-stamped date says only that a deploy happened.
+ * When a page was last reviewed: the most recent date on which a human went back
+ * to the sources and checked that what the page says still holds. It is a claim's
+ * `reviewedAt`, falling back to the access date of the sources it rests on — never
+ * the build date, which would say only that a deploy happened.
  */
 export function lastReviewed(entityId: EntityId): string | undefined {
-  const dates = claimsFor(entityId)
-    .flatMap((claim) => sourcesOf(claim))
-    .map((source) => source.accessedAt)
+  const live = claimsFor(entityId);
+  const dates = [
+    ...live.map((claim) => claim.reviewedAt),
+    ...live.flatMap((claim) => sourcesOf(claim)).map((source) => source.accessedAt),
+  ]
     .filter((date): date is string => Boolean(date))
     .sort();
   return dates[dates.length - 1];
+}
+
+// ── Trust signals (M4B, Parts 6 and 12) ──────────────────────
+// A page's trust line is a handful of plain sentences, never a count. "39
+// verified claims from 15 sources" is a database talking about itself; "checked
+// against open records · contains oral tradition · last reviewed 26 July 2026"
+// is a magazine telling a reader how far to trust it. Both are derived from the
+// same ledger; only one of them a visitor can use.
+//
+// Every signal is a fact about the records, computed here and never asserted by
+// hand. A signal that is off is off because the sourcing does not support it yet
+// — which makes the missing ones a research agenda rather than a marketing gap.
+
+/** Source kinds that are primary: somebody's own record of the thing itself. */
+const PRIMARY_KINDS = new Set<SourceKind>(["archive", "church", "municipal", "museum", "map", "academic", "book"]);
+/** Source kinds that are open, machine-checkable records. */
+const OPEN_RECORD_KINDS = new Set<SourceKind>(["reference", "dataset"]);
+
+export type TrustSignal =
+  | "primarySources" // a verified claim rests on a verified primary source
+  | "openRecords" // checked against open data (Wikidata, datasets)
+  | "fieldChecked" // somebody from this project went and looked
+  | "coordinatesVerified" // the published fix is vouched for by a verified source
+  | "oralTradition" // village memory is among the origins
+  | "historicalUncertainty" // a stated unknown about history, the name or meaning
+  | "openQuestion" // an unresolved dispute renders on the page
+  | "corrected"; // this page has published a correction to itself
+
+/**
+ * The signals a page has actually earned, in the order they should be read: what
+ * is solid first, what is soft second, what is open last. Never counts, never ids.
+ */
+export function trustSignals(entityId: EntityId): TrustSignal[] {
+  const live = claimsFor(entityId);
+  if (live.length === 0) return [];
+  const cited = new Map<SourceId, Source>();
+  for (const claim of live) for (const source of sourcesOf(claim)) cited.set(source.id, source);
+  const citedList = [...cited.values()];
+  const signals: TrustSignal[] = [];
+
+  const restsOnVerified = (claim: Claim, kinds: Set<SourceKind>) =>
+    sourcesOf(claim).some((source) => kinds.has(source.kind) && source.verification === "verified");
+
+  if (live.some((claim) => claim.confidence === "verified" && restsOnVerified(claim, PRIMARY_KINDS))) signals.push("primarySources");
+  if (live.some((claim) => claim.confidence === "verified" && restsOnVerified(claim, OPEN_RECORD_KINDS))) signals.push("openRecords");
+  if (live.some((claim) => claim.method === "field")) signals.push("fieldChecked");
+  // "Coordinates checked" is only true when the entity publishes its own fix, is
+  // linked to the open record that fix came from, and has a verified identity
+  // claim resting on a source we checked ourselves. Two of the three would be a
+  // plausible-sounding half-truth, which is worse here than no signal at all.
+  const entity = entityById(entityId);
+  if (
+    entity &&
+    entityPoint(entity) &&
+    entitySameAs(entity).length > 0 &&
+    live.some((claim) => claim.aspect === "identity" && claim.confidence === "verified" && sourcesOf(claim).some((source) => source.verification === "verified"))
+  ) {
+    signals.push("coordinatesVerified");
+  }
+  if (citedList.some((source) => source.kind === "oral")) signals.push("oralTradition");
+  if (live.some((claim) => claim.confidence === "uncertain" && (claim.aspect === "history" || claim.aspect === "name" || claim.aspect === "meaning"))) {
+    signals.push("historicalUncertainty");
+  }
+  if (disputesFor(entityId).some((dispute) => dispute.status === "open")) signals.push("openQuestion");
+  if (live.some((claim) => Boolean(claim.supersedes))) signals.push("corrected");
+
+  return signals;
 }
 
 export type ProvenanceSummary = {
@@ -269,11 +416,17 @@ export type ProvenanceSummary = {
   sources: Source[];
   /** True when any cited source is village memory whose provenance is not established. */
   containsOralTradition: boolean;
-  /** True when the entity publishes its own coordinates. */
+  /** The plain-language trust signals this page has earned. */
+  signals: TrustSignal[];
+  /** When a human last checked this against its sources. */
   lastReviewed?: string;
 };
 
-/** The numbers behind a page's trust line. Pure counting — no judgement. */
+/**
+ * The provenance behind a page. The counts are here because the audit, the
+ * `/sources/` ledger and the machine export all need them; the rendered page
+ * uses `signals` and `sources` and shows no number but a date (Part 12).
+ */
 export function provenanceSummary(entityId: EntityId): ProvenanceSummary {
   const live = claimsFor(entityId);
   const cited = new Map<SourceId, Source>();
@@ -286,15 +439,16 @@ export function provenanceSummary(entityId: EntityId): ProvenanceSummary {
     disputes: disputesFor(entityId).length,
     sources: [...cited.values()].sort((a, b) => a.id.localeCompare(b.id)),
     containsOralTradition: [...cited.values()].some((source) => source.kind === "oral"),
+    signals: trustSignals(entityId),
     lastReviewed: lastReviewed(entityId),
   };
 }
 
-/** Every source the site cites anywhere, with the claims that rest on it. */
-export function ledgerBySource(): Array<{ source: Source; claims: Claim[] }> {
+/** Every source the site cites anywhere, with the live claims that rest on it. */
+export function ledgerBySource(): Array<{ source: Source; claims: Claim[]; path?: string }> {
   return sources
-    .map((source) => ({ source, claims: citedBy(source.id) }))
-    .sort((a, b) => a.source.id.localeCompare(b.source.id));
+    .map((source) => ({ source, claims: liveClaimsFromSource(source.id), path: sourcePagePath(source) }))
+    .sort((a, b) => b.claims.length - a.claims.length || a.source.id.localeCompare(b.source.id));
 }
 
 // ── Localisation ─────────────────────────────────────────────
@@ -331,5 +485,11 @@ export function disputeQuestion(dispute: Dispute, lang: LanguageCode): string {
 export function disputeResolutionTest(dispute: Dispute, lang: LanguageCode): string | undefined {
   return dispute.resolutionTest ? pick(dispute.resolutionTest, lang) : undefined;
 }
+export function evidenceTitle(artifact: Evidence, lang: LanguageCode): string {
+  return pick(artifact.title, lang);
+}
+export function evidenceNote(artifact: Evidence, lang: LanguageCode): string | undefined {
+  return artifact.note ? pick(artifact.note, lang) : undefined;
+}
 
-export type { Claim, ClaimAspect, ClaimConfidence, Dispute, Source } from "./claims";
+export type { Claim, ClaimAspect, ClaimConfidence, ClaimStatus, Dispute, Evidence, EvidenceKind, Source, SourceKind } from "./claims";
