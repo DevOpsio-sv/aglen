@@ -1,0 +1,211 @@
+{
+  "$schema": "../../claims.ts",
+  "partition": "karst/lukovit",
+  "note": "Source records for the Lukovit-karst partition (M4). A source is a citable ORIGIN, not a claim: what a reader would have to go and look at to check us. Only origins that actually exist are recorded here. Where the site's existing prose gestures at an origin it never names — the Ottoman defter, the 1920s folklore collection, the geological survey — no source record is invented; instead the claim rests on src-oral-0001 (our own transcription of village memory, marked unverified) and the missing reference is published as a stated unknown against src-field-0001. That is the whole point of the ledger: it is easier to see what we do not have than what we do.",
+  "sources": [
+    {
+      "id": "src-reference-0001",
+      "kind": "reference",
+      "title": { "bg": "Wikidata: Ъглен (Q550547)", "en": "Wikidata: Aglen (Q550547)" },
+      "publisher": "Wikimedia Foundation",
+      "language": "mul",
+      "citation": "Wikidata item Q550547 — Ъглен (village, Lukovit Municipality, Lovech Province, Bulgaria).",
+      "url": "https://www.wikidata.org/wiki/Q550547",
+      "accessedAt": "2026-07-26",
+      "license": "CC0 1.0",
+      "verification": "verified",
+      "note": {
+        "bg": "Използва се само за административни и координатни факти — местоположение, община, област, пощенски код. Тези стойности са проверени спрямо самия запис.",
+        "en": "Used only for administrative and coordinate facts — location, municipality, province, postcode. Those values were checked against the item itself."
+      }
+    },
+    {
+      "id": "src-reference-0002",
+      "kind": "reference",
+      "title": { "bg": "Уикипедия (бг): Ъглен", "en": "Wikipedia (bg): Ъглен" },
+      "publisher": "Wikimedia Foundation",
+      "language": "bg",
+      "citation": "Статия „Ъглен“, българска Уикипедия.",
+      "url": "https://bg.wikipedia.org/wiki/%D0%AA%D0%B3%D0%BB%D0%B5%D0%BD",
+      "accessedAt": "2026-07-26",
+      "license": "CC BY-SA 4.0",
+      "verification": "reported",
+      "note": {
+        "bg": "Третичен източник: сам преразказва други източници. Приема се за отправна точка, не за доказателство; там, където статията не сочи първичен източник, твърдението тук остава несигурно.",
+        "en": "A tertiary source: it summarises other sources. Treated as a starting point, not as proof; where the article cites no primary source, the claim here stays uncertain."
+      }
+    },
+    {
+      "id": "src-reference-0003",
+      "kind": "reference",
+      "title": { "bg": "Уикипедия (бг): Трифон Кунев", "en": "Wikipedia (bg): Trifon Kunev" },
+      "publisher": "Wikimedia Foundation",
+      "language": "bg",
+      "citation": "Статия „Трифон Кунев“, българска Уикипедия.",
+      "url": "https://bg.wikipedia.org/wiki/%D0%A2%D1%80%D0%B8%D1%84%D0%BE%D0%BD_%D0%9A%D1%83%D0%BD%D0%B5%D0%B2",
+      "accessedAt": "2026-07-26",
+      "license": "CC BY-SA 4.0",
+      "verification": "reported",
+      "note": {
+        "bg": "Биографичните дати и мястото на раждане се цитират оттук. Литературната оценка на творчеството му не се цитира — тя е предмет на литературознанието, не на този сайт.",
+        "en": "The biographical dates and birthplace are cited from here. Literary judgements about his work are not cited — that is the business of literary scholarship, not of this site."
+      }
+    },
+    {
+      "id": "src-reference-0004",
+      "kind": "reference",
+      "title": { "bg": "Уикипедия (бг): Проходна", "en": "Wikipedia (bg): Prohodna" },
+      "publisher": "Wikimedia Foundation",
+      "language": "bg",
+      "citation": "Статия „Проходна“ (пещера, Карлуково), българска Уикипедия.",
+      "url": "https://bg.wikipedia.org/wiki/%D0%9F%D1%80%D0%BE%D1%85%D0%BE%D0%B4%D0%BD%D0%B0",
+      "accessedAt": "2026-07-26",
+      "license": "CC BY-SA 4.0",
+      "verification": "reported"
+    },
+    {
+      "id": "src-reference-0005",
+      "kind": "reference",
+      "title": { "bg": "Wikidata: река Вит (Q1773449)", "en": "Wikidata: Vit River (Q1773449)" },
+      "publisher": "Wikimedia Foundation",
+      "language": "mul",
+      "citation": "Wikidata item Q1773449 — Вит, десен приток на Дунав.",
+      "url": "https://www.wikidata.org/wiki/Q1773449",
+      "accessedAt": "2026-07-26",
+      "license": "CC0 1.0",
+      "verification": "verified"
+    },
+    {
+      "id": "src-reference-0006",
+      "kind": "reference",
+      "title": { "bg": "Wikidata: Луковит (Q405585)", "en": "Wikidata: Lukovit (Q405585)" },
+      "publisher": "Wikimedia Foundation",
+      "language": "mul",
+      "citation": "Wikidata item Q405585 — Луковит, град и общински център в област Ловеч.",
+      "url": "https://www.wikidata.org/wiki/Q405585",
+      "accessedAt": "2026-07-26",
+      "license": "CC0 1.0",
+      "verification": "verified"
+    },
+    {
+      "id": "src-reference-0007",
+      "kind": "reference",
+      "title": { "bg": "Wikidata: Проходна (Q3657889)", "en": "Wikidata: Prohodna (Q3657889)" },
+      "publisher": "Wikimedia Foundation",
+      "language": "mul",
+      "citation": "Wikidata item Q3657889 — Проходна, пещера при Карлуково.",
+      "url": "https://www.wikidata.org/wiki/Q3657889",
+      "accessedAt": "2026-07-26",
+      "license": "CC0 1.0",
+      "verification": "verified"
+    },
+    {
+      "id": "src-reference-0008",
+      "kind": "reference",
+      "title": { "bg": "Wikidata: Карлуково (Q1085214)", "en": "Wikidata: Karlukovo (Q1085214)" },
+      "publisher": "Wikimedia Foundation",
+      "language": "mul",
+      "citation": "Wikidata item Q1085214 — Карлуково, село в община Луковит.",
+      "url": "https://www.wikidata.org/wiki/Q1085214",
+      "accessedAt": "2026-07-26",
+      "license": "CC0 1.0",
+      "verification": "verified"
+    },
+    {
+      "id": "src-reference-0009",
+      "kind": "reference",
+      "title": { "bg": "Wikidata: Деветашка пещера (Q2756370)", "en": "Wikidata: Devetashka Cave (Q2756370)" },
+      "publisher": "Wikimedia Foundation",
+      "language": "mul",
+      "citation": "Wikidata item Q2756370 — Деветашка пещера, област Ловеч.",
+      "url": "https://www.wikidata.org/wiki/Q2756370",
+      "accessedAt": "2026-07-26",
+      "license": "CC0 1.0",
+      "verification": "verified"
+    },
+    {
+      "id": "src-reference-0010",
+      "kind": "reference",
+      "title": { "bg": "Wikidata: Крушунска бигорна каскада (Q6439432)", "en": "Wikidata: Krushuna Falls (Q6439432)" },
+      "publisher": "Wikimedia Foundation",
+      "language": "mul",
+      "citation": "Wikidata item Q6439432 — Крушунска бигорна каскада, област Ловеч.",
+      "url": "https://www.wikidata.org/wiki/Q6439432",
+      "accessedAt": "2026-07-26",
+      "license": "CC0 1.0",
+      "verification": "verified"
+    },
+    {
+      "id": "src-reference-0011",
+      "kind": "reference",
+      "title": { "bg": "Wikidata: Ловеч (Q189328)", "en": "Wikidata: Lovech (Q189328)" },
+      "publisher": "Wikimedia Foundation",
+      "language": "mul",
+      "citation": "Wikidata item Q189328 — Ловеч, град и областен център.",
+      "url": "https://www.wikidata.org/wiki/Q189328",
+      "accessedAt": "2026-07-26",
+      "license": "CC0 1.0",
+      "verification": "verified"
+    },
+    {
+      "id": "src-reference-0012",
+      "kind": "reference",
+      "title": { "bg": "Wikidata: област Ловеч (Q6587068)", "en": "Wikidata: Lovech Province (Q6587068)" },
+      "publisher": "Wikimedia Foundation",
+      "language": "mul",
+      "citation": "Wikidata item Q6587068 — област Ловеч, административна област в Северна България.",
+      "url": "https://www.wikidata.org/wiki/Q6587068",
+      "accessedAt": "2026-07-26",
+      "license": "CC0 1.0",
+      "verification": "verified"
+    },
+    {
+      "id": "src-reference-0013",
+      "kind": "reference",
+      "title": { "bg": "Wikidata: Златна Панега (Q2455820)", "en": "Wikidata: Zlatna Panega (Q2455820)" },
+      "publisher": "Wikimedia Foundation",
+      "language": "mul",
+      "citation": "Wikidata item Q2455820 — Златна Панега, село в община Ябланица.",
+      "url": "https://www.wikidata.org/wiki/Q2455820",
+      "accessedAt": "2026-07-26",
+      "license": "CC0 1.0",
+      "verification": "verified"
+    },
+    {
+      "id": "src-oral-0001",
+      "kind": "oral",
+      "title": {
+        "bg": "Устна памет на Ъглен, както е записана в българското съдържание на сайта",
+        "en": "Aglen village memory, as recorded in the site's Bulgarian content"
+      },
+      "publisher": "Aglen Tourism",
+      "language": "bg",
+      "citation": "Устна местна памет от землището на Ъглен, предадена в разказите на сайта (раздел „История и местна памет“). Първичните записвачи и архивните сигнатури не са установени.",
+      "verification": "unverified",
+      "note": {
+        "bg": "Това е най-слабият източник в регистъра и е отбелязан като такъв. Разказите тук се предават така, както се разказват в селото; текстът на сайта споменава учители и краеведи от 20-те и 30-те години на XX век и регионални архиви, но не назовава нито един конкретен сборник, сигнатура или информатор. Докато това не бъде направено, всяко твърдение, което почива само на този източник, е „предава се“ или „несигурно“ — никога „проверено“. Записването на устната памет от назовани, съгласили се информатори, с дата, е отделна и предстояща работа.",
+        "en": "This is the weakest source in the ledger and is marked as such. The stories are related as they are told in the village; the site's text refers to teachers and local historians of the 1920s and 1930s and to regional archives, but names no specific collection, shelfmark or informant. Until it does, any statement resting on this source alone is reported or uncertain — never verified. Recording the oral memory from named, consenting informants, with dates, is separate and outstanding work."
+      }
+    },
+    {
+      "id": "src-field-0001",
+      "kind": "field",
+      "title": {
+        "bg": "Редакционен и измервателен запис на Aglen Tourism",
+        "en": "Aglen Tourism editorial and measurement record"
+      },
+      "author": "Aglen Tourism (DevOpsio)",
+      "publisher": "Aglen Tourism",
+      "language": "bg",
+      "citation": "Редакционен запис на Aglen Tourism: приложен метод, изчислени разстояния по права линия от публикувани координати, и изричен списък на това, което сайтът отказва да публикува без проверка. Виж /bg/editorial-policy/.",
+      "url": "https://aglen.bg/bg/editorial-policy/",
+      "accessedAt": "2026-07-26",
+      "license": "© Aglen Tourism",
+      "verification": "verified",
+      "note": {
+        "bg": "Използва се за две неща и само за тях: за изведени стойности, чийто метод е публикуван (разстояния по права линия), и за изричните заявени неизвестни — къде точно сайтът знае, че не знае. Не се използва като източник на исторически или природен факт.",
+        "en": "Used for two things and only two: derived values whose method is published (straight-line distances), and the explicit stated unknowns — exactly where the site knows that it does not know. It is never used as the source of a historical or natural fact."
+      }
+    }
+  ]
+}
