@@ -2,12 +2,16 @@ import { useEffect, useMemo, useRef, useState, type MouseEvent, type ReactNode, 
 import { contentByLanguage, languages, type Accommodation, type LanguageCode, type PlaceId, type TimelineItem } from "./content";
 import { getLandingPage, getLandingPages, isLandingPageId } from "./landingPages";
 import { placeExperienceLinks, type PlaceExperienceLink } from "./placeLinks";
-import { buildBusinessPath, buildGuidePath, buildPlacePath, buildRoutePath, getStaticRoute, resolveRoute, type RouteId, type ResolvedRoute } from "./routes";
+import { buildAspectPath, buildBusinessPath, buildGuidePath, buildPlacePath, buildRoutePath, getStaticRoute, resolveRoute, type RouteId, type ResolvedRoute } from "./routes";
 import { guideByLegacyRoute, guides, localizeGuide } from "./guides";
 import { publishedBusinesses } from "./localBusinesses";
 import GuidesPage from "./GuidesPage";
 import { KarstPage, PlacePage } from "./graph/EntityPages";
+import { CorrectionsPage, KnowledgePage, SourcesPage } from "./graph/KnowledgePages";
+import { aspectCrumb, namespaceTitle } from "./graph/namespaces";
 import { breadcrumbTrail, entityBySlug, entityForPlaceId, entityName as graphEntityName } from "./graph";
+import { aspectPagesFor } from "./graph/ledger";
+import type { ClaimAspect } from "./graph/claims";
 import { imageProps } from "./images";
 import { updateDocumentSEO } from "./seo";
 import { uiTextByLanguage } from "./uiText";
@@ -28,6 +32,14 @@ const HOME_ENTITY_LINKS = {
   karst: { bg: "Опознай Луковитския карст", en: "Explore the Lukovit Karst" },
   river: { bg: "Виж страницата на река Вит", en: "See the Vit River page" },
   place: { bg: "Виж мястото", en: "See the place" },
+  // M4: the knowledge namespaces get their entry points from the sections whose
+  // content they now permanently hold. Nothing moves; the modal and the section
+  // stay exactly where they were and gain a way out.
+  history: { bg: "Прочети цялата история на Ъглен", en: "Read the full history of Aglen" },
+  historyChapter: { bg: "Отвори тази глава на постоянната ѝ страница", en: "Open this chapter on its permanent page" },
+  legends: { bg: "Отвори легендите на Ъглен", en: "Open the legends of Aglen" },
+  sources: { bg: "Източници", en: "Sources" },
+  corrections: { bg: "Поправки", en: "Corrections" },
 };
 function homeEntityLink(key: keyof typeof HOME_ENTITY_LINKS, lang: LanguageCode): string {
   const entry = HOME_ENTITY_LINKS[key] as Record<string, string>;
@@ -131,7 +143,7 @@ export function App() {
   const timelineCloseRef = useRef<HTMLButtonElement | null>(null);
   const languageSwitchRef = useRef<HTMLDivElement | null>(null);
   const languageTriggerRef = useRef<HTMLButtonElement | null>(null);
-  const { language, routeId, businessSlug, guideSlug, placeSlug } = pageRoute;
+  const { language, routeId, businessSlug, guideSlug, placeSlug, aspect } = pageRoute;
   const copy = contentByLanguage[language];
   const localizedUi = uiTextByLanguage[language];
   const currentRoute = getStaticRoute(routeId);
@@ -148,6 +160,20 @@ export function App() {
   // The entity namespace (M3): /karst/ is the subject root, /place/<slug>/ an entity.
   const isKarstPage = routeId === "karst";
   const isPlacePage = routeId === "place";
+  // The knowledge namespaces and the two provenance surfaces (M4). Each is its
+  // own component for the same reason the entity pages are: they render from the
+  // graph and the ledger, not from crops of the home page.
+  const isHistoryPage = routeId === "history";
+  const isLegendPage = routeId === "legend";
+  const isPersonPage = routeId === "person";
+  const isSourcesPage = routeId === "sources";
+  const isCorrectionsPage = routeId === "corrections";
+  const isKnowledgePage = isHistoryPage || isLegendPage || isPersonPage || isSourcesPage || isCorrectionsPage;
+  // The village history aspect page, if the ledger has earned it. Derived rather
+  // than hard-coded, so the link appears exactly when the page does (rule 26).
+  const villageHistoryPath = aspectPagesFor("aglen").some((page) => page.aspect === "history")
+    ? buildAspectPath(language, "aglen", "history")
+    : undefined;
   // Routes whose query string is shareable state rather than tracking noise.
   const keepsSearch = isEventsPage || (isBusinessPage && !businessSlug);
   const selectedLanguage = languages.find((item) => item.code === language) ?? languages[0];
@@ -155,7 +181,7 @@ export function App() {
   // The home-page sections this route owns, from pageSections.ts. A legacy
   // duplicate route falls back to the full set so it still shows something if its
   // 301 has not applied yet; the noindex keeps it out of the index either way.
-  const hasOwnComponent = Boolean(currentLandingPage) || isEventsPage || isBusinessPage || isGuidesPage || isTrustPage || isArMissionsPage || isKarstPage || isPlacePage;
+  const hasOwnComponent = Boolean(currentLandingPage) || isEventsPage || isBusinessPage || isGuidesPage || isTrustPage || isArMissionsPage || isKarstPage || isPlacePage || isKnowledgePage;
   // Already in document order and with feature flags applied.
   const visibleSections = hasOwnComponent ? [] : sectionsForRoute(routeId);
   const showSection = (section: HomeSection) => visibleSections.includes(section);
@@ -171,7 +197,11 @@ export function App() {
   const routePath = (route: ResolvedRoute) => {
     if (route.businessSlug) return buildBusinessPath(route.language, route.businessSlug);
     if (route.guideSlug) return buildGuidePath(route.language, route.guideSlug);
-    if (route.placeSlug) return buildPlacePath(route.language, route.placeSlug);
+    // Every entity namespace addresses its detail pages the same way, so the
+    // route's own slug supplies the segment and one branch covers /place/,
+    // /history/, /legend/ and /person/ alike.
+    if (route.placeSlug && route.aspect) return buildAspectPath(route.language, route.placeSlug, route.aspect);
+    if (route.placeSlug) return `/${route.language}/${getStaticRoute(route.routeId).slug}/${route.placeSlug}/`;
     return buildRoutePath(route.language, route.routeId);
   };
 
@@ -261,14 +291,17 @@ export function App() {
 
   useEffect(() => {
     document.documentElement.lang = language;
-    updateDocumentSEO(language, routeId, businessSlug ?? guideSlug ?? placeSlug);
+    // An aspect page is addressed by "<entity>/<aspect>" beneath its namespace,
+    // so the detail slug carries both segments and seo.ts splits them back.
+    const entityDetail = placeSlug && aspect ? `${placeSlug}/${aspect}` : placeSlug;
+    updateDocumentSEO(language, routeId, businessSlug ?? guideSlug ?? entityDetail);
 
     const canonicalPath = businessSlug
       ? buildBusinessPath(language, businessSlug)
       : guideSlug
         ? buildGuidePath(language, guideSlug)
         : placeSlug
-          ? buildPlacePath(language, placeSlug)
+          ? routePath(pageRoute)
           : buildRoutePath(language, routeId);
     // Preserve query params where they carry shareable state (events views,
     // business filters); strip them everywhere else so canonicals stay clean.
@@ -276,7 +309,8 @@ export function App() {
     if (window.location.pathname !== canonicalPath || (!keepsSearch && window.location.search)) {
       history.replaceState(null, "", canonicalPath + keepSearch);
     }
-  }, [language, routeId, businessSlug, guideSlug, placeSlug, keepsSearch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [language, routeId, businessSlug, guideSlug, placeSlug, aspect, keepsSearch]);
 
   useEffect(() => {
     const onPopState = () => {
@@ -775,6 +809,7 @@ export function App() {
           businessSlug={businessSlug}
           guideSlug={guideSlug}
           placeSlug={placeSlug}
+          aspect={aspect}
           onNavigate={navigateToPath}
         />
       )}
@@ -893,6 +928,15 @@ export function App() {
               {homeEntityLink("village", language)} →
             </a>
           </p>
+          {/* M4: the four chapters below now have a permanent address. The modal
+              stays exactly as it was; this is the way out of it. */}
+          {villageHistoryPath && (
+            <p>
+              <a className="entity-inline-link" href={villageHistoryPath} onClick={(event) => { event.preventDefault(); navigateToPath(villageHistoryPath); }}>
+                {homeEntityLink("history", language)} →
+              </a>
+            </p>
+          )}
         </div>
         <ol className="timeline">
           {copy.timeline.map((event) => (
@@ -914,6 +958,13 @@ export function App() {
             <p className="eyebrow">{copy.legends.eyebrow}</p>
             <SectionTitle level={headingLevel("legends")}>{copy.legends.title}</SectionTitle>
             <p>{copy.legends.text}</p>
+            {/* M4: the legends are entities with their own pages now, each with
+                its sources and with what it does not claim stated in the open. */}
+            <p>
+              <a className="entity-inline-link" href={buildRoutePath(language, "legend")} onClick={(event) => handleRouteClick(event, "legend")}>
+                {homeEntityLink("legends", language)} →
+              </a>
+            </p>
           </div>
           <div className="mystery-grid">
             {copy.mysteries.map((item) => (
@@ -966,6 +1017,13 @@ export function App() {
               </div>
             ) : (
               <p>{selectedTimeline.detail}</p>
+            )}
+            {villageHistoryPath && (
+              <p className="timeline-article-more">
+                <a className="entity-inline-link" href={villageHistoryPath} onClick={(event) => { event.preventDefault(); setSelectedTimeline(null); navigateToPath(villageHistoryPath); }}>
+                  {homeEntityLink("historyChapter", language)} →
+                </a>
+              </p>
             )}
           </article>
         </div>
@@ -1271,7 +1329,17 @@ export function App() {
 
       {isKarstPage && <KarstPage language={language} onNavigate={navigateToPath} />}
 
-      {isPlacePage && <PlacePage language={language} placeSlug={placeSlug} onNavigate={navigateToPath} />}
+      {isPlacePage && <PlacePage language={language} placeSlug={placeSlug} aspect={aspect} onNavigate={navigateToPath} />}
+
+      {isHistoryPage && <KnowledgePage kind="history" language={language} entitySlug={placeSlug} onNavigate={navigateToPath} />}
+
+      {isLegendPage && <KnowledgePage kind="legend" language={language} entitySlug={placeSlug} onNavigate={navigateToPath} />}
+
+      {isPersonPage && <KnowledgePage kind="person" language={language} entitySlug={placeSlug} onNavigate={navigateToPath} />}
+
+      {isSourcesPage && <SourcesPage language={language} onNavigate={navigateToPath} />}
+
+      {isCorrectionsPage && <CorrectionsPage language={language} onNavigate={navigateToPath} />}
 
       {isTrustPage && <TrustPage language={language} routeId={routeId} onNavigate={navigateToPath} />}
 
@@ -1365,6 +1433,15 @@ export function App() {
                 {link.label}
               </a>
             ))}
+            {/* M4: the ledger and the corrections page belong beside the other
+                trust pages — they are the two surfaces a reader uses to check us,
+                and every page must be able to reach them. */}
+            <a href={routeHref("sources")} onClick={(event) => handleRouteClick(event, "sources")}>
+              {homeEntityLink("sources", language)}
+            </a>
+            <a href={routeHref("corrections")} onClick={(event) => handleRouteClick(event, "corrections")}>
+              {homeEntityLink("corrections", language)}
+            </a>
           </nav>
         </footer>
       </section>
@@ -1383,6 +1460,7 @@ function Breadcrumbs({
   businessSlug,
   guideSlug,
   placeSlug,
+  aspect,
   onNavigate,
 }: {
   language: LanguageCode;
@@ -1390,6 +1468,7 @@ function Breadcrumbs({
   businessSlug?: string;
   guideSlug?: string;
   placeSlug?: string;
+  aspect?: ClaimAspect;
   onNavigate: (path: string) => void;
 }) {
   const copy = contentByLanguage[language];
@@ -1397,7 +1476,7 @@ function Breadcrumbs({
 
   // Entity pages (M3) render the containment chain of the graph, never the route
   // tree (Constitution rule 19). The chain matches the JSON-LD BreadcrumbList.
-  const entityTrail = entityBreadcrumbTrail(language, routeId, placeSlug);
+  const entityTrail = entityBreadcrumbTrail(language, routeId, placeSlug, aspect);
   const trail = entityTrail ?? (() => {
     const parentLabel = crumbLabel(language, routeId);
     if (!parentLabel) return null;
@@ -1445,32 +1524,49 @@ function Breadcrumbs({
 // The breadcrumb of an entity page, walked from the graph's containment chain
 // (Constitution rule 19). Returns null for non-entity routes so the caller uses
 // its route-tree fallback. The trail mirrors the JSON-LD BreadcrumbList in seo.ts.
+//
+// A /place/ page walks its containment chain; the knowledge namespaces have no
+// containment (a legend is not inside anything), so they walk Home → namespace
+// index → entity, which is the trail a reader can actually see and click.
 function entityBreadcrumbTrail(
   language: LanguageCode,
   routeId: RouteId,
   placeSlug?: string,
+  aspect?: ClaimAspect,
 ): Array<{ label: string; href?: string }> | null {
   const home = { label: contentByLanguage[language].nav.home, href: buildRoutePath(language, "home") };
   if (routeId === "karst") {
     const karst = entityBySlug("karst");
     return karst ? [home, { label: graphEntityName(karst, language) }] : null;
   }
+  if (routeId === "history" || routeId === "legend" || routeId === "person") {
+    const indexLabel = namespaceTitle(routeId, language);
+    const entity = placeSlug ? entityBySlug(placeSlug) : undefined;
+    const published = entity?.page?.status === "published" && entity.page.path.startsWith(`/${routeId}/`);
+    if (!published) return [home, { label: indexLabel }];
+    return [
+      home,
+      { label: indexLabel, href: buildRoutePath(language, routeId) },
+      { label: graphEntityName(entity!, language) },
+    ];
+  }
   if (routeId === "place") {
     const entity = placeSlug ? entityBySlug(placeSlug) : undefined;
     if (!entity || entity.page?.status !== "published") return null;
-    return [
-      home,
-      ...breadcrumbTrail(entity).map((node) => {
-        const isSelf = node.id === entity.id;
-        const href =
-          !isSelf && node.page?.status === "published"
-            ? node.page.path === "/karst/"
-              ? buildRoutePath(language, "karst")
-              : buildPlacePath(language, node.slug)
-            : undefined;
-        return { label: graphEntityName(node, language), href };
-      }),
-    ];
+    const chain = breadcrumbTrail(entity).map((node) => {
+      const isSelf = node.id === entity.id;
+      // On an aspect page the entity itself is no longer the leaf, so it becomes
+      // a link like every other ancestor.
+      const href =
+        (!isSelf || aspect) && node.page?.status === "published"
+          ? node.page.path === "/karst/"
+            ? buildRoutePath(language, "karst")
+            : buildPlacePath(language, node.slug)
+          : undefined;
+      return { label: graphEntityName(node, language), href };
+    });
+    if (!aspect) return [home, ...chain];
+    return [home, ...chain, { label: aspectCrumb(aspect, language) }];
   }
   return null;
 }
@@ -1497,6 +1593,8 @@ function crumbLabel(language: LanguageCode, routeId: RouteId): string | undefine
     events: copy.events.title,
     localBusinesses: copy.nav.business,
     guides: guidesUiByLanguage[language].indexTitle,
+    sources: homeEntityLink("sources", language),
+    corrections: homeEntityLink("corrections", language),
   };
   return byRoute[routeId];
 }

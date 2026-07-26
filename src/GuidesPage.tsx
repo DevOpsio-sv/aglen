@@ -17,6 +17,7 @@ import { imageProps } from "./images";
 import { distanceFromAglenKm, regionName, regionNote, regionPlaceById } from "./region";
 import { entityById, entityForPlaceId, entityForRegionId, entityName, entityShortText } from "./graph";
 import { entityHeroPath } from "./seo";
+import { PROVENANCE_CHROME, localizeChrome, namespaceTitle } from "./graph/namespaces";
 import type { Entity } from "./graph/schema";
 
 const fallbackImage = "/assets/aglen-hero-river-canyon.webp";
@@ -104,6 +105,14 @@ const KNOWLEDGE = {
     en: "Dedicated pages for the village, the river, the rocks, the caves and the Lukovit Karst — the real places behind the guides.",
   },
   all: { bg: "Виж всички места", en: "See all places" },
+  // M4: the knowledge layer is no longer only places. Time, oral tradition,
+  // people and the ledger itself get their entry point in the same gateway
+  // rather than in a second hub or a new menu (ADR-013 stands).
+  moreTitle: { bg: "И освен местата", en: "Beyond the places" },
+  moreSub: {
+    bg: "Историята по периоди, легендите с техните източници, хората на селото — и регистърът, в който всяко твърдение сочи откъде идва.",
+    en: "The history period by period, the legends with their sources, the people of the village — and the ledger where every statement points at where it came from.",
+  },
 };
 function kt(key: keyof typeof KNOWLEDGE, lang: LanguageCode): string {
   const entry = KNOWLEDGE[key] as Record<string, string>;
@@ -144,6 +153,30 @@ function KnowledgeGateway({ language, onNavigate }: { language: LanguageCode; on
         <a className="button ghost" href={allPath} onClick={(event) => { if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return; event.preventDefault(); onNavigate(allPath); }}>
           {kt("all", language)} →
         </a>
+      </div>
+
+      <div className="section-heading knowledge-more">
+        <h3>{kt("moreTitle", language)}</h3>
+        <p>{kt("moreSub", language)}</p>
+        <div className="guide-ctas">
+          {(["history", "legend", "person", "sources"] as const).map((routeId) => {
+            const href = buildRoutePath(language, routeId);
+            const label =
+              routeId === "sources"
+                ? localizeChrome(PROVENANCE_CHROME.sources.title, language)
+                : namespaceTitle(routeId, language);
+            return (
+              <a
+                className="button ghost"
+                key={routeId}
+                href={href}
+                onClick={(event) => { if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return; event.preventDefault(); onNavigate(href); }}
+              >
+                {label} →
+              </a>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

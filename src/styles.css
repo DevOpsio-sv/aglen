@@ -3546,6 +3546,97 @@ h3 {
 .entity-sources-list { list-style: none; margin: 0.4rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.1rem; }
 .entity-sources-list a { color: var(--river); font-weight: 600; font-size: 0.92rem; }
 
+/* ── The provenance layer (M4) ─────────────────────────────────────────────
+   No new visual language: the claim blocks are guide sections, the source list
+   is the existing card idiom. Two rules are load-bearing rather than decorative:
+   a claim's confidence word is set in the running text and is NEVER smaller or
+   fainter than the statement it qualifies (Constitution rule 8 — a hedge printed
+   in grey is a hedge the reader is invited to skip), and the two readings of a
+   dispute are given byte-identical treatment (V14). */
+.claim-list { list-style: none; margin: 0.4rem 0 0; padding: 0; display: grid; gap: 1.05rem; }
+.claim { padding-left: 0.9rem; border-left: 3px solid var(--border); }
+.claim--verified { border-left-color: var(--river); }
+.claim--reported { border-left-color: var(--gold); }
+.claim--uncertain { border-left-color: var(--stone); }
+.claim-statement { margin: 0; line-height: 1.7; }
+.claim-confidence {
+  display: inline-block;
+  margin-left: 0.15rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: lowercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.claim-confidence::before { content: "["; }
+.claim-confidence::after { content: "]"; }
+.claim-confidence[data-confidence="verified"] { color: var(--river); }
+.claim-confidence[data-confidence="reported"] { color: var(--gold-dark); }
+.claim-confidence[data-confidence="uncertain"] { color: var(--earth); }
+.claim-note { margin: 0.35rem 0 0; font-size: 0.92rem; line-height: 1.6; color: var(--muted); }
+.claim-sources { margin: 0.35rem 0 0; display: flex; flex-wrap: wrap; gap: 0.3rem 0.9rem; }
+.claim-source { color: var(--river); font-weight: 600; font-size: 0.85rem; text-decoration: none; }
+.claim-source:hover { text-decoration: underline; }
+.claim-block--uncertain .guide-notice { border-left-color: var(--earth); background: rgba(95, 70, 50, 0.08); }
+.claim-block--uncertain .guide-notice strong { color: var(--earth); }
+
+.dispute { padding: 1.2rem 1.3rem; border: 1px solid var(--border); border-radius: 16px; background: var(--mist); }
+.dispute > .eyebrow { margin: 0 0 0.25rem; }
+.dispute-readings { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 1rem; margin-top: 1rem; }
+.dispute-reading {
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+}
+.dispute-reading h3 { margin: 0 0 0.45rem; font-family: var(--serif); font-size: 1.1rem; color: var(--ink); }
+.dispute-reading p { margin: 0; line-height: 1.65; }
+.dispute-test { margin: 1rem 0 0; line-height: 1.65; color: var(--ink); }
+
+.source-list { list-style: none; margin: 0.6rem 0 0; padding: 0; display: grid; gap: 0.9rem; }
+.source-entry { padding-left: 0.9rem; border-left: 3px solid var(--border); }
+.source-entry--verified { border-left-color: var(--river); }
+.source-entry--reported { border-left-color: var(--gold); }
+.source-entry--unverified { border-left-color: var(--earth); }
+.source-citation { margin: 0; line-height: 1.65; }
+.source-citation a { color: var(--river); font-weight: 600; }
+.source-verification { font-size: 0.82rem; font-weight: 700; color: var(--muted); white-space: nowrap; }
+.source-verification::before { content: "["; }
+.source-verification::after { content: "]"; }
+.source-verification[data-verification="unverified"] { color: var(--earth); }
+.source-meta, .source-note { margin: 0.3rem 0 0; font-size: 0.9rem; line-height: 1.6; color: var(--muted); }
+
+.provenance { border-top: 1px solid var(--border); padding-top: 1.4rem; }
+.provenance-line {
+  margin: 0 0 0.8rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.9rem;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+.provenance-line > span { display: inline-flex; gap: 0.35rem; }
+.provenance-line > span + span::before { content: "·"; margin-right: 0.55rem; color: var(--stone); }
+.provenance-flag { color: var(--earth); font-weight: 600; }
+.provenance-external { margin-top: 1.2rem; }
+.provenance-external h3 { margin: 0 0 0.3rem; font-family: var(--serif); font-size: 1.05rem; color: var(--ink); }
+.provenance-ctas { margin: 1.2rem 0 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.4rem; }
+
+.aspect-link-list { list-style: none; margin: 0.4rem 0 0; padding: 0; display: grid; gap: 0.6rem; }
+.aspect-link-list li { line-height: 1.65; }
+.aspect-link-list span { color: var(--muted); }
+
+.ledger-entry { border-top: 1px solid var(--border); padding-top: 1.3rem; }
+.ledger-entry h3 { margin: 1.1rem 0 0.2rem; font-family: var(--serif); font-size: 1.05rem; color: var(--ink); }
+.ledger-claims { gap: 0.85rem; }
+.correction, .retraction { padding-left: 0.9rem; border-left: 3px solid var(--gold); }
+.correction-old { color: var(--muted); }
+.knowledge-more { margin-top: 2.4rem; }
+.knowledge-more h3 { margin: 0 0 0.35rem; font-family: var(--serif); font-size: clamp(1.2rem, 2.2vw, 1.5rem); color: var(--ink); }
+.timeline-chapter h3 { margin: 1.4rem 0 0.5rem; font-family: var(--serif); font-size: 1.2rem; color: var(--ink); }
+.timeline-article-more { margin-top: 1.2rem; }
+
 .guide-route-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.8rem; counter-reset: stop; }
 .guide-route-list li { display: flex; gap: 0.9rem; align-items: flex-start; }
 .guide-route-num {
