@@ -40,5 +40,29 @@ reading order.
 - Reversibility is mandatory: corrections supersede (never delete), retirements are
   301s, the graph lives in Git.
 
-Nothing in `docs/` is implemented yet — the documents are architecture and analysis
-only. Treat them as the spec that new implementation work must satisfy.
+Treat the documents as the spec that new implementation work must satisfy. As of
+M5 (2026-07-26) that spec is implemented through Phase 2 of the roadmap: the entity
+graph, the claim ledger, the trust layer, the region registry and the build gates
+are live. `docs/IMPLEMENTATION_PLAN.md` §13 records what shipped and where the
+implementation deliberately diverged.
+
+## Where new work goes (M5, ADR-016)
+
+`src/graph/registry.ts` declares the graph's shape: the regions, the URL
+namespaces and which entity kind belongs in which. It is the answer to "where does
+this go?", and `reports/authoring-map.md` is that answer generated for a human.
+**Adding a region, a namespace or a kind means editing that table — never
+scattering the knowledge of it across routes, SEO, chrome and the audits again.**
+
+Four checks run in the build, and the split between them is deliberate (ADR-017):
+
+| Command | Subject | Fails the build? |
+|---|---|---|
+| `npm run validate` | records only, in seconds | yes |
+| `npm run graph:audit` | the knowledge graph | yes |
+| `npm run site:audit` | the rendered HTML in `dist/` | yes |
+| `npm run health` | quality: thin pages, weak titles, gaps | **never** |
+
+Correctness gates. Quality reports. Do not move a check across that line without
+an ADR — a gate that fires on thin content acquires exceptions and stops being a
+gate.

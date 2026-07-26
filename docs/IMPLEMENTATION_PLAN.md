@@ -1,7 +1,12 @@
 # Implementation Plan — navigation, IA & entity architecture
 
+> **Status, 2026-07-26 — M0 through M5 are shipped.** The plan below is kept as
+> written because it is the record of what was decided and why; §14 at the end
+> states what actually landed, what changed on contact with the code, and what is
+> left. Where the two disagree, §14 is the current state and this plan is history.
+
 **Execution artifact, not architecture.** Architecture is frozen
-(`MASTER_ARCHITECTURE_BLUEPRINT.md`, ADR-001–013). This document plans *how* to
+(`MASTER_ARCHITECTURE_BLUEPRINT.md`, ADR-001–019). This document plans *how* to
 implement the approved `MASTER_ARCHITECTURE_REVIEW.md` and
 `INFORMATION_ARCHITECTURE_REVIEW.md` against the current code — no redesign, no new
 architecture, no speculative features. **No application code is changed by this
@@ -393,13 +398,76 @@ in place.
 
 ---
 
-## 13. Recommended first step
+## 13. What actually shipped (kept current)
+
+| M | Shipped | State |
+|---|---|---|
+| **M0** | domain, brand, robots-by-purpose, entity-first titles, `keywords` dropped | done |
+| **M1** | 14 keyword landing pages retired via 301 + `noindex` | done |
+| **M2** | one intent-shaped navigation; `/ar-missions/` hub; UB is a product, not the identity | done |
+| **M3** | `/karst/`, `/place/<slug>/`, derived internal links, `graph-audit.mjs` | done |
+| **M4** | claim ledger, `/sources/`, `/corrections/`, `/history/`, `/legend/`, `/person/` | done |
+| **M4B** | `/source/<slug>/`, publication state, review dates, trust signals (ADR-015) | done |
+| **M5** | the registry (ADR-016), two audits + dashboard (ADR-017), aliases and the search index (ADR-018), the media contract (ADR-019) | done |
+
+### Where the plan and the code diverged, and why
+
+Four things in §§1–12 above did not land as written. Each is a deliberate change,
+not an omission:
+
+1. **`internalLinkRouteIds` was not deleted** (G11, §11 M3). It was replaced
+   *where it mattered* — entity pages derive every link from typed edges — but the
+   27 landing pages still carry their hand-authored arrays. Those pages are
+   retired-and-served: they 301 and are `noindex`, so their links reach no indexed
+   surface. Deleting the arrays would change the rendering of live URLs to no
+   benefit. This is the largest piece of remaining debt and it is bounded: it dies
+   with the landing pages, not before.
+2. **`/plan/*` and `/story/*` were never built** (§4, §10). Both need data the
+   project does not have — road distances for `/plan/`, and for `/story/` a
+   decision that has since been made differently: legends became first-class
+   entities under `/legend/` in M4, which is a better home than a story namespace
+   because a legend is a thing in the world with sources, not a page type.
+3. **`/karst/caves/` and `/karst/landforms/` cluster pages were not built** (§4).
+   The `/place/` index plus derived nearby links do the work a cluster page was
+   meant to do, and a cluster page with four members is a list of four things
+   somebody has to maintain. If the graph grows past the point where the index is
+   readable, the clusters come back — as a namespace row in the registry.
+4. **Internal search shipped as an index, not an interface** (§9.2 implied).
+   `dist/search-index.json` is generated and verified every build; the search field
+   over it is Phase 3, because navigation is frozen and a search box changes how
+   people move.
+
+### What M5 added that §§1–12 never anticipated
+
+- **The region registry** (`src/graph/registry.ts`). §11's M3 entry planned
+  `entities.ts`/`relations.ts`/`claims.ts`/`sources.ts`; what the code needed after
+  four milestones was not more files but one table declaring where everything goes.
+- **`site-audit.mjs`.** §9.2 assumed one audit over the graph. It missed that the
+  prerenderer then writes 1,596 files nothing asserts anything about.
+- **`reports/health.md`** and the gate/report split (ADR-017).
+- **`reports/authoring-map.md`**, `npm run new:record`, `npm run validate` — the
+  contributor path §11 never covered.
+
+### Remaining, in priority order
+
+1. Field days: 8 of 18 sited things still have no GPS fix; 0 of 28 published pages
+   carry a photograph this project can date and credit.
+2. The 17 published pages with no external identifier (Wikidata/OSM/Commons).
+3. `trifon-kunev` has one way out; a second person, or an asserted edge to the
+   Revival period, fixes it. Not invented to make a number move.
+4. Road distances → then `/plan/*`.
+5. The search interface over the shipped index.
+6. `internalLinkRouteIds`, when the landing pages are finally removed.
+
+---
+
+## 14. Recommended first step *(historic — M0 shipped)*
 
 **M0 is the highest-ROI, lowest-risk milestone** and touches no data and no graph:
 domain flip, brand strings, robots-by-purpose, entity-first titles, drop `meta
 keywords`, verify GSC. It is almost entirely configuration and is fully reversible.
 
-> **Awaiting your review of this plan before any application code is written.** On
-> approval, I will begin with M0 as small, individually-reversible commits on a new
-> branch, and stop for validation and your sign-off after M0 before touching
-> navigation (M2) or the entity layer (M3).
+> This was written before any application code existed. M0 through M5 have since
+> shipped; §13 is the current state. The next thing this project needs is not a
+> milestone — it is a field day. The architecture is ahead of the knowledge now,
+> which is the right way round, and `reports/health.md` says exactly where.

@@ -882,6 +882,13 @@ sequencing and risks.
   301-hops). Internal search over the static index.
 - **Exit:** ~34 entity pages, every fact sourced, zero orphans, subject is the
   region.
+- **Status (2026-07-26, after M5): complete, with two carry-forwards.** 32
+  entities, 28 published pages, 109 sourced claims, 15 sources, zero orphans,
+  zero gate violations across four audits. The internal *search index* ships and
+  is verified against every alias each build; the search *interface* over it is
+  carried into Phase 3, because a search field is a navigation change. Road
+  distances remain unpublished — no verified source exists for them — so the
+  `/plan/*` views that depend on them stay in Phase 3 as well.
 
 ### Phase 3 — Specialise, and open contribution
 *Depth and the first non-engineer authoring.*
@@ -902,7 +909,10 @@ sequencing and risks.
   scale (the deadline item).
 - Vector/semantic search; the read-only **MCP server**; licensed knowledge export.
 - Web authoring UI over the same records; **per-region partitioning and editorial
-  federation** as the graph grows past one village (ADR-009).
+  federation** as the graph grows past one village (ADR-009). *The partitioning
+  half of this landed early, in M5: the region registry (ADR-016) makes a second
+  region a row of data. What Phase 4 still owns is the editorial federation — a
+  Regional Editor, a calendar and a review queue per region.*
 - **Exit:** the Lukovit Karst is a recognised entity in Wikidata/Wikipedia/OSM and
   Google's graph, and this system is the source behind it.
 
@@ -1174,6 +1184,125 @@ and a changed coordinate now stops the build until the measurement is re-checked
 orphan source is promoted from warning to gate. `/source/` pages are knowledge-tier,
 so they are indexed in `bg` and `en` and served-but-`noindex` in the other twelve
 (rule 43).
+
+### ADR-016 — The graph declares its own shape: one registry for regions, namespaces and kinds
+**Decision.** `src/graph/registry.ts` is the single declaration of three things the
+system previously restated in eight places: the **regions** (their records, their
+root entity, the settlement their distances are measured from), the **namespaces**
+(path prefix, which entity kinds may publish there, whether the namespace is
+knowledge tier, whether rule 15 gates or warns), and the **kinds** (which namespace
+each belongs to, whether it occupies ground, its schema.org type, its borrowed
+plate). Routes, page chrome, SEO, breadcrumbs, `App.tsx`, `graph-audit.mjs` and the
+prerenderer all read it. Two corollaries are load-bearing: a namespace may be
+*declared and dormant* — it ships no route and no index until an entity publishes
+into it (rule 26) — and a kind's home may be `undefined`, meaning another product
+owns that URL (a business is published by `/local-businesses/`, a calendar event by
+`/events/`).
+**Rejected.** (a) Leaving the lists where they were and adding a comment telling
+future editors to keep them in step — that is the discipline this architecture
+replaces with build-time assertion (rule 29). (b) Deriving namespaces implicitly
+from the page paths present in the records, which would let a typo in a path
+silently create a namespace. (c) A namespace per entity kind, which would give
+twenty index pages, most of them empty, in direct violation of rule 26. (d)
+Generating the registry from a schema file — a second format to learn, for a table
+of thirty rows.
+**Trade-off.** Adding a region or a namespace costs one type-level edit (a union
+member), so it is not literally zero-code; and three dormant namespaces carry
+chrome copy for pages that do not exist yet. In exchange, ADR-009's promise — that
+a region is one boundary with three coinciding roles and a new region adopts the
+Constitution verbatim — becomes mechanically true instead of aspirational.
+**Consequence.** Adding Region 2 is one region row and one directory of JSON: no
+page component, no route branch, no audit change, and Region 1 is not touched.
+Adding a cave, a legend, a trail, a custom or a species is a record whose home is
+already declared. The audit checks the namespaces the site actually publishes,
+because it reads the same table the site publishes from — the class of bug where an
+audit checks four namespaces while the site ships five cannot occur.
+
+### ADR-017 — Two audits and a dashboard: gates for correctness, a report for quality
+**Decision.** Build-time checking splits three ways by *subject*, not by rule
+number. `graph-audit.mjs` gates the **graph** (§4.3's four rule sets, unchanged).
+`site-audit.mjs` gates the **rendered artifact** — it opens the generated HTML and
+asserts that every page has one title, one description, one canonical that resolves,
+one JSON-LD block that parses with no dangling `@id`, an hreflang for every
+language, a `BreadcrumbList` below the front door and an `<h1>` in its
+no-JavaScript fallback, and that every redirect target and sitemap entry resolves to
+a page that was generated. `health-report.mjs` **never fails a build**: thin pages,
+weak titles, short summaries, duplicate facts, stale review dates, missing
+photographs, low link density and bundle growth are written to `reports/health.md`
+and `reports/health.json`.
+**Rejected.** (a) Folding all of it into `graph-audit.mjs` per §4.3 — that section
+makes it the single home for the four rule sets *about the graph*, and the rendered
+site is a different subject; an audit that imports the generator to check the
+generator proves only that the generator is self-consistent. (b) Gating on quality.
+The moment a gate fires on "this description is short", somebody adds an exception,
+then another, and within a year the one enforcement point is a list of exceptions.
+(c) Leaving quality unmeasured, which is how a graph silently accumulates thin pages
+nobody decided to publish.
+**Trade-off.** Three scripts instead of one, and a class of finding that can be
+ignored indefinitely because nothing forces it. The mitigation is that the report
+carries a number that moves and is committed, so drift shows up in a diff.
+**Consequence.** The gate keeps its authority because it only ever fires on things
+that are wrong. `site-audit.mjs` caught a real regression on its first run: the
+`/place/` index and the `beautiful-places` guide shared one indexable title in all
+fourteen languages. `health-report.mjs` also generates `reports/authoring-map.md`
+from the registry — "where does new knowledge belong?" answered by a file nobody
+maintains and that therefore cannot drift from the code.
+
+### ADR-018 — Aliases are names, not claims; the search index is derived from them
+**Decision.** An entity carries `aliases` — historical names, local usage, official
+designations, variant spellings and scientific names — as *names*, distinct from the
+claims that discuss them. "The village was called Иглен" is a sourced statement and
+lives in the ledger; the string "Иглен" lives on the entity so the machinery can find
+it. `dist/search-index.json` is generated from the graph, folding every name through
+the official Bulgarian Cyrillic→Latin transliteration and stripping diacritics and
+punctuation, so "Проходна", "Prohodna" and "the Eyes of God" are one key. The same
+folding detects name collisions: two entities answering to one name inside a region
+is a **gate** (one thing, one record — rule 2); across regions it is a report,
+because Bulgaria has many villages called Ново село.
+**Rejected.** (a) Deriving aliases from claim text, which would make an indexing
+decision depend on how a sentence happens to be phrased. (b) A search UI in M5 —
+navigation is frozen for this milestone, and a search field changes how people move
+through the site; the index is the half that must exist first and is useful
+immediately without it. (c) A runtime search service, which ADR-003 and ADR-006
+already exclude. (d) Fuzzy matching, which would let search resolve to an entity
+that does not answer to the query — the honest-unknown rule
+(`SEARCH_INTENT_MAP.md` §4 rule 4) applies to search as it does to content.
+**Trade-off.** An alias is asserted without a citation, so a wrong one is a defect
+the ledger cannot catch. The mitigation is that a historical alias carries a `period`
+or a `note` saying what kind of evidence it rests on, and the audit warns when it
+carries neither.
+**Consequence.** `alternateName` appears in the JSON-LD, so a knowledge base can
+reconcile "Иглен" and "Ъглен" as one place rather than holding them apart. The build
+queries the index it just produced against every alias in the graph and fails if one
+does not find its page, so the index cannot rot. `llms.txt` and
+`dist/knowledge.json` carry the same names.
+
+### ADR-019 — The media contract widens before the storage moves
+**Decision.** The media record gains what a field day actually produces —
+photographer and credit URL, a caption distinct from alt text, licence and licence
+URL, the entities an asset *depicts* as distinct from where the camera stood, a
+capture fix, a link to the evidence record it backs, a role, and version/supersede —
+all optional and additive, so every record written against the older shape stays
+valid. Constitution rule 45 becomes `isRenderable()`: an asset carries a licence, a
+capture date, a credit and a depicted entity, all four, or it is held and not
+rendered. The hero of a published page failing that is a **gate**; anything else
+failing it is a report. No `aiGenerated` asset reaches a published page (V11). No
+file moves: ADR-012 remains a later milestone.
+**Rejected.** (a) Migrating storage in the same milestone as the contract, which
+would couple a schema change to an infrastructure change and make either hard to
+revert. (b) Recording the site's existing illustrations as media assets — they are
+machine-made, and a record asserting a photographer and a capture date for one would
+be the fabrication rule 45 exists to refuse. (c) Making the four fields mandatory on
+the record, which would make holding a photograph whose date is not yet known
+impossible; a partial record is knowledge, it is simply not renderable knowledge.
+**Trade-off.** The contract ships with zero records against it, so the code path is
+exercised only by its validators until the first field day. That is the honest state
+of this project's photography, and the report says so plainly.
+**Consequence.** An entity's own photograph takes precedence over the borrowed plate
+the moment one exists, with no other change anywhere. `reports/health.md` names the
+gap — 0 of 28 published pages carry a photograph of their own — which turns "replace
+the AI-looking imagery" (`CONTENT_GAP_ANALYSIS.md` B7) from a note in a document
+into a number on a dashboard.
 
 ---
 

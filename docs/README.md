@@ -1,7 +1,16 @@
 # Architecture documents
 
-Analysis and architecture only; **no code has been changed** and nothing here is
-implemented.
+Architecture only. These documents decide; they do not describe. **As of
+2026-07-26 the architecture they specify is implemented through M5** — the entity
+graph, the claim ledger, the trust layer, the region registry, four build audits
+and the health dashboard are all live. The documents remain the specification new
+work must satisfy, not a record of what was built.
+
+Where a document and the code disagree, the document wins unless an ADR in
+`MASTER_ARCHITECTURE_BLUEPRINT.md` §18 says otherwise. What actually shipped, and
+where implementation diverged from the plan and why, is
+[IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) §13. What is currently weak is
+`../reports/health.md`, generated every build.
 
 - **Phase 1** (see `../reports/seo-audit-2026-07-24.md`) fixed the technical layer.
 - **Phase 2 — Knowledge Architecture** (ten documents) asks a different question:
