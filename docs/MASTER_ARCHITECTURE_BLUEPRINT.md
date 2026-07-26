@@ -1116,6 +1116,65 @@ verified when every source it cites has unestablished provenance). Depth-3 aspec
 pages (`/place/aglen/history/`, `/place/aglen/name/`) are derived from the ledger, so
 they appear when the claims do and never before (rule 26).
 
+### ADR-015 — The trust layer: `/source/<slug>/`, publication state, and signals over counts
+**Date.** 2026-07-26. **Status.** Accepted, shipped with M4B.
+**Context.** M4 built the ledger and rendered it. M4B had to make it *usable* — by a
+researcher, by a model, and above all by a visitor who must never notice it exists.
+Four decisions were needed, each of them about data or about naming rather than about
+styling, so each is recorded here.
+
+**Decision 1 — a frequently-cited source gets a canonical page at `/source/<slug>/`.**
+`/sources/` (the ledger index) is approved architecture and stays exactly what it is.
+What it could not do is give one origin a citable address: a researcher who wants to
+know what this site has drawn from the village's oral memory had no URL to link, and a
+model following a citation landed on a 200-line index. `/source/<slug>/` is the entry;
+`/sources/` is the index of entries. Rule 15 governs the new namespace exactly as it
+governs entities — three live claims earn a page, fewer and the source stays a row in
+the index — which is why 7 of 15 sources publish and 8 do not.
+The slug is a required, unique field on `Source`: a URL may never contain a ledger id.
+
+**Decision 2 — publication state is a field, not an inference.**
+`Claim.status` (`published | draft | internal`) is a separate axis from `confidence`.
+Conflating them was the latent bug in the M4 shape: "should this be shown?" and "how
+well is this known?" are different questions, and an uncertain claim must publish
+(stating an unknown is the point, rule 7) while a draft claim must not, however
+certain. One function, `claimsFor()`, is the only place the question is answered, so a
+draft cannot leak onto a page by being imported somewhere else.
+
+**Decision 3 — a claim carries its own `created` and `reviewedAt`.**
+"Last reviewed" was derived from the sources' access dates, which answers a different
+question: when we first read the source, not when we last checked the statement still
+holds. A build- or deploy-stamped date would be worse still — it would say only that
+CI ran. `reviewedAt` is mandatory on any claim rendering on a published page, enforced
+as a build gate.
+
+**Decision 4 — a page's trust line renders signals, never counts.**
+The M4 footer opened with "N claims · N sources · N open questions". Every number was
+true, and the register was wrong: a page counting its own assertions is a database
+describing itself, and the milestone's governing rule is that a visitor who notices
+the implementation more than the content has been failed by it. `trustSignals()`
+derives a small set of plain phrases — *checked against open records*, *contains oral
+tradition*, *holds an open question* — with the same rigour and none of the vocabulary.
+Signals that do not fire (`primarySources`, `fieldChecked` are both at zero today) are
+not a gap in the interface; they are the sourcing work not yet done, made visible.
+
+**Rejected.** (a) `/history/changes/` as a second corrections surface — it is not in
+the approved architecture, and it would collide with the `/history/<slug>/` entity
+namespace; `/corrections/` already generates from the supersede chain and is the one
+place a correction is published. (b) Separate `claim-audit`, `source-audit` and
+`evidence-audit` scripts — §4.3 makes `graph-audit.mjs` the single enforcement point
+precisely so rule numbering cannot drift; the three are sections of it, reported
+separately. (c) Shipping evidence records for the site's photographs — they are
+illustrations, not dated originals with provenance, and an evidence record for an
+artifact we do not hold is the exact failure this ledger exists to prevent.
+**Consequence.** `Evidence` gains a required single `source` and a widened kind list;
+V6 (no orphan evidence) and V-hash (a regenerable artifact still hashes to its record)
+are enforced on real data — the straight-line distance table is recomputed every build
+and a changed coordinate now stops the build until the measurement is re-checked. An
+orphan source is promoted from warning to gate. `/source/` pages are knowledge-tier,
+so they are indexed in `bg` and `en` and served-but-`noindex` in the other twelve
+(rule 43).
+
 ---
 
 ## 19. Non-functional requirements
