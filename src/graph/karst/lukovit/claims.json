@@ -1,7 +1,7 @@
 {
   "$schema": "../../claims.ts",
   "partition": "karst/lukovit",
-  "note": "Claim and dispute records for the Lukovit-karst partition (M4). One atomic statement per record, each carrying at least one source and a confidence that is never flattened downstream (Constitution rules 6–8). Stated unknowns are claims like any other, with confidence \"uncertain\" — they are how the site says what it does not know instead of going quiet (rule 7, EEAT_STRATEGY §2.3, §6.4). The two etymologies of the village name are a Dispute, not a choice: both render side by side and the site does not decide (V14). Reverse edges — a source's citedBy list, an entity's claim set, dispute membership — are DERIVED in ledger.ts and must not be hand-authored.",
+  "note": "Claim, dispute and evidence records for the Lukovit-karst partition (M4, extended in M4B). One atomic statement per record, each carrying at least one source and a confidence that is never flattened downstream (Constitution rules 6–8). Stated unknowns are claims like any other, with confidence \"uncertain\" — they are how the site says what it does not know instead of going quiet (rule 7, EEAT_STRATEGY §2.3, §6.4). The two etymologies of the village name are a Dispute, not a choice: both render side by side, each stating how well it is itself held, and the site does not decide (V14). Reverse edges — a source's citedBy list, an entity's claim set, dispute membership, the artifacts held under a source — are DERIVED in ledger.ts and must not be hand-authored. On evidence: the layer is complete and gated, and it holds exactly one record, because that is all this project actually holds. The site's photographs are illustrations, not dated originals with provenance; archival scans and field measurements arrive when the originals move to object storage (ADR-012). Writing an evidence record for an artifact we do not hold would be precisely the unbacked assertion this ledger exists to refuse, so the count stays at one until a field day changes it.",
   "disputes": [
     {
       "id": "dsp-aglen-001",
@@ -26,9 +26,14 @@
         "bg": "„Луковитски карст“ означава в този сайт карстовия район на Предбалкана около Луковит — пещерите, скалните венци, арките и каньона на река Вит, в който се намира Ъглен.",
         "en": "“The Lukovit Karst” on this site means the Fore-Balkan karst district around Lukovit — the caves, rock cliffs, arches and the Vit River canyon that holds Aglen."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "reported",
+      "status": "published",
       "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26",
       "note": {
         "bg": "Това е редакционна граница на този проект, а не официално обявена административна или природозащитна единица. Заявена е изрично, за да може да бъде оспорена.",
         "en": "This is an editorial boundary drawn by this project, not an officially designated administrative or conservation unit. It is stated explicitly so that it can be contested."
@@ -42,9 +47,14 @@
         "bg": "Районът носи името на град Луковит — общински център в област Ловеч, разположен на река Златна Панега.",
         "en": "The district is named after the town of Lukovit, a municipal centre in Lovech Province on the Zlatna Panega river."
       },
-      "sources": ["src-reference-0006"],
+      "sources": [
+        "src-reference-0006"
+      ],
       "confidence": "verified",
-      "method": "official"
+      "status": "published",
+      "method": "official",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-karst-lukovit-0003",
@@ -54,8 +64,13 @@
         "bg": "Варовиците в района се описват в текстовете на сайта като принадлежащи към ломешките и априлските пластове, предимно от долната креда.",
         "en": "The limestones of the district are described in the site's texts as belonging to the Lomech and April beds, mostly of the Lower Cretaceous."
       },
-      "sources": ["src-oral-0001"],
+      "sources": [
+        "src-oral-0001"
+      ],
       "confidence": "uncertain",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26",
       "note": {
         "bg": "Терминологията е специализирана и вероятно вярна, но не е свързана с назована геоложка публикация или картен лист. Дотогава се предава като определение, а не като установен факт.",
         "en": "The terminology is specialist and probably right, but it is not tied to a named geological publication or map sheet. Until it is, it is related as a description, not as an established fact."
@@ -69,9 +84,14 @@
         "bg": "Не е установено геоложко проучване, което да описва конкретно скалите при Ъглен; наименованията на пластовете се повтарят от собствения текст на сайта.",
         "en": "No geological survey describing the rocks at Aglen specifically has been identified; the formation names are repeated from the site's own text."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "uncertain",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-aglen-0001",
@@ -81,9 +101,14 @@
         "bg": "Ъглен е единственото населено място в България, чието име започва с буквата „Ъ“.",
         "en": "Aglen is the only settlement in Bulgaria whose name begins with the letter “Ъ”."
       },
-      "sources": ["src-reference-0002"],
+      "sources": [
+        "src-reference-0002"
+      ],
       "confidence": "reported",
-      "method": "publication"
+      "status": "published",
+      "method": "publication",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-aglen-0002",
@@ -93,9 +118,14 @@
         "bg": "Твърдението за уникалността на буквата „Ъ“ не е сверено от този сайт срещу националния регистър на населените места (ЕКАТТЕ).",
         "en": "The claim about the uniqueness of the letter “Ъ” has not been checked by this site against the national settlement register (EKATTE)."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "uncertain",
+      "status": "published",
       "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26",
       "note": {
         "bg": "Проверката е проста и предстои. До нея твърдението остава „предава се“, а не „проверено“.",
         "en": "The check is simple and outstanding. Until it is made, the claim stays reported rather than verified."
@@ -109,9 +139,14 @@
         "bg": "Ъглен е село в община Луковит, област Ловеч, Северна България.",
         "en": "Aglen is a village in Lukovit Municipality, Lovech Province, northern Bulgaria."
       },
-      "sources": ["src-reference-0001"],
+      "sources": [
+        "src-reference-0001"
+      ],
       "confidence": "verified",
-      "method": "official"
+      "status": "published",
+      "method": "official",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-aglen-0004",
@@ -121,9 +156,14 @@
         "bg": "Публикуваните координати на селото са 43.201151° с. ш., 24.314943° и. д.; пощенският код е 5562.",
         "en": "The village's published coordinates are 43.201151° N, 24.314943° E; the postcode is 5562."
       },
-      "sources": ["src-reference-0001"],
+      "sources": [
+        "src-reference-0001"
+      ],
       "confidence": "verified",
+      "status": "published",
       "method": "official",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26",
       "observedAt": "2026-07-26"
     },
     {
@@ -134,10 +174,19 @@
         "bg": "Според едно обяснение името идва от въглищарството: залесеният някога каньон на Вит е поддържал производство на дървени въглища, а пещите и залежите са дали името на селището.",
         "en": "By one explanation the name comes from charcoal-burning: the once-wooded Vit canyon supported the production of charcoal, and the kilns and deposits gave the settlement its name."
       },
-      "sources": ["src-oral-0001"],
+      "sources": [
+        "src-oral-0001"
+      ],
       "confidence": "disputed",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26",
       "disputeOf": "dsp-aglen-001",
-      "interpretation": { "bg": "Въглищарската версия", "en": "The charcoal-burning reading" }
+      "interpretation": {
+        "bg": "Въглищарската версия",
+        "en": "The charcoal-burning reading"
+      },
+      "interpretationConfidence": "reported"
     },
     {
       "id": "clm-aglen-0006",
@@ -147,10 +196,19 @@
         "bg": "Според другото обяснение името идва от скалния релеф: над реката се извисяват остри варовикови зъбци и игли, заради които първите заселници наричали мястото „Иглен“ — мястото около иглите.",
         "en": "By the other explanation the name comes from the rock: sharp limestone teeth and needles rise above the river, for which the first settlers are said to have called the place “Iglen” — the place by the needles."
       },
-      "sources": ["src-oral-0001"],
+      "sources": [
+        "src-oral-0001"
+      ],
       "confidence": "disputed",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26",
       "disputeOf": "dsp-aglen-001",
-      "interpretation": { "bg": "Версията за иглените скали", "en": "The rock-needles reading" }
+      "interpretation": {
+        "bg": "Версията за иглените скали",
+        "en": "The rock-needles reading"
+      },
+      "interpretationConfidence": "uncertain"
     },
     {
       "id": "clm-aglen-0007",
@@ -160,9 +218,14 @@
         "bg": "Нито едно от двете обяснения не е потвърдено от назовано езиковедско изследване; този сайт не избира между тях.",
         "en": "Neither explanation is confirmed by a named philological study; this site does not choose between them."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "uncertain",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-aglen-0008",
@@ -172,8 +235,13 @@
         "bg": "Текстът на сайта сочи като най-ранни писмени следи ранни варианти на името в османски данъчни регистри на Никополския санджак от XV–XVI век.",
         "en": "The site's text points to early variants of the name in Ottoman tax registers of the Nikopol sanjak of the 15th–16th centuries as the earliest written traces."
       },
-      "sources": ["src-oral-0001"],
-      "confidence": "uncertain"
+      "sources": [
+        "src-oral-0001"
+      ],
+      "confidence": "uncertain",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-aglen-0009",
@@ -183,9 +251,14 @@
         "bg": "Конкретен регистър, лист или публикувано издание, в което селото да е записано, не е установен; затова най-ранното сигурно писмено свидетелство за Ъглен остава неустановено.",
         "en": "No specific register, folio or published edition recording the village has been identified; the earliest secure written evidence for Aglen therefore remains unestablished."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "uncertain",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-aglen-0010",
@@ -195,9 +268,15 @@
         "bg": "В Ъглен е роден писателят, публицист и фейлетонист Трифон Кунев (1880).",
         "en": "The writer, publicist and feuilletonist Trifon Kunev was born in Aglen in 1880."
       },
-      "sources": ["src-reference-0003", "src-oral-0001"],
+      "sources": [
+        "src-reference-0003",
+        "src-oral-0001"
+      ],
       "confidence": "reported",
-      "method": "publication"
+      "status": "published",
+      "method": "publication",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-aglen-0011",
@@ -207,8 +286,13 @@
         "bg": "В землището на селото се сочат местности „Селището“ и „Старо село“, за които местната памет разказва, че там хората са живели по-близо до пещерите и скалите преди слизането към речните тераси.",
         "en": "The village land holds localities called “Selishteto” and “Staro selo”, of which local memory relates that people lived there, closer to the caves and rocks, before the move down to the river terraces."
       },
-      "sources": ["src-oral-0001"],
-      "confidence": "uncertain"
+      "sources": [
+        "src-oral-0001"
+      ],
+      "confidence": "uncertain",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-aglen-0012",
@@ -218,9 +302,14 @@
         "bg": "Разстоянията до съседните места, показани на този сайт, са по права линия и са изчислени от публикуваните координати; по път те са по-големи.",
         "en": "The distances to neighbouring places shown on this site are straight-line, computed from the published coordinates; by road they are greater."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "verified",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-lovech-province-0001",
@@ -230,9 +319,14 @@
         "bg": "Област Ловеч е административна област в Северна България с областен център град Ловеч.",
         "en": "Lovech Province is an administrative province of northern Bulgaria with the town of Lovech as its centre."
       },
-      "sources": ["src-reference-0012"],
+      "sources": [
+        "src-reference-0012"
+      ],
       "confidence": "verified",
-      "method": "official"
+      "status": "published",
+      "method": "official",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-lovech-province-0002",
@@ -242,9 +336,15 @@
         "bg": "Община Луковит, а с нея и Ъглен, се намират в границите на област Ловеч.",
         "en": "Lukovit Municipality, and with it Aglen, lie within Lovech Province."
       },
-      "sources": ["src-reference-0001", "src-reference-0012"],
+      "sources": [
+        "src-reference-0001",
+        "src-reference-0012"
+      ],
       "confidence": "verified",
-      "method": "official"
+      "status": "published",
+      "method": "official",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-lovech-province-0003",
@@ -254,9 +354,14 @@
         "bg": "Сайтът не публикува пътни разстояния или времена за пътуване в границите на областта, защото няма проверен източник за тях.",
         "en": "The site publishes no road distances or travel times within the province, because it holds no verified source for them."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "verified",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-lukovit-0001",
@@ -266,9 +371,14 @@
         "bg": "Луковит е град в област Ловеч и център на община Луковит.",
         "en": "Lukovit is a town in Lovech Province and the centre of Lukovit Municipality."
       },
-      "sources": ["src-reference-0006"],
+      "sources": [
+        "src-reference-0006"
+      ],
       "confidence": "verified",
-      "method": "official"
+      "status": "published",
+      "method": "official",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-lukovit-0002",
@@ -278,9 +388,14 @@
         "bg": "Луковит е входната точка към района: оттук се стига до Ъглен, Карлуково и геопарк Искър–Панега.",
         "en": "Lukovit is the gateway to the district: Aglen, Karlukovo and the Iskar–Panega geopark are reached from here."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "reported",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-lukovit-0003",
@@ -290,9 +405,14 @@
         "bg": "Сайтът не публикува разписания, транспортни връзки или времена за пътуване от Луковит, защото не ги е проверил.",
         "en": "The site publishes no timetables, transport connections or travel times from Lukovit, because it has not verified them."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "verified",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-karlukovo-0001",
@@ -302,9 +422,14 @@
         "bg": "Карлуково е село в община Луковит, дало името на Карлуковския карстов район.",
         "en": "Karlukovo is a village in Lukovit Municipality that gives its name to the Karlukovo karst area."
       },
-      "sources": ["src-reference-0008"],
+      "sources": [
+        "src-reference-0008"
+      ],
       "confidence": "verified",
-      "method": "official"
+      "status": "published",
+      "method": "official",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-karlukovo-0002",
@@ -314,9 +439,15 @@
         "bg": "В землището на Карлуково се намира пещерата Проходна.",
         "en": "The cave of Prohodna lies in the land of Karlukovo."
       },
-      "sources": ["src-reference-0007", "src-reference-0004"],
+      "sources": [
+        "src-reference-0007",
+        "src-reference-0004"
+      ],
       "confidence": "verified",
-      "method": "publication"
+      "status": "published",
+      "method": "publication",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-karlukovo-0003",
@@ -326,9 +457,14 @@
         "bg": "Сайтът не публикува насоки за достъп до пещерите край Карлуково; за влизане в пещера се търси местен спелеоклуб или водач.",
         "en": "The site publishes no access guidance for the caves around Karlukovo; for entering a cave, ask a local caving club or guide."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "verified",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-prohodna-0001",
@@ -338,9 +474,15 @@
         "bg": "Проходна е проходна пещера край Карлуково, в Карлуковския карстов район.",
         "en": "Prohodna is a through-cave near Karlukovo, in the Karlukovo karst area."
       },
-      "sources": ["src-reference-0007", "src-reference-0004"],
+      "sources": [
+        "src-reference-0007",
+        "src-reference-0004"
+      ],
       "confidence": "verified",
-      "method": "publication"
+      "status": "published",
+      "method": "publication",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-prohodna-0002",
@@ -350,9 +492,14 @@
         "bg": "Два отвора в тавана на пещерата са известни като „Очите на Бога“ (наричани и „Очилата“).",
         "en": "Two openings in the cave's ceiling are known as “the Eyes of God” (also called “the Spectacles”)."
       },
-      "sources": ["src-reference-0004"],
+      "sources": [
+        "src-reference-0004"
+      ],
       "confidence": "reported",
-      "method": "publication"
+      "status": "published",
+      "method": "publication",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-prohodna-0003",
@@ -362,9 +509,14 @@
         "bg": "Името „Очите на Бога“ е популярно съвременно название; този сайт не разполага със записано предание с назован разказвач и дата за него.",
         "en": "The name “the Eyes of God” is modern popular usage; this site holds no collected legend for it with a named teller and a date."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "uncertain",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-prohodna-0004",
@@ -374,9 +526,14 @@
         "bg": "Сайтът не публикува оценка за трудност, безопасност или условия за влизане в пещерата.",
         "en": "The site publishes no difficulty rating, safety assessment or entry conditions for the cave."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "verified",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-vit-river-0001",
@@ -386,9 +543,14 @@
         "bg": "Вит е река в Северна България и десен приток на Дунав.",
         "en": "The Vit is a river of northern Bulgaria and a right tributary of the Danube."
       },
-      "sources": ["src-reference-0005"],
+      "sources": [
+        "src-reference-0005"
+      ],
       "confidence": "verified",
-      "method": "official"
+      "status": "published",
+      "method": "official",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-vit-river-0002",
@@ -398,8 +560,13 @@
         "bg": "В участъка при Ъглен реката тече през варовиков каньон и прави тесни меандри; текстът на сайта свързва меандрите с по-стари тектонски разседи.",
         "en": "In the reach at Aglen the river runs through a limestone canyon and makes tight meanders; the site's text links the meanders to older tectonic faults."
       },
-      "sources": ["src-oral-0001"],
-      "confidence": "uncertain"
+      "sources": [
+        "src-oral-0001"
+      ],
+      "confidence": "uncertain",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-vit-river-0003",
@@ -409,9 +576,14 @@
         "bg": "Сайтът не публикува места за къпане, водни нива или оценка за безопасност на реката.",
         "en": "The site publishes no swimming spots, water levels or safety assessment for the river."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "verified",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-iskar-panega-0001",
@@ -421,9 +593,14 @@
         "bg": "Искър–Панега е геопарк по поречието на река Златна Панега в община Луковит.",
         "en": "Iskar–Panega is a geopark along the Zlatna Panega river in Lukovit Municipality."
       },
-      "sources": ["src-reference-0006"],
+      "sources": [
+        "src-reference-0006"
+      ],
       "confidence": "reported",
-      "method": "publication"
+      "status": "published",
+      "method": "publication",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-iskar-panega-0002",
@@ -433,9 +610,14 @@
         "bg": "Обектът е линеен — следва течението на реката — затова за него не се публикува една точкова координата.",
         "en": "The site is linear — it follows the course of the river — so no single point coordinate is published for it."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "verified",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-iskar-panega-0003",
@@ -445,9 +627,14 @@
         "bg": "Работно време, такси и състояние на екопътеката не са проверени от този сайт и не се публикуват.",
         "en": "Opening times, fees and the condition of the eco-trail have not been verified by this site and are not published."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "verified",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-zlatna-panega-0001",
@@ -457,9 +644,14 @@
         "bg": "Златна Панега е село в община Ябланица, област Ловеч, дало името на реката Златна Панега.",
         "en": "Zlatna Panega is a village in Yablanitsa Municipality, Lovech Province, which gives its name to the Zlatna Panega river."
       },
-      "sources": ["src-reference-0013"],
+      "sources": [
+        "src-reference-0013"
+      ],
       "confidence": "verified",
-      "method": "official"
+      "status": "published",
+      "method": "official",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-zlatna-panega-0002",
@@ -469,9 +661,14 @@
         "bg": "Карстовият извор при селото е началото на реката, по която минава геопарк Искър–Панега.",
         "en": "The karst spring at the village is the head of the river along which the Iskar–Panega geopark runs."
       },
-      "sources": ["src-reference-0013"],
+      "sources": [
+        "src-reference-0013"
+      ],
       "confidence": "reported",
-      "method": "publication"
+      "status": "published",
+      "method": "publication",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-zlatna-panega-0003",
@@ -481,9 +678,14 @@
         "bg": "Този сайт не е посещавал извора със собствено измерване и не публикува координати за самия извор.",
         "en": "This site has not visited the spring with its own measurement and publishes no coordinates for the spring itself."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "verified",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-devetashka-0001",
@@ -493,9 +695,14 @@
         "bg": "Деветашката пещера е голяма пещера в област Ловеч, край село Деветаки.",
         "en": "Devetashka Cave is a large cave in Lovech Province, near the village of Devetaki."
       },
-      "sources": ["src-reference-0009"],
+      "sources": [
+        "src-reference-0009"
+      ],
       "confidence": "verified",
-      "method": "official"
+      "status": "published",
+      "method": "official",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-devetashka-0002",
@@ -505,9 +712,14 @@
         "bg": "Пещерата е известна с отворите в свода си и с колонията прилепи, която обитава част от нея.",
         "en": "The cave is known for the openings in its vault and for the bat colony that occupies part of it."
       },
-      "sources": ["src-reference-0009"],
+      "sources": [
+        "src-reference-0009"
+      ],
       "confidence": "reported",
-      "method": "publication"
+      "status": "published",
+      "method": "publication",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-devetashka-0003",
@@ -517,9 +729,14 @@
         "bg": "Пещерата е извън същинския Луковитски карст и е включена тук само като съседен обект; режимът ѝ на достъп не е проверен от този сайт.",
         "en": "The cave lies outside the Lukovit karst proper and is included here only as a neighbouring site; its access regime has not been verified by this site."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "verified",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-krushuna-0001",
@@ -529,9 +746,14 @@
         "bg": "Крушунската бигорна каскада е травертинова каскада от водопади в област Ловеч, край село Крушуна.",
         "en": "Krushuna Falls is a travertine cascade of waterfalls in Lovech Province, near the village of Krushuna."
       },
-      "sources": ["src-reference-0010"],
+      "sources": [
+        "src-reference-0010"
+      ],
       "confidence": "verified",
-      "method": "official"
+      "status": "published",
+      "method": "official",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-krushuna-0002",
@@ -541,9 +763,14 @@
         "bg": "Каскадата се захранва от карстов извор и отлага бигор (травертин) — същият карстов процес, който оформя и района около Ъглен.",
         "en": "The cascade is fed by a karst spring and deposits travertine — the same karst process that shapes the district around Aglen."
       },
-      "sources": ["src-reference-0010"],
+      "sources": [
+        "src-reference-0010"
+      ],
       "confidence": "reported",
-      "method": "publication"
+      "status": "published",
+      "method": "publication",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-krushuna-0003",
@@ -553,9 +780,14 @@
         "bg": "Обектът е извън Луковитския карст и е включен като съседен; такси, работно време и състояние на пътеките не са проверени.",
         "en": "The site lies outside the Lukovit karst and is included as a neighbour; fees, opening times and path conditions have not been verified."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "verified",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-lovech-0001",
@@ -565,9 +797,14 @@
         "bg": "Ловеч е град в Северна България и административен център на област Ловеч.",
         "en": "Lovech is a town in northern Bulgaria and the administrative centre of Lovech Province."
       },
-      "sources": ["src-reference-0011"],
+      "sources": [
+        "src-reference-0011"
+      ],
       "confidence": "verified",
-      "method": "official"
+      "status": "published",
+      "method": "official",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-lovech-0002",
@@ -577,9 +814,15 @@
         "bg": "Градът е областният център, към който се отнася Ъглен административно, но не е част от Луковитския карст.",
         "en": "The town is the provincial centre to which Aglen belongs administratively, but it is not part of the Lukovit karst."
       },
-      "sources": ["src-reference-0011", "src-reference-0012"],
+      "sources": [
+        "src-reference-0011",
+        "src-reference-0012"
+      ],
       "confidence": "verified",
-      "method": "official"
+      "status": "published",
+      "method": "official",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-lovech-0003",
@@ -589,9 +832,14 @@
         "bg": "Сайтът не публикува транспортни връзки или времена за пътуване между Ловеч и Ъглен.",
         "en": "The site publishes no transport connections or travel times between Lovech and Aglen."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "verified",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-dupkata-0001",
@@ -601,8 +849,13 @@
         "bg": "Дупката е естествена скална арка над река Вит в землището на Ъглен.",
         "en": "Dupkata is a natural rock arch above the Vit River in the land of Aglen."
       },
-      "sources": ["src-oral-0001"],
-      "confidence": "reported"
+      "sources": [
+        "src-oral-0001"
+      ],
+      "confidence": "reported",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-dupkata-0002",
@@ -612,8 +865,13 @@
         "bg": "Арката се описва като изградена от същите варовици, които оформят скалните форми в Карлуковския район.",
         "en": "The arch is described as formed in the same limestones that shape the rock forms of the Karlukovo area."
       },
-      "sources": ["src-oral-0001"],
-      "confidence": "uncertain"
+      "sources": [
+        "src-oral-0001"
+      ],
+      "confidence": "uncertain",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-dupkata-0003",
@@ -623,9 +881,14 @@
         "bg": "За Дупката не е записана GPS точка, затова сайтът не публикува координати за нея.",
         "en": "No GPS fix has been recorded for Dupkata, so the site publishes no coordinates for it."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "verified",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-dupkata-0004",
@@ -635,9 +898,14 @@
         "bg": "Няма проверена информация за подхода, трудността или безопасността при арката и такава не се публикува.",
         "en": "There is no verified information about the approach, difficulty or safety at the arch, and none is published."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "verified",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-sloncheto-0001",
@@ -647,8 +915,13 @@
         "bg": "Слончето е скална форма над долината на Вит край Ъглен, наречена по силуета си.",
         "en": "Sloncheto is a rock form above the Vit valley near Aglen, named after its silhouette."
       },
-      "sources": ["src-oral-0001"],
-      "confidence": "reported"
+      "sources": [
+        "src-oral-0001"
+      ],
+      "confidence": "reported",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-sloncheto-0002",
@@ -658,8 +931,13 @@
         "bg": "Името е местно и описателно; то е част от фолклорния пейзаж на селото, а не официално топонимично название.",
         "en": "The name is local and descriptive; it belongs to the village's folkloric landscape rather than to any official toponymy."
       },
-      "sources": ["src-oral-0001"],
-      "confidence": "reported"
+      "sources": [
+        "src-oral-0001"
+      ],
+      "confidence": "reported",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-sloncheto-0003",
@@ -669,9 +947,14 @@
         "bg": "За Слончето не е записана GPS точка и не се публикуват координати.",
         "en": "No GPS fix has been recorded for Sloncheto and no coordinates are published."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "verified",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-chervena-stena-0001",
@@ -681,8 +964,13 @@
         "bg": "Червена стена е скален венец над каньона на Вит край Ъглен и панорамна точка към долината.",
         "en": "Chervena stena is a rock face above the Vit canyon near Aglen and a viewpoint over the valley."
       },
-      "sources": ["src-oral-0001"],
-      "confidence": "reported"
+      "sources": [
+        "src-oral-0001"
+      ],
+      "confidence": "reported",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-chervena-stena-0002",
@@ -692,8 +980,13 @@
         "bg": "Каньонните стени в този участък се описват като високи на места до около 100 метра.",
         "en": "The canyon walls in this reach are described as reaching about 100 metres in places."
       },
-      "sources": ["src-oral-0001"],
-      "confidence": "uncertain"
+      "sources": [
+        "src-oral-0001"
+      ],
+      "confidence": "uncertain",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-chervena-stena-0003",
@@ -703,9 +996,14 @@
         "bg": "Височината не е измерена от този сайт, за мястото няма записана GPS точка и не се публикуват координати.",
         "en": "The height has not been measured by this site, no GPS fix has been recorded for the place, and no coordinates are published."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "verified",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-rachkov-vir-0001",
@@ -715,8 +1013,13 @@
         "bg": "Рачков вир е речен вир на Вит в землището на Ъглен, под варовиковите скали.",
         "en": "Rachkov vir is a river pool on the Vit in the land of Aglen, below the limestone rocks."
       },
-      "sources": ["src-oral-0001"],
-      "confidence": "reported"
+      "sources": [
+        "src-oral-0001"
+      ],
+      "confidence": "reported",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-rachkov-vir-0002",
@@ -726,9 +1029,14 @@
         "bg": "Вирът е част от водосбора на Вит.",
         "en": "The pool is part of the Vit watershed."
       },
-      "sources": ["src-reference-0005"],
+      "sources": [
+        "src-reference-0005"
+      ],
       "confidence": "verified",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-rachkov-vir-0003",
@@ -738,9 +1046,14 @@
         "bg": "Не е известно дали къпането във вира е безопасно; сайтът не го препоръчва и не го разубеждава, а посочва, че въпросът трябва да се зададе на местни хора на място.",
         "en": "Whether swimming in the pool is safe is not known; the site neither recommends nor discourages it, and states that the question should be put to local people on the spot."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "uncertain",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-rachkov-vir-0004",
@@ -750,9 +1063,14 @@
         "bg": "За вира не е записана GPS точка и не се публикуват координати.",
         "en": "No GPS fix has been recorded for the pool and no coordinates are published."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "verified",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-kaleto-0001",
@@ -762,8 +1080,13 @@
         "bg": "Калето е местност над долината на Вит край Ъглен, свързвана в местната памет с укрепление и със старите пътища по долината.",
         "en": "Kaleto is a locality above the Vit valley near Aglen, associated in local memory with a fortification and with the old roads along the valley."
       },
-      "sources": ["src-oral-0001"],
-      "confidence": "uncertain"
+      "sources": [
+        "src-oral-0001"
+      ],
+      "confidence": "uncertain",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-kaleto-0002",
@@ -773,9 +1096,14 @@
         "bg": "Обектът не е установен в регистър на недвижимите културни ценности и не е известно да е археологически проучван и публикуван.",
         "en": "The site has not been located in any register of immovable cultural property, and no archaeological survey or publication for it is known."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "uncertain",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-kaleto-0003",
@@ -785,9 +1113,14 @@
         "bg": "За Калето не е записана GPS точка, не се публикуват координати и не се дават насоки за подход.",
         "en": "No GPS fix has been recorded for Kaleto, no coordinates are published and no approach guidance is given."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "verified",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-st-archangel-michael-0001",
@@ -797,8 +1130,13 @@
         "bg": "Църквата „Св. Архангел Михаил“ в Ъглен се сочи като построена през 1888 година.",
         "en": "The church of St Archangel Michael in Aglen is said to have been built in 1888."
       },
-      "sources": ["src-oral-0001"],
-      "confidence": "reported"
+      "sources": [
+        "src-oral-0001"
+      ],
+      "confidence": "reported",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-st-archangel-michael-0002",
@@ -808,8 +1146,13 @@
         "bg": "Местната памет свързва строежа с почит към загинали жители на селото, жертви на набези през османския период.",
         "en": "Local memory connects the building with the commemoration of villagers killed in raids during the Ottoman period."
       },
-      "sources": ["src-oral-0001"],
+      "sources": [
+        "src-oral-0001"
+      ],
       "confidence": "uncertain",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26",
       "note": {
         "bg": "Предава се като памет на селото. Броят, датата и обстоятелствата не са установени по документ и не се твърдят тук.",
         "en": "Related as village memory. The number, the date and the circumstances are not established from any document and are not asserted here."
@@ -823,9 +1166,14 @@
         "bg": "Годината 1888 не е сверена с църковен регистър, епархийски архив или регистър на НИНКН.",
         "en": "The year 1888 has not been checked against a church register, a diocesan archive or the national heritage register."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "uncertain",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-st-archangel-michael-0004",
@@ -835,9 +1183,14 @@
         "bg": "Сайтът не публикува работно време или условия за посещение на храма.",
         "en": "The site publishes no opening times or visiting conditions for the church."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "verified",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-trifon-kunev-0001",
@@ -847,9 +1200,15 @@
         "bg": "Трифон Кунев е български поет, писател, публицист и фейлетонист, роден през 1880 година в село Ъглен.",
         "en": "Trifon Kunev was a Bulgarian poet, writer, publicist and feuilletonist, born in 1880 in the village of Aglen."
       },
-      "sources": ["src-reference-0003", "src-oral-0001"],
+      "sources": [
+        "src-reference-0003",
+        "src-oral-0001"
+      ],
       "confidence": "reported",
-      "method": "publication"
+      "status": "published",
+      "method": "publication",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-trifon-kunev-0002",
@@ -859,9 +1218,15 @@
         "bg": "След 1944 година Кунев е подложен на преследване и преминава през лагерите.",
         "en": "After 1944 Kunev was persecuted and went through the camps."
       },
-      "sources": ["src-reference-0003", "src-oral-0001"],
+      "sources": [
+        "src-reference-0003",
+        "src-oral-0001"
+      ],
       "confidence": "reported",
-      "method": "publication"
+      "status": "published",
+      "method": "publication",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-trifon-kunev-0003",
@@ -871,9 +1236,14 @@
         "bg": "Раждането му в Ъглен е най-силната връзка на селото към националната памет.",
         "en": "His birth in Aglen is the village's strongest tie to the national record."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "reported",
+      "status": "published",
       "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26",
       "note": {
         "bg": "Това е преценка на този сайт за значимост, не факт за биографията му.",
         "en": "This is this site's judgement of significance, not a fact about his biography."
@@ -887,9 +1257,14 @@
         "bg": "В Ъглен не е документирана от този сайт родна къща, паметна плоча или архивно свидетелство, свързано с Кунев.",
         "en": "No birth house, memorial plaque or archival holding connected with Kunev has been documented in Aglen by this site."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "uncertain",
+      "status": "published",
       "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26",
       "note": {
         "bg": "Това е отворена изследователска задача, а не отсъствие на такива следи.",
         "en": "This is an open research task, not evidence that no such traces exist."
@@ -903,9 +1278,14 @@
         "bg": "Литературните оценки на творчеството му не се преразказват тук; те принадлежат на литературознанието, не на този сайт.",
         "en": "Literary assessments of his work are not restated here; they belong to literary scholarship, not to this site."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "verified",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-dvukrakite-senki-0001",
@@ -915,9 +1295,14 @@
         "bg": "В Ъглен се разказва предание, че в най-дълбоките пещери и под скалните козирки някога живеели „мълчаливи човеци“, които не палели огън с дим, за да не ги видят духовете на планината, и се хранели с речни миди, див лук и месо от горски животни.",
         "en": "A legend is told in Aglen that “silent people” once lived in the deepest caves and under the rock overhangs, who lit no smoking fire so that the spirits of the mountain would not see them, and who ate river mussels, wild onion and the meat of forest animals."
       },
-      "sources": ["src-oral-0001"],
+      "sources": [
+        "src-oral-0001"
+      ],
       "confidence": "reported",
+      "status": "published",
       "method": "interview",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26",
       "note": {
         "bg": "Твърдението тук е, че преданието се разказва — не че описаното се е случило.",
         "en": "The claim here is that the legend is told — not that what it describes happened."
@@ -931,9 +1316,14 @@
         "bg": "Текстът на сайта отбелязва, че описаният начин на живот прилича на този на ранните ловци-събирачи; приликата е наблюдение, а не доказателство, че преданието пази спомен за тях.",
         "en": "The site's text observes that the way of life described resembles that of early hunter-gatherers; the resemblance is an observation, not evidence that the legend preserves a memory of them."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "uncertain",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-dvukrakite-senki-0003",
@@ -943,9 +1333,14 @@
         "bg": "Кой е разказал преданието, кой го е записал и кога, не е установено: нито сборник, нито сигнатура, нито информатор са назовани.",
         "en": "Who told the legend, who recorded it and when is not established: no collection, no shelfmark and no informant is named."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "uncertain",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-dvukrakite-senki-0004",
@@ -955,9 +1350,14 @@
         "bg": "Този сайт не твърди, че преданието е исторически вярно, нито че някоя пещера в землището на Ъглен е била обитавана в палеолита.",
         "en": "This site does not claim that the legend is historically true, nor that any cave in the land of Aglen was inhabited in the Palaeolithic."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "verified",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-zlatnata-brazdichka-0001",
@@ -967,9 +1367,14 @@
         "bg": "В Ъглен се разказва предание, че първите земеделци в долината направили първата си бразда там, където реката прави най-острия си завой под скалата, вярвайки, че земята там е „целуната от вождовете на подземния свят“, защото изворите излизали направо от скалните недра и носели живот и в суша.",
         "en": "A legend is told in Aglen that the first farmers of the valley made their first furrow where the river makes its sharpest bend under the rock, believing the earth there to be “kissed by the lords of the underworld”, because the springs came straight out of the rock and carried life even through drought."
       },
-      "sources": ["src-oral-0001"],
+      "sources": [
+        "src-oral-0001"
+      ],
       "confidence": "reported",
+      "status": "published",
       "method": "interview",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26",
       "note": {
         "bg": "Твърдението тук е, че преданието се разказва — не че описаното се е случило.",
         "en": "The claim here is that the legend is told — not that what it describes happened."
@@ -983,9 +1388,14 @@
         "bg": "Мястото на завоя, за което говори преданието, не е фиксирано към картна точка от този сайт.",
         "en": "The bend the legend speaks of has not been fixed to a mapped point by this site."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "uncertain",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-zlatnata-brazdichka-0003",
@@ -995,9 +1405,14 @@
         "bg": "Разказвачът и записвачът на преданието не са установени и не е известен публикуван сборник, в който то да е поместено.",
         "en": "The teller and the recorder of the legend are not established, and no published collection containing it is known."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "uncertain",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-zlatnata-brazdichka-0004",
@@ -1007,9 +1422,14 @@
         "bg": "Сайтът не твърди, че в долината е доказано ранно земеделие на конкретно място, нито че преданието описва действително събитие.",
         "en": "The site does not claim that early agriculture is demonstrated at any specific spot in the valley, nor that the legend describes an actual event."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "verified",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-iglen-grad-golyama-0001",
@@ -1019,9 +1439,14 @@
         "bg": "Според старо местно предание селището първоначално се наричало „Иглен град голяма“ — заради острите скални игли и зъбци над реката.",
         "en": "By an old local tradition the settlement was first called “Iglen grad golyama” — after the sharp rock needles and teeth above the river."
       },
-      "sources": ["src-oral-0001"],
+      "sources": [
+        "src-oral-0001"
+      ],
       "confidence": "reported",
+      "status": "published",
       "method": "interview",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26",
       "note": {
         "bg": "Твърдението тук е, че преданието се разказва — не че селището е носило това име.",
         "en": "The claim here is that the tradition is told — not that the settlement bore this name."
@@ -1035,9 +1460,14 @@
         "bg": "Формата „Иглен град голяма“ не е открита от този сайт в никакъв регистър, карта или документ.",
         "en": "The form “Iglen grad golyama” has not been found by this site in any register, map or document."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "uncertain",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-iglen-grad-golyama-0003",
@@ -1047,9 +1477,14 @@
         "bg": "Преданието е една от двете живи версии за произхода на името на селото и се разглежда заедно с въглищарската версия, без сайтът да избира между тях.",
         "en": "The tradition is one of the two living readings of the village name's origin and is presented together with the charcoal-burning reading, without the site choosing between them."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "verified",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-deep-time-0001",
@@ -1059,8 +1494,13 @@
         "bg": "Варовиците, в които е врязан каньонът на Вит при Ъглен, се описват като отложени в плитко море през долната креда.",
         "en": "The limestones into which the Vit canyon at Aglen is cut are described as laid down in a shallow sea during the Lower Cretaceous."
       },
-      "sources": ["src-oral-0001"],
-      "confidence": "uncertain"
+      "sources": [
+        "src-oral-0001"
+      ],
+      "confidence": "uncertain",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-deep-time-0002",
@@ -1070,8 +1510,13 @@
         "bg": "Река Вит прави в този участък специфични меандри, които текстът на сайта свързва с по-стари тектонски разседи.",
         "en": "In this reach the Vit makes distinctive meanders, which the site's text links to older tectonic faults."
       },
-      "sources": ["src-oral-0001"],
-      "confidence": "uncertain"
+      "sources": [
+        "src-oral-0001"
+      ],
+      "confidence": "uncertain",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-deep-time-0003",
@@ -1081,8 +1526,13 @@
         "bg": "Под коритото на реката и под скалните масиви се описва мрежа от подземни сифони и сухи галерии, която не е напълно картирана.",
         "en": "Beneath the riverbed and the rock massifs a network of underground siphons and dry galleries is described, which is not fully mapped."
       },
-      "sources": ["src-oral-0001"],
-      "confidence": "uncertain"
+      "sources": [
+        "src-oral-0001"
+      ],
+      "confidence": "uncertain",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-deep-time-0004",
@@ -1092,8 +1542,13 @@
         "bg": "Дълбокият каньон и пещерните извори създават местен микроклимат, с който се свързва запазването на реликтна растителност.",
         "en": "The deep canyon and the cave springs create a local microclimate, with which the survival of relict vegetation is associated."
       },
-      "sources": ["src-oral-0001"],
-      "confidence": "uncertain"
+      "sources": [
+        "src-oral-0001"
+      ],
+      "confidence": "uncertain",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-deep-time-0005",
@@ -1103,9 +1558,14 @@
         "bg": "Нито едно от горните описания не е свързано от този сайт с назована геоложка или спелеоложка публикация; те се предават като описание, а не като установен факт.",
         "en": "None of the descriptions above has been tied by this site to a named geological or speleological publication; they are related as description, not as established fact."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "uncertain",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-prehistory-0001",
@@ -1115,8 +1575,13 @@
         "bg": "Около скалните арки и пещерите в района се съобщава за отделни фрагменти праисторическа керамика, отнасяни към халколита и ранната бронзова епоха.",
         "en": "Around the rock arches and caves of the district, individual fragments of prehistoric pottery are reported, attributed to the Chalcolithic and the Early Bronze Age."
       },
-      "sources": ["src-oral-0001"],
-      "confidence": "uncertain"
+      "sources": [
+        "src-oral-0001"
+      ],
+      "confidence": "uncertain",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-prehistory-0002",
@@ -1126,8 +1591,13 @@
         "bg": "Пещерите се описват като временни убежища на ловци и ранни скотовъдци.",
         "en": "The caves are described as temporary shelters for hunters and early herders."
       },
-      "sources": ["src-oral-0001"],
-      "confidence": "uncertain"
+      "sources": [
+        "src-oral-0001"
+      ],
+      "confidence": "uncertain",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-prehistory-0003",
@@ -1137,8 +1607,13 @@
         "bg": "Алувиалните тераси край Вит се сочат като почвите, позволили първите опити със земеделие в долината.",
         "en": "The alluvial terraces by the Vit are pointed to as the soils that allowed the first attempts at agriculture in the valley."
       },
-      "sources": ["src-oral-0001"],
-      "confidence": "uncertain"
+      "sources": [
+        "src-oral-0001"
+      ],
+      "confidence": "uncertain",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-prehistory-0004",
@@ -1148,9 +1623,14 @@
         "bg": "Не е установен доклад от разкопки, музейна инвентарна книга или публикация, която да документира тези находки.",
         "en": "No excavation report, museum inventory or publication documenting these finds has been identified."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "uncertain",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-flint-workshops-0001",
@@ -1160,8 +1640,13 @@
         "bg": "По терасите над реката в Луковитско се съобщава за следи от къснонеолитни работилници за обработка на кремък.",
         "en": "On the terraces above the river in the Lukovit area, traces of Late Neolithic flint-working sites are reported."
       },
-      "sources": ["src-oral-0001"],
-      "confidence": "uncertain"
+      "sources": [
+        "src-oral-0001"
+      ],
+      "confidence": "uncertain",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-flint-workshops-0002",
@@ -1171,8 +1656,13 @@
         "bg": "Кремъчните конкреции, вложени в местните варовици, се описват като висококачествена суровина за остриета, ножове и стрели.",
         "en": "The flint nodules embedded in the local limestones are described as a high-quality raw material for blades, knives and arrowheads."
       },
-      "sources": ["src-oral-0001"],
-      "confidence": "uncertain"
+      "sources": [
+        "src-oral-0001"
+      ],
+      "confidence": "uncertain",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-flint-workshops-0003",
@@ -1182,9 +1672,14 @@
         "bg": "Определянето на района като „индустриален център на ранната праистория“ е формулировка на собствения текст на сайта и не почива на назована публикация.",
         "en": "Describing the district as an “industrial centre of early prehistory” is a formulation of the site's own text and does not rest on a named publication."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "uncertain",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-flint-workshops-0004",
@@ -1194,9 +1689,14 @@
         "bg": "Ако бъдат намерени и цитирани археологическите доклади за тези работилници, това е най-силният неизползван факт за района.",
         "en": "If the archaeological reports on these workshops are found and cited, this is the strongest unused fact the district holds."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "reported",
+      "status": "published",
       "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26",
       "note": {
         "bg": "Заявено като редакционен приоритет, не като факт за миналото.",
         "en": "Stated as an editorial priority, not as a fact about the past."
@@ -1210,8 +1710,13 @@
         "bg": "През желязната епоха долината попада в земите на тракийското племе трибали.",
         "en": "In the Iron Age the valley falls within the lands of the Thracian tribe of the Triballi."
       },
-      "sources": ["src-oral-0001"],
-      "confidence": "uncertain"
+      "sources": [
+        "src-oral-0001"
+      ],
+      "confidence": "uncertain",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-thracians-0002",
@@ -1221,8 +1726,13 @@
         "bg": "Труднодостъпните скални тераси се описват като използвани за светилища на открито, свързани с култове към водата и скалата, както в съседния Карлуково-Искърски район.",
         "en": "The hard-to-reach rock terraces are described as used for open-air sanctuaries connected with cults of water and rock, as in the neighbouring Karlukovo–Iskar region."
       },
-      "sources": ["src-oral-0001"],
-      "confidence": "uncertain"
+      "sources": [
+        "src-oral-0001"
+      ],
+      "confidence": "uncertain",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-thracians-0003",
@@ -1232,8 +1742,13 @@
         "bg": "Карстовите извори в района се описват като почитани за лековити.",
         "en": "The karst springs of the district are described as revered as healing."
       },
-      "sources": ["src-oral-0001"],
-      "confidence": "uncertain"
+      "sources": [
+        "src-oral-0001"
+      ],
+      "confidence": "uncertain",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-thracians-0004",
@@ -1243,9 +1758,14 @@
         "bg": "Не е установен археологически обект с публикувано проучване, който да свързва тракийско присъствие конкретно със землището на Ъглен.",
         "en": "No archaeological site with a published survey linking a Thracian presence specifically to the land of Aglen has been identified."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "uncertain",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-ottoman-registers-0001",
@@ -1255,8 +1775,13 @@
         "bg": "В ранни османски данъчни регистри (тефтери) на Никополския санджак от XV и XVI век селото се споменава според текста на сайта под различни фонетични варианти на името.",
         "en": "In early Ottoman tax registers (defters) of the Nikopol sanjak of the 15th and 16th centuries the village is, according to the site's text, mentioned under various phonetic variants of the name."
       },
-      "sources": ["src-oral-0001"],
-      "confidence": "uncertain"
+      "sources": [
+        "src-oral-0001"
+      ],
+      "confidence": "uncertain",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-ottoman-registers-0002",
@@ -1266,8 +1791,13 @@
         "bg": "Данъците се описват като плащани главно в натура — жито, дребен добитък и пчеларство.",
         "en": "The taxes are described as paid mainly in kind — grain, small livestock and beekeeping."
       },
-      "sources": ["src-oral-0001"],
-      "confidence": "uncertain"
+      "sources": [
+        "src-oral-0001"
+      ],
+      "confidence": "uncertain",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-ottoman-registers-0003",
@@ -1277,9 +1807,14 @@
         "bg": "Конкретен тефтер, лист или публикувано издание не е назован нито в текста на сайта, нито установен впоследствие; това е най-голямата известна празнина в историята на селото.",
         "en": "No specific defter, folio or published edition is named in the site's text or has been identified since; this is the largest known gap in the village's history."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "uncertain",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-ottoman-registers-0004",
@@ -1289,8 +1824,13 @@
         "bg": "Местната памет свързва с този период и трагедия в местността Селището, за която сайтът не разполага с документ.",
         "en": "Local memory also connects this period with a tragedy at the locality of Selishteto, for which the site holds no document."
       },
-      "sources": ["src-oral-0001"],
+      "sources": [
+        "src-oral-0001"
+      ],
       "confidence": "uncertain",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26",
       "note": {
         "bg": "Предава се като памет на селото. Обстоятелствата, датата и броят на загиналите не се твърдят.",
         "en": "Related as village memory. The circumstances, the date and the number of dead are not asserted."
@@ -1304,8 +1844,13 @@
         "bg": "През по-спокойните десетилетия на XIX век селото слиза от височините към по-обширните тераси около реката, където условията за земеделие са по-добри.",
         "en": "In the calmer decades of the 19th century the village came down from the heights to the wider terraces by the river, where conditions for farming were better."
       },
-      "sources": ["src-oral-0001"],
-      "confidence": "uncertain"
+      "sources": [
+        "src-oral-0001"
+      ],
+      "confidence": "uncertain",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-revival-0002",
@@ -1315,8 +1860,13 @@
         "bg": "Църквата „Св. Архангел Михаил“ се сочи като построена през 1888 година — най-ранната конкретна дата, която сайтът публикува за сграда в селото.",
         "en": "The church of St Archangel Michael is said to have been built in 1888 — the earliest specific date the site publishes for a building in the village."
       },
-      "sources": ["src-oral-0001"],
-      "confidence": "reported"
+      "sources": [
+        "src-oral-0001"
+      ],
+      "confidence": "reported",
+      "status": "published",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-revival-0003",
@@ -1326,9 +1876,14 @@
         "bg": "През 1880 година, в края на този период, в селото е роден Трифон Кунев.",
         "en": "In 1880, at the end of this period, Trifon Kunev was born in the village."
       },
-      "sources": ["src-reference-0003"],
+      "sources": [
+        "src-reference-0003"
+      ],
       "confidence": "reported",
-      "method": "publication"
+      "status": "published",
+      "method": "publication",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
     },
     {
       "id": "clm-revival-0004",
@@ -1338,9 +1893,36 @@
         "bg": "Нито преместването на селището, нито датата на църквата са сверени с документ; и двете почиват на местна памет и на собствения текст на сайта.",
         "en": "Neither the move of the settlement nor the date of the church has been checked against a document; both rest on local memory and on the site's own text."
       },
-      "sources": ["src-field-0001"],
+      "sources": [
+        "src-field-0001"
+      ],
       "confidence": "uncertain",
-      "method": "derived"
+      "status": "published",
+      "method": "derived",
+      "created": "2026-07-26",
+      "reviewedAt": "2026-07-26"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "evd-20260726-001",
+      "kind": "measurement",
+      "title": {
+        "bg": "Таблицата с изчислените разстояния по права линия между публикуваните координати",
+        "en": "The table of straight-line distances computed between the published coordinates"
+      },
+      "source": "src-field-0001",
+      "claims": [
+        "clm-aglen-0012"
+      ],
+      "observer": "Aglen Tourism (DevOpsio)",
+      "observedAt": "2026-07-26",
+      "hash": "sha256:702896798d2452ba6195d2b4a514df1f",
+      "href": "/bg/editorial-policy/",
+      "note": {
+        "bg": "Артефактът е самото изчисление: 28 двойки места с публикувани координати и разстоянието между всяка двойка по права линия. Той не е снимка и не е сканиран документ — той е нещо, което всеки може да преизчисли от същите координати и да получи същия резултат. Затова носи контролна сума: ако някоя координата в графа се промени, сборът се разминава и сглобяването пада, докато измерването не бъде проверено наново.",
+        "en": "The artifact is the computation itself: 28 pairs of places with published coordinates and the straight-line distance between each pair. It is not a photograph and not a scan — it is something anyone can recompute from the same coordinates and get the same answer. That is why it carries a checksum: if a coordinate in the graph changes, the sum diverges and the build fails until the measurement has been checked again."
+      }
     }
   ]
 }

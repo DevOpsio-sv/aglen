@@ -6,7 +6,11 @@
     {
       "id": "src-reference-0001",
       "kind": "reference",
-      "title": { "bg": "Wikidata: Ъглен (Q550547)", "en": "Wikidata: Aglen (Q550547)" },
+      "slug": "wikidata-aglen",
+      "title": {
+        "bg": "Wikidata: Ъглен (Q550547)",
+        "en": "Wikidata: Aglen (Q550547)"
+      },
       "publisher": "Wikimedia Foundation",
       "language": "mul",
       "citation": "Wikidata item Q550547 — Ъглен (village, Lukovit Municipality, Lovech Province, Bulgaria).",
@@ -22,7 +26,11 @@
     {
       "id": "src-reference-0002",
       "kind": "reference",
-      "title": { "bg": "Уикипедия (бг): Ъглен", "en": "Wikipedia (bg): Ъглен" },
+      "slug": "wikipedia-bg-aglen",
+      "title": {
+        "bg": "Уикипедия (бг): Ъглен",
+        "en": "Wikipedia (bg): Ъглен"
+      },
       "publisher": "Wikimedia Foundation",
       "language": "bg",
       "citation": "Статия „Ъглен“, българска Уикипедия.",
@@ -38,7 +46,11 @@
     {
       "id": "src-reference-0003",
       "kind": "reference",
-      "title": { "bg": "Уикипедия (бг): Трифон Кунев", "en": "Wikipedia (bg): Trifon Kunev" },
+      "slug": "wikipedia-bg-trifon-kunev",
+      "title": {
+        "bg": "Уикипедия (бг): Трифон Кунев",
+        "en": "Wikipedia (bg): Trifon Kunev"
+      },
       "publisher": "Wikimedia Foundation",
       "language": "bg",
       "citation": "Статия „Трифон Кунев“, българска Уикипедия.",
@@ -54,7 +66,11 @@
     {
       "id": "src-reference-0004",
       "kind": "reference",
-      "title": { "bg": "Уикипедия (бг): Проходна", "en": "Wikipedia (bg): Prohodna" },
+      "slug": "wikipedia-bg-prohodna",
+      "title": {
+        "bg": "Уикипедия (бг): Проходна",
+        "en": "Wikipedia (bg): Prohodna"
+      },
       "publisher": "Wikimedia Foundation",
       "language": "bg",
       "citation": "Статия „Проходна“ (пещера, Карлуково), българска Уикипедия.",
@@ -66,7 +82,11 @@
     {
       "id": "src-reference-0005",
       "kind": "reference",
-      "title": { "bg": "Wikidata: река Вит (Q1773449)", "en": "Wikidata: Vit River (Q1773449)" },
+      "slug": "wikidata-vit-river",
+      "title": {
+        "bg": "Wikidata: река Вит (Q1773449)",
+        "en": "Wikidata: Vit River (Q1773449)"
+      },
       "publisher": "Wikimedia Foundation",
       "language": "mul",
       "citation": "Wikidata item Q1773449 — Вит, десен приток на Дунав.",
@@ -78,7 +98,11 @@
     {
       "id": "src-reference-0006",
       "kind": "reference",
-      "title": { "bg": "Wikidata: Луковит (Q405585)", "en": "Wikidata: Lukovit (Q405585)" },
+      "slug": "wikidata-lukovit",
+      "title": {
+        "bg": "Wikidata: Луковит (Q405585)",
+        "en": "Wikidata: Lukovit (Q405585)"
+      },
       "publisher": "Wikimedia Foundation",
       "language": "mul",
       "citation": "Wikidata item Q405585 — Луковит, град и общински център в област Ловеч.",
@@ -90,7 +114,11 @@
     {
       "id": "src-reference-0007",
       "kind": "reference",
-      "title": { "bg": "Wikidata: Проходна (Q3657889)", "en": "Wikidata: Prohodna (Q3657889)" },
+      "slug": "wikidata-prohodna",
+      "title": {
+        "bg": "Wikidata: Проходна (Q3657889)",
+        "en": "Wikidata: Prohodna (Q3657889)"
+      },
       "publisher": "Wikimedia Foundation",
       "language": "mul",
       "citation": "Wikidata item Q3657889 — Проходна, пещера при Карлуково.",
@@ -102,7 +130,11 @@
     {
       "id": "src-reference-0008",
       "kind": "reference",
-      "title": { "bg": "Wikidata: Карлуково (Q1085214)", "en": "Wikidata: Karlukovo (Q1085214)" },
+      "slug": "wikidata-karlukovo",
+      "title": {
+        "bg": "Wikidata: Карлуково (Q1085214)",
+        "en": "Wikidata: Karlukovo (Q1085214)"
+      },
       "publisher": "Wikimedia Foundation",
       "language": "mul",
       "citation": "Wikidata item Q1085214 — Карлуково, село в община Луковит.",
@@ -114,7 +146,11 @@
     {
       "id": "src-reference-0009",
       "kind": "reference",
-      "title": { "bg": "Wikidata: Деветашка пещера (Q2756370)", "en": "Wikidata: Devetashka Cave (Q2756370)" },
+      "slug": "wikidata-devetashka-cave",
+      "title": {
+        "bg": "Wikidata: Деветашка пещера (Q2756370)",
+        "en": "Wikidata: Devetashka Cave (Q2756370)"
+      },
       "publisher": "Wikimedia Foundation",
       "language": "mul",
       "citation": "Wikidata item Q2756370 — Деветашка пещера, област Ловеч.",
@@ -126,7 +162,11 @@
     {
       "id": "src-reference-0010",
       "kind": "reference",
-      "title": { "bg": "Wikidata: Крушунска бигорна каскада (Q6439432)", "en": "Wikidata: Krushuna Falls (Q6439432)" },
+      "slug": "wikidata-krushuna-falls",
+      "title": {
+        "bg": "Wikidata: Крушунска бигорна каскада (Q6439432)",
+        "en": "Wikidata: Krushuna Falls (Q6439432)"
+      },
       "publisher": "Wikimedia Foundation",
       "language": "mul",
       "citation": "Wikidata item Q6439432 — Крушунска бигорна каскада, област Ловеч.",
@@ -138,7 +178,11 @@
     {
       "id": "src-reference-0011",
       "kind": "reference",
-      "title": { "bg": "Wikidata: Ловеч (Q189328)", "en": "Wikidata: Lovech (Q189328)" },
+      "slug": "wikidata-lovech",
+      "title": {
+        "bg": "Wikidata: Ловеч (Q189328)",
+        "en": "Wikidata: Lovech (Q189328)"
+      },
       "publisher": "Wikimedia Foundation",
       "language": "mul",
       "citation": "Wikidata item Q189328 — Ловеч, град и областен център.",
@@ -150,7 +194,11 @@
     {
       "id": "src-reference-0012",
       "kind": "reference",
-      "title": { "bg": "Wikidata: област Ловеч (Q6587068)", "en": "Wikidata: Lovech Province (Q6587068)" },
+      "slug": "wikidata-lovech-province",
+      "title": {
+        "bg": "Wikidata: област Ловеч (Q6587068)",
+        "en": "Wikidata: Lovech Province (Q6587068)"
+      },
       "publisher": "Wikimedia Foundation",
       "language": "mul",
       "citation": "Wikidata item Q6587068 — област Ловеч, административна област в Северна България.",
@@ -162,7 +210,11 @@
     {
       "id": "src-reference-0013",
       "kind": "reference",
-      "title": { "bg": "Wikidata: Златна Панега (Q2455820)", "en": "Wikidata: Zlatna Panega (Q2455820)" },
+      "slug": "wikidata-zlatna-panega",
+      "title": {
+        "bg": "Wikidata: Златна Панега (Q2455820)",
+        "en": "Wikidata: Zlatna Panega (Q2455820)"
+      },
       "publisher": "Wikimedia Foundation",
       "language": "mul",
       "citation": "Wikidata item Q2455820 — Златна Панега, село в община Ябланица.",
@@ -174,6 +226,7 @@
     {
       "id": "src-oral-0001",
       "kind": "oral",
+      "slug": "aglen-village-memory",
       "title": {
         "bg": "Устна памет на Ъглен, както е записана в българското съдържание на сайта",
         "en": "Aglen village memory, as recorded in the site's Bulgarian content"
@@ -190,6 +243,7 @@
     {
       "id": "src-field-0001",
       "kind": "field",
+      "slug": "aglen-editorial-record",
       "title": {
         "bg": "Редакционен и измервателен запис на Aglen Tourism",
         "en": "Aglen Tourism editorial and measurement record"
