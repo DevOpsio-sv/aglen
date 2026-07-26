@@ -4,7 +4,7 @@ import { landingPages, type LandingPageId } from "./landingPages";
 import { publishedBusinesses } from "./localBusinesses";
 import { guides } from "./guides";
 import { namespaceEntities, placePageEntities } from "./graph";
-import { aspectPagesFor } from "./graph/ledger";
+import { aspectPagesFor, sourcePages } from "./graph/ledger";
 import type { ClaimAspect } from "./graph/claims";
 
 export type CoreRouteId =
@@ -37,6 +37,10 @@ export type CoreRouteId =
   | "person"
   | "sources"
   | "corrections"
+  // A single citable origin: /source/<slug>/ (M4B, ADR-015). `/sources/` is the
+  // index of the ledger; `/source/` is one entry in it, addressed by what the
+  // source is rather than by its ledger id.
+  | "source"
   | "travelGuide"
   | "seasonal"
   | "events"
@@ -72,11 +76,14 @@ export type ResolvedRoute = {
   placeSlug?: string;
   /** Set for a depth-3 aspect page: /<lang>/place/aglen/history/ (M4). */
   aspect?: ClaimAspect;
+  /** Set when the path addresses one source: /<lang>/source/<slug>/ (M4B). */
+  sourceSlug?: string;
 };
 
 export const BUSINESS_ROUTE_SLUG = "local-businesses";
 export const GUIDES_ROUTE_SLUG = "guides";
 export const PLACE_ROUTE_SLUG = "place";
+export const SOURCE_ROUTE_SLUG = "source";
 
 /**
  * The entity namespaces and the route each resolves to. `/place/` came with M3;
@@ -124,6 +131,10 @@ const coreRoutes: StaticRoute[] = [
   { id: "person", slug: "person", sectionId: "person" },
   { id: "sources", slug: "sources", sectionId: "sources" },
   { id: "corrections", slug: "corrections", sectionId: "corrections" },
+  // /source/ has no index of its own — /sources/ is that index. The bare path
+  // resolves here so a hand-typed /source/ still lands somewhere sensible; every
+  // real page beneath it is /source/<slug>/.
+  { id: "source", slug: "source", sectionId: "sources" },
   { id: "travelGuide", slug: "travel-guide", sectionId: "travel-guide" },
   { id: "seasonal", slug: "travel-guide/seasonal-guide", sectionId: "travel-guide" },
   { id: "events", slug: "events", sectionId: "events" },
@@ -197,6 +208,14 @@ export function resolveRoute(pathname: string, search = ""): ResolvedRoute {
     if (guideSlug) return { language, routeId: "guides", guideSlug };
   }
 
+  // One source: /<lang>/source/<slug>/. It is not an entity namespace — a source
+  // is not a thing in the world, it is what we read about one — so it resolves on
+  // its own rather than through ENTITY_NAMESPACES.
+  if (slug.startsWith(`${SOURCE_ROUTE_SLUG}/`)) {
+    const sourceSlug = slug.slice(SOURCE_ROUTE_SLUG.length + 1).replace(/\/$/, "");
+    if (sourceSlug && !sourceSlug.includes("/")) return { language, routeId: "source", sourceSlug };
+  }
+
   // Entity detail pages hang off their namespace index the same way in every
   // namespace: /<lang>/place/<slug>/, /<lang>/history/<slug>/ and so on. A second
   // segment beneath /place/ is a depth-3 aspect page (/place/aglen/history/) and
@@ -246,6 +265,11 @@ export function buildAspectPath(language: LanguageCode, entitySlug: string, aspe
   return `/${language}/${PLACE_ROUTE_SLUG}/${entitySlug}/${aspect}/`;
 }
 
+/** One source page: /<lang>/source/<slug>/ (M4B). */
+export function buildSourcePath(language: LanguageCode, sourceSlug: string): string {
+  return `/${language}/${SOURCE_ROUTE_SLUG}/${sourceSlug}/`;
+}
+
 /** Published entity pages under /place/, one detail route per entity. */
 export const placeRouteSlugs: string[] = placePageEntities().map((entity) => entity.slug);
 
@@ -263,6 +287,13 @@ export const aspectRoutes: Array<{ slug: string; aspect: ClaimAspect }> = placeP
   aspectPagesFor(entity.id).map((page) => ({ slug: entity.slug, aspect: page.aspect })),
 );
 
+/**
+ * Source pages, derived the same way: a source publishes a page once three live
+ * claims rest on it, and is a row in the `/sources/` ledger below that. Nobody
+ * maintains this list either (Constitution rule 26).
+ */
+export const sourceRouteSlugs: string[] = sourcePages().map((source) => source.slug);
+
 export function getAllStaticRoutePaths(): string[] {
   const businesses = publishedBusinesses();
   return allLanguageCodes.flatMap((language) => [
@@ -272,5 +303,6 @@ export function getAllStaticRoutePaths(): string[] {
     ...placeRouteSlugs.map((slug) => buildPlacePath(language, slug)),
     ...knowledgeRouteEntities.map((entry) => `/${language}/${getStaticRoute(entry.routeId).slug}/${entry.slug}/`),
     ...aspectRoutes.map((entry) => buildAspectPath(language, entry.slug, entry.aspect)),
+    ...sourceRouteSlugs.map((slug) => buildSourcePath(language, slug)),
   ]);
 }

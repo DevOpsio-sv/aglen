@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import crypto from "node:crypto";
 import { createRequire } from "node:module";
 import ts from "typescript";
 
@@ -25,6 +26,19 @@ import ts from "typescript";
 //                      namespaces has earned its three claims (rule 15); a
 //                      dispute has at least two sides (V14); no claim asserts
 //                      more certainty than its sources allow (rules 6–8).
+//   • Claims        — (M4B) no duplicate statement on one entity, no branching
+//                      supersede chain, no published claim that has never been
+//                      reviewed.
+//   • Sources       — (M4B) unique slugs, no orphan source, a verified source
+//                      dated, a source page that has earned its three claims.
+//   • Evidence      — (M4B) every artifact resolves to one source and to real
+//                      claims (V3/V6), and a regenerable artifact still hashes
+//                      to what its record says (V-hash).
+//
+// The four sit here rather than in scripts of their own because §4.3 makes this
+// file the single enforcement point: four scripts would be four numbering schemes
+// drifting apart, which is the defect this architecture exists to remove. They
+// report separately in the audit report below.
 //
 // Missing coordinates, media, story and gallery are WARNINGS, not gates — they
 // mark field-day work, not defects.
@@ -84,6 +98,9 @@ const graph = loadSourceModule(path.join(rootDir, "src", "graph", "index.ts"));
 const ledger = loadSourceModule(path.join(rootDir, "src", "graph", "ledger.ts"));
 const content = loadSourceModule(path.join(rootDir, "src", "content.ts"));
 const KARST_ROOT = "karst-lukovit";
+// The build's own date, used only to reject records dated in the future. Nothing
+// derived from it is ever published — a build date is not a review date.
+const TODAY = new Date().toISOString().slice(0, 10);
 const LANGS = ["bg", "en"]; // the full knowledge tier (Constitution rule 43)
 
 // The namespaces a published page may live in, and which of them are the M4
@@ -251,9 +268,107 @@ for (const entity of entities) {
   }
 }
 
-// A source nobody cites is dead weight in the ledger, not a failure.
+// ── 7c. The claim audit (M4B) ────────────────────────────────
+// Structural validity is already enforced record-by-record in `claims.ts`. What
+// belongs here is everything a single record cannot know about itself.
+const claimIds = new Set(ledger.claims.map((claim) => claim.id));
+const seenStatements = new Map(); // entityId+bg statement → first claim id
+for (const claim of ledger.claims) {
+  // A duplicate statement on one entity is two records the ledger will disagree
+  // with itself about the moment one of them is corrected.
+  const key = `${claim.entityId}::${claim.statement.bg.trim().toLowerCase()}`;
+  if (seenStatements.has(key)) {
+    gate("claims", `Claim "${claim.id}" repeats the statement of "${seenStatements.get(key)}" on the same entity — one fact, one record.`);
+  } else {
+    seenStatements.set(key, claim.id);
+  }
+  // A superseding claim must be about the same entity as the one it replaces, or
+  // the correction silently moves a fact from one page to another.
+  if (claim.supersedes) {
+    const replaced = ledger.claimById(claim.supersedes);
+    if (replaced && replaced.entityId !== claim.entityId) {
+      gate("claims", `Claim "${claim.id}" supersedes "${claim.supersedes}", which is about a different entity ("${replaced.entityId}").`);
+    }
+  }
+  // Two claims correcting the same claim is an ambiguous history: which one is
+  // current? The supersede chain must be linear.
+  const rivals = ledger.claims.filter((other) => other.supersedes === claim.id);
+  if (rivals.length > 1) {
+    gate("claims", `Claim "${claim.id}" is superseded by ${rivals.length} claims (${rivals.map((r) => r.id).join(", ")}); a supersede chain is linear.`);
+  }
+  // Every claim on a published page carries a review date or the page's "last
+  // reviewed" line is guessing on the reader's behalf.
+  const host = byId.get(claim.entityId);
+  if (claim.status === "published" && host?.page?.status === "published" && !claim.reviewedAt) {
+    gate("claims", `Claim "${claim.id}" renders on ${host.page.path} but has never been marked reviewed.`);
+  }
+}
+
+// ── 7d. The source audit (M4B) ───────────────────────────────
+const sourceSlugs = new Map();
 for (const source of ledger.sources) {
-  if (ledger.citedBy(source.id).length === 0) warn("sources", `Source "${source.id}" is cited by no claim.`);
+  if (sourceSlugs.has(source.slug)) {
+    gate("sources", `Sources "${source.id}" and "${sourceSlugs.get(source.slug)}" share the slug "${source.slug}" — they would claim the same /source/ URL.`);
+  }
+  sourceSlugs.set(source.slug, source.id);
+  // An orphan source is a build failure, not a warning (M4B, Part 10): a record
+  // nobody cites is either a mistake or a claim somebody forgot to write, and
+  // both are things the build should refuse to ship past.
+  if (ledger.citedBy(source.id).length === 0) {
+    gate("sources", `Source "${source.id}" is cited by no claim — remove it or write the claim that rests on it.`);
+  }
+  // A source we say we checked must say when we checked it.
+  if (source.verification === "verified" && !source.accessedAt) {
+    gate("sources", `Source "${source.id}" is marked verified but names no date on which it was checked.`);
+  }
+  // A source page that renders nothing but its own citation is a thin page.
+  if (ledger.sourceHasPage(source.id) && ledger.liveClaimsFromSource(source.id).length < 3) {
+    gate("sources", `Source "${source.id}" publishes a page with fewer than three live claims (rule 15).`);
+  }
+}
+
+// ── 7e. The evidence audit (M4B) ─────────────────────────────
+// V6 (no orphan evidence), V3 (every reference resolves) and V-hash (a mutated
+// artifact fails the build) are all enforced here, on the assembled ledger.
+for (const artifact of ledger.evidence) {
+  if (!ledger.sourceById(artifact.source)) {
+    gate("evidence", `Evidence "${artifact.id}" belongs to source "${artifact.source}", which does not exist (V3).`);
+  }
+  for (const claimId of artifact.claims) {
+    if (!claimIds.has(claimId)) gate("evidence", `Evidence "${artifact.id}" supports "${claimId}", which is not a claim (V3).`);
+  }
+  if (artifact.claims.length === 0) gate("evidence", `Evidence "${artifact.id}" supports no claim (V6).`);
+  // An artifact cannot have been observed before the thing it supports existed
+  // in the ledger… but it very much can predate it, so only the future is wrong.
+  if (artifact.observedAt > TODAY) gate("evidence", `Evidence "${artifact.id}" is dated ${artifact.observedAt}, in the future.`);
+  if (artifact.href && artifact.href.startsWith("/") && !publicAssetExists(artifact.href) && !artifact.href.endsWith("/")) {
+    gate("evidence", `Evidence "${artifact.id}" points at ${artifact.href}, which is not in public/.`);
+  }
+}
+
+// V-hash — regenerable evidence is re-derived and compared. The one artifact this
+// project holds is the straight-line distance table, and it is regenerable by
+// construction: anyone with the published coordinates can recompute it. If a
+// coordinate changes, this hash moves and the build stops until a human has
+// looked at the measurement again. That is the whole mechanism, working on real
+// data rather than waiting for a photograph to exist.
+function measurementFingerprint() {
+  const sited = entities.filter((entity) => graph.entityPoint(entity)).sort((a, b) => a.id.localeCompare(b.id));
+  const rows = [];
+  for (let i = 0; i < sited.length; i += 1) {
+    for (let j = i + 1; j < sited.length; j += 1) {
+      const km = graph.straightLineKmBetween(sited[i], sited[j]);
+      if (km !== undefined) rows.push(`${sited[i].id}|${sited[j].id}|${km.toFixed(3)}`);
+    }
+  }
+  return `sha256:${crypto.createHash("sha256").update(rows.join("\n")).digest("hex").slice(0, 32)}`;
+}
+const measurementHash = measurementFingerprint();
+for (const artifact of ledger.evidence) {
+  if (artifact.kind !== "measurement" || !artifact.hash) continue;
+  if (artifact.hash !== measurementHash) {
+    gate("evidence", `Evidence "${artifact.id}" records ${artifact.hash} but the measurement now computes to ${measurementHash} — re-check the measurement and restamp it (V-hash).`);
+  }
 }
 
 // ── 7c. Click depth — every page within three clicks of the front door ───────
@@ -313,6 +428,18 @@ for (const entity of entities) {
 // ── Report ───────────────────────────────────────────────────
 const aspectPageCount = entities.reduce((total, entity) => total + ledger.aspectPagesFor(entity.id).length, 0);
 const byConfidence = (value) => ledger.claims.filter((claim) => claim.confidence === value).length;
+const bySourceVerification = (value) => ledger.sources.filter((source) => source.verification === value).length;
+const reviewDates = ledger.claims.map((claim) => claim.reviewedAt).filter(Boolean).sort();
+// Which trust signals the pages have actually earned. A signal that never fires
+// is not a bug: it is the sourcing this project has not done yet, in one line.
+const signalTally = {};
+for (const signal of ["primarySources", "openRecords", "fieldChecked", "coordinatesVerified", "oralTradition", "historicalUncertainty", "openQuestion", "corrected"]) {
+  signalTally[signal] = 0;
+}
+for (const entity of entities) {
+  if (entity.page?.status !== "published") continue;
+  for (const signal of ledger.trustSignals(entity.id)) signalTally[signal] = (signalTally[signal] ?? 0) + 1;
+}
 const lines = [
   "# Knowledge-graph audit",
   "",
@@ -332,6 +459,38 @@ const lines = [
   `| Corrections published | ${ledger.corrections().length} |`,
   `| Retractions | ${ledger.retractions().length} |`,
   `| Entities carrying claims | ${new Set(ledger.claims.map((c) => c.entityId)).size} |`,
+  "",
+  "## Publication state and review (M4B)",
+  "",
+  "| Measure | Count |",
+  "| --- | --- |",
+  `| Claims published | ${ledger.claims.filter((c) => c.status === "published").length} |`,
+  `| Claims held as draft | ${ledger.claims.filter((c) => c.status === "draft").length} |`,
+  `| Claims internal only | ${ledger.claims.filter((c) => c.status === "internal").length} |`,
+  `| Live claims (published, not superseded, not retracted) | ${ledger.liveClaims().length} |`,
+  `| Claims carrying a review date | ${ledger.claims.filter((c) => c.reviewedAt).length} |`,
+  `| Earliest review | ${reviewDates[0] ?? "—"} |`,
+  `| Latest review | ${reviewDates[reviewDates.length - 1] ?? "—"} |`,
+  "",
+  "## Sources and evidence (M4B)",
+  "",
+  "| Measure | Count |",
+  "| --- | --- |",
+  `| Sources | ${ledger.sources.length} |`,
+  `| — with a page (≥3 live claims) | ${ledger.sourcePages().length} |`,
+  `| — verified | ${bySourceVerification("verified")} |`,
+  `| — reported | ${bySourceVerification("reported")} |`,
+  `| — provenance not established | ${bySourceVerification("unverified")} |`,
+  `| Source kinds in use | ${[...new Set(ledger.sources.map((s) => s.kind))].sort().join(", ")} |`,
+  `| Evidence records | ${ledger.evidence.length} |`,
+  `| — hash-verified this build | ${ledger.evidence.filter((e) => e.hash).length} |`,
+  `| Claims backed by held evidence | ${ledger.claims.filter((c) => ledger.evidenceFor(c.id).length > 0).length} |`,
+  "",
+  "## Trust signals earned, by page (M4B)",
+  "",
+  "| Signal | Pages |",
+  "| --- | --- |",
+  ...Object.entries(signalTally).sort((a, b) => b[1] - a[1]).map(([signal, count]) => `| ${signal} | ${count} |`),
   "",
   "## Gates (build fails on any)",
   "",

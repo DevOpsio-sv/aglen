@@ -63,3 +63,9 @@
 # The M4 namespaces are additive: /history/, /legend/, /person/, /sources/ and
 # /corrections/ are new URLs in every language and retire nothing. No existing
 # URL changes meaning and no redirect is needed for them.
+
+# ── M4B: /source/<slug>/ is additive and retires nothing. The bare /source/ is
+# not a page — /sources/ is the index of the ledger — so it is redirected there
+# rather than left to render an apology. Nothing on the site links to it; the
+# rule exists for a URL typed or truncated by hand.
+/:lang/source/                       /:lang/sources/                301

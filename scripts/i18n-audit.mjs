@@ -347,13 +347,19 @@ function validateRuntimeData(routes, seo, landing) {
   const placeSlugs = routes.placeRouteSlugs;
   const knowledgeEntities = routes.knowledgeRouteEntities;
   const aspectRoutes = routes.aspectRoutes;
+  // …and one per source page the ledger has earned (M4B). Same rule as the rest
+  // of the knowledge tier: the page ships in all fourteen languages, indexed in
+  // two, because a citation that resolves nowhere is worse than one marked
+  // not-yet-reviewed.
+  const sourceSlugs = routes.sourceRouteSlugs;
   const expectedPathCount =
     (routes.staticRoutes.length +
       publishedBusinesses.length +
       allGuides.length +
       placeSlugs.length +
       knowledgeEntities.length +
-      aspectRoutes.length) *
+      aspectRoutes.length +
+      sourceSlugs.length) *
     expectedLanguages.length;
   const paths = routes.getAllStaticRoutePaths();
   if (paths.length !== expectedPathCount) addIssue("route parity", `Expected ${expectedPathCount} static paths, got ${paths.length}.`);
@@ -381,6 +387,10 @@ function validateRuntimeData(routes, seo, landing) {
     for (const entry of aspectRoutes) {
       const aspectPath = routes.buildAspectPath(lang, entry.slug, entry.aspect);
       if (!paths.includes(aspectPath)) addIssue("route parity", `Missing aspect path ${aspectPath}.`);
+    }
+    for (const slug of sourceSlugs) {
+      const sourcePath = routes.buildSourcePath(lang, slug);
+      if (!paths.includes(sourcePath)) addIssue("route parity", `Missing source path ${sourcePath}.`);
     }
   }
   if (paths.some((routePath) => routePath.startsWith("/pl/"))) addIssue("route parity", "Generated route list includes /pl/.");

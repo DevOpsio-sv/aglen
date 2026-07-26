@@ -133,10 +133,11 @@ function renderOpenGraphLocaleAlternates(locales) {
 }
 
 function renderPageHtml(routePath) {
-  const { language, routeId, businessSlug, guideSlug, placeSlug, aspect } = routes.resolveRoute(routePath);
+  const { language, routeId, businessSlug, guideSlug, placeSlug, aspect, sourceSlug } = routes.resolveRoute(routePath);
   // An aspect page is addressed by "<entity>/<aspect>" beneath its namespace, so
-  // the detail slug carries both segments and seo.ts splits them back.
-  const detailSlug = businessSlug ?? guideSlug ?? (placeSlug && aspect ? `${placeSlug}/${aspect}` : placeSlug);
+  // the detail slug carries both segments and seo.ts splits them back. A source
+  // page carries its own slug in the same field (M4B).
+  const detailSlug = businessSlug ?? guideSlug ?? (placeSlug && aspect ? `${placeSlug}/${aspect}` : placeSlug) ?? sourceSlug;
   const pageSeo = seo.getSEOConfig(language, routeId, detailSlug);
   let html = template;
 
@@ -262,6 +263,11 @@ function renderLanguageSitemap(language) {
     ...routes.aspectRoutes
       .filter((entry) => seo.isIndexableIn(language, "place", `${entry.slug}/${entry.aspect}`))
       .map((entry) => renderSitemapUrl(language, "place", `${entry.slug}/${entry.aspect}`)),
+    // …and one per source page the ledger has earned (M4B). A source cited by
+    // fewer than three live claims publishes no page and is not advertised.
+    ...routes.sourceRouteSlugs
+      .filter((slug) => seo.isIndexableIn(language, "source", slug))
+      .map((slug) => renderSitemapUrl(language, "source", slug)),
   ].join("\n");
 
   return [
@@ -315,13 +321,17 @@ function claimExportLines() {
     for (const claim of claims) {
       const cited = claim.sources.map((id) => ledger.sourceById(id)).filter(Boolean);
       const citation = cited.map((source) => source.citation).join(" | ") || "no source";
-      lines.push(`- [${claim.confidence}] ${ledger.claimStatement(claim, "en")} — source: ${citation}`);
+      const reviewed = claim.reviewedAt ? ` — reviewed: ${claim.reviewedAt}` : "";
+      lines.push(`- [${claim.confidence}] ${ledger.claimStatement(claim, "en")} — source: ${citation}${reviewed}`);
     }
     for (const dispute of ledger.disputesFor(entity.id)) {
       lines.push(`- [open question] ${ledger.disputeQuestion(dispute, "en")} The site presents the readings below side by side and does not choose between them.`);
       for (const reading of ledger.claimsInDispute(dispute.id)) {
         const cited = reading.sources.map((id) => ledger.sourceById(id)).filter(Boolean);
-        lines.push(`  - [disputed] ${ledger.claimStatement(reading, "en")} — source: ${cited.map((source) => source.citation).join(" | ")}`);
+        // How well each reading is itself held, so a model that must summarise a
+        // dispute can say which reading is the commoner one without inventing it.
+        const strength = reading.interpretationConfidence ? ` — this reading alone: ${reading.interpretationConfidence}` : "";
+        lines.push(`  - [disputed] ${ledger.claimStatement(reading, "en")} — source: ${cited.map((source) => source.citation).join(" | ")}${strength}`);
       }
     }
   }
@@ -379,6 +389,10 @@ const llmsLines = [
   ),
   `- The source ledger — every source and every claim resting on it: ${seo.SITE_URL}/en/sources/`,
   `- Corrections — generated from the ledger, never maintained by hand: ${seo.SITE_URL}/en/corrections/`,
+  "- Each frequently-cited source has its own page at /en/source/<slug>/, listing every",
+  "  statement drawn from it and what this site physically holds from it.",
+  "- \"Last reviewed\" on a page is the date a human last checked its statements against",
+  "  their sources. It is never a build or deploy date.",
   "",
   "## Knowledge namespaces",
   `- History, period by period: ${seo.SITE_URL}/en/history/`,
@@ -389,9 +403,11 @@ const llmsLines = [
   "## Sources",
   "Every claim below cites one of these. Sources marked `unverified` have not had",
   "their provenance established; no claim resting on one alone is called verified.",
-  ...ledger.sources.map(
-    (source) => `- [${source.verification}] ${source.citation}${source.url ? ` — ${source.url}` : ""}`,
-  ),
+  ...ledger.sources.map((source) => {
+    const page = ledger.sourcePagePath(source);
+    const own = page ? ` — ${seo.SITE_URL}/en${page}` : "";
+    return `- [${source.verification}] ${source.citation}${source.url ? ` — ${source.url}` : ""}${own}`;
+  }),
   "",
   "## Claims, with source and confidence",
   "Confidence values: `verified` (checked against the origin by us), `reported` (a",

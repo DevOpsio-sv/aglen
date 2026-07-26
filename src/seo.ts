@@ -22,8 +22,8 @@ import {
 import { fontFaces } from "./generated/fontManifest";
 import { routeHasOwnSections } from "./pageSections";
 import { localizeTrust, trustPageByRoute } from "./trustPages";
-import { buildAspectPath, buildPlacePath } from "./routes";
-import { aspectCrumb, aspectLede, aspectTitle, namespaceTitle, NAMESPACE_CHROME, PROVENANCE_CHROME, localizeChrome, type NamespaceKind } from "./graph/namespaces";
+import { buildAspectPath, buildPlacePath, buildSourcePath } from "./routes";
+import { aspectCrumb, aspectLede, aspectTitle, namespaceTitle, NAMESPACE_CHROME, PROVENANCE_CHROME, SOURCE_CHROME, localizeChrome, type NamespaceKind } from "./graph/namespaces";
 import {
   breadcrumbTrail,
   derivedLinks,
@@ -47,13 +47,21 @@ import {
   disputesFor,
   knownClaims,
   lastReviewed,
+  liveClaims,
+  liveClaimsFromSource,
+  sourceBySlug,
+  sourceHasPage,
+  sourcePages,
+  sourceTitle,
+  sourceNote,
   sources as ledgerSources,
   sourcesOf,
+  trustSignals,
   uncertainClaims,
-  claims as allLedgerClaims,
 } from "./graph/ledger";
 import type { ClaimAspect } from "./graph/claims";
 import type { Entity } from "./graph/schema";
+import type { Source } from "./graph/claims";
 
 export const SITE_URL = "https://aglen.bg";
 
@@ -169,7 +177,7 @@ const noindexUntilPlanRouteIds = new Set<RouteId>([
  * the translation. A machine paraphrase of a sourced claim is exactly the thing
  * this system must not publish as authoritative (V8).
  */
-const KNOWLEDGE_TIER_ROUTES = new Set<RouteId>(["history", "legend", "person", "sources", "corrections"]);
+const KNOWLEDGE_TIER_ROUTES = new Set<RouteId>(["history", "legend", "person", "sources", "corrections", "source"]);
 const KNOWLEDGE_TIER_LANGUAGES = new Set<LanguageCode>(["bg", "en"]);
 
 export function isKnowledgeTierRoute(routeId: RouteId, detailSlug?: string): boolean {
@@ -181,6 +189,15 @@ export function isKnowledgeTierRoute(routeId: RouteId, detailSlug?: string): boo
 
 /** Whether this route may be indexed in this language (rule 43). */
 export function isIndexableIn(lang: LanguageCode, routeId: RouteId, detailSlug?: string): boolean {
+  // A source page exists only where the ledger has earned it: three live claims
+  // must rest on the source, exactly as an entity needs three to earn a page
+  // (rule 15). A slug that names no such source is not a page and is never
+  // advertised — the sitemap is a function of the ledger, not a wish list.
+  if (routeId === "source") {
+    const source = detailSlug ? sourceBySlug(detailSlug) : undefined;
+    if (!source || !sourceHasPage(source.id)) return false;
+    return KNOWLEDGE_TIER_LANGUAGES.has(lang);
+  }
   if (!isIndexableRoute(routeId)) return false;
   return !isKnowledgeTierRoute(routeId, detailSlug) || KNOWLEDGE_TIER_LANGUAGES.has(lang);
 }
@@ -188,6 +205,9 @@ export function isIndexableIn(lang: LanguageCode, routeId: RouteId, detailSlug?:
 export function isIndexableRoute(routeId: RouteId): boolean {
   // The entity namespaces (M3, M4) render graph-derived content, not home-section
   // crops, so they are indexable even though they have no `pageSections` entry.
+  // /source/ with no slug is not a page — /sources/ is the index — so the bare
+  // route is never advertised; /source/<slug>/ is handled by the caller.
+  if (routeId === "source") return false;
   if (routeId === "karst" || routeId === "place" || KNOWLEDGE_TIER_ROUTES.has(routeId)) return true;
   return (
     !supersedingGuideSlug(routeId) &&
@@ -443,16 +463,32 @@ function entityBreadcrumb(lang: LanguageCode, entity: Entity, aspect?: ClaimAspe
  * one — so `llms.txt`, the JSON-LD and the rendered page name the same sources
  * (Constitution rule 33).
  */
-function citationNodes(entityId: string): object[] {
-  const cited = new Map<string, { citation: string; url?: string }>();
+function citationNodes(lang: LanguageCode, entityId: string): object[] {
+  const cited = new Map<string, Source>();
   for (const claim of claimsFor(entityId)) {
-    for (const source of sourcesOf(claim)) cited.set(source.id, { citation: source.citation, url: source.url });
+    for (const source of sourcesOf(claim)) cited.set(source.id, source);
   }
-  return [...cited.values()].map((source) => ({
+  return [...cited.values()].map((source) => sourceCitationNode(lang, source));
+}
+
+/**
+ * One source as a schema.org node. Where the source publishes a page, the node
+ * carries this site's own URL for it and links onward to the origin — so a model
+ * that follows a citation lands on a record it can read rather than on a bare
+ * string it has to guess at (M4B, Part 11).
+ */
+function sourceCitationNode(lang: LanguageCode, source: Source): object {
+  const page = sourceHasPage(source.id) ? `${SITE_URL}${buildSourcePath(lang, source.slug)}` : undefined;
+  return {
     "@type": "CreativeWork",
     name: source.citation,
-    ...(source.url ? { url: source.url } : {}),
-  }));
+    ...(page ? { "@id": `${page}#source`, url: page, sameAs: source.url } : source.url ? { url: source.url } : {}),
+    ...(source.author ? { author: { "@type": "Organization", name: source.author } } : {}),
+    ...(source.publisher ? { publisher: { "@type": "Organization", name: source.publisher } } : {}),
+    ...(source.year ? { datePublished: source.year } : {}),
+    ...(source.license ? { license: source.license } : {}),
+    ...(source.language ? { inLanguage: source.language } : {}),
+  };
 }
 
 /**
@@ -468,13 +504,10 @@ function claimNodes(lang: LanguageCode, entityId: string, url: string): object[]
     text: claimStatement(claim, lang),
     disambiguatingDescription: claim.confidence,
     inLanguage: lang,
-    ...(claim.observedAt ? { dateCreated: claim.observedAt } : {}),
+    dateCreated: claim.observedAt ?? claim.created,
+    ...(claim.reviewedAt ? { dateModified: claim.reviewedAt } : {}),
     appearance: { "@id": `${url}#entity` },
-    citation: sourcesOf(claim).map((source) => ({
-      "@type": "CreativeWork",
-      name: source.citation,
-      ...(source.url ? { url: source.url } : {}),
-    })),
+    citation: sourcesOf(claim).map((source) => sourceCitationNode(lang, source)),
   }));
 }
 
@@ -483,7 +516,7 @@ function entityNode(lang: LanguageCode, entity: Entity, url: string): object {
   const point = entityPoint(entity);
   const sameAs = entitySameAs(entity);
   const parent = entity.parent ? entityById(entity.parent) : undefined;
-  const citations = citationNodes(entity.id);
+  const citations = citationNodes(lang, entity.id);
   const reviewed = lastReviewed(entity.id);
   return {
     "@type": entity.schemaType,
@@ -628,6 +661,10 @@ function routeText(lang: LanguageCode, routeId: RouteId): { title: string; descr
     legend: { title: `${namespaceTitle("legend", lang)} | ${copy.brand.name}`, description: localizeChrome(NAMESPACE_CHROME.legend.lede, lang) },
     person: { title: `${namespaceTitle("person", lang)} | ${copy.brand.name}`, description: localizeChrome(NAMESPACE_CHROME.person.lede, lang) },
     sources: { title: `${localizeChrome(PROVENANCE_CHROME.sources.title, lang)} | ${copy.brand.name}`, description: localizeChrome(PROVENANCE_CHROME.sources.lede, lang) },
+    // /source/ has no index page of its own; the bare route inherits the ledger's
+    // chrome, and a real /source/<slug>/ overrides both title and description
+    // from the source record below.
+    source: { title: `${localizeChrome(PROVENANCE_CHROME.sources.title, lang)} | ${copy.brand.name}`, description: localizeChrome(SOURCE_CHROME.lede, lang) },
     corrections: { title: `${localizeChrome(PROVENANCE_CHROME.corrections.title, lang)} | ${copy.brand.name}`, description: localizeChrome(PROVENANCE_CHROME.corrections.lede, lang) },
     travelGuide:{ title: `${copy.hub.title} | ${copy.brand.name}`, description: copy.hub.text },
     seasonal: { title: `${copy.guides.seasonal.label} | ${copy.brand.name}`, description: copy.guides.seasonal.text },
@@ -664,16 +701,24 @@ export function getSEOConfig(lang: LanguageCode, routeId: RouteId = "home", deta
   const guide = detailSlug && routeId === "guides" ? findGuide(detailSlug) : undefined;
   const subject = entitySubject(routeId, detailSlug);
   const entity = subject?.entity;
+  // A source page's title is the source's own title and its description is the
+  // citation: the two things a researcher or a model needs in a search result.
+  const source = detailSlug && routeId === "source" ? sourceBySlug(detailSlug) : undefined;
   const text = subject
     ? entityText(lang, subject)
-    : business
-      ? businessText(lang, business)
-      : guide
-        ? {
-            title: `${localizeGuide(guide.title, lang)} | ${contentByLanguage[lang].brand.name}`,
-            description: localizeGuide(guide.summary, lang),
-          }
-        : routeText(lang, routeId);
+    : source
+      ? {
+          title: `${sourceTitle(source, lang)} | ${contentByLanguage[lang].brand.name}`,
+          description: sourceNote(source, lang) ?? source.citation,
+        }
+      : business
+        ? businessText(lang, business)
+        : guide
+          ? {
+              title: `${localizeGuide(guide.title, lang)} | ${contentByLanguage[lang].brand.name}`,
+              description: localizeGuide(guide.summary, lang),
+            }
+          : routeText(lang, routeId);
   const primaryImage = getRouteImageEntries(lang, routeId, detailSlug)[0];
   const pageImagePath = (entity ? entityHeroPath(lang, entity) : undefined) ?? business?.coverImage ?? guide?.heroImage;
   const pageImage = pageImagePath ? absoluteAssetUrl(pageImagePath) : undefined;
@@ -686,6 +731,7 @@ export function getSEOConfig(lang: LanguageCode, routeId: RouteId = "home", deta
 
   const urlFor = (code: LanguageCode) => {
     if (subject) return entityAbsoluteUrl(code, subject.entity, subject.aspect);
+    if (source) return `${SITE_URL}${buildSourcePath(code, source.slug)}`;
     if (retiredEntity) return entityAbsoluteUrl(code, retiredEntity);
     if (business) return absoluteBusinessUrl(code, business.slug);
     if (guide) return absoluteGuideUrl(code, guide.slug);
@@ -720,7 +766,7 @@ export function getSEOConfig(lang: LanguageCode, routeId: RouteId = "home", deta
     // language still gets the page — links must resolve — but says noindex until
     // a human has reviewed the translation of a sourced claim (V8).
     robots:
-      (business || guide || isIndexableRoute(routeId)) && isIndexableIn(lang, routeId, detailSlug)
+      (business || guide || routeId === "source" || isIndexableRoute(routeId)) && isIndexableIn(lang, routeId, detailSlug)
         ? "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
         : "noindex, follow",
     canonicalUrl: urlFor(lang),
@@ -814,6 +860,7 @@ function routeImages(lang: LanguageCode, routeId: RouteId, detailSlug?: string):
     legend: [{ loc: absoluteAssetUrl(NAMESPACE_CHROME.legend.hero), title: namespaceTitle("legend", lang), caption: localizeChrome(NAMESPACE_CHROME.legend.lede, lang) }],
     person: [{ loc: absoluteAssetUrl(NAMESPACE_CHROME.person.hero), title: namespaceTitle("person", lang), caption: localizeChrome(NAMESPACE_CHROME.person.lede, lang) }],
     sources: [{ loc: absoluteAssetUrl(PROVENANCE_CHROME.sources.hero), title: localizeChrome(PROVENANCE_CHROME.sources.title, lang), caption: localizeChrome(PROVENANCE_CHROME.sources.lede, lang) }],
+    source: [{ loc: absoluteAssetUrl(SOURCE_CHROME.hero), title: localizeChrome(SOURCE_CHROME.eyebrow, lang), caption: localizeChrome(SOURCE_CHROME.lede, lang) }],
     corrections: [{ loc: absoluteAssetUrl(PROVENANCE_CHROME.corrections.hero), title: localizeChrome(PROVENANCE_CHROME.corrections.title, lang), caption: localizeChrome(PROVENANCE_CHROME.corrections.lede, lang) }],
     travelGuide: [{ loc: OG_IMAGE, title: copy.hub.title, caption: copy.hub.text }],
     seasonal: [{ loc: `${SITE_URL}/assets/aglen-aerial-river.png`, title: copy.guides.seasonal.label, caption: copy.guides.seasonal.text }],
@@ -994,14 +1041,7 @@ function knowledgeIndexSchemas(lang: LanguageCode, routeId: RouteId, routeUrl: s
         itemListElement: ledgerSources.map((source, index) => ({
           "@type": "ListItem",
           position: index + 1,
-          item: {
-            "@type": "CreativeWork",
-            name: source.citation,
-            ...(source.url ? { url: source.url } : {}),
-            ...(source.license ? { license: source.license } : {}),
-            ...(source.author ? { author: { "@type": "Organization", name: source.author } } : {}),
-            ...(source.publisher ? { publisher: { "@type": "Organization", name: source.publisher } } : {}),
-          },
+          item: sourceCitationNode(lang, source),
         })),
       },
     ];
@@ -1017,6 +1057,7 @@ function knowledgeIndexSchemas(lang: LanguageCode, routeId: RouteId, routeUrl: s
           "@type": "ListItem",
           position: index + 1,
           name: claimStatement(claim, lang),
+          ...(claim.correctedAt ? { item: { "@type": "Claim", text: claimStatement(claim, lang), dateModified: claim.correctedAt } } : {}),
         })),
       },
     ];
@@ -1382,6 +1423,66 @@ export function buildJSONLD(lang: LanguageCode, routeId: RouteId = "home", detai
     };
   }
 
+  // A source page (M4B): the source as a CreativeWork, and every live claim
+  // resting on it as a Claim citing it. This is the namespace's entire purpose
+  // for a machine — one fetch answers "where did this come from, how well is it
+  // held, and what else rests on the same origin?" (Part 11).
+  const sourceRecord = detailSlug && routeId === "source" ? sourceBySlug(detailSlug) : undefined;
+  if (sourceRecord && sourceHasPage(sourceRecord.id)) {
+    const url = `${SITE_URL}${buildSourcePath(lang, sourceRecord.slug)}`;
+    const resting = liveClaimsFromSource(sourceRecord.id);
+    const crumbs = [
+      { name: contentByLanguage[lang].nav.home, url: absoluteRouteUrl(lang, "home") },
+      { name: localizeChrome(PROVENANCE_CHROME.sources.title, lang), url: absoluteRouteUrl(lang, "sources") },
+      { name: sourceTitle(sourceRecord, lang) },
+    ];
+    return {
+      "@context": "https://schema.org",
+      "@graph": [
+        ...identityNodes(lang),
+        {
+          "@type": "WebPage",
+          "@id": url,
+          url,
+          name: sourceTitle(sourceRecord, lang),
+          description: sourceNote(sourceRecord, lang) ?? sourceRecord.citation,
+          inLanguage: lang,
+          isPartOf: { "@id": `${SITE_URL}/#website` },
+          about: { "@id": `${url}#source` },
+          ...(sourceRecord.accessedAt ? { dateModified: sourceRecord.accessedAt } : {}),
+        },
+        sourceCitationNode(lang, sourceRecord),
+        // Each claim names the entity it is about, so a model can walk from a
+        // source straight to the things it supports without scraping the page.
+        ...resting.map((claim) => {
+          const about = entityById(claim.entityId);
+          const aboutUrl = about?.page?.status === "published" ? entityAbsoluteUrl(lang, about) : undefined;
+          return {
+            "@type": "Claim",
+            "@id": `${aboutUrl ?? url}#${claim.id}`,
+            text: claimStatement(claim, lang),
+            disambiguatingDescription: claim.confidence,
+            inLanguage: lang,
+            dateCreated: claim.observedAt ?? claim.created,
+            ...(claim.reviewedAt ? { dateModified: claim.reviewedAt } : {}),
+            citation: { "@id": `${url}#source` },
+            ...(about ? { about: { "@type": "Thing", name: entityName(about, lang), ...(aboutUrl ? { url: aboutUrl } : {}) } } : {}),
+          };
+        }),
+        {
+          "@type": "BreadcrumbList",
+          "@id": `${url}#breadcrumbs`,
+          itemListElement: crumbs.map((crumb, index) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            name: crumb.name,
+            ...(crumb.url ? { item: crumb.url } : {}),
+          })),
+        },
+      ],
+    };
+  }
+
   // Entity detail page (M3) and its aspect pages (M4): the node is its honest
   // schema type, the breadcrumb is the containment chain, the claims carry their
   // confidence, and all of it is derived from the graph and the ledger.
@@ -1606,6 +1707,32 @@ export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "hom
     `;
   }
 
+  // One source, flattened for a crawler that runs no JavaScript: the citation,
+  // what rests on it with every confidence word intact (V15), and what we hold.
+  const flatSource = detailSlug && routeId === "source" ? sourceBySlug(detailSlug) : undefined;
+  if (flatSource) {
+    const lines = [
+      `${flatSource.citation} [${flatSource.verification}]`,
+      ...(flatSource.url ? [flatSource.url] : []),
+      ...(sourceNote(flatSource, lang) ? [sourceNote(flatSource, lang)!] : []),
+      ...liveClaimsFromSource(flatSource.id).map((claim) => `${claimStatement(claim, lang)} [${claim.confidence}]`),
+    ];
+    return `
+      <main id="static-seo-content" class="static-fallback" lang="${lang}">
+        <article class="content-hub section-shell">
+          <div class="section-heading">
+            <p class="eyebrow">${escapeHtml(localizeChrome(SOURCE_CHROME.eyebrow, lang))}</p>
+            <h1>${escapeHtml(sourceTitle(flatSource, lang))}</h1>
+            ${paragraph(localizeChrome(SOURCE_CHROME.lede, lang))}
+          </div>
+          <div class="hub-grid">
+            ${lines.map((line) => `<div class="hub-card"><span>${escapeHtml(line)}</span></div>`).join("")}
+          </div>
+        </article>
+      </main>
+    `;
+  }
+
   if (routeId === "sources" || routeId === "corrections") {
     const chrome = PROVENANCE_CHROME[routeId];
     const lines =
@@ -1613,8 +1740,9 @@ export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "hom
         ? ledgerSources.flatMap((source) => [
             `${source.citation} [${source.verification}]`,
             ...(source.url ? [source.url] : []),
+            ...(sourceHasPage(source.id) ? [`${SITE_URL}${buildSourcePath(lang, source.slug)}`] : []),
           ])
-        : corrections().map((claim) => claimStatement(claim, lang));
+        : corrections().map((claim) => `${claimStatement(claim, lang)}${claim.correctedAt ? ` (${claim.correctedAt})` : ""}`);
     return `
       <main id="static-seo-content" class="static-fallback" lang="${lang}">
         <article class="content-hub section-shell">

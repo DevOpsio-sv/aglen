@@ -17,6 +17,45 @@ Entities: 32 · published pages: 28 · aspect pages: 2 · nodes: 4
 | Retractions | 0 |
 | Entities carrying claims | 28 |
 
+## Publication state and review (M4B)
+
+| Measure | Count |
+| --- | --- |
+| Claims published | 109 |
+| Claims held as draft | 0 |
+| Claims internal only | 0 |
+| Live claims (published, not superseded, not retracted) | 109 |
+| Claims carrying a review date | 109 |
+| Earliest review | 2026-07-26 |
+| Latest review | 2026-07-26 |
+
+## Sources and evidence (M4B)
+
+| Measure | Count |
+| --- | --- |
+| Sources | 15 |
+| — with a page (≥3 live claims) | 7 |
+| — verified | 11 |
+| — reported | 3 |
+| — provenance not established | 1 |
+| Source kinds in use | field, oral, reference |
+| Evidence records | 1 |
+| — hash-verified this build | 1 |
+| Claims backed by held evidence | 1 |
+
+## Trust signals earned, by page (M4B)
+
+| Signal | Pages |
+| --- | --- |
+| oralTradition | 19 |
+| historicalUncertainty | 13 |
+| openRecords | 12 |
+| coordinatesVerified | 8 |
+| openQuestion | 1 |
+| primarySources | 0 |
+| fieldChecked | 0 |
+| corrected | 0 |
+
 ## Gates (build fails on any)
 
 _None._
