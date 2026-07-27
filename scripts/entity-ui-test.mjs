@@ -143,10 +143,15 @@ check("uncertain claims are narrated with a hedge, never bare", () => {
       `"${claim.id}" is narrated as "${narrated.slice(0, 40)}…" with no recognisable hedge`,
     );
   }
-  // …and the hedge actually reaches the page.
-  const html = htmlFor("/bg/place/aglen/");
-  assert(html && /Според местните разкази/.test(visibleText(html)), "the village page carries no phrased hedge");
-  return `${uncertain.length} public uncertain claims, all hedged in prose`;
+  // …and the hedge actually reaches visitors. Not pinned to one page: a record
+  // may carry an authored story instead of the narration (ADR-018), and the
+  // invariant is that hedged prose reaches the site, not that it reaches Ъглен.
+  const hedged = entityPages.filter((page) => {
+    const html = htmlFor(page.path);
+    return html && /Според местните разкази|Не е установено/.test(visibleText(html));
+  });
+  assert(hedged.length > 0, "no entity page carries a phrased hedge — the narration is not reaching visitors");
+  return `${uncertain.length} public uncertain claims, all hedged in prose, on ${hedged.length} pages`;
 });
 
 check("editorial notes never appear in the narrative", () => {

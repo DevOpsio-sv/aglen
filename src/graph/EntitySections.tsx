@@ -23,6 +23,7 @@ import {
   entityById,
   entityName,
   entityShortText,
+  entityStoryText,
   namespaceEntities,
   regionRootOf,
   straightLineKmBetween,
@@ -199,14 +200,20 @@ export function EntityStory({
   onNavigate?: (path: string) => void;
   title?: string;
 }) {
-  const lines = narrateClaims(entityId, aspect);
-  if (lines.length === 0) return null;
+  // An authored story replaces the narration on the entity page only (ADR-018).
+  // An aspect page is a view onto one aspect's claims and keeps narrating them,
+  // so a record carrying prose about the whole place cannot silently stand in
+  // for the history or the name.
+  const self = entityById(entityId);
+  const authored = aspect || !self ? undefined : entityStoryText(self, language);
+  const lines = authored ? [] : narrateClaims(entityId, aspect);
+  if (!authored && lines.length === 0) return null;
   return (
     <section className="guide-section entity-story" aria-labelledby={`story-${entityId}-${aspect ?? "all"}`}>
       <h2 id={`story-${entityId}-${aspect ?? "all"}`}>{title ?? t("storyTitle", language)}</h2>
-      {lines.map((line) => (
-        <p key={line.id}>{line.text(language)}</p>
-      ))}
+      {authored
+        ? authored.split("\n\n").map((paragraph, index) => <p key={index}>{paragraph}</p>)
+        : lines.map((line) => <p key={line.id}>{line.text(language)}</p>)}
       {onNavigate ? null : null}
     </section>
   );

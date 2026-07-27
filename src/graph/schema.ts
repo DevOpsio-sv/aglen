@@ -182,6 +182,13 @@ export type Entity = {
   contentRef?: ContentRef;
   shortDescription?: LocalizedText;
   longDescription?: LocalizedText;
+  /**
+   * Authored prose for the "За мястото" section, replacing the machine narration
+   * of this entity's claims on the entity page (ADR-018). The claims stay in the
+   * ledger and keep feeding JSON-LD, `/sources/` and the aspect pages; what
+   * changes is only who writes the paragraph a visitor reads.
+   */
+  story?: LocalizedText;
   page?: EntityPage;
 };
 
@@ -229,6 +236,7 @@ export function validateEntity(entity: unknown): string[] {
   if (e.name !== undefined && !isLocalizedText(e.name)) problems.push(`${id}: name is not localized text with a bg fallback.`);
   if (e.shortDescription !== undefined && !isLocalizedText(e.shortDescription)) problems.push(`${id}: shortDescription is malformed.`);
   if (e.longDescription !== undefined && !isLocalizedText(e.longDescription)) problems.push(`${id}: longDescription is malformed.`);
+  if (e.story !== undefined && !isLocalizedText(e.story)) problems.push(`${id}: story is malformed.`);
 
   // A record must resolve a name somehow: inline name, or a contentRef.
   const hasContentRef = Boolean(e.contentRef && (e.contentRef.placeId || e.contentRef.regionId || e.contentRef.guideSlug));

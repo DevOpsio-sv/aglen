@@ -358,6 +358,11 @@ export function entityLongText(entity: Entity, lang: LanguageCode): string | und
   return entity.longDescription ? pick(entity.longDescription, lang) : undefined;
 }
 
+/** Authored "За мястото" prose, when the record carries it instead of narrated claims (ADR-018). */
+export function entityStoryText(entity: Entity, lang: LanguageCode): string | undefined {
+  return entity.story ? pick(entity.story, lang) : undefined;
+}
+
 // ── Identity / geo ───────────────────────────────────────────
 export function entitySameAs(entity: Entity): string[] {
   const s = entity.sameAs;

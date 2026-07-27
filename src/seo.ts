@@ -37,6 +37,7 @@ import {
   entityPoint,
   entityShortText,
   entityLongText,
+  entityStoryText,
   entitySameAs,
   namespaceEntities,
   placePageEntities,
@@ -1788,7 +1789,13 @@ export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "hom
     // English enum, into Bulgarian pages. A crawler is still never shown a firmer
     // version of a fact than a reader (rule 8 / V15) — the hedge now travels
     // inside the sentence, which is strictly harder to strip than a suffix was.
-    const claimLines = narrateClaims(entity.id, aspect).map((line) => line.text(lang));
+    // An authored story replaces the narration here exactly as it does in React
+    // (ADR-018), so the no-JavaScript page and the rendered page say the same
+    // words — the whole point of this fallback.
+    const authoredStory = aspect ? undefined : entityStoryText(entity, lang);
+    const claimLines = authoredStory
+      ? authoredStory.split("\n\n")
+      : narrateClaims(entity.id, aspect).map((line) => line.text(lang));
     // The same collapsed disclosure the React page renders. Without it a visitor
     // with no JavaScript — and every crawler — lost the citations altogether,
     // which would trade one defect for a worse one.
