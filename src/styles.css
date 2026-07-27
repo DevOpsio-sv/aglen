@@ -1451,6 +1451,14 @@ h3 {
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.42), transparent 55%);
 }
 
+/* When the section opens its own route there is nothing above it to be
+   separated from — the 7rem margin plus 7rem padding put a screenful of empty
+   band between the breadcrumb and the heading. */
+.map-section.is-page-top {
+  margin-top: 0;
+  padding-top: 2.5rem;
+}
+
 .map-section {
   margin-top: 7rem;
   padding: 7rem 0;
@@ -1468,7 +1476,9 @@ h3 {
      card beside it. */
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 3rem;
-  align-items: center;
+  /* Not `center`: the route card is much taller than the heading, so centring
+     pushed the heading half a card down the page and left a hole above it. */
+  align-items: start;
 }
 
 .map-layout .section-heading { max-width: 100%; }

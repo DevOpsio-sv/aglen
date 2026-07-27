@@ -1241,8 +1241,11 @@ export function App() {
       </section>
       )}
 
+      {/* `is-page-top` when this section IS the page: it then carries the h1 and
+          must not sit under the 7rem of air meant to separate it from whatever
+          precedes it on the home page. */}
       {showSection("map") && (
-      <section id="location" className="map-section">
+      <section id="location" className={`map-section${titleSection === "map" ? " is-page-top" : ""}`}>
         <div className="section-shell map-layout">
           <div className="section-heading reveal">
             <p className="eyebrow">{copy.landmarks.aria}</p>
