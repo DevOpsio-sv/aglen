@@ -28,6 +28,7 @@ import {
   regionRootOf,
   straightLineKmBetween,
 } from "./index";
+import { storyBlocks } from "./text";
 import type { Entity } from "./schema";
 
 // ─────────────────────────────────────────────────────────────
@@ -213,7 +214,9 @@ export function EntityStory({
     <section className="guide-section entity-story" aria-labelledby={`story-${entityId}-${aspect ?? "all"}`}>
       <h2 id={`story-${entityId}-${aspect ?? "all"}`}>{title ?? t("storyTitle", language)}</h2>
       {authored
-        ? authored.split("\n\n").map((paragraph, index) => <p key={index}>{paragraph}</p>)
+        ? storyBlocks(authored).map((block, index) =>
+            block.heading ? <h3 key={index}>{block.text}</h3> : <p key={index}>{block.text}</p>,
+          )
         : lines.map((line) => <p key={line.id}>{line.text(language)}</p>)}
       {onNavigate ? null : null}
     </section>

@@ -24,6 +24,7 @@ import { routeHasOwnSections } from "./pageSections";
 import { localizeTrust, trustPageByRoute } from "./trustPages";
 import { buildAspectPath, buildPlacePath, buildSourcePath } from "./routes";
 import { aspectCrumb, aspectLede, aspectTitle, namespaceCrumb, namespacePrefix, namespaceTitle, NAMESPACE_CHROME, PROVENANCE_CHROME, SOURCE_CHROME, localizeChrome, type NamespaceKind } from "./graph/namespaces";
+import { storyBlocks } from "./graph/text";
 import { KIND_HERO, NAMESPACES, REGIONS, namespaceForPath, type NamespaceId, type RegionRouteId } from "./graph/registry";
 import { isPublic, nameQuestion, narrate, narrateClaims } from "./graph/editorial";
 import {
@@ -1794,9 +1795,14 @@ export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "hom
     // (ADR-018), so the no-JavaScript page and the rendered page say the same
     // words — the whole point of this fallback.
     const authoredStory = aspect ? undefined : entityStoryText(entity, lang);
-    const claimLines = authoredStory
-      ? authoredStory.split("\n\n")
-      : narrateClaims(entity.id, aspect).map((line) => line.text(lang));
+    // Same blocks, same order, same sub-headings as React. `storyBlocks` is
+    // imported rather than reimplemented here, so the two renderings cannot drift.
+    const storyHtml = authoredStory
+      ? storyBlocks(authoredStory)
+          .map((block) => (block.heading ? `<h3>${escapeHtml(block.text)}</h3>` : paragraph(block.text)))
+          .join("")
+      : undefined;
+    const claimLines = authoredStory ? [] : narrateClaims(entity.id, aspect).map((line) => line.text(lang));
     // The same collapsed disclosure the React page renders. Without it a visitor
     // with no JavaScript — and every crawler — lost the citations altogether,
     // which would trade one defect for a worse one.
@@ -1829,7 +1835,7 @@ export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "hom
               : `<a href="${buildRoutePath(lang, "karst")}">${escapeHtml(karst ? entityName(karst, lang) : "")}</a>`}
             <a href="${buildRoutePath(lang, "guides")}">${escapeHtml(guidesUiByLanguage[lang].indexTitle)}</a>
           </div>
-          ${claimLines.map((line) => paragraph(line)).join("")}
+          ${storyHtml ?? claimLines.map((line) => paragraph(line)).join("")}
           ${questionLines.map((line) => paragraph(line)).join("")}
           ${sourcesBlock}
           <div class="hub-grid">

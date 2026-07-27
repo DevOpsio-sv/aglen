@@ -22,6 +22,29 @@ export function pick(text: LocalizedText, lang: LanguageCode): string {
   return text[lang] ?? text.en ?? text.bg;
 }
 
+/**
+ * An authored story, split into blocks. Paragraphs are separated by a blank line;
+ * a line opening with `## ` is a sub-heading.
+ *
+ * This is the whole of the markup an authored story gets, deliberately. A place
+ * with enough to say needs parts a reader can scan — but the moment prose in a
+ * JSON record can carry links, bold and lists, the graph stops being data and
+ * becomes a second CMS with no schema.
+ *
+ * It lives here rather than beside the component because the no-JavaScript
+ * fallback in `seo.ts` renders the same blocks, and two parsers for one format
+ * is how the rendered page and the crawled page start disagreeing.
+ */
+export function storyBlocks(text: string): Array<{ heading: boolean; text: string }> {
+  return text
+    .split("\n\n")
+    .map((block) => block.trim())
+    .filter(Boolean)
+    .map((block) =>
+      block.startsWith("## ") ? { heading: true, text: block.slice(3).trim() } : { heading: false, text: block },
+    );
+}
+
 /** The one shape test: an object carrying at least the Bulgarian source string. */
 export function isLocalizedText(value: unknown): value is LocalizedText {
   return Boolean(value) && typeof value === "object" && typeof (value as { bg?: unknown }).bg === "string";
