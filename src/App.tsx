@@ -26,6 +26,28 @@ import { sectionsForRoute, type HomeSection } from "./pageSections";
 
 const fallbackImage = "/assets/aglen-hero-river-canyon.webp";
 
+// The footer credit names the maintainer's site in all fourteen languages — and
+// printed it as text, so the one place the site says who built it was the one
+// place you could not click. Linked here rather than in the locale strings:
+// `sourceNotes` is also read by the AI export and the trust pages, where a bare
+// domain is what those surfaces want. The render decides how to show it.
+const MAINTAINER_DOMAIN = "devopsio.co";
+const MAINTAINER_URL = "https://devopsio.co";
+
+function linkMaintainer(note: string) {
+  const at = note.indexOf(MAINTAINER_DOMAIN);
+  if (at === -1) return note;
+  return (
+    <>
+      {note.slice(0, at)}
+      <a href={MAINTAINER_URL} target="_blank" rel="noopener noreferrer">
+        {MAINTAINER_DOMAIN}
+      </a>
+      {note.slice(at + MAINTAINER_DOMAIN.length)}
+    </>
+  );
+}
+
 // Contextual links from homepage sections into the entity layer (M3 integration).
 // Knowledge tier is bg + en (rule 43); other languages fall back to en.
 const HOME_ENTITY_LINKS = {
@@ -1445,7 +1467,7 @@ export function App() {
             stays inside the contact section so the layout is untouched. */}
         <footer id="trust" className="site-footer" role="contentinfo">
           {copy.sourceNotes.map((note) => (
-            <span key={note}>{note}</span>
+            <span key={note}>{linkMaintainer(note)}</span>
           ))}
           <nav className="footer-links" aria-label={localizedUi.aria.footerPolicy}>
             {trustLinks.map((link) => (
