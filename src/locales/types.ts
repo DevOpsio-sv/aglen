@@ -293,8 +293,13 @@ export type PageCopy = {
     title: string;
     text: string;
     notesTitle: string;
-    noteOne: string;
-    noteTwo: string;
+    /**
+     * One practical tip, not two. This used to be `noteOne` + `noteTwo`, and
+     * `noteOne` was a keyword list — eco-tourism, photography, fishing, caves —
+     * that also appeared in the hub text, the landing-page bodies and the FAQ
+     * block. Saying it four times did not make it four facts.
+     */
+    note: string;
     cta: string;
   };
   events: {

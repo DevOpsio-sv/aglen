@@ -1427,11 +1427,17 @@ export function App() {
         </div>
         <div className="contact-card reveal">
           <div>
-            <strong>{copy.contact.notesTitle}</strong>
-            <span>{copy.contact.noteOne}</span>
-            <span>{copy.contact.noteTwo}</span>
+            <strong>📌 {copy.contact.notesTitle}</strong>
+            <span>{copy.contact.note}</span>
           </div>
-          <a className="button primary" href="mailto:info.aglen@gmail.com">
+          {/* The site has no form and no endpoint to post one to, so the inquiry
+              button opens a pre-addressed message — the same pattern the local
+              business pages already use. The subject arrives filled in, so a
+              reply is not answering an empty mail. */}
+          <a
+            className="button primary"
+            href={`mailto:info.aglen@gmail.com?subject=${encodeURIComponent(`${copy.contact.eyebrow} — ${copy.brand.name}`)}`}
+          >
             {copy.contact.cta}
           </a>
         </div>
@@ -1620,7 +1626,9 @@ function crumbLabel(language: LanguageCode, routeId: RouteId): string | undefine
     // never repeats the page title.
     arMissions: copy.nav.quests,
     travelGuide: copy.hub.title,
-    contact: copy.contact.title,
+    // The kicker, not the H2: the H2 is now a question ("Готов ли си…?"), which
+    // reads as an invitation on the page and as nonsense in a breadcrumb.
+    contact: copy.contact.eyebrow,
     events: copy.events.title,
     localBusinesses: copy.nav.business,
     guides: guidesUiByLanguage[language].indexTitle,

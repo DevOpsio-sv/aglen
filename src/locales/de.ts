@@ -31,7 +31,14 @@ export const de: PageCopy = {
   ] },
   ar: { eyebrow: "AR-Abenteuer", title: "Sieh die Welt des Wächters", text: "Mit der Kamera deines Telefons erweckst du die verborgene Welt von Prohodna zum Leben. Die AR-Ebene enthüllt Geschichten, Zeichen und Figuren, die mit bloßem Auge unsichtbar sind, aber nur an den Orten, an denen sie geschehen sind.", steps: ["Lade die App herunter", "Gehe zu einem markierten AR-Ort rund um Aglen", "Richte die Kamera aus und sieh die verborgene Welt"], cta: "Herunterladen und starten" },
   app: { eyebrow: "App herunterladen", title: "Unlocking Bulgaria", text: "Mobile App für Android. Finde die Missionen rund um Aglen und brich zu einem echten Abenteuer auf.", badge: "Unlocking Bulgaria öffnen", note: "Die offizielle App-Website ist unlockingbulgaria.com/bg/." },
-  contact: { eyebrow: "Besuch planen", title: "Plane deinen Besuch", text: "Kontaktiere uns für Informationen zu Routen, Sehenswürdigkeiten, Fotolocations, Angeln, Unterkunft und Ideen für ein unvergessliches Wochenende am Fluss Vit.", notesTitle: "Hinweise für Besucher", noteOne: "Geeignet für Ökotourismus, Fotografie, Angeln, Wanderrouten, Höhlenbesuche und ein Wochenende in Nordbulgarien – Fotografie, Flussblicke, Höhlen und lokale Erinnerung.", noteTwo: "Bring bequeme Schuhe, Wasser, Sonnenschutz und Respekt für die lokalen Orte mit.", cta: "Anfrage senden" },
+  contact: {
+    eyebrow: "Plane deine Reise",
+    title: "Bereit, den Zauber von Aglen zu entdecken?",
+    text: "Fragen zu den Routen, auf der Suche nach den besten Fotostellen oder brauchst du einen Tipp zur Unterkunft am Fluss Vit? Melde dich — wir helfen dir gern, das perfekte Wochenende zusammenzustellen.",
+    notesTitle: "Kurzer Tipp für unterwegs",
+    note: "Die Gegend ist wie geschaffen für leichte Wanderungen, Angeln und Fotografie. Vergiss bequeme Schuhe, Wasser und Sonnenschutz nicht!",
+    cta: "Anfrage senden",
+  },
   events: {
     eyebrow: "Kalender",
     title: "Veranstaltungen in Aglen",

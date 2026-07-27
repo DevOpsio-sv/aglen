@@ -750,7 +750,8 @@ function routeText(lang: LanguageCode, routeId: RouteId): { title: string; descr
     editorial: { title: `${trust.editorial} | ${copy.brand.name}`, description: copy.sourceNotes.join(" ") },
     localSeo: { title: `${trust.localSeo} | ${copy.brand.name}`, description: copy.landmarks.aria },
     crawlerPolicy: { title: `${trust.crawlerPolicy} | ${copy.brand.name}`, description: copy.hub.text },
-    contact: { title: `${copy.contact.title} | ${copy.brand.name}`, description: copy.contact.text },
+    // The kicker heads the <title>; the H2 is a question and belongs on the page.
+    contact: { title: `${copy.contact.eyebrow} | ${copy.brand.name}`, description: copy.contact.text },
   };
 
   return core[routeId as CoreRouteId];
@@ -979,7 +980,7 @@ function routeImages(lang: LanguageCode, routeId: RouteId, detailSlug?: string):
     editorial: [{ loc: `${SITE_URL}/assets/aglen-village-church.png`, title: routeText(lang, "editorial").title, caption: copy.sourceNotes.join(" ") }],
     localSeo: [{ loc: `${SITE_URL}/assets/aglen-village-church.png`, title: routeText(lang, "localSeo").title, caption: copy.landmarks.aria }],
     crawlerPolicy: [{ loc: OG_IMAGE, title: routeText(lang, "crawlerPolicy").title, caption: copy.hub.text }],
-    contact: [{ loc: `${SITE_URL}/assets/aglen-village-church.png`, title: copy.contact.title, caption: copy.contact.text }],
+    contact: [{ loc: `${SITE_URL}/assets/aglen-village-church.png`, title: copy.contact.eyebrow, caption: copy.contact.text }],
   };
 
   return byRoute[routeId as CoreRouteId] ?? [{ loc: OG_IMAGE, title: text.title, caption: text.description }];
@@ -1226,7 +1227,7 @@ function buildPageSpecificSchemas(lang: LanguageCode, routeId: RouteId, routeUrl
   const faqs = [
     ...(landing?.faqs ?? []).map((faq) => ({ question: faq.question, answer: faq.answer })),
     { question: `${seoText.pagePlanQuestion} ${shortName(meta.title)}`, answer: seoText.pagePlanAnswer },
-    { question: copy.contact.notesTitle, answer: `${copy.contact.noteOne} ${copy.contact.noteTwo}` },
+    { question: copy.contact.notesTitle, answer: copy.contact.note },
   ];
   schemas.push({
     "@type": "FAQPage",
@@ -2078,7 +2079,7 @@ export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "hom
     editorial: copy.sourceNotes,
     localSeo: [copy.landmarks.aria],
     crawlerPolicy: [copy.hub.text],
-    contact: [copy.contact.noteOne, copy.contact.noteTwo],
+    contact: [copy.contact.note],
   };
 
   return `

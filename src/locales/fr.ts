@@ -37,7 +37,14 @@ export const fr: PageCopy = {
   },
   ar: { eyebrow: "Aventure AR", title: "Regardez le monde du Gardien", text: "Avec la caméra de votre téléphone, donnez vie au monde caché de Prohodna. La couche AR révèle des histoires, des signes et des personnages invisibles à l'oeil nu, mais seulement aux endroits où ils se sont produits.", steps: ["Téléchargez l'application", "Allez vers un lieu AR marqué autour d'Aglen", "Pointez la caméra et voyez le monde caché"], cta: "Télécharger et commencer" },
   app: { eyebrow: "Télécharger l'app", title: "Unlocking Bulgaria", text: "Application mobile pour Android. Trouvez les missions autour d'Aglen et partez pour une vraie aventure.", badge: "Ouvrir Unlocking Bulgaria", note: "Le site officiel de l'app est unlockingbulgaria.com/bg/." },
-  contact: { eyebrow: "Planifier la visite", title: "Planifiez votre visite", text: "Contactez-nous pour toute information sur les itinéraires, les sites, les lieux de photographie, la pêche, l'hébergement et des idées pour un week-end inoubliable au bord de la rivière Vit.", notesTitle: "Notes visiteurs", noteOne: "Idéal pour l'écotourisme, la photographie, la pêche, les sentiers de randonnée, la visite de grottes et un week-end dans le nord de la Bulgarie, avec vues de rivière, grottes et mémoire locale.", noteTwo: "Prévoyez des chaussures confortables, de l'eau, une protection solaire et du respect pour les lieux.", cta: "Envoyer une demande" },
+  contact: {
+    eyebrow: "Planifiez votre voyage",
+    title: "Prêt à découvrir la magie d'Aglen ?",
+    text: "Des questions sur les itinéraires, à la recherche des meilleurs spots photo ou d'un conseil pour se loger au bord de la Vit ? Écrivez-nous — nous serons ravis de vous aider à composer le week-end parfait.",
+    notesTitle: "Conseil express pour la route",
+    note: "La région se prête à la marche facile, à la pêche et à la photographie. N'oubliez pas des chaussures confortables, de l'eau et une protection solaire !",
+    cta: "Envoyer une demande",
+  },
   events: {
     eyebrow: "Calendrier",
     title: "Événements à Aglen",

@@ -85,12 +85,11 @@ export const it: PageCopy = {
     note: "Il sito ufficiale dell'app è unlockingbulgaria.com/bg/.",
   },
   contact: {
-    eyebrow: "Pianifica la visita",
-    title: "Pianifica la tua visita",
-    text: "Contattaci per informazioni su percorsi, attrazioni, luoghi fotografici, pesca, alloggio e idee per un weekend indimenticabile lungo il fiume Vit.",
-    notesTitle: "Note per i visitatori",
-    noteOne: "Ideale per ecoturismo, fotografia, pesca, percorsi a piedi, visita alle grotte e un weekend nella Bulgaria del Nord., fotografia, viste sul fiume, grotte e memoria locale.",
-    noteTwo: "Porta scarpe comode, acqua, protezione solare e rispetto per gli spazi locali.",
+    eyebrow: "Pianifica il tuo viaggio",
+    title: "Pronti a scoprire la magia di Aglen?",
+    text: "Domande sui percorsi, alla ricerca dei posti migliori da fotografare o di un consiglio su dove dormire lungo il fiume Vit? Scriveteci: saremo felici di aiutarvi a costruire il weekend perfetto.",
+    notesTitle: "Consiglio veloce per il viaggio",
+    note: "La zona è perfetta per camminate leggere, pesca e fotografia. Non dimenticate scarpe comode, acqua e protezione solare!",
     cta: "Invia richiesta",
   },
   events: {

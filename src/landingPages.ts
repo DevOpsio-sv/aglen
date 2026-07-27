@@ -927,7 +927,7 @@ function buildLandingPage(lang: LanguageCode, page: LandingPageMaster): LandingP
     schemaType: page.schemaType,
     sections: [
       { heading: text.sectionHeadings[0], body: `${h1}: ${text.sectionBodies[0]} ${copy.about.text}` },
-      { heading: text.sectionHeadings[1], body: `${text.sectionBodies[1]} ${copy.contact.noteTwo}` },
+      { heading: text.sectionHeadings[1], body: `${text.sectionBodies[1]} ${copy.contact.note}` },
       { heading: text.sectionHeadings[2], body: text.sectionBodies[2] },
     ],
     faqs: [

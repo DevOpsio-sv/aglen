@@ -85,12 +85,11 @@ export const ro: PageCopy = {
     note: "Site-ul oficial al aplicației este unlockingbulgaria.com/bg/.",
   },
   contact: {
-    eyebrow: "Planifică vizita",
-    title: "Planifică-ți vizita",
-    text: "Contactează-ne pentru informații despre trasee, obiective, locații foto, pescuit, cazare și idei pentru un weekend de neuitat lângă râul Vit.",
-    notesTitle: "Note pentru vizitatori",
-    noteOne: "Potrivit pentru ecoturism, fotografie, pescuit, trasee pedestre, vizitarea peșterilor și un weekend în Bulgaria de Nord., fotografie, priveliști spre râu, peșteri și memorie locală.",
-    noteTwo: "Ia încălțăminte comodă, apă, protecție solară și respect pentru locurile locale.",
+    eyebrow: "Planifică-ți călătoria",
+    title: "Ești gata să descoperi magia Aglenului?",
+    text: "Ai întrebări despre trasee, cauți cele mai bune locuri de fotografiat sau vrei un sfat pentru cazare lângă râul Vit? Scrie-ne — te ajutăm cu drag să-ți pui la punct weekendul perfect.",
+    notesTitle: "Sfat rapid pentru drum",
+    note: "Zona e numai bună pentru drumeții ușoare, pescuit și fotografie. Nu uita încălțăminte comodă, apă și protecție solară!",
     cta: "Trimite solicitare",
   },
   events: {

@@ -57,7 +57,14 @@ export const en: PageCopy = {
     badge: "Open Unlocking Bulgaria",
     note: "The official app website is unlockingbulgaria.com/bg/.",
   },
-  contact: { eyebrow: "Plan your visit", title: "Plan your visit", text: "Get in touch for information about routes, landmarks, photography spots, fishing, accommodation, and ideas for an unforgettable weekend by the Vit River.", notesTitle: "Visitor notes", noteOne: "Suitable for eco-tourism, photography, fishing, hiking routes, cave visits, and a weekend in Northern Bulgaria – photography, river views, caves, and local memory.", noteTwo: "Bring comfortable shoes, water, sun protection, and respect for local spaces.", cta: "Send Inquiry" },
+  contact: {
+    eyebrow: "Plan your journey",
+    title: "Ready to discover the magic of Aglen?",
+    text: "Questions about the routes, looking for the best spots to photograph, or after advice on where to stay by the River Vit? Get in touch — we would be glad to help you put together the perfect weekend.",
+    notesTitle: "Quick tip for the road",
+    note: "The area is made for easy walking, fishing and photography. Don't forget comfortable shoes, water and sun protection!",
+    cta: "Send Inquiry",
+  },
   events: {
     eyebrow: "Calendar",
     title: "Events in Aglen",

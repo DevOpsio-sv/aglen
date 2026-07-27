@@ -85,12 +85,11 @@ export const tr: PageCopy = {
     note: "Uygulamanın resmi sitesi unlockingbulgaria.com/bg/.",
   },
   contact: {
-    eyebrow: "Ziyareti planla",
-    title: "Ziyaretini planla",
-    text: "Rotalar, görülecek yerler, fotoğraf noktaları, balıkçılık, konaklama ve Vit Nehri kıyısında unutulmaz bir hafta sonu için fikirler hakkında bilgi almak üzere bizimle iletişime geç.",
-    notesTitle: "Ziyaretçi notları",
-    noteOne: "Ekoturizm, fotoğrafçılık, balıkçılık, yürüyüş rotaları, mağara ziyaretleri ve Kuzey Bulgaristan'da bir hafta sonu için uygundur; fotoğrafçılık, nehir manzaraları, mağaralar ve yerel hafıza.",
-    noteTwo: "Rahat ayakkabı, su, güneş koruması ve yerel alanlara saygı getir.",
+    eyebrow: "Yolculuğunu planla",
+    title: "Aglen'in büyüsünü keşfetmeye hazır mısın?",
+    text: "Rotalarla ilgili soruların mı var, en iyi fotoğraf noktalarını mı arıyorsun, yoksa Vit Nehri kıyısında konaklama tavsiyesi mi istiyorsun? Bize yaz — mükemmel hafta sonunu kurmana seve seve yardım ederiz.",
+    notesTitle: "Yol için kısa bir ipucu",
+    note: "Yöre hafif yürüyüş, balık tutma ve fotoğrafçılık için biçilmiş kaftan. Rahat ayakkabı, su ve güneş koruması almayı unutma!",
     cta: "Talep gönder",
   },
   events: {

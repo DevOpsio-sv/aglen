@@ -85,12 +85,11 @@ export const hu: PageCopy = {
     note: "Az alkalmazás hivatalos webhelye: unlockingbulgaria.com/bg/.",
   },
   contact: {
-    eyebrow: "Látogatás tervezése",
-    title: "Tervezd meg a látogatásod",
-    text: "Lépj kapcsolatba velünk útvonalakról, látnivalókról, fotóhelyekről, horgászatról, szállásról és egy felejthetetlen, Vit folyó menti hétvége ötleteiről szóló információkért.",
-    notesTitle: "Látogatói jegyzetek",
-    noteOne: "Alkalmas ökoturizmushoz, fotózáshoz, horgászathoz, gyalogos útvonalakhoz, barlanglátogatáshoz és észak-bulgáriai hétvégéhez, fotózáshoz, folyókilátásokhoz, barlangokhoz és helyi emlékezethez.",
-    noteTwo: "Hozz kényelmes cipőt, vizet, napvédelmet és tiszteletet a helyi terek iránt.",
+    eyebrow: "Tervezd meg az utad",
+    title: "Készen állsz felfedezni Aglen varázsát?",
+    text: "Kérdésed van az útvonalakról, a legjobb fotóhelyeket keresed, vagy tanácsot kérnél a Vit menti szállásról? Írj nekünk — szívesen segítünk összeállítani a tökéletes hétvégét.",
+    notesTitle: "Gyors tipp az útra",
+    note: "A vidék ideális könnyű túrázáshoz, horgászathoz és fotózáshoz. Ne feledd a kényelmes cipőt, a vizet és a napvédelmet!",
     cta: "Érdeklődés küldése",
   },
   events: {
