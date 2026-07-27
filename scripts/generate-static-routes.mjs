@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { srcModule } from "./lib/load-module.mjs";
 import { writeServiceWorker } from "./lib/service-worker.mjs";
+import { manifestHref, writeManifests } from "./lib/manifest.mjs";
 
 const rootDir = process.cwd();
 const distDir = path.join(rootDir, "dist");
@@ -67,6 +68,8 @@ function renderPageHtml(routePath) {
   let html = template;
 
   html = html.replace(/<html lang="[^"]*">/, `<html lang="${language}">`);
+  // Each language installs as its own app, starting in the language the visitor chose.
+  html = html.replace(/<link rel="manifest" href="[^"]*" \/>/, `<link rel="manifest" href="${manifestHref(language)}" />`);
   html = html.replace(/<title>[\s\S]*?<\/title>/, `<title>${escapeText(pageSeo.title)}</title>`);
   html = replaceOrInsert(html, /<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${escapeAttribute(pageSeo.description)}" />`);
   html = replaceOrInsert(html, /<meta name="author" content="[^"]*" \/>/, `<meta name="author" content="${escapeAttribute(pageSeo.author)}" />`);
@@ -495,10 +498,16 @@ fs.writeFileSync(path.join(distDir, "llms.txt"), llmsLines.join("\n"));
 
 // _redirects is managed in public/_redirects and copied to dist/ by Vite.
 
+const manifests = writeManifests(distDir, path.join(rootDir, "public"), routes.allLanguageCodes, {
+  seo,
+  routes,
+  content: srcModule("locales/index.ts").contentByLanguage,
+});
+
 const worker = writeServiceWorker(distDir, routes.allLanguageCodes);
 
 console.log(
   `Generated ${routes.allLanguageCodes.length} language folders and ${staticRoutePaths.length} static topic routes.` +
     `
-Service worker ${worker.version}: ${worker.precached} precached, ${worker.offlinePages} offline pages.`,
+Service worker ${worker.version}: ${worker.precached} precached, ${worker.offlinePages} offline pages, ${manifests} manifests.`,
 );

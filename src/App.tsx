@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState, type MouseEvent, type ReactNode, 
 import { contentByLanguage, languages, type Accommodation, type LanguageCode, type PlaceId, type TimelineItem } from "./content";
 import { DIFFICULTY_LABEL, MOODS, PICKER_UI, experiences, type Mood } from "./experiences";
 import { checklistCopy } from "./landingPages";
+import { INSTALL_COPY, useInstallPrompt } from "./installPrompt";
 import { getLandingPage, getLandingPages, isLandingPageId, routesCopy, transportCopy, transportLinks } from "./landingPages";
 import { placeExperienceLinks, type PlaceExperienceLink } from "./placeLinks";
 import { buildAspectPath, buildBusinessPath, buildGuidePath, buildPlacePath, buildRoutePath, buildSourcePath, getStaticRoute, resolveRoute, type RouteId, type ResolvedRoute } from "./routes";
@@ -126,6 +127,37 @@ function ExperiencePicker({
       </div>
       {shown.length === 0 && <p className="mood-empty">{ui.empty}</p>}
     </div>
+  );
+}
+
+/**
+ * The one place the site says it works offline.
+ *
+ * It renders above the contact block on every page, and it renders NOTHING once
+ * the site is installed or in a browser that cannot install it. That is what
+ * lets it have no dismiss button and store nothing: an invitation that removes
+ * itself the moment it is accepted needs no memory of having been shown.
+ */
+function InstallCard({ language }: { language: LanguageCode }) {
+  const { state, install } = useInstallPrompt();
+  if (state === "none") return null;
+  const copy = INSTALL_COPY[language];
+
+  return (
+    <section className="install-card section-shell" aria-labelledby="install-title">
+      <div className="install-card-inner">
+        <p className="eyebrow">{copy.eyebrow}</p>
+        <h2 id="install-title">{copy.title}</h2>
+        <p className="install-body">{copy.body}</p>
+        {state === "ready" ? (
+          <button type="button" className="button primary install-cta" onClick={install}>
+            {copy.cta}
+          </button>
+        ) : (
+          <p className="install-hint">{copy.iosHint}</p>
+        )}
+      </div>
+    </section>
   );
 }
 
@@ -1668,6 +1700,8 @@ export function App() {
           </div>
         </section>
       )}
+
+      <InstallCard language={language} />
 
       <section id="contact" className="contact section-shell">
         <div className="section-heading reveal">

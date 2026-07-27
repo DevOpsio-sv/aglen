@@ -1233,6 +1233,33 @@ h3 {
 .seo-section-card h2 { margin-bottom: 0.8rem; }
 .seo-section-card p { margin: 0; }
 
+/* ── The install invitation ────────────────────────────────
+   Rendered only when it can be acted on, and gone once it has been — so it can
+   afford to look like part of the page rather than like a banner apologising
+   for interrupting. */
+.install-card { padding-top: 1rem; padding-bottom: 1rem; }
+.install-card-inner {
+  display: grid;
+  gap: 0.6rem;
+  justify-items: start;
+  border: 1px solid rgba(197, 154, 69, 0.42);
+  border-radius: 22px;
+  padding: var(--space-box);
+  background: linear-gradient(135deg, rgba(247, 242, 231, 0.94), rgba(226, 200, 121, 0.16));
+}
+.install-card-inner h2 {
+  margin: 0;
+  color: var(--forest-deep);
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+}
+.install-card-inner .eyebrow { margin: 0; }
+.install-body { margin: 0; max-width: 62ch; color: var(--ink); line-height: 1.6; }
+.install-cta { margin-top: 0.4rem; }
+.install-hint { margin: 0.2rem 0 0; color: var(--muted); font-size: 0.92rem; line-height: 1.55; }
+
 /* ── Offline fallback ──────────────────────────────────────
    The page the service worker serves when a request misses the cache with no
    signal. Styled here rather than inline because `style-src 'self'` blocks
