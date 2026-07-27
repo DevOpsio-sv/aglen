@@ -681,11 +681,49 @@ h3 {
   box-shadow: 0 18px 42px rgba(0, 0, 0, 0.28);
 }
 
+/* The ghost button is white-on-translucent, drawn for a photographic hero. */
 .ghost {
   color: #fff;
   border-color: rgba(255, 255, 255, 0.46);
   background: rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(14px);
+}
+
+/**
+ * The same button on a pale surface, where white on white is invisible.
+ *
+ * Three page scopes had already written this rule out for themselves — events,
+ * businesses, guides — each an identical copy, and a fourth surface got the
+ * white one because nothing told it not to. One list now, and a new card that
+ * needs it joins the list rather than pasting the declarations again.
+ */
+.events-page-v2 .ghost,
+.businesses-page .ghost,
+.guides-page .ghost,
+.mood-card .ghost,
+.seo-transport .ghost,
+.seo-routes .ghost,
+.seo-checklist .ghost {
+  color: var(--forest);
+  border-color: rgba(15, 47, 36, 0.28);
+  background: rgba(15, 47, 36, 0.07);
+  backdrop-filter: none;
+}
+.events-page-v2 .ghost:hover,
+.events-page-v2 .ghost:focus-visible,
+.businesses-page .ghost:hover,
+.businesses-page .ghost:focus-visible,
+.guides-page .ghost:hover,
+.guides-page .ghost:focus-visible,
+.mood-card .ghost:hover,
+.mood-card .ghost:focus-visible,
+.seo-transport .ghost:hover,
+.seo-transport .ghost:focus-visible,
+.seo-routes .ghost:hover,
+.seo-routes .ghost:focus-visible,
+.seo-checklist .ghost:hover,
+.seo-checklist .ghost:focus-visible {
+  background: rgba(15, 47, 36, 0.14);
 }
 
 .scroll-cue {
@@ -3167,14 +3205,6 @@ h3 {
 .event-card-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; margin-top: 0.5rem; }
 .event-card-actions .button { margin-top: 0; }
 .event-featured .event-card-actions { margin-top: 0.6rem; }
-.events-page-v2 .ghost {
-  color: var(--forest);
-  border-color: rgba(15, 47, 36, 0.28);
-  background: rgba(15, 47, 36, 0.07);
-  backdrop-filter: none;
-}
-.events-page-v2 .ghost:hover,
-.events-page-v2 .ghost:focus-visible { background: rgba(15, 47, 36, 0.14); }
 
 /* Event details dialog */
 .event-details-modal {
@@ -3400,14 +3430,6 @@ h3 {
 
 /* The global .ghost is tuned for dark heroes; on this page it mostly sits on
    cream, so retint it and keep the original treatment inside the hero only. */
-.businesses-page .ghost {
-  color: var(--forest);
-  border-color: rgba(15, 47, 36, 0.28);
-  background: rgba(15, 47, 36, 0.07);
-  backdrop-filter: none;
-}
-.businesses-page .ghost:hover,
-.businesses-page .ghost:focus-visible { background: rgba(15, 47, 36, 0.14); }
 .businesses-page .businesses-hero-ghost {
   color: #fff;
   border-color: rgba(255, 255, 255, 0.46);
@@ -4076,14 +4098,6 @@ h3 {
 }
 
 .guide-ctas { display: flex; flex-wrap: wrap; gap: 0.7rem; margin: 0 0 2.4rem; }
-.guides-page .ghost {
-  color: var(--forest);
-  border-color: rgba(15, 47, 36, 0.28);
-  background: rgba(15, 47, 36, 0.07);
-  backdrop-filter: none;
-}
-.guides-page .ghost:hover,
-.guides-page .ghost:focus-visible { background: rgba(15, 47, 36, 0.14); }
 
 /* ── Entity pages (M5.1 repair) ────────────────────────────────────────────
    The destination page for a place, a person, a story or a period. No new
