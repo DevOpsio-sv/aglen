@@ -23,7 +23,6 @@ const cssPath = path.join(rootDir, "src", "fonts.css");
 // Weights are the ones src/styles.css actually declares. Cormorant Garamond has
 // no 900 cut, so the few `font-weight: 900` rules stay synthesised as before.
 const FAMILIES = [
-  "Cinzel:wght@600;700",
   "Cormorant+Garamond:wght@600;700",
   "Inter:wght@400;600;700;800",
 ];

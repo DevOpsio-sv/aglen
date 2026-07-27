@@ -39,7 +39,7 @@ export const es: PageCopy = {
   },
   landmarks: {
     eyebrow: "Lugares para descubrir",
-    title: "Los lugares más bellos cerca de Aglen",
+    title: "Descubra los lugares más bellos alrededor de Aglen",
     text: "Desde impresionantes formaciones rocosas y pozas del río hasta vistas panorámicas y sitios históricos: aquí la naturaleza y las leyendas locales convierten cada paseo en un pequeño descubrimiento.",
     aria: "Puntos de ruta alrededor de Aglen",
   },

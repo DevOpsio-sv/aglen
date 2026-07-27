@@ -39,7 +39,7 @@ export const hu: PageCopy = {
   },
   landmarks: {
     eyebrow: "Felfedezhető helyek",
-    title: "Aglen legszebb helyei",
+    title: "Fedezze fel Aglen legszebb helyeit",
     text: "A lenyűgöző sziklaképződményektől és folyómedencéktől a panorámás kilátásokig és történelmi helyszínekig – itt a természet és a helyi legendák minden sétát kis felfedezéssé varázsolnak.",
     aria: "Útvonalpontok Aglen körül",
   },

@@ -39,7 +39,7 @@ export const tr: PageCopy = {
   },
   landmarks: {
     eyebrow: "Keşfedilecek yerler",
-    title: "Aglen çevresindeki en güzel yerler",
+    title: "Aglen çevresinin en güzel yerlerini keşfedin",
     text: "Etkileyici kaya oluşumlarından ve nehir havuzlarından panoramik manzaralara ve tarihi yerlere kadar – burada doğa ve yerel efsaneler her yürüyüşü küçük bir keşfe dönüştürür.",
     aria: "Aglen çevresindeki rota durakları",
   },

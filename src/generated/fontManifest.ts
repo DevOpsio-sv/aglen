@@ -6,10 +6,6 @@
 export type FontFace = { family: string; weight: number; subset: string; url: string };
 
 export const fontFaces: FontFace[] = [
-  { family: "Cinzel", weight: 600, subset: "latin-ext", url: "/assets/fonts/cinzel-8vIJ7ww63mVu7gt7-GT7LEc.woff2" },
-  { family: "Cinzel", weight: 600, subset: "latin", url: "/assets/fonts/cinzel-8vIJ7ww63mVu7gt79mT7.woff2" },
-  { family: "Cinzel", weight: 700, subset: "latin-ext", url: "/assets/fonts/cinzel-8vIJ7ww63mVu7gt7-GT7LEc.woff2" },
-  { family: "Cinzel", weight: 700, subset: "latin", url: "/assets/fonts/cinzel-8vIJ7ww63mVu7gt79mT7.woff2" },
   { family: "Cormorant Garamond", weight: 600, subset: "cyrillic-ext", url: "/assets/fonts/cormorantgaramond-co3bmX5slCNuHLi8bLeY9MK7whWMhyjYpHtKgS4.woff2" },
   { family: "Cormorant Garamond", weight: 600, subset: "cyrillic", url: "/assets/fonts/cormorantgaramond-co3bmX5slCNuHLi8bLeY9MK7whWMhyjYrXtKgS4.woff2" },
   { family: "Cormorant Garamond", weight: 600, subset: "vietnamese", url: "/assets/fonts/cormorantgaramond-co3bmX5slCNuHLi8bLeY9MK7whWMhyjYpntKgS4.woff2" },

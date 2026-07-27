@@ -20,7 +20,7 @@ export const en: PageCopy = {
   statsLabel: "Why visit Aglen",
   about: { eyebrow: "History and local memory", title: "The secrets of the Aglen rocks", text: "Behind the limestone massifs and the dozens of caves in the Lukovit karst near Aglen lies a story that spans millennia of geological transformation, Thracian cult practices, and Revival-era chronicles. Explore the layers below." },
   legends: { eyebrow: "Legends & Mysteries of Aglen", title: "Among the canyons, caves, and old paths around Aglen, every place carries its own story.", text: "The strongest stories here are not loud. They live in local names, cave thresholds, strange rock forms, and the bends of the river." },
-  landmarks: { eyebrow: "Places to Explore", title: "The most beautiful places near Aglen", text: "From striking rock formations and river pools to panoramic views and historic sites – here nature and local legends turn every walk into a small discovery.", aria: "Route stops around Aglen" },
+  landmarks: { eyebrow: "Places to Explore", title: "Discover the most beautiful places around Aglen", text: "From striking rock formations and river pools to panoramic views and historic sites – here nature and local legends turn every walk into a small discovery.", aria: "Route stops around Aglen" },
   experiences: { eyebrow: "Experiences", title: "Experience Aglen your own way", text: "Choose a walk, a photography adventure, fishing, or a weekend surrounded by nature, and discover the best of the region.", cta: "Ask about the route" },
   gallery: { eyebrow: "Nature gallery", title: "A place told through river light and stone", aria: "Aglen gallery" },
   stay: {

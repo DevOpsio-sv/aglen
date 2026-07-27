@@ -566,11 +566,30 @@ p {
   margin-top: 0;
 }
 
+/* Headings wrap on whole words. No `hyphens: auto` and no `word-break` anywhere
+   in this file — but Bulgarian compounds like "най-красивите" carry a real
+   hyphen, and a browser will always break at one. `text-wrap: balance` evens
+   the lines out so the break lands somewhere deliberate; `overflow-wrap:
+   break-word` is the last resort that keeps a long word inside its column
+   instead of over the card beside it. */
+h1,
+h2,
+h3 {
+  hyphens: manual;
+  overflow-wrap: break-word;
+  text-wrap: balance;
+}
+
 h1 {
   max-width: 900px;
   margin-bottom: 0.35rem;
   color: #fff;
-  font-family: Cinzel, "Cormorant Garamond", serif;
+  /* Cinzel was the display face and carries no Cyrillic at all — latin and
+     latin-ext only. On a fourteen-language site that guaranteed a font switch
+     mid-heading: "AR" in Cinzel, "мисии" in whatever came next. Cormorant
+     Garamond is loaded here with real cyrillic and cyrillic-ext subsets, so one
+     face now sets the whole heading in every alphabet the site publishes. */
+  font-family: var(--serif);
   font-size: clamp(4.2rem, 12vw, 10.5rem);
   font-weight: 700;
   line-height: 0.86;
@@ -1313,9 +1332,23 @@ h3 {
 
 .map-layout {
   display: grid;
-  grid-template-columns: minmax(0, 0.8fr) minmax(360px, 1.2fr);
-  gap: 2rem;
+  /* Two equal columns. It used to be 0.8fr / 1.2fr, which gave the display
+     heading the NARROWER half — a 5.6rem type size in the smaller column is
+     what broke "най-красивите" across two lines at its hyphen. `minmax(0, …)`
+     on both keeps a long word inside its track instead of pushing into the
+     card beside it. */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 3rem;
   align-items: center;
+}
+
+.map-layout .section-heading { max-width: 100%; }
+.map-layout .section-heading h2,
+.map-layout .section-heading h3 {
+  /* Capped below the global display size: this heading shares its row with a
+     card, so it cannot have the full width the hero headings are set for. */
+  font-size: clamp(2.1rem, 3.6vw, 3.4rem);
+  line-height: var(--leading-tight);
 }
 
 .route-map {
@@ -1366,6 +1399,9 @@ h3 {
 .map-stop p {
   margin: 0;
 }
+
+.map-stop h3 { line-height: var(--leading-tight); }
+.map-stop p { line-height: 1.5; }
 
 .contact {
   padding-bottom: 4rem;

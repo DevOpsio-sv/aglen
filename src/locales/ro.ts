@@ -39,7 +39,7 @@ export const ro: PageCopy = {
   },
   landmarks: {
     eyebrow: "Locuri de descoperit",
-    title: "Cele mai frumoase locuri din jurul Aglen",
+    title: "Descoperiți cele mai frumoase locuri din jurul Aglenului",
     text: "De la formațiuni stâncoase impresionante și bulboane de râu până la priveliști panoramice și obiective istorice – aici natura și legendele locale transformă fiecare plimbare într-o mică descoperire.",
     aria: "Puncte de traseu în jurul Aglen",
   },
