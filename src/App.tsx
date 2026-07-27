@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type MouseEvent, type ReactNode, type SyntheticEvent } from "react";
 import { contentByLanguage, languages, type Accommodation, type LanguageCode, type PlaceId, type TimelineItem } from "./content";
 import { DIFFICULTY_LABEL, MOODS, PICKER_UI, experiences, type Mood } from "./experiences";
+import { checklistCopy } from "./landingPages";
 import { getLandingPage, getLandingPages, isLandingPageId, routesCopy, transportCopy, transportLinks } from "./landingPages";
 import { placeExperienceLinks, type PlaceExperienceLink } from "./placeLinks";
 import { buildAspectPath, buildBusinessPath, buildGuidePath, buildPlacePath, buildRoutePath, buildSourcePath, getStaticRoute, resolveRoute, type RouteId, type ResolvedRoute } from "./routes";
@@ -125,6 +126,47 @@ function ExperiencePicker({
       </div>
       {shown.length === 0 && <p className="mood-empty">{ui.empty}</p>}
     </div>
+  );
+}
+
+/**
+ * A packing list you can tick, for a page that declares `interactive: "checklist"`.
+ *
+ * Real `<input type="checkbox">` elements with real `<label>`s: a div with an
+ * onClick would need a role, a tabindex, a keyboard handler and an aria-checked
+ * to arrive back where the platform already was, and it would still not work
+ * with a screen reader's form controls list.
+ *
+ * The ticks live in component state and are gone on reload. That is deliberate:
+ * persisting them means writing to the visitor's device, and a packing list is
+ * not worth a storage disclosure on a site whose whole argument is that it tells
+ * you what it does.
+ */
+function PackingChecklist({ language }: { language: LanguageCode }) {
+  const copy = checklistCopy[language];
+  const [ticked, setTicked] = useState<number[]>([]);
+  const toggle = (index: number) =>
+    setTicked((current) => (current.includes(index) ? current.filter((n) => n !== index) : [...current, index]));
+  const complete = ticked.length === copy.items.length;
+
+  return (
+    <section className="seo-checklist" aria-labelledby="checklist-title">
+      <h2 id="checklist-title">{copy.title}</h2>
+      <p className="seo-checklist-lede">{copy.lede}</p>
+      <ul className="seo-checklist-items">
+        {copy.items.map((item, index) => (
+          <li key={item}>
+            <label className={ticked.includes(index) ? "is-ticked" : undefined}>
+              <input type="checkbox" checked={ticked.includes(index)} onChange={() => toggle(index)} />
+              <span>{item}</span>
+            </label>
+          </li>
+        ))}
+      </ul>
+      <p className="seo-checklist-done" aria-live="polite">
+        {complete ? copy.done : ""}
+      </p>
+    </section>
   );
 }
 
@@ -1076,6 +1118,7 @@ export function App() {
 
             {currentLandingPage.interactive === "transport" && <TransportPanel language={language} />}
             {currentLandingPage.interactive === "routes" && <RoutePicker language={language} />}
+            {currentLandingPage.interactive === "checklist" && <PackingChecklist language={language} />}
 
             <div className="seo-section-grid">
               {currentLandingPage.sections.map((section) => (

@@ -1195,6 +1195,59 @@ h3 {
 .seo-section-card h2 { margin-bottom: 0.8rem; }
 .seo-section-card p { margin: 0; }
 
+/* ── The family packing list (familyTrip) ──────────────────
+   Real checkboxes and real labels. A styled div would need a role, a tabindex,
+   a key handler and aria-checked to get back to where the platform already is. */
+.seo-checklist {
+  display: grid;
+  gap: var(--space-box-gap);
+  border: 1px solid rgba(15, 47, 36, 0.14);
+  border-radius: 20px;
+  padding: var(--space-box);
+  background: rgba(255, 255, 255, 0.55);
+}
+.seo-checklist > h2 {
+  margin: 0;
+  color: var(--forest-deep);
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: var(--leading-tight);
+}
+.seo-checklist-lede { margin: 0; color: rgba(7, 26, 20, 0.72); line-height: 1.65; }
+.seo-checklist-items { list-style: none; margin: 0.2rem 0 0; padding: 0; display: grid; gap: 0.5rem; }
+.seo-checklist-items label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  min-height: 44px;
+  border: 1px solid rgba(15, 47, 36, 0.12);
+  border-radius: 14px;
+  padding: 0.7rem 0.95rem;
+  background: rgba(247, 242, 231, 0.7);
+  line-height: 1.65;
+  cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease, opacity 0.18s ease;
+}
+.seo-checklist-items label:hover { border-color: var(--gold); background: rgba(255, 255, 255, 0.9); }
+.seo-checklist-items input {
+  width: 1.15rem;
+  height: 1.15rem;
+  margin: 0.28rem 0 0;
+  flex: none;
+  accent-color: var(--forest);
+}
+.seo-checklist-items label:has(input:focus-visible) { outline: 2px solid var(--river); outline-offset: 2px; }
+.seo-checklist-items label.is-ticked { border-color: rgba(15, 47, 36, 0.28); background: rgba(15, 47, 36, 0.07); }
+.seo-checklist-items label.is-ticked span { text-decoration: line-through; opacity: 0.66; }
+.seo-checklist-done:not(:empty) {
+  margin: 0;
+  color: var(--forest);
+  font-weight: 700;
+  line-height: 1.65;
+}
+.seo-checklist-done:empty { display: none; }
+
 /* ── The three walks (routeMap) ────────────────────────────
    An ordered list of routes, each an ordered list of stops. The markup is the
    meaning: a walk IS a sequence, so <ol> is what it is, and a screen reader
@@ -1372,16 +1425,16 @@ h3 {
 .seo-related {
   border: 1px solid rgba(15, 47, 36, 0.12);
   border-radius: 22px;
-  padding: 1.2rem;
+  padding: 1.5rem;
   background: rgba(255, 255, 255, 0.68);
 }
 
 .seo-section-card p,
 .seo-faq p {
   color: rgba(7, 26, 20, 0.72);
-  /* 1.7 is article leading. These are dense practical cards read in a glance,
-     and at that width the wide gaps made four sentences look like a wall. */
-  line-height: 1.55;
+  /* 1.7 was article leading and made four sentences look like a wall; 1.65 is
+     the asked-for value and reads as a card rather than as a page. */
+  line-height: 1.65;
 }
 
 .seo-faq-links {

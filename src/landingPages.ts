@@ -61,7 +61,7 @@ export type LandingPage = {
   sections: LandingPageSection[];
   faqs: LandingPageFaq[];
   internalLinks: Array<{ label: string; routeId: LandingPageId | string }>;
-  interactive?: "transport" | "routes";
+  interactive?: "transport" | "routes" | "checklist";
 };
 
 type LandingPageMaster = {
@@ -72,7 +72,7 @@ type LandingPageMaster = {
   schemaType: "Article" | "TravelGuide";
   internalLinkRouteIds: Array<LandingPageId | string>;
   /** An interactive block this page carries — declared in data, not by id in JSX. */
-  interactive?: "transport" | "routes";
+  interactive?: "transport" | "routes" | "checklist";
 };
 
 /**
@@ -106,7 +106,7 @@ export const landingPageMaster: LandingPageMaster[] = [
   { id: "culturalTourism", slug: "cultural-tourism-aglen", image: images.kaleto, imageAltKey: "kaleto", schemaType: "TravelGuide", internalLinkRouteIds: ["historyOfAglen", "quests", "contact"] },
   { id: "natureTourism", slug: "nature-tourism-aglen", image: images.hero, imageAltKey: "hero", schemaType: "TravelGuide", internalLinkRouteIds: ["natureAroundAglen", "vitRiver", "campingNearAglen"] },
   { id: "adventureTourism", slug: "adventure-tourism-aglen", image: images.cave, imageAltKey: "cave", schemaType: "TravelGuide", internalLinkRouteIds: ["quests", "hiking", "caves"] },
-  { id: "familyTrip", slug: "family-trip-aglen", image: images.pool, imageAltKey: "pool", schemaType: "TravelGuide", internalLinkRouteIds: ["thingsToDo", "weekendInAglen", "accommodationNearAglen"] },
+  { id: "familyTrip", slug: "family-trip-aglen", image: images.pool, imageAltKey: "pool", schemaType: "TravelGuide", internalLinkRouteIds: ["thingsToDo", "weekendInAglen", "accommodationNearAglen"], interactive: "checklist" },
   { id: "campingNearAglen", slug: "camping-near-aglen", image: images.aerial, imageAltKey: "aerial", schemaType: "Article", internalLinkRouteIds: ["accommodationNearAglen", "natureTourism", "vitRiver"] },
   { id: "weekendInAglen", slug: "weekend-in-aglen", image: images.hero, imageAltKey: "hero", schemaType: "TravelGuide", internalLinkRouteIds: ["aglenFromSofia", "howToGet", "nearby"] },
   { id: "routeMap", slug: "aglen-route-map", image: images.aerial, imageAltKey: "aerial", schemaType: "TravelGuide", internalLinkRouteIds: ["visitAglen", "attractions", "nearby"], interactive: "routes" },
@@ -1569,10 +1569,410 @@ export const routesCopy: Record<LanguageCode, RoutesCopy> = {
   }
 };
 
+export type ChecklistCopy = { title: string; lede: string; items: string[]; done: string };
+
+/** The family packing list, per language. */
+export const checklistCopy: Record<LanguageCode, ChecklistCopy> = {
+  bg: {
+    title: "🧸 Семеен чек-лист за разходката",
+    lede: "Отметнете, докато стягате багажа. Списъкът се пази, докато сте на страницата.",
+    items: [
+      "Одеяло за пикник и подкрепителна храна",
+      "Резервни дрехи и вода за децата",
+      "Удобни маратонки или сандали за брега",
+      "Шапки и слънцезащитен крем",
+      "Торбичка за отпадъци — пазим природата чиста"
+    ],
+    done: "Готови сте за път."
+  },
+  en: {
+    title: "🧸 The family packing list",
+    lede: "Tick these off while you pack. The list keeps your marks while you stay on the page.",
+    items: [
+      "A picnic blanket and something to eat",
+      "Spare clothes and water for the children",
+      "Trainers or sandals that suit the riverbank",
+      "Hats and sun cream",
+      "A bag for rubbish — we leave the place as we found it"
+    ],
+    done: "You are ready to go."
+  },
+  de: {
+    title: "🧸 Die Packliste für die Familie",
+    lede: "Haken Sie beim Packen ab. Die Liste behält Ihre Häkchen, solange Sie auf der Seite bleiben.",
+    items: [
+      "Picknickdecke und etwas zu essen",
+      "Wechselkleidung und Wasser für die Kinder",
+      "Turnschuhe oder Sandalen fürs Ufer",
+      "Hüte und Sonnencreme",
+      "Ein Beutel für den Müll — wir lassen den Ort, wie wir ihn fanden"
+    ],
+    done: "Sie sind startklar."
+  },
+  fr: {
+    title: "🧸 La liste de la famille",
+    lede: "Cochez pendant que vous préparez le sac. La liste garde vos coches tant que vous restez sur la page.",
+    items: [
+      "Une couverture de pique-nique et de quoi manger",
+      "Des vêtements de rechange et de l'eau pour les enfants",
+      "Des baskets ou des sandales adaptées à la berge",
+      "Chapeaux et crème solaire",
+      "Un sac pour les déchets — on laisse le lieu comme on l'a trouvé"
+    ],
+    done: "Vous êtes prêts à partir."
+  },
+  es: {
+    title: "🧸 La lista de la familia",
+    lede: "Marque mientras hace la mochila. La lista conserva sus marcas mientras siga en la página.",
+    items: [
+      "Una manta de picnic y algo de comer",
+      "Ropa de recambio y agua para los niños",
+      "Zapatillas o sandalias aptas para la ribera",
+      "Gorras y crema solar",
+      "Una bolsa para la basura: dejamos el sitio como lo encontramos"
+    ],
+    done: "Listos para salir."
+  },
+  it: {
+    title: "🧸 La lista della famiglia",
+    lede: "Spuntate mentre preparate lo zaino. L'elenco conserva i segni finché restate sulla pagina.",
+    items: [
+      "Una coperta da picnic e qualcosa da mangiare",
+      "Vestiti di ricambio e acqua per i bambini",
+      "Scarpe da ginnastica o sandali adatti alla riva",
+      "Cappelli e crema solare",
+      "Un sacchetto per i rifiuti: lasciamo il posto come l'abbiamo trovato"
+    ],
+    done: "Siete pronti a partire."
+  },
+  ro: {
+    title: "🧸 Lista familiei",
+    lede: "Bifați în timp ce faceți bagajul. Lista păstrează bifele cât timp rămâneți pe pagină.",
+    items: [
+      "O pătură de picnic și ceva de mâncare",
+      "Haine de schimb și apă pentru copii",
+      "Adidași sau sandale potrivite pentru mal",
+      "Pălării și cremă de soare",
+      "O pungă pentru gunoi — lăsăm locul cum l-am găsit"
+    ],
+    done: "Sunteți gata de drum."
+  },
+  tr: {
+    title: "🧸 Aile için hazırlık listesi",
+    lede: "Çantayı hazırlarken işaretleyin. Sayfada kaldığınız sürece işaretler durur.",
+    items: [
+      "Piknik örtüsü ve yiyecek bir şeyler",
+      "Çocuklar için yedek kıyafet ve su",
+      "Kıyıya uygun spor ayakkabı ya da sandalet",
+      "Şapka ve güneş kremi",
+      "Çöp için bir poşet — yeri bulduğumuz gibi bırakırız"
+    ],
+    done: "Yola çıkmaya hazırsınız."
+  },
+  el: {
+    title: "🧸 Η λίστα της οικογένειας",
+    lede: "Τσεκάρετε καθώς ετοιμάζετε τη τσάντα. Η λίστα κρατά τα σημάδια όσο μένετε στη σελίδα.",
+    items: [
+      "Κουβέρτα για πικνίκ και κάτι για φαγητό",
+      "Ρούχα αλλαξιάς και νερό για τα παιδιά",
+      "Αθλητικά ή σανδάλια κατάλληλα για την όχθη",
+      "Καπέλα και αντηλιακό",
+      "Μια σακούλα για τα σκουπίδια — αφήνουμε τον τόπο όπως τον βρήκαμε"
+    ],
+    done: "Είστε έτοιμοι."
+  },
+  ru: {
+    title: "🧸 Семейный список сборов",
+    lede: "Отмечайте, пока собираете рюкзак. Отметки сохраняются, пока вы на странице.",
+    items: [
+      "Плед для пикника и что-нибудь поесть",
+      "Сменная одежда и вода для детей",
+      "Кроссовки или сандалии для берега",
+      "Панамы и солнцезащитный крем",
+      "Пакет для мусора — оставляем место таким, каким нашли"
+    ],
+    done: "Можно в путь."
+  },
+  ja: {
+    title: "🧸 家族の持ちもの表",
+    lede: "荷造りをしながらチェックしてください。ページを開いているあいだ、印は残ります。",
+    items: [
+      "ピクニック用の敷物と食べもの",
+      "子どもの着替えと水",
+      "川辺に向くスニーカーかサンダル",
+      "帽子と日焼け止め",
+      "ごみ袋——来たときのままにして帰ります"
+    ],
+    done: "準備は整いました。"
+  },
+  sr: {
+    title: "🧸 Породична листа за паковање",
+    lede: "Штиклирајте док пакујете. Листа чува ознаке док сте на страници.",
+    items: [
+      "Ћебе за пикник и нешто за јело",
+      "Резервна одећа и вода за децу",
+      "Патике или сандале погодне за обалу",
+      "Шешири и крема за сунце",
+      "Кеса за смеће — остављамо место каквим смо га затекли"
+    ],
+    done: "Спремни сте за полазак."
+  },
+  zh: {
+    title: "🧸 家庭出行清单",
+    lede: "收拾行李时逐项勾选。只要停留在本页，勾选就会保留。",
+    items: [
+      "野餐垫和一些吃的",
+      "孩子的换洗衣物与饮用水",
+      "适合河岸的运动鞋或凉鞋",
+      "帽子和防晒霜",
+      "一个装垃圾的袋子——来时什么样，走时还什么样"
+    ],
+    done: "可以出发了。"
+  },
+  hu: {
+    title: "🧸 Családi csomagolólista",
+    lede: "Pipálja ki, miközben pakol. A lista megőrzi a jeleket, amíg az oldalon marad.",
+    items: [
+      "Pikniktakaró és valami harapnivaló",
+      "Váltóruha és víz a gyerekeknek",
+      "Partra való sportcipő vagy szandál",
+      "Kalapok és naptej",
+      "Egy zsák a szemétnek — úgy hagyjuk a helyet, ahogy találtuk"
+    ],
+    done: "Indulhatnak."
+  }
+};
+
 export const transportLinks = { map: AGLEN_MAP_URL, rail: BDZ_URL };
 
 
 const authoredProse: Partial<Record<LandingPageId, Record<LanguageCode, AuthoredProse>>> = {
+  familyTrip: {
+    bg: {
+      kicker: "👨‍👩‍👧‍👦 Пътеводител за родители и деца",
+      h1: "Семейно приключение в Ъглен",
+      cta: "Питай за семейно посещение",
+      intro: "Превърнете уикенда в незабравим спомен за цялото семейство. Ъглен предлага комбинацията от безопасни пътеки, прохладни речни брегове за пикник и природни чудеса, които будят любопитството на малките откриватели — без излишна умора и сложни преходи.",
+      headings: [
+        "👨‍👩‍👧‍👦 За кои семейства е подходящо?",
+        "🎒 Как да планирате деня?",
+        "🍦 Какво да съчетаете наблизо за децата?",
+      ],
+      bodies: [
+        "Пътеводителят е за родители с деца от всички възрасти. Маршрутите покрай река Вит са равни, сенчести и пълни с безопасни места за тичане, игра и събиране на речни камъчета. Скалните ръбове над долината са друго нещо и не влизат в семейния ден — те са необезопасени и се гледат отдалеч.",
+        "Подготовка: проверете прогнозата и изберете слънчев, умерен ден. Екипировка: вода и обувки, които могат да се мокрят край брега. Темпо: движете се с ритъма на децата и смятайте разходката за игра и откривателство, а не за преход.",
+        "Допълнете деня с пещерата „Проходна“ — широка, светла и с лесен достъп, разходка в геопарка „Искър-Панега“ по дървените мостчета, или хапване в семейните заведения около Луковит.",
+      ],
+    },
+    en: {
+      kicker: "👨‍👩‍👧‍👦 A guide for parents and children",
+      h1: "A family adventure in Aglen",
+      cta: "Ask about a family visit",
+      intro: "Turn the weekend into something the whole family remembers. Aglen offers safe paths, cool riverbanks for a picnic and natural wonders that wake up a small explorer's curiosity — without the tiredness and the difficult stretches.",
+      headings: [
+        "👨‍👩‍👧‍👦 Which families is it for?",
+        "🎒 How to plan the day",
+        "🍦 What to combine nearby for the children",
+      ],
+      bodies: [
+        "This guide is for parents with children of any age. The paths along the River Vit are level, shaded and full of safe places to run, play and collect river pebbles. The cliff edges above the valley are another matter and are not part of a family day — they have no barriers and are best seen from a distance.",
+        "Preparation: check the forecast and pick a sunny, mild day. Kit: water, and shoes that can get wet at the water's edge. Pace: go at the children's speed and treat the walk as play and discovery rather than as a hike.",
+        "Add Prohodna cave — wide, light and easy to get into — a walk through the Iskar-Panega geopark on its wooden boardwalks, or a meal at one of the family places around Lukovit.",
+      ],
+    },
+    de: {
+      kicker: "👨‍👩‍👧‍👦 Ein Führer für Eltern und Kinder",
+      h1: "Familienabenteuer in Aglen",
+      cta: "Nach einem Familienbesuch fragen",
+      intro: "Machen Sie aus dem Wochenende eine Erinnerung für die ganze Familie. Aglen bietet sichere Pfade, kühle Flussufer für ein Picknick und Naturwunder, die die Neugier kleiner Entdecker wecken — ohne unnötige Anstrengung und schwierige Passagen.",
+      headings: [
+        "👨‍👩‍👧‍👦 Für welche Familien ist das?",
+        "🎒 So planen Sie den Tag",
+        "🍦 Was Sie für die Kinder in der Nähe verbinden",
+      ],
+      bodies: [
+        "Dieser Führer ist für Eltern mit Kindern jeden Alters. Die Wege am Fluss Vit sind eben, schattig und voller sicherer Stellen zum Rennen, Spielen und Kieselsammeln. Die Felskanten über dem Tal sind etwas anderes und gehören nicht zu einem Familientag — sie sind ungesichert und werden aus der Ferne betrachtet.",
+        "Vorbereitung: Wetter prüfen und einen sonnigen, milden Tag wählen. Ausrüstung: Wasser und Schuhe, die am Ufer nass werden dürfen. Tempo: im Rhythmus der Kinder gehen und den Weg als Spiel und Entdeckung verstehen, nicht als Wanderung.",
+        "Ergänzen Sie den Tag mit der Höhle Prohodna — weit, hell und leicht zugänglich —, einem Spaziergang im Geopark Iskar-Panega auf seinen Holzstegen oder einem Essen in einem der Familienlokale um Lukovit.",
+      ],
+    },
+    fr: {
+      kicker: "👨‍👩‍👧‍👦 Un guide pour parents et enfants",
+      h1: "Une aventure en famille à Aglen",
+      cta: "Demander une visite en famille",
+      intro: "Faites du week-end un souvenir pour toute la famille. Aglen offre des sentiers sûrs, des berges fraîches pour pique-niquer et des merveilles naturelles qui éveillent la curiosité des petits explorateurs — sans fatigue inutile ni passages difficiles.",
+      headings: [
+        "👨‍👩‍👧‍👦 À quelles familles s'adresse-t-il ?",
+        "🎒 Comment organiser la journée",
+        "🍦 Que combiner à proximité pour les enfants",
+      ],
+      bodies: [
+        "Ce guide s'adresse aux parents avec des enfants de tout âge. Les sentiers le long de la Vit sont plats, ombragés et pleins d'endroits sûrs pour courir, jouer et ramasser des galets. Les corniches au-dessus de la vallée sont autre chose et ne font pas partie d'une journée en famille : elles ne sont pas protégées et se regardent de loin.",
+        "Préparation : consultez la météo et choisissez une journée ensoleillée et douce. Équipement : de l'eau et des chaussures qui peuvent être mouillées au bord de l'eau. Rythme : avancez au pas des enfants et considérez la promenade comme un jeu et une découverte, pas comme une randonnée.",
+        "Complétez la journée par la grotte Prohodna — vaste, lumineuse et d'accès facile —, une promenade dans le géoparc Iskar-Panega sur ses passerelles en bois, ou un repas dans l'un des établissements familiaux autour de Lukovit.",
+      ],
+    },
+    es: {
+      kicker: "👨‍👩‍👧‍👦 Una guía para padres e hijos",
+      h1: "Aventura familiar en Aglen",
+      cta: "Preguntar por una visita en familia",
+      intro: "Convierta el fin de semana en un recuerdo para toda la familia. Aglen ofrece senderos seguros, riberas frescas para un picnic y maravillas naturales que despiertan la curiosidad de los pequeños exploradores, sin cansancio innecesario ni tramos difíciles.",
+      headings: [
+        "👨‍👩‍👧‍👦 ¿Para qué familias es?",
+        "🎒 Cómo organizar el día",
+        "🍦 Qué combinar cerca para los niños",
+      ],
+      bodies: [
+        "Esta guía es para padres con hijos de cualquier edad. Los senderos junto al río Vit son llanos, sombreados y llenos de sitios seguros para correr, jugar y recoger cantos rodados. Los cortados sobre el valle son otra cosa y no forman parte de un día en familia: no tienen protección y se miran de lejos.",
+        "Preparación: consulte el pronóstico y elija un día soleado y templado. Equipo: agua y calzado que pueda mojarse en la orilla. Ritmo: vaya al paso de los niños y entienda el paseo como juego y descubrimiento, no como una caminata.",
+        "Complete el día con la cueva Prohodna —amplia, luminosa y de acceso fácil—, un paseo por el geoparque Iskar-Panega sobre sus pasarelas de madera, o una comida en alguno de los sitios familiares en torno a Lukovit.",
+      ],
+    },
+    it: {
+      kicker: "👨‍👩‍👧‍👦 Una guida per genitori e bambini",
+      h1: "Avventura in famiglia ad Aglen",
+      cta: "Chiedere di una visita in famiglia",
+      intro: "Trasformate il fine settimana in un ricordo per tutta la famiglia. Aglen offre sentieri sicuri, rive fresche per un picnic e meraviglie naturali che risvegliano la curiosità dei piccoli esploratori, senza fatica inutile e senza tratti difficili.",
+      headings: [
+        "👨‍👩‍👧‍👦 A quali famiglie si rivolge?",
+        "🎒 Come organizzare la giornata",
+        "🍦 Che cosa abbinare nei dintorni per i bambini",
+      ],
+      bodies: [
+        "Questa guida è per genitori con bambini di ogni età. I sentieri lungo il fiume Vit sono pianeggianti, ombrosi e pieni di posti sicuri per correre, giocare e raccogliere sassolini. Le pareti sopra la valle sono un'altra cosa e non fanno parte di una giornata in famiglia: non hanno protezioni e si guardano da lontano.",
+        "Preparazione: controllate le previsioni e scegliete una giornata soleggiata e mite. Attrezzatura: acqua e scarpe che possono bagnarsi in riva. Ritmo: andate al passo dei bambini e considerate la passeggiata un gioco e una scoperta, non un'escursione.",
+        "Completate la giornata con la grotta Prohodna — ampia, luminosa e di accesso facile —, una passeggiata nel geoparco Iskar-Panega sulle sue passerelle di legno, o un pasto in uno dei locali familiari intorno a Lukovit.",
+      ],
+    },
+    ro: {
+      kicker: "👨‍👩‍👧‍👦 Un ghid pentru părinți și copii",
+      h1: "Aventură în familie la Aglen",
+      cta: "Întreabă despre o vizită în familie",
+      intro: "Transformați weekendul într-o amintire pentru toată familia. Aglen oferă poteci sigure, maluri răcoroase pentru picnic și minuni naturale care trezesc curiozitatea micilor exploratori — fără oboseală inutilă și fără porțiuni dificile.",
+      headings: [
+        "👨‍👩‍👧‍👦 Pentru ce familii este?",
+        "🎒 Cum să vă organizați ziua",
+        "🍦 Ce să combinați în apropiere pentru copii",
+      ],
+      bodies: [
+        "Ghidul este pentru părinți cu copii de orice vârstă. Potecile de pe malul râului Vit sunt drepte, umbrite și pline de locuri sigure pentru alergat, joacă și adunat pietricele. Marginile de stâncă de deasupra văii sunt altceva și nu fac parte dintr-o zi în familie: nu sunt asigurate și se privesc de la distanță.",
+        "Pregătire: verificați prognoza și alegeți o zi însorită și blândă. Echipament: apă și încălțăminte care se poate uda la mal. Ritm: mergeți în ritmul copiilor și priviți plimbarea ca joacă și descoperire, nu ca drumeție.",
+        "Completați ziua cu peștera Prohodna — largă, luminoasă și ușor accesibilă —, o plimbare în geoparcul Iskar-Panega pe podețele de lemn sau o masă la unul dintre localurile de familie din jurul Lukovitului.",
+      ],
+    },
+    tr: {
+      kicker: "👨‍👩‍👧‍👦 Anne babalar ve çocuklar için rehber",
+      h1: "Aglen'de aile macerası",
+      cta: "Ailece ziyaret için sorun",
+      intro: "Hafta sonunu tüm ailenin hatırlayacağı bir şeye dönüştürün. Aglen güvenli patikalar, piknik için serin nehir kıyıları ve küçük kâşiflerin merakını uyandıran doğa harikaları sunar — gereksiz yorgunluk ve zor geçişler olmadan.",
+      headings: [
+        "👨‍👩‍👧‍👦 Hangi aileler için?",
+        "🎒 Günü nasıl planlarsınız",
+        "🍦 Çocuklar için yakında neleri birleştirebilirsiniz",
+      ],
+      bodies: [
+        "Bu rehber, her yaştan çocuğu olan anne babalar için. Vit Nehri boyunca uzanan patikalar düz, gölgeli ve koşmak, oynamak, çakıl toplamak için güvenli yerlerle dolu. Vadinin üzerindeki kaya kenarları başka bir konu ve aile gününe dahil değil: korkulukları yok, uzaktan seyredilir.",
+        "Hazırlık: hava durumuna bakın, güneşli ve ılıman bir gün seçin. Donanım: su ve kıyıda ıslanabilecek ayakkabılar. Tempo: çocukların hızında ilerleyin; yürüyüşü bir tırmanış değil, oyun ve keşif sayın.",
+        "Günü Prohodna Mağarası ile tamamlayın — geniş, aydınlık ve girişi kolay —, Iskar-Panega jeoparkında ahşap köprücüklerde bir yürüyüş ya da Lukovit çevresindeki aile işletmelerinde bir yemek.",
+      ],
+    },
+    el: {
+      kicker: "👨‍👩‍👧‍👦 Οδηγός για γονείς και παιδιά",
+      h1: "Οικογενειακή περιπέτεια στο Άγκλεν",
+      cta: "Ρωτήστε για οικογενειακή επίσκεψη",
+      intro: "Κάντε το σαββατοκύριακο ανάμνηση για όλη την οικογένεια. Το Άγκλεν προσφέρει ασφαλή μονοπάτια, δροσερές όχθες για πικνίκ και θαύματα της φύσης που ξυπνούν την περιέργεια των μικρών εξερευνητών — χωρίς περιττή κούραση και δύσκολα περάσματα.",
+      headings: [
+        "👨‍👩‍👧‍👦 Σε ποιες οικογένειες απευθύνεται;",
+        "🎒 Πώς να οργανώσετε τη μέρα",
+        "🍦 Τι να συνδυάσετε κοντά για τα παιδιά",
+      ],
+      bodies: [
+        "Ο οδηγός είναι για γονείς με παιδιά κάθε ηλικίας. Τα μονοπάτια κατά μήκος του Βιτ είναι επίπεδα, σκιερά και γεμάτα ασφαλή σημεία για τρέξιμο, παιχνίδι και μάζεμα βοτσάλων. Τα βραχώδη χείλη πάνω από την κοιλάδα είναι άλλο πράγμα και δεν ανήκουν σε μια οικογενειακή μέρα: δεν έχουν προστατευτικά και τα βλέπουμε από απόσταση.",
+        "Προετοιμασία: δείτε την πρόγνωση και διαλέξτε μια ηλιόλουστη, ήπια μέρα. Εξοπλισμός: νερό και παπούτσια που μπορούν να βραχούν στην όχθη. Ρυθμός: βαδίστε με τον ρυθμό των παιδιών και δείτε τη βόλτα ως παιχνίδι και ανακάλυψη, όχι ως πεζοπορία.",
+        "Συμπληρώστε τη μέρα με το σπήλαιο Προχόντνα — ευρύχωρο, φωτεινό και με εύκολη πρόσβαση —, μια βόλτα στο γεωπάρκο Ίσκαρ-Πάνεγκα στα ξύλινα γεφυράκια του, ή ένα γεύμα σε κάποιο οικογενειακό μαγαζί γύρω από το Λούκοβιτ.",
+      ],
+    },
+    ru: {
+      kicker: "👨‍👩‍👧‍👦 Путеводитель для родителей и детей",
+      h1: "Семейное приключение в Аглене",
+      cta: "Спросить о семейной поездке",
+      intro: "Превратите выходные в память для всей семьи. Аглен предлагает безопасные тропы, прохладные берега для пикника и природные чудеса, которые будят любопытство маленьких первооткрывателей — без лишней усталости и сложных переходов.",
+      headings: [
+        "👨‍👩‍👧‍👦 Каким семьям он подойдёт?",
+        "🎒 Как спланировать день",
+        "🍦 Что соединить поблизости для детей",
+      ],
+      bodies: [
+        "Путеводитель для родителей с детьми любого возраста. Тропы вдоль Вита ровные, тенистые и полны безопасных мест, где можно побегать, поиграть и собирать речную гальку. Скальные обрывы над долиной — другое дело и в семейный день не входят: они не огорожены и на них смотрят издали.",
+        "Подготовка: посмотрите прогноз и выберите солнечный, мягкий день. Снаряжение: вода и обувь, которую не жалко намочить у берега. Темп: идите в ритме детей и считайте прогулку игрой и открытием, а не походом.",
+        "Дополните день пещерой Проходна — широкой, светлой и с лёгким входом, — прогулкой в геопарке Искыр-Панега по деревянным мосткам или обедом в одном из семейных заведений вокруг Луковита.",
+      ],
+    },
+    ja: {
+      kicker: "👨‍👩‍👧‍👦 親と子のためのガイド",
+      h1: "アグレンで過ごす家族の一日",
+      cta: "家族での訪問について問い合わせる",
+      intro: "週末を家族みんなの思い出に変えてください。アグレンには安全な小径、ピクニックに向く涼しい川辺、そして小さな探検家の好奇心を目覚めさせる自然の造形があります——余計な疲れも、難所もなしに。",
+      headings: [
+        "👨‍👩‍👧‍👦 どんな家族に向くか",
+        "🎒 一日の組み立て方",
+        "🍦 子ども連れで近くに組み合わせたいもの",
+      ],
+      bodies: [
+        "この案内は、どの年齢の子どもを連れた親にも向いています。ヴィト川沿いの道は平らで日陰が多く、走ったり遊んだり、川の小石を拾ったりできる安全な場所ばかりです。谷の上の岩の縁は別で、家族の一日には含みません——柵がなく、遠くから眺める場所です。",
+        "準備——天気予報を見て、晴れて穏やかな日を選んでください。装備——水と、水辺で濡れてもよい靴。ペース——子どもの速さで進み、この道のりを登山ではなく遊びと発見として考えてください。",
+        "一日にプロホドナ洞窟を足してみてください。広く、明るく、入りやすい洞窟です。イスカル・パネガ地質公園の木道を歩くのも、ルコヴィト界隈の家族向けの店で食事をするのもよいでしょう。",
+      ],
+    },
+    sr: {
+      kicker: "👨‍👩‍👧‍👦 Водич за родитеље и децу",
+      h1: "Породична авантура у Аглену",
+      cta: "Питај за породичну посету",
+      intro: "Претворите викенд у успомену за целу породицу. Аглен нуди безбедне стазе, хладовите обале за пикник и природна чуда која буде радозналост малих истраживача — без непотребног умора и тешких деоница.",
+      headings: [
+        "👨‍👩‍👧‍👦 Којим породицама одговара?",
+        "🎒 Како испланирати дан",
+        "🍦 Шта повезати у близини за децу",
+      ],
+      bodies: [
+        "Овај водич је за родитеље с децом свих узраста. Стазе уз реку Вит су равне, сеновите и пуне безбедних места за трчање, игру и скупљање речних облутака. Стеновите ивице изнад долине су друга прича и не улазе у породични дан: необезбеђене су и гледају се издалека.",
+        "Припрема: проверите прогнозу и изаберите сунчан, благ дан. Опрема: вода и обућа која сме да се покваси уз обалу. Темпо: идите ритмом деце и схватите шетњу као игру и откривање, а не као поход.",
+        "Допуните дан пећином Проходна — широком, светлом и лако приступачном —, шетњом кроз геопарк Искар-Панега по дрвеним мостићима, или оброком у неком од породичних локала око Луковита.",
+      ],
+    },
+    zh: {
+      kicker: "👨‍👩‍👧‍👦 写给父母与孩子的指南",
+      h1: "阿格伦的家庭之旅",
+      cta: "咨询家庭出行",
+      intro: "把周末变成全家人的记忆。阿格伦有安全的步道、适合野餐的清凉河岸，以及能唤醒小小探险家好奇心的自然奇观——不必疲于奔命，也没有难走的路段。",
+      headings: [
+        "👨‍👩‍👧‍👦 适合哪些家庭",
+        "🎒 如何安排这一天",
+        "🍦 带孩子可在附近串联什么",
+      ],
+      bodies: [
+        "这份指南写给带着任何年龄孩子的父母。维特河沿岸的小路平缓、有树荫，遍布可以奔跑、玩耍、捡河卵石的安全地方。谷上的岩缘是另一回事，不在家庭行程之内：那里没有护栏，远远看看就好。",
+        "准备：查看天气预报，挑一个晴朗温和的日子。装备：饮用水，以及在水边可以打湿的鞋。节奏：按孩子的速度走，把这段路当成游戏与发现，而不是徒步。",
+        "可以再加上普罗霍德纳洞穴——宽敞、明亮、进出方便；或在伊斯卡尔-帕内加地质公园的木栈道上走一走；也可以在卢科维特周边的家庭餐馆吃顿饭。",
+      ],
+    },
+    hu: {
+      kicker: "👨‍👩‍👧‍👦 Kalauz szülőknek és gyerekeknek",
+      h1: "Családi kaland Aglenben",
+      cta: "Érdeklődés családi látogatásról",
+      intro: "Változtassa a hétvégét az egész család emlékévé. Aglen biztonságos ösvényeket, hűvös folyópartokat a piknikhez és olyan természeti csodákat kínál, amelyek felébresztik a kis felfedezők kíváncsiságát — fölösleges fáradság és nehéz szakaszok nélkül.",
+      headings: [
+        "👨‍👩‍👧‍👦 Mely családoknak való?",
+        "🎒 Hogyan tervezze meg a napot",
+        "🍦 Mit kapcsoljon össze a közelben a gyerekeknek",
+      ],
+      bodies: [
+        "Ez a kalauz bármilyen korú gyermeket nevelő szülőknek szól. A Vit menti ösvények szintben vannak, árnyékosak, és tele vannak biztonságos helyekkel a futáshoz, játékhoz és a folyami kavicsok gyűjtéséhez. A völgy fölötti sziklaperemek más lapra tartoznak, és nem részei egy családi napnak: nincs korlát, messziről nézzük őket.",
+        "Felkészülés: nézze meg az előrejelzést, és válasszon napos, enyhe napot. Felszerelés: víz és olyan cipő, amely a vízparton benedvesedhet. Tempó: haladjon a gyerekek ritmusában, és tekintse a sétát játéknak és felfedezésnek, ne túrának.",
+        "Egészítse ki a napot a Prohodna-barlanggal — tágas, világos és könnyen járható —, egy sétával az Iskar-Panega geoparkban a fapallókon, vagy egy ebéddel valamelyik Lukovit környéki családi helyen.",
+      ],
+    },
+  },
   routeMap: {
     bg: {
       kicker: "Интерактивен пътеводител",
