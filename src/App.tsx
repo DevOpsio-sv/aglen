@@ -8,7 +8,7 @@ import { publishedBusinesses } from "./localBusinesses";
 import GuidesPage from "./GuidesPage";
 import { PlacePage, RegionRootPage } from "./graph/EntityPages";
 import { CorrectionsPage, KnowledgePage, SourcePage, SourcesPage } from "./graph/KnowledgePages";
-import { aspectCrumb, namespaceTitle, type NamespaceKind } from "./graph/namespaces";
+import { aspectCrumb, namespaceCrumb, namespaceTitle, type NamespaceKind } from "./graph/namespaces";
 import { NAMESPACES, REGIONS, regionByRootPath } from "./graph/registry";
 import { breadcrumbTrail, entityById, entityBySlug, entityForPlaceId, entityName as graphEntityName } from "./graph";
 import { aspectPagesFor } from "./graph/ledger";
@@ -1562,7 +1562,7 @@ function entityBreadcrumbTrail(
   }
   const namespaceId = knowledgeNamespaceRouteId(routeId);
   if (namespaceId) {
-    const indexLabel = namespaceTitle(namespaceId, language);
+    const indexLabel = namespaceCrumb(namespaceId, language);
     const entity = placeSlug ? entityBySlug(placeSlug) : undefined;
     const published = entity?.page?.status === "published" && entity.page.path.startsWith(`/${namespaceId}/`);
     if (!published) return [home, { label: indexLabel }];
@@ -1575,7 +1575,15 @@ function entityBreadcrumbTrail(
   if (routeId === "place") {
     const entity = placeSlug ? entityBySlug(placeSlug) : undefined;
     if (!entity || entity.page?.status !== "published") return null;
-    const chain = breadcrumbTrail(entity).map((node) => {
+    // "Начало / Места / Ъглен". Two changes from the containment walk alone: the
+    // /place/ index earns a crumb, so the trail leads somewhere a visitor can go
+    // back to; and ancestors that publish no page are dropped, because a crumb
+    // nobody can click that reads "Долина на Вит при Ъглен" is the graph showing
+    // through the chrome.
+    const places = { label: namespaceCrumb("place", language), href: buildRoutePath(language, "place") };
+    const chain = breadcrumbTrail(entity)
+      .filter((node) => node.id === entity.id || node.page?.status === "published")
+      .map((node) => {
       const isSelf = node.id === entity.id;
       // On an aspect page the entity itself is no longer the leaf, so it becomes
       // a link like every other ancestor.
@@ -1588,8 +1596,8 @@ function entityBreadcrumbTrail(
           : undefined;
       return { label: graphEntityName(node, language), href };
     });
-    if (!aspect) return [home, ...chain];
-    return [home, ...chain, { label: aspectCrumb(aspect, language) }];
+    if (!aspect) return [home, places, ...chain];
+    return [home, places, ...chain, { label: aspectCrumb(aspect, language) }];
   }
   return null;
 }

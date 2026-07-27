@@ -23,7 +23,7 @@ import { fontFaces } from "./generated/fontManifest";
 import { routeHasOwnSections } from "./pageSections";
 import { localizeTrust, trustPageByRoute } from "./trustPages";
 import { buildAspectPath, buildPlacePath, buildSourcePath } from "./routes";
-import { aspectCrumb, aspectLede, aspectTitle, namespacePrefix, namespaceTitle, NAMESPACE_CHROME, PROVENANCE_CHROME, SOURCE_CHROME, localizeChrome, type NamespaceKind } from "./graph/namespaces";
+import { aspectCrumb, aspectLede, aspectTitle, namespaceCrumb, namespacePrefix, namespaceTitle, NAMESPACE_CHROME, PROVENANCE_CHROME, SOURCE_CHROME, localizeChrome, type NamespaceKind } from "./graph/namespaces";
 import { KIND_HERO, NAMESPACES, REGIONS, namespaceForPath, type NamespaceId, type RegionRouteId } from "./graph/registry";
 import { isPublic, nameQuestion, narrateClaims } from "./graph/editorial";
 import {
@@ -39,6 +39,8 @@ import {
   entityLongText,
   entitySameAs,
   namespaceEntities,
+  placePageEntities,
+  regionRootOf,
 } from "./graph";
 import {
   aspectPagesFor,
@@ -460,13 +462,19 @@ function entityBreadcrumb(lang: LanguageCode, entity: Entity, aspect?: ClaimAspe
   const namespace = entity.page ? namespaceForPath(entity.page.path) : undefined;
   const namespaceKind = namespace?.knowledgeTier ? (namespace.id as NamespaceKind) : undefined;
   if (namespaceKind) {
-    items.push({ name: namespaceTitle(namespaceKind, lang), url: absoluteRouteUrl(lang, namespaceKind) });
+    items.push({ name: namespaceCrumb(namespaceKind, lang), url: absoluteRouteUrl(lang, namespaceKind) });
     // The leaf carries no URL, matching the visible trail exactly.
     items.push({ name: entityName(entity, lang) });
     return items;
   }
+  // A /place/ entity: Home → Places → its published ancestors → itself. Mirrors
+  // `entityBreadcrumbTrail` in App.tsx exactly, including the dropped nodes —
+  // markup that describes a trail the reader cannot see is markup Google is
+  // right to distrust.
+  items.push({ name: namespaceCrumb("place", lang), url: absoluteRouteUrl(lang, "place") });
   for (const node of breadcrumbTrail(entity)) {
     const isSelf = node.id === entity.id;
+    if (!isSelf && node.page?.status !== "published") continue;
     const url = node.page?.status === "published" && (!isSelf || aspect) ? entityAbsoluteUrl(lang, node) : undefined;
     items.push({ name: entityName(node, lang), url });
   }
@@ -1728,15 +1736,31 @@ export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "hom
   const meta = getSEOConfig(lang, routeId, detailSlug);
   const business = detailSlug && routeId === "localBusinesses" ? findBusiness(detailSlug) : undefined;
   const guide = detailSlug && routeId === "guides" ? findGuide(detailSlug) : undefined;
-  const subject = entitySubject(routeId, detailSlug);
+  // A region root (`/karst/`) addresses no slug, so it never resolved through
+  // `entitySubject` and fell through to the generic fallback: an <h1> that was
+  // the brand-suffixed <title>, no prose, and no link to a single place in the
+  // region. A crawler without JavaScript saw an empty page for the site's
+  // knowledge-subject root.
+  const regionRoot = REGIONS.find((region) => region.rootRouteId === routeId);
+  const rootEntity = regionRoot ? entityById(regionRoot.rootEntityId) : undefined;
+  const subject = entitySubject(routeId, detailSlug) ?? (rootEntity ? { entity: rootEntity } : undefined);
 
   if (subject) {
     const { entity, aspect } = subject;
     const parent = entity.parent ? entityById(entity.parent) : undefined;
     const karst = entityById("karst-lukovit");
-    const eyebrow = parent ? entityName(parent, lang) : karst ? entityName(karst, lang) : "";
+    const isRegionRoot = Boolean(rootEntity && rootEntity.id === entity.id);
+    // A region root is its own subject, so an eyebrow naming the karst above an
+    // <h1> naming the karst is the same words twice.
+    const eyebrow = isRegionRoot ? "" : parent ? entityName(parent, lang) : karst ? entityName(karst, lang) : "";
     const long = entityLongText(entity, lang);
-    const links = derivedLinks(entity, lang);
+    // A region root lists the places within it, exactly as its page does; every
+    // other entity lists what it is linked to.
+    const links = isRegionRoot
+      ? placePageEntities()
+          .filter((place) => regionRootOf(place)?.id === entity.id)
+          .map((place) => ({ path: place.page!.path, entityId: place.id, label: entityName(place, lang) }))
+      : derivedLinks(entity, lang);
     const pageText = entityText(lang, subject);
     // The claim layer for a crawler that runs no JavaScript — the SAME narrated
     // sentences a reader gets, from the same editorial layer (rule 33: the
@@ -1759,7 +1783,7 @@ export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "hom
             <h1>${escapeHtml(shortName(pageText.title))}</h1>
             ${paragraph(pageText.description)}
             ${long && !aspect ? paragraph(long) : ""}
-            <a href="${buildRoutePath(lang, "karst")}">${escapeHtml(karst ? entityName(karst, lang) : "")}</a>
+            ${isRegionRoot ? "" : `<a href="${buildRoutePath(lang, "karst")}">${escapeHtml(karst ? entityName(karst, lang) : "")}</a>`}
           </div>
           ${claimLines.map((line) => paragraph(line)).join("")}
           ${questionLines.map((line) => paragraph(line)).join("")}

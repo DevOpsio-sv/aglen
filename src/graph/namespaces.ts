@@ -29,6 +29,12 @@ export type NamespaceKind = NamespaceId;
 export type NamespaceChrome = {
   eyebrow: LocalizedText;
   title: LocalizedText;
+  /**
+   * The breadcrumb label. Short on purpose: a crumb is a place in a hierarchy,
+   * not a page heading, and "Легендите на Ъглен" in a trail is the h1 repeated
+   * where a reader wanted one word (acceptance criterion §15.8.1).
+   */
+  crumb: LocalizedText;
   lede: LocalizedText;
   /** An existing asset; no new media ships with a schema (ADR-012, ADR-019). */
   hero: string;
@@ -43,6 +49,7 @@ export const NAMESPACE_CHROME: Record<NamespaceKind, NamespaceChrome> = {
   place: {
     eyebrow: { bg: "Знание", en: "Knowledge" },
     title: { bg: "Ъглен и Луковитският карст", en: "Aglen & the Lukovit Karst" },
+    crumb: { bg: "Места", en: "Places" },
     lede: {
       bg: "Реалните места около селото — селото, реката, скалите и района — всяко със своя страница.",
       en: "The real places around the village — the village, the river, the rocks and the region — each with its own page.",
@@ -52,6 +59,7 @@ export const NAMESPACE_CHROME: Record<NamespaceKind, NamespaceChrome> = {
   history: {
     eyebrow: { bg: "Време", en: "Time" },
     title: { bg: "Историята на Ъглен и Луковитския карст", en: "The history of Aglen and the Lukovit Karst" },
+    crumb: { bg: "История", en: "History" },
     lede: {
       bg: "Хронология от варовиковото море до XX век. Всеки период е отделна страница със своите източници — и със своите празнини.",
       en: "A chronology from the limestone sea to the twentieth century. Each period is its own page with its own sources — and its own gaps.",
@@ -61,6 +69,7 @@ export const NAMESPACE_CHROME: Record<NamespaceKind, NamespaceChrome> = {
   legend: {
     eyebrow: { bg: "Устно предание", en: "Oral tradition" },
     title: { bg: "Легендите на Ъглен", en: "The legends of Aglen" },
+    crumb: { bg: "Легенди", en: "Legends" },
     lede: {
       bg: "Преданията от землището на селото, записани както се разказват. Твърдението тук е, че историята се разказва — не че описаното се е случило.",
       en: "The traditions of the village land, recorded as they are told. The claim here is that the story is told — not that what it describes happened.",
@@ -70,6 +79,7 @@ export const NAMESPACE_CHROME: Record<NamespaceKind, NamespaceChrome> = {
   person: {
     eyebrow: { bg: "Хора", en: "People" },
     title: { bg: "Хората на Ъглен", en: "The people of Aglen" },
+    crumb: { bg: "Хора", en: "People" },
     lede: {
       bg: "Хората, чиито живот е свързан със селото и които стоят в националната памет.",
       en: "The people whose lives are tied to the village and who stand in the national record.",
@@ -84,6 +94,7 @@ export const NAMESPACE_CHROME: Record<NamespaceKind, NamespaceChrome> = {
   route: {
     eyebrow: { bg: "Из землището", en: "Across the land" },
     title: { bg: "Маршрутите", en: "The routes" },
+    crumb: { bg: "Маршрути", en: "Routes" },
     lede: {
       bg: "Пътищата през землището — какво минава откъде, колко трае и какво се вижда по пътя. Публикува се само маршрут, който е извървян и записан.",
       en: "The ways through this land — what runs where, how long it takes and what is seen along it. Only a route somebody has walked and recorded is published.",
@@ -93,6 +104,7 @@ export const NAMESPACE_CHROME: Record<NamespaceKind, NamespaceChrome> = {
   tradition: {
     eyebrow: { bg: "Обичай", en: "Custom" },
     title: { bg: "Обичаите", en: "The traditions" },
+    crumb: { bg: "Обичаи", en: "Traditions" },
     lede: {
       bg: "Какво се прави тук и кога — празници, работа, ред на годината. Записано както се практикува, с този, който го помни.",
       en: "What is done here and when — feasts, work, the order of the year. Recorded as it is practised, with the person who remembers it.",
@@ -102,6 +114,7 @@ export const NAMESPACE_CHROME: Record<NamespaceKind, NamespaceChrome> = {
   species: {
     eyebrow: { bg: "Живо", en: "Living" },
     title: { bg: "Растенията и животните", en: "The plants and animals" },
+    crumb: { bg: "Природа", en: "Wildlife" },
     lede: {
       bg: "Видовете, наблюдавани в землището — с дата, с място и с този, който ги е определил. Наблюдение без определител не се публикува като вид.",
       en: "The species observed in this land — with a date, a place and the person who identified them. An observation without an identification is not published as a species.",
@@ -237,6 +250,11 @@ export function localizeChrome(text: LocalizedText, lang: LanguageCode): string 
 
 export function namespaceTitle(kind: NamespaceKind, lang: LanguageCode): string {
   return localizeChrome(NAMESPACE_CHROME[kind].title, lang);
+}
+
+/** The short breadcrumb label of a namespace: "Места", "Легенди", "Хора". */
+export function namespaceCrumb(kind: NamespaceKind, lang: LanguageCode): string {
+  return localizeChrome(NAMESPACE_CHROME[kind].crumb, lang);
 }
 
 export function aspectTitle(aspect: ClaimAspect, lang: LanguageCode): string {

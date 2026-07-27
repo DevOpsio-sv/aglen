@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-26",
+  "generated": "2026-07-27",
   "entities": 32,
   "published": 28,
   "nodes": 4,
@@ -59,9 +59,9 @@
   "aliasResolved": 12,
   "withAliases": 5,
   "bundle": {
-    "js": 1247120,
+    "js": 1247643,
     "css": 92542,
-    "jsGzip": 379379
+    "jsGzip": 379525
   },
   "findings": 31,
   "high": 1,

@@ -1,6 +1,6 @@
 # Site health
 
-Generated 2026-07-26. **This report never fails a build** — correctness is gated by
+Generated 2026-07-27. **This report never fails a build** — correctness is gated by
 `graph-audit.mjs` and `site-audit.mjs`; everything here is work, not breakage
 (ADR-017).
 
@@ -26,7 +26,7 @@ Generated 2026-07-26. **This report never fails a build** — correctness is gat
 | Redirect rules | 32 |
 | Guides · businesses | 6 · 12 |
 | Languages served · knowledge tier | 14 · 2 |
-| Bundle (gzipped JS) | 370.5 kB (+0.5% since last record) |
+| Bundle (gzipped JS) | 370.6 kB (+0.0% since last record) |
 
 ## By namespace
 
