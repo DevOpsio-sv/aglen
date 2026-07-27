@@ -55,13 +55,13 @@
   "staleClaims": 0,
   "redirects": 32,
   "searchEntries": 28,
-  "aliasChecks": 12,
-  "aliasResolved": 12,
-  "withAliases": 5,
+  "aliasChecks": 14,
+  "aliasResolved": 14,
+  "withAliases": 6,
   "bundle": {
-    "js": 1247643,
+    "js": 1248049,
     "css": 92542,
-    "jsGzip": 379525
+    "jsGzip": 379955
   },
   "findings": 31,
   "high": 1,

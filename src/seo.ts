@@ -1771,6 +1771,21 @@ export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "hom
     // version of a fact than a reader (rule 8 / V15) — the hedge now travels
     // inside the sentence, which is strictly harder to strip than a suffix was.
     const claimLines = narrateClaims(entity.id, aspect).map((line) => line.text(lang));
+    // The same collapsed disclosure the React page renders. Without it a visitor
+    // with no JavaScript — and every crawler — lost the citations altogether,
+    // which would trade one defect for a worse one.
+    const cited = [...new Map(
+      claimsFor(entity.id).flatMap((claim) => sourcesOf(claim)).map((source) => [source.id, source]),
+    ).values()];
+    const sourcesBlock = cited.length === 0 ? "" : `
+          <details class="entity-sources">
+            <summary>${escapeHtml(lang === "bg" ? "Източници и редакционни бележки" : "Sources and editorial notes")}</summary>
+            <div class="entity-sources-body">
+              <ul class="source-list">
+                ${cited.map((source) => `<li class="source-entry"><p class="source-citation">${escapeHtml(source.citation)}</p></li>`).join("")}
+              </ul>
+            </div>
+          </details>`;
     const question = aspect ? undefined : nameQuestion(entity.id);
     const questionLines = question
       ? [question.question(lang), ...question.readings.map((reading) => reading.text(lang)), question.coda(lang)]
@@ -1783,10 +1798,14 @@ export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "hom
             <h1>${escapeHtml(shortName(pageText.title))}</h1>
             ${paragraph(pageText.description)}
             ${long && !aspect ? paragraph(long) : ""}
-            ${isRegionRoot ? "" : `<a href="${buildRoutePath(lang, "karst")}">${escapeHtml(karst ? entityName(karst, lang) : "")}</a>`}
+            ${isRegionRoot
+              ? `<a href="${buildRoutePath(lang, "place")}">${escapeHtml(namespaceCrumb("place", lang))}</a>`
+              : `<a href="${buildRoutePath(lang, "karst")}">${escapeHtml(karst ? entityName(karst, lang) : "")}</a>`}
+            <a href="${buildRoutePath(lang, "guides")}">${escapeHtml(guidesUiByLanguage[lang].indexTitle)}</a>
           </div>
           ${claimLines.map((line) => paragraph(line)).join("")}
           ${questionLines.map((line) => paragraph(line)).join("")}
+          ${sourcesBlock}
           <div class="hub-grid">
             ${links
               .map((link) => {

@@ -8,14 +8,17 @@
       "kind": "region",
       "slug": "karst",
       "schemaType": "Landform",
-      "name": { "bg": "Луковитски карст", "en": "The Lukovit Karst" },
+      "name": { "bg": "Луковитският карст", "en": "The Lukovit Karst" },
+      "aliases": [
+        { "name": { "bg": "Луковитски карст", "en": "Lukovit Karst" }, "kind": "variant" }
+      ],
       "shortDescription": {
         "bg": "Карстовият район на Предбалкана около Луковит — пещери, скални венци, арки и каньонът на река Вит, в който се намира Ъглен.",
         "en": "The Fore-Balkan karst district around Lukovit — caves, rock cliffs, arches and the Vit River canyon that holds Aglen."
       },
       "longDescription": {
-          "bg": "Луковитският карст е карстовият район на Предбалкана около Луковит: пещерите, скалните венци, арките и каньонът на река Вит, в който се намира Ъглен. Районът носи името на град Луковит — общинският център в област Ловеч, разположен на река Златна Панега.\n\nВаровиците тук се описват като принадлежащи към ломешките и априлските пластове, предимно от долната креда. Това е камъкът, през който водата е работила достатъчно дълго, за да отвори Проходна, да пробие Дупката и да остави след себе си цяла долина от форми.",
-          "en": "The Lukovit Karst is the Fore-Balkan karst district around Lukovit: the caves, rock cliffs, arches and the canyon of the River Vit that holds Aglen. The district takes its name from the town of Lukovit — the municipal centre in Lovech Province, on the Zlatna Panega river.\n\nThe limestones here are described as belonging to the Lomets and April beds, mostly of the Lower Cretaceous. This is the stone the water has worked long enough to open Prohodna, to pierce Dupkata, and to leave a whole valley of forms behind it."
+          "bg": "Добре дошли в една от най-магичните каменни приказки на Предбалкана. Тук, край плавно течащите води на река Вит и китното село Ъглен, природата е ваяла своя шедьовър милиони години наред. Луковитският карст е вечен съюз между скалата и водата — свят от величествени скални венци, естествени мостове, монументални арки и мистериозни пещери.\n\nКапка по капка и вълна след вълна, водата упорито е търсила пътя си през твърдия камък. Оставила е след себе си изваяния каньон на река Вит, небесния свод на пещерата „Проходна“ с прочутите „Очи на Бога“, скалния феномен „Дупката“ и цяла долина от форми, които спират дъха.",
+          "en": "Welcome to one of the great stories in stone of the Fore-Balkan. Here, beside the slow water of the River Vit and the village of Aglen, nature has been carving its masterpiece for millions of years. The Lukovit Karst is a lasting alliance between rock and water — a world of towering cliffs, natural bridges, monumental arches and dark caves.\n\nDrop by drop and flood after flood, the water has worked its way through hard stone. What it left behind is the carved canyon of the Vit, the sky-lit vault of Prohodna cave with its famous “Eyes of God”, the rock window called Dupkata, and a whole valley of forms that stop you where you stand."
         },
       "confidence": "E2",
       "relations": [

@@ -20,13 +20,13 @@ Generated 2026-07-27. **This report never fails a build** — correctness is gat
 | Pages with an external identifier | 11/28 (39%) |
 | Sited things with a GPS fix | 10/18 (56%) |
 | Pages with a photograph of their own | 0/28 (0%) |
-| Pages carrying other names | 5/28 (18%) |
+| Pages carrying other names | 6/28 (21%) |
 | Average outbound links per page | 4.89 |
-| Search index entries | 28 · aliases resolving 12/12 |
+| Search index entries | 28 · aliases resolving 14/14 |
 | Redirect rules | 32 |
 | Guides · businesses | 6 · 12 |
 | Languages served · knowledge tier | 14 · 2 |
-| Bundle (gzipped JS) | 370.6 kB (+0.0% since last record) |
+| Bundle (gzipped JS) | 371.0 kB (+0.0% since last record) |
 
 ## By namespace
 
