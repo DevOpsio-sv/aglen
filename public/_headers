@@ -23,3 +23,13 @@
 # Font filenames carry Google's content hash, so they can never go stale.
 /assets/fonts/*
   Cache-Control: public, max-age=31536000, immutable
+
+# The service worker must never be served from cache: a stale one keeps an old
+# build alive on a device long after the deploy that replaced it.
+/sw.js
+  Cache-Control: no-cache
+  Service-Worker-Allowed: /
+
+# Offline fallbacks are generated per build alongside the worker.
+/offline-*.html
+  Cache-Control: public, max-age=0, must-revalidate

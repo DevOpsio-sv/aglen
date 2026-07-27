@@ -1233,6 +1233,22 @@ h3 {
 .seo-section-card h2 { margin-bottom: 0.8rem; }
 .seo-section-card p { margin: 0; }
 
+/* ── Offline fallback ──────────────────────────────────────
+   The page the service worker serves when a request misses the cache with no
+   signal. Styled here rather than inline because `style-src 'self'` blocks
+   style attributes too, and the fallback arriving unstyled is the one moment a
+   visitor is least able to forgive it. */
+.offline-shell {
+  min-height: 70vh;
+  max-width: 46rem;
+  display: grid;
+  align-content: center;
+  gap: 1rem;
+}
+.offline-title { margin: 0; color: var(--ink); font-family: var(--serif); font-size: clamp(2rem, 5vw, 3rem); line-height: var(--leading-display); }
+.offline-body { margin: 0; color: var(--ink); line-height: 1.65; }
+.offline-action { margin: 0; }
+
 /* ── The family packing list (familyTrip) ──────────────────
    Real checkboxes and real labels. A styled div would need a role, a tabindex,
    a key handler and aria-checked to get back to where the platform already is. */

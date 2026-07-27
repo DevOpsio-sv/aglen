@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { srcModule } from "./lib/load-module.mjs";
+import { writeServiceWorker } from "./lib/service-worker.mjs";
 
 const rootDir = process.cwd();
 const distDir = path.join(rootDir, "dist");
@@ -494,4 +495,10 @@ fs.writeFileSync(path.join(distDir, "llms.txt"), llmsLines.join("\n"));
 
 // _redirects is managed in public/_redirects and copied to dist/ by Vite.
 
-console.log(`Generated ${routes.allLanguageCodes.length} language folders and ${staticRoutePaths.length} static topic routes.`);
+const worker = writeServiceWorker(distDir, routes.allLanguageCodes);
+
+console.log(
+  `Generated ${routes.allLanguageCodes.length} language folders and ${staticRoutePaths.length} static topic routes.` +
+    `
+Service worker ${worker.version}: ${worker.precached} precached, ${worker.offlinePages} offline pages.`,
+);

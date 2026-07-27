@@ -59,9 +59,9 @@
   "aliasResolved": 14,
   "withAliases": 6,
   "bundle": {
-    "js": 1403694,
-    "css": 99048,
-    "jsGzip": 450382
+    "js": 1403818,
+    "css": 99352,
+    "jsGzip": 450437
   },
   "findings": 31,
   "high": 1,
