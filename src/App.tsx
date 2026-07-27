@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type MouseEvent, type ReactNode, type SyntheticEvent } from "react";
 import { contentByLanguage, languages, type Accommodation, type LanguageCode, type PlaceId, type TimelineItem } from "./content";
+import { DIFFICULTY_LABEL, MOODS, PICKER_UI, experiences, type Mood } from "./experiences";
 import { getLandingPage, getLandingPages, isLandingPageId, routesCopy, transportCopy, transportLinks } from "./landingPages";
 import { placeExperienceLinks, type PlaceExperienceLink } from "./placeLinks";
 import { buildAspectPath, buildBusinessPath, buildGuidePath, buildPlacePath, buildRoutePath, buildSourcePath, getStaticRoute, resolveRoute, type RouteId, type ResolvedRoute } from "./routes";
@@ -31,6 +32,102 @@ const fallbackImage = "/assets/aglen-hero-river-canyon.webp";
 // place you could not click. Linked here rather than in the locale strings:
 // `sourceNotes` is also read by the AI export and the trust pages, where a bare
 // domain is what those surfaces want. The render decides how to show it.
+/**
+ * Pick a place by the kind of afternoon you want, not by its number on a walk.
+ *
+ * Two pieces of interactivity, and each degrades honestly. The mood filter is
+ * React state, so a visitor with no JavaScript sees every card rather than an
+ * inert row of buttons. The card body is a native `<details>`, so it opens
+ * before hydration and a crawler reads it whether it is shut or not — the same
+ * control the FAQ and the transport panel already use.
+ */
+function ExperiencePicker({
+  language,
+  onOpenPlace,
+}: {
+  language: LanguageCode;
+  onOpenPlace: (slug: string) => void;
+}) {
+  const ui = PICKER_UI[language];
+  const [mood, setMood] = useState<Mood | "all">("all");
+  const all = useMemo(() => experiences(language), [language]);
+  const shown = mood === "all" ? all : all.filter((item) => item.moods.includes(mood));
+
+  return (
+    <div className="experience-picker reveal">
+      <div className="experience-tabs" role="tablist" aria-label={ui.title}>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={mood === "all"}
+          className={`experience-tab${mood === "all" ? " is-on" : ""}`}
+          onClick={() => setMood("all")}
+        >
+          {ui.all}
+          <span className="experience-tab-count">{all.length}</span>
+        </button>
+        {MOODS.map((definition) => {
+          const count = all.filter((item) => item.moods.includes(definition.id)).length;
+          return (
+            <button
+              type="button"
+              role="tab"
+              key={definition.id}
+              aria-selected={mood === definition.id}
+              className={`experience-tab${mood === definition.id ? " is-on" : ""}`}
+              onClick={() => setMood(definition.id)}
+            >
+              <span aria-hidden="true">{definition.icon}</span> {definition.label[language]}
+              <span className="experience-tab-count">{count}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="experience-grid">
+        {shown.map((item) => (
+          <article className="experience-card" key={item.key}>
+            <span className="experience-icon" aria-hidden="true">
+              {item.icon}
+            </span>
+            <h3>{item.title}</h3>
+            <p>{item.detail}</p>
+            <details>
+              <summary>{ui.open}</summary>
+              <div className="experience-more">
+                <p className="experience-meta">
+                  <span className="experience-chip">
+                    {ui.difficulty}: {DIFFICULTY_LABEL[item.difficulty][language]}
+                  </span>
+                  {MOODS.filter((definition) => item.moods.includes(definition.id)).map((definition) => (
+                    <span className="experience-chip" key={definition.id}>
+                      <span aria-hidden="true">{definition.icon}</span> {definition.label[language]}
+                    </span>
+                  ))}
+                </p>
+                {item.slug && (
+                  <a
+                    className="button ghost experience-cta"
+                    href={buildPlacePath(language, item.slug)}
+                    onClick={(event) => {
+                      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                      event.preventDefault();
+                      onOpenPlace(item.slug!);
+                    }}
+                  >
+                    {ui.onMap} →
+                  </a>
+                )}
+              </div>
+            </details>
+          </article>
+        ))}
+      </div>
+      {shown.length === 0 && <p className="experience-empty">{ui.empty}</p>}
+    </div>
+  );
+}
+
 /**
  * The three walks, for a landing page that declares `interactive: "routes"`.
  *
@@ -317,6 +414,7 @@ export function App() {
   // contact section, which renders on every page.
   const titleSection = isHomeRoute || hasOwnComponent ? undefined : visibleSections[0];
   const headingLevel = (section: HomeSection): "h1" | "h2" => (section === titleSection ? "h1" : "h2");
+  const pickerUi = PICKER_UI[language];
   const contactHeadingLevel: "h1" | "h2" = !hasOwnComponent && !titleSection && !isHomeRoute ? "h1" : "h2";
 
   const routePath = (route: ResolvedRoute) => {
@@ -1248,32 +1346,11 @@ export function App() {
       <section id="location" className={`map-section${titleSection === "map" ? " is-page-top" : ""}`}>
         <div className="section-shell map-layout">
           <div className="section-heading reveal">
-            <p className="eyebrow">{copy.landmarks.aria}</p>
-            <SectionTitle level={headingLevel("map")}>{copy.landmarks.title}</SectionTitle>
-            {/* The lede existed in the locale and was never rendered here — the
-                heading stood alone over a link, and the column beside four cards
-                was mostly empty because there was nothing in it to fill. */}
-            <p className="map-lede">{copy.landmarks.text}</p>
-            <p className="map-links">
-              <a className="entity-inline-link" href={buildPlacePath(language, "vit-river")} onClick={(event) => { event.preventDefault(); navigateToPath(buildPlacePath(language, "vit-river")); }}>
-                {homeEntityLink("river", language)} →
-              </a>
-              <a className="entity-inline-link" href={buildRoutePath(language, "attractions")} onClick={(event) => handleRouteClick(event, "attractions")}>
-                {copy.landmarks.eyebrow} →
-              </a>
-            </p>
+            <p className="eyebrow">{pickerUi.kicker}</p>
+            <SectionTitle level={headingLevel("map")}>{pickerUi.title}</SectionTitle>
+            <p className="map-lede">{pickerUi.intro}</p>
           </div>
-          <div className="route-map reveal" aria-label={copy.landmarks.aria}>
-            {copy.mapStops.map((stop, index) => (
-              <article className="map-stop" key={stop.title}>
-                <strong>{index + 1}</strong>
-                <div>
-                  <h3>{stop.title}</h3>
-                  <p>{stop.detail}</p>
-                </div>
-              </article>
-            ))}
-          </div>
+          <ExperiencePicker language={language} onOpenPlace={(slug) => navigateToPath(buildPlacePath(language, slug))} />
         </div>
       </section>
       )}
