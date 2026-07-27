@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type MouseEvent, type ReactNode, type SyntheticEvent } from "react";
 import { contentByLanguage, languages, type Accommodation, type LanguageCode, type PlaceId, type TimelineItem } from "./content";
-import { getLandingPage, getLandingPages, isLandingPageId } from "./landingPages";
+import { getLandingPage, getLandingPages, isLandingPageId, transportCopy, transportLinks } from "./landingPages";
 import { placeExperienceLinks, type PlaceExperienceLink } from "./placeLinks";
 import { buildAspectPath, buildBusinessPath, buildGuidePath, buildPlacePath, buildRoutePath, buildSourcePath, getStaticRoute, resolveRoute, type RouteId, type ResolvedRoute } from "./routes";
 import { guideByLegacyRoute, guides, localizeGuide } from "./guides";
@@ -31,6 +31,56 @@ const fallbackImage = "/assets/aglen-hero-river-canyon.webp";
 // place you could not click. Linked here rather than in the locale strings:
 // `sourceNotes` is also read by the AI export and the trust pages, where a bare
 // domain is what those surfaces want. The render decides how to show it.
+/**
+ * Map and transport, for a landing page that declares `interactive: "transport"`.
+ *
+ * Native `<details>`, the same control the FAQ block already uses: it needs no
+ * script, it works before React hydrates, and a crawler reads the answer whether
+ * the panel is open or shut. No embedded map — a Google Maps iframe is a
+ * third-party frame on every page load, and the button gets the visitor to
+ * turn-by-turn directions in one tap, which is what they actually came for.
+ */
+function TransportPanel({ language }: { language: LanguageCode }) {
+  const copy = transportCopy[language];
+  return (
+    <section className="seo-transport" aria-labelledby="transport-title">
+      <h2 id="transport-title">{copy.title}</h2>
+      <p className="seo-transport-lede">{copy.lede}</p>
+      <a
+        className="button primary seo-transport-map"
+        href={transportLinks.map}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {copy.mapCta} →
+      </a>
+
+      <details>
+        <summary>{copy.railSummary}</summary>
+        <div className="seo-transport-body">
+          {copy.railBody.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+          <p>
+            <a href={transportLinks.rail} target="_blank" rel="noopener noreferrer">
+              {copy.railLinkLabel} →
+            </a>
+          </p>
+        </div>
+      </details>
+
+      <details>
+        <summary>{copy.busSummary}</summary>
+        <div className="seo-transport-body">
+          {copy.busBody.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </div>
+      </details>
+    </section>
+  );
+}
+
 const MAINTAINER_DOMAIN = "devopsio.co";
 const MAINTAINER_URL = "https://devopsio.co";
 
@@ -880,6 +930,8 @@ export function App() {
                 onError={handleImageError}
               />
             </div>
+
+            {currentLandingPage.interactive === "transport" && <TransportPanel language={language} />}
 
             <div className="seo-section-grid">
               {currentLandingPage.sections.map((section) => (

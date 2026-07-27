@@ -61,6 +61,7 @@ export type LandingPage = {
   sections: LandingPageSection[];
   faqs: LandingPageFaq[];
   internalLinks: Array<{ label: string; routeId: LandingPageId | string }>;
+  interactive?: "transport";
 };
 
 type LandingPageMaster = {
@@ -70,6 +71,8 @@ type LandingPageMaster = {
   imageAltKey: "hero" | "aerial" | "cave" | "church" | "pool" | "nearbyRetreat" | "kaleto";
   schemaType: "Article" | "TravelGuide";
   internalLinkRouteIds: Array<LandingPageId | string>;
+  /** An interactive block this page carries — declared in data, not by id in JSX. */
+  interactive?: "transport";
 };
 
 /**
@@ -107,7 +110,7 @@ export const landingPageMaster: LandingPageMaster[] = [
   { id: "weekendInAglen", slug: "weekend-in-aglen", image: images.hero, imageAltKey: "hero", schemaType: "TravelGuide", internalLinkRouteIds: ["aglenFromSofia", "howToGet", "nearby"] },
   { id: "routeMap", slug: "aglen-route-map", image: images.aerial, imageAltKey: "aerial", schemaType: "TravelGuide", internalLinkRouteIds: ["visitAglen", "attractions", "nearby"] },
   { id: "bestTime", slug: "best-time-to-visit-aglen", image: images.aerial, imageAltKey: "aerial", schemaType: "Article", internalLinkRouteIds: ["seasonal", "weekendInAglen", "natureTourism"] },
-  { id: "howToGet", slug: "how-to-get-to-aglen", image: images.aerial, imageAltKey: "aerial", schemaType: "Article", internalLinkRouteIds: ["aglenFromSofia", "lukovitGuide", "routeMap"] },
+  { id: "howToGet", slug: "how-to-get-to-aglen", image: images.aerial, imageAltKey: "aerial", schemaType: "Article", internalLinkRouteIds: ["aglenFromSofia", "lukovitGuide", "routeMap"], interactive: "transport" },
   { id: "aglenFromSofia", slug: "aglen-from-sofia", image: images.hero, imageAltKey: "hero", schemaType: "TravelGuide", internalLinkRouteIds: ["weekendInAglen", "howToGet", "nearby"] },
   { id: "lovechRegionGuide", slug: "lovech-region-travel-guide", image: images.aerial, imageAltKey: "aerial", schemaType: "TravelGuide", internalLinkRouteIds: ["lukovitGuide", "krushunaGuide", "devetashkaCaveGuide", "visitAglen"] },
   { id: "lukovitGuide", slug: "lukovit-travel-guide", image: images.nearbyRetreat, imageAltKey: "nearbyRetreat", schemaType: "TravelGuide", internalLinkRouteIds: ["visitAglen", "iskarPanegaGuide", "karlukovoGuide"] },
@@ -773,12 +776,281 @@ function routeLabel(lang: LanguageCode, routeId: LandingPageId | string): string
  * This is UI copy, not a knowledge-tier claim: it makes no sourced assertion, so
  * rule 43 does not apply and every language carries its own text.
  */
-type AuthoredProse = { intro: string; bodies: [string, string, string] };
+type AuthoredProse = {
+  /** Replaces the generated <h1>. Omit to keep the page's routine name. */
+  h1?: string;
+  intro: string;
+  /** Replaces the shared section headings. Omit to keep the locale's own three. */
+  headings?: [string, string, string];
+  bodies: [string, string, string];
+};
+
+/**
+ * The map-and-transport panel. One page needs it today; the shape is declared
+ * here rather than in the component so a second page can have it by adding
+ * `interactive: "transport"` to its master row, not by editing JSX.
+ *
+ * On the practical detail: the nearest stations and the road from Lukovit are
+ * stated, timetables are not. A published departure time is wrong within a
+ * season and the site would have no way of knowing — so the panel links to the
+ * carrier and says plainly that the times are theirs to check.
+ */
+export type TransportCopy = {
+  title: string;
+  lede: string;
+  mapCta: string;
+  railSummary: string;
+  railBody: string[];
+  railLinkLabel: string;
+  busSummary: string;
+  busBody: string[];
+};
+
+/** Aglen's published coordinates, the ones the graph and the JSON-LD already use. */
+export const AGLEN_MAP_URL = "https://maps.google.com/?q=43.201151,24.314943";
+const BDZ_URL = "https://bdz.bg/";
+
+/** The panel's words, per language. Practical, and deliberately without times. */
+export const transportCopy: Record<LanguageCode, TransportCopy> = {
+  bg: {
+    title: "Карта и транспорт",
+    lede: "Ъглен е в община Луковит, в долината на река Вит. Отворете точката на картата, за да си зададете навигация, и вижте по-долу как се стига с влак и с автобус.",
+    mapCta: "Отваряне в Google Maps",
+    railSummary: "С влак (БДЖ)",
+    railBody: [
+      "Ъглен няма собствена гара. Най-близките са Червен бряг — по главната линия София–Плевен, с най-често движение — и Луковит, на отклонението към Златна Панега, където влаковете са по-редки.",
+      "От гарата до селото се продължава с междуселищен автобус или с такси. Разписанията се менят по сезони и по ремонти, затова ги проверявайте в деня на пътуването при превозвача."
+    ],
+    railLinkLabel: "Разписания в bdz.bg",
+    busSummary: "С автобус",
+    busBody: [
+      "От Централна автогара София има редовни линии в посока Луковит. Луковит е общинският център и оттам тръгва връзката към селата в общината, включително Ъглен.",
+      "Извън делничните курсове връзката Луковит–Ъглен е рядка. Ако пътувате в събота или неделя, попитайте предварително за часовете или пригответе такси за последната отсечка."
+    ]
+  },
+  en: {
+    title: "Map and transport",
+    lede: "Aglen is in Lukovit municipality, in the valley of the River Vit. Open the point on the map to set your navigation, and see below how to arrive by train and by bus.",
+    mapCta: "Open in Google Maps",
+    railSummary: "By train (BDŽ)",
+    railBody: [
+      "Aglen has no station of its own. The nearest are Cherven Bryag — on the main Sofia–Pleven line, with the most frequent service — and Lukovit, on the Zlatna Panega branch, where trains are sparser.",
+      "From the station you continue by regional bus or by taxi. Timetables change with the season and with engineering work, so check them with the carrier on the day you travel."
+    ],
+    railLinkLabel: "Timetables at bdz.bg",
+    busSummary: "By bus",
+    busBody: [
+      "There are regular services from Sofia Central Bus Station towards Lukovit. Lukovit is the municipal centre, and the connection to the villages of the municipality, Aglen among them, starts from there.",
+      "Outside weekday services the Lukovit–Aglen leg is infrequent. If you travel on a Saturday or Sunday, ask about the times in advance or plan a taxi for the last stretch."
+    ]
+  },
+  de: {
+    title: "Karte und Anreise",
+    lede: "Aglen liegt in der Gemeinde Lukovit, im Tal des Flusses Vit. Öffnen Sie den Punkt auf der Karte für die Navigation, und sehen Sie unten, wie Sie mit Bahn und Bus ankommen.",
+    mapCta: "In Google Maps öffnen",
+    railSummary: "Mit der Bahn (BDŽ)",
+    railBody: [
+      "Aglen hat keinen eigenen Bahnhof. Am nächsten liegen Tscherwen Brjag an der Hauptstrecke Sofia–Pleven, mit der dichtesten Taktung, und Lukovit an der Nebenstrecke nach Slatna Panega, wo weniger Züge verkehren.",
+      "Vom Bahnhof geht es mit dem Regionalbus oder dem Taxi weiter. Fahrpläne ändern sich saisonal und wegen Bauarbeiten — prüfen Sie sie am Reisetag beim Betreiber."
+    ],
+    railLinkLabel: "Fahrpläne auf bdz.bg",
+    busSummary: "Mit dem Bus",
+    busBody: [
+      "Vom Zentralen Busbahnhof Sofia fahren regelmäßig Busse Richtung Lukovit. Lukovit ist der Gemeindesitz; von dort geht die Verbindung in die Dörfer der Gemeinde, darunter Aglen.",
+      "Außerhalb der Werktagsverbindungen fährt der Abschnitt Lukovit–Aglen selten. Fragen Sie für Samstag oder Sonntag vorher nach den Zeiten oder planen Sie ein Taxi für das letzte Stück."
+    ]
+  },
+  fr: {
+    title: "Carte et transports",
+    lede: "Aglen se trouve dans la commune de Lukovit, dans la vallée de la Vit. Ouvrez le point sur la carte pour lancer votre navigation, et voyez ci-dessous comment venir en train et en bus.",
+    mapCta: "Ouvrir dans Google Maps",
+    railSummary: "En train (BDŽ)",
+    railBody: [
+      "Aglen n'a pas de gare. Les plus proches sont Cherven Bryag, sur la ligne principale Sofia–Pleven et la mieux desservie, et Lukovit, sur l'antenne de Zlatna Panega, où les trains sont plus rares.",
+      "De la gare, on continue en car régional ou en taxi. Les horaires changent avec la saison et les travaux : vérifiez-les auprès du transporteur le jour du voyage."
+    ],
+    railLinkLabel: "Horaires sur bdz.bg",
+    busSummary: "En bus",
+    busBody: [
+      "Des liaisons régulières partent de la gare routière centrale de Sofia vers Lukovit. Lukovit est le chef-lieu de la commune, et c'est de là que part la desserte des villages, dont Aglen.",
+      "Hors jours ouvrés, le tronçon Lukovit–Aglen est peu fréquent. Pour un samedi ou un dimanche, renseignez-vous à l'avance ou prévoyez un taxi pour la dernière portion."
+    ]
+  },
+  es: {
+    title: "Mapa y transporte",
+    lede: "Aglen está en el municipio de Lukovit, en el valle del río Vit. Abra el punto en el mapa para fijar la navegación y vea abajo cómo llegar en tren y en autobús.",
+    mapCta: "Abrir en Google Maps",
+    railSummary: "En tren (BDŽ)",
+    railBody: [
+      "Aglen no tiene estación propia. Las más cercanas son Cherven Bryag, en la línea principal Sofía–Pleven y la mejor comunicada, y Lukovit, en el ramal de Zlatna Panega, con menos trenes.",
+      "Desde la estación se continúa en autobús comarcal o en taxi. Los horarios cambian según la temporada y las obras: consúltelos con el operador el mismo día del viaje."
+    ],
+    railLinkLabel: "Horarios en bdz.bg",
+    busSummary: "En autobús",
+    busBody: [
+      "Hay servicios regulares desde la Estación Central de Autobuses de Sofía hacia Lukovit. Lukovit es la cabecera del municipio y de allí sale la conexión con sus pueblos, Aglen entre ellos.",
+      "Fuera de los días laborables el tramo Lukovit–Aglen es poco frecuente. Si viaja en sábado o domingo, pregunte los horarios con antelación o prevea un taxi para el último tramo."
+    ]
+  },
+  it: {
+    title: "Mappa e trasporti",
+    lede: "Aglen si trova nel comune di Lukovit, nella valle del fiume Vit. Aprite il punto sulla mappa per impostare la navigazione e vedete qui sotto come arrivare in treno e in autobus.",
+    mapCta: "Apri in Google Maps",
+    railSummary: "In treno (BDŽ)",
+    railBody: [
+      "Aglen non ha una stazione propria. Le più vicine sono Cherven Bryag, sulla linea principale Sofia–Pleven e la meglio servita, e Lukovit, sulla diramazione di Zlatna Panega, dove i treni sono più radi.",
+      "Dalla stazione si prosegue in autobus regionale o in taxi. Gli orari cambiano con la stagione e con i lavori: verificateli presso il vettore il giorno stesso del viaggio."
+    ],
+    railLinkLabel: "Orari su bdz.bg",
+    busSummary: "In autobus",
+    busBody: [
+      "Dall'autostazione centrale di Sofia partono collegamenti regolari verso Lukovit. Lukovit è il capoluogo comunale e da lì parte il collegamento con i villaggi del comune, Aglen compreso.",
+      "Fuori dai giorni feriali la tratta Lukovit–Aglen è poco frequente. Se viaggiate di sabato o domenica, chiedete prima gli orari o mettete in conto un taxi per l'ultimo tratto."
+    ]
+  },
+  ro: {
+    title: "Hartă și transport",
+    lede: "Aglen se află în comuna Lukovit, în valea râului Vit. Deschideți punctul pe hartă pentru navigație și vedeți mai jos cum ajungeți cu trenul și cu autobuzul.",
+    mapCta: "Deschide în Google Maps",
+    railSummary: "Cu trenul (BDŽ)",
+    railBody: [
+      "Aglen nu are gară proprie. Cele mai apropiate sunt Cherven Bryag, pe magistrala Sofia–Pleven și cea mai bine deservită, și Lukovit, pe ramificația spre Zlatna Panega, unde trenurile sunt mai rare.",
+      "De la gară se continuă cu autobuzul regional sau cu taxiul. Orarele se schimbă în funcție de sezon și de lucrări, așa că verificați-le la transportator în ziua călătoriei."
+    ],
+    railLinkLabel: "Orare pe bdz.bg",
+    busSummary: "Cu autobuzul",
+    busBody: [
+      "Din Autogara Centrală Sofia există curse regulate spre Lukovit. Lukovit este centrul comunei, iar de acolo pleacă legătura spre satele comunei, între care și Aglen.",
+      "În afara zilelor lucrătoare, segmentul Lukovit–Aglen este rar. Dacă mergeți sâmbăta sau duminica, întrebați dinainte de ore sau pregătiți un taxi pentru ultima porțiune."
+    ]
+  },
+  tr: {
+    title: "Harita ve ulaşım",
+    lede: "Aglen, Vit Nehri vadisinde, Lukovit belediyesindedir. Navigasyonu ayarlamak için noktayı haritada açın; trenle ve otobüsle nasıl gelineceğini aşağıda bulacaksınız.",
+    mapCta: "Google Maps'te aç",
+    railSummary: "Trenle (BDŽ)",
+    railBody: [
+      "Aglen'in kendi istasyonu yok. En yakınları, Sofya–Pleven ana hattındaki ve en sık seferin olduğu Çerven Bryag ile Zlatna Panega hattındaki, trenlerin daha seyrek olduğu Lukovit'tir.",
+      "İstasyondan sonra bölge otobüsü ya da taksiyle devam edilir. Tarifeler mevsime ve bakım çalışmalarına göre değişir; yolculuk günü taşıyıcıdan kontrol edin."
+    ],
+    railLinkLabel: "bdz.bg'de tarifeler",
+    busSummary: "Otobüsle",
+    busBody: [
+      "Sofya Merkez Otogarı'ndan Lukovit yönüne düzenli seferler var. Lukovit belediye merkezidir; belediyeye bağlı köylere, Aglen dahil, bağlantı oradan başlar.",
+      "Hafta içi seferlerin dışında Lukovit–Aglen bacağı seyrektir. Cumartesi ya da pazar yola çıkacaksanız saatleri önceden sorun veya son etap için taksi planlayın."
+    ]
+  },
+  el: {
+    title: "Χάρτης και μετακίνηση",
+    lede: "Το Άγκλεν βρίσκεται στον δήμο Λούκοβιτ, στην κοιλάδα του ποταμού Βιτ. Ανοίξτε το σημείο στον χάρτη για πλοήγηση και δείτε παρακάτω πώς φτάνετε με τρένο και με λεωφορείο.",
+    mapCta: "Άνοιγμα στο Google Maps",
+    railSummary: "Με τρένο (BDŽ)",
+    railBody: [
+      "Το Άγκλεν δεν έχει δικό του σταθμό. Οι πλησιέστεροι είναι το Τσέρβεν Μπριάγκ, στην κύρια γραμμή Σόφια–Πλέβεν με τα πυκνότερα δρομολόγια, και το Λούκοβιτ, στη διακλάδωση προς Ζλάτνα Πάνεγκα, όπου τα τρένα είναι αραιότερα.",
+      "Από τον σταθμό συνεχίζετε με υπεραστικό λεωφορείο ή ταξί. Τα δρομολόγια αλλάζουν ανά εποχή και λόγω έργων, γι' αυτό ελέγξτε τα στον μεταφορέα την ημέρα του ταξιδιού."
+    ],
+    railLinkLabel: "Δρομολόγια στο bdz.bg",
+    busSummary: "Με λεωφορείο",
+    busBody: [
+      "Από τον Κεντρικό Σταθμό Λεωφορείων της Σόφιας υπάρχουν τακτικά δρομολόγια προς το Λούκοβιτ. Το Λούκοβιτ είναι η έδρα του δήμου και από εκεί ξεκινά η σύνδεση με τα χωριά, μεταξύ τους και το Άγκλεν.",
+      "Εκτός των εργάσιμων, το σκέλος Λούκοβιτ–Άγκλεν είναι αραιό. Αν ταξιδεύετε Σάββατο ή Κυριακή, ρωτήστε εκ των προτέρων ή προβλέψτε ταξί για το τελευταίο κομμάτι."
+    ]
+  },
+  ru: {
+    title: "Карта и транспорт",
+    lede: "Аглен находится в общине Луковит, в долине реки Вит. Откройте точку на карте, чтобы задать навигацию, и посмотрите ниже, как добраться поездом и автобусом.",
+    mapCta: "Открыть в Google Maps",
+    railSummary: "Поездом (БДЖ)",
+    railBody: [
+      "У Аглена нет собственной станции. Ближайшие — Червен-Бряг на главной линии София–Плевен, где движение самое частое, и Луковит на ветке к Златна-Панеге, где поездов меньше.",
+      "От станции дальше — междугородним автобусом или такси. Расписания меняются по сезонам и из-за ремонтов, поэтому уточняйте их у перевозчика в день поездки."
+    ],
+    railLinkLabel: "Расписания на bdz.bg",
+    busSummary: "Автобусом",
+    busBody: [
+      "С Центрального автовокзала Софии есть регулярные рейсы в сторону Луковита. Луковит — центр общины, оттуда идёт сообщение с её сёлами, включая Аглен.",
+      "Вне будних дней участок Луковит–Аглен ходит редко. Если едете в субботу или воскресенье, узнайте расписание заранее или закладывайте такси на последний отрезок."
+    ]
+  },
+  ja: {
+    title: "地図と交通",
+    lede: "アグレンはヴィト川の谷、ルコヴィト市に属します。ナビ用に地図の地点を開いてください。鉄道とバスでの行き方は下記のとおりです。",
+    mapCta: "Google マップで開く",
+    railSummary: "鉄道で（BDŽ）",
+    railBody: [
+      "アグレンに駅はありません。最寄りは、ソフィア–プレヴェン本線上で便数のもっとも多いチェルヴェン・ブリャグと、ズラトナ・パネガ支線上で本数の少ないルコヴィトです。",
+      "駅からは地域バスかタクシーで続きます。時刻表は季節や工事で変わるため、出発当日に運行会社で確認してください。"
+    ],
+    railLinkLabel: "bdz.bg の時刻表",
+    busSummary: "バスで",
+    busBody: [
+      "ソフィア中央バスターミナルからルコヴィト方面へ定期便があります。ルコヴィトは市の中心で、アグレンを含む各村への接続はそこから出ています。",
+      "平日以外はルコヴィト–アグレン間の便がまばらです。土日に移動する場合は事前に時刻を確認するか、最後の区間はタクシーを見込んでください。"
+    ]
+  },
+  sr: {
+    title: "Мапа и превоз",
+    lede: "Аглен је у општини Луковит, у долини реке Вит. Отворите тачку на мапи ради навигације, а испод погледајте како се стиже возом и аутобусом.",
+    mapCta: "Отвори у Google мапама",
+    railSummary: "Возом (БДЖ)",
+    railBody: [
+      "Аглен нема сопствену станицу. Најближе су Црвени бряг на главној прузи Софија–Плевен, са најгушћим саобраћајем, и Луковит на огранку ка Златној Панеги, где су возови ређи.",
+      "Од станице се наставља међумесним аутобусом или таксијем. Редови вожње мењају се по сезонама и због радова, зато их проверите код превозника на дан путовања."
+    ],
+    railLinkLabel: "Редови вожње на bdz.bg",
+    busSummary: "Аутобусом",
+    busBody: [
+      "Са Централне аутобуске станице у Софији постоје редовне линије ка Луковиту. Луковит је центар општине и одатле полази веза ка селима, међу њима и ка Аглену.",
+      "Ван радних дана деоница Луковит–Аглен је ретка. Ако путујете суботом или недељом, распитајте се унапред за термине или предвидите такси за последњу деоницу."
+    ]
+  },
+  zh: {
+    title: "地图与交通",
+    lede: "阿格伦位于维特河谷的卢科维特市。点开地图上的坐标即可导航；乘火车与巴士的方式见下方。",
+    mapCta: "在 Google 地图中打开",
+    railSummary: "乘火车（BDŽ）",
+    railBody: [
+      "阿格伦没有自己的火车站。最近的是索非亚–普列文干线上的红岸站，班次最密；以及兹拉特纳帕内加支线上的卢科维特站，列车较少。",
+      "出站后换乘区域巴士或出租车。时刻表随季节和线路施工变动，请在出行当天向承运方核实。"
+    ],
+    railLinkLabel: "在 bdz.bg 查看时刻表",
+    busSummary: "乘巴士",
+    busBody: [
+      "索非亚中央汽车站有定期班车前往卢科维特。卢科维特是市镇中心，通往辖内各村（包括阿格伦）的接驳从这里发出。",
+      "非工作日卢科维特至阿格伦一段班次稀疏。若在周六或周日出行，请提前询问班次，或为最后一段预留出租车。"
+    ]
+  },
+  hu: {
+    title: "Térkép és közlekedés",
+    lede: "Aglen a Vit folyó völgyében, Lukovit községben fekszik. Nyissa meg a pontot a térképen a navigációhoz, alább pedig megtalálja, hogyan érkezhet vonattal és busszal.",
+    mapCta: "Megnyitás a Google Térképen",
+    railSummary: "Vonattal (BDŽ)",
+    railBody: [
+      "Aglennek nincs saját állomása. A legközelebbiek Cserven Brjag a Szófia–Pleven fővonalon, a legsűrűbb közlekedéssel, és Lukovit a Zlatna Panega-i szárnyvonalon, ahol ritkábbak a vonatok.",
+      "Az állomástól helyközi busszal vagy taxival lehet továbbmenni. A menetrendek évszakonként és felújítások miatt változnak, ezért az utazás napján ellenőrizze őket a szolgáltatónál."
+    ],
+    railLinkLabel: "Menetrendek a bdz.bg oldalon",
+    busSummary: "Busszal",
+    busBody: [
+      "A szófiai Központi Buszpályaudvarról rendszeres járatok indulnak Lukovit felé. Lukovit a község központja, és onnan indul a kapcsolat a községhez tartozó falvakba, köztük Aglenbe.",
+      "Hétköznapokon kívül a Lukovit–Aglen szakasz ritkán jár. Ha szombaton vagy vasárnap utazik, érdeklődjön előre az időpontokról, vagy számoljon taxival az utolsó szakaszra."
+    ]
+  }
+};
+
+export const transportLinks = { map: AGLEN_MAP_URL, rail: BDZ_URL };
+
 
 const authoredProse: Partial<Record<LandingPageId, Record<LanguageCode, AuthoredProse>>> = {
   howToGet: {
     bg: {
-      intro: "Добре дошли във вашия пътеводител към едно от най-потайните и красиви кътчета на Предбалкана. Това ръководство е създадено, за да свърже вашите търсения — било то за диви туристически пътеки, речен риболов, мистериозни пещери или уютни места за отдих и вкусна храна — с истинската магия на река Вит и нейния каньон.",
+      h1: "Поеми към Ъглен: Открий пътя",
+      intro: "Добре дошли във вашия интерактивен пътеводител към едно от най-потайните и вълшебни кътчета на Предбалкана. Тук приключението започва още от планирането — от избора на транспорт и точната локация на картата до най-красивите пешеходни маршрути покрай каньона на река Вит.",
+      headings: [
+        "🧭 За кого е това ръководство?",
+        "🎒 Как да планираш посещението?",
+        "🔗 Какво да свържеш наблизо?",
+      ],
       bodies: [
         "Този пътеводител преплита в съвършена симбиоза величествения каньон, скалните феномени, вековната памет и практичните съвети, от които се нуждае всеки съвременен пътешественик. Историята на Ъглен се разгръща пласт по пласт — от първозданното океанско дъно, изваяло днешните варовикови стени, през първите древни заселници по бреговете, до живите легенди и разкази на местните хора. Изберете своето вдъхновение и тръгнете по стъпките на времето.",
         "За да бъде преживяването ви наистина пълноценно и безопасно, обърнете внимание на няколко важни детайла. Подготовка: проверете прогнозата за времето, сезонната проходимост на пътеките и актуалното състояние на маршрутите край реката. Екипировка: заложете на стабилни и удобни обувки за пешеходен туризъм, носете достатъчно питейна вода и слънцезащита. С уважение към природата: пътувайте с отворено сърце и уважение към местната общност, горите и уникалните скални ниши.",
@@ -786,7 +1058,13 @@ const authoredProse: Partial<Record<LandingPageId, Record<LanguageCode, Authored
       ],
     },
     en: {
-      intro: "Welcome to your guide to one of the most secretive and beautiful corners of the Fore-Balkan. It was made to connect what you are looking for — wild hiking trails, river fishing, mysterious caves, or a warm place to rest and eat well — with the real magic of the River Vit and its canyon.",
+      h1: "Set out for Aglen: find your way",
+      intro: "Welcome to your interactive guide to one of the most secretive and enchanting corners of the Fore-Balkan. The adventure starts with the planning — choosing how to travel, finding the exact spot on the map, and picking the finest walks along the canyon of the River Vit.",
+      headings: [
+        "🧭 Who is this guide for?",
+        "🎒 How to plan your visit",
+        "🔗 What to combine nearby",
+      ],
       bodies: [
         "This guide weaves together the great canyon, the rock formations, centuries of memory and the practical advice every modern traveller needs. The story of Aglen unfolds layer by layer — from the primeval sea floor that shaped today's limestone walls, through the first ancient settlers along the banks, to the living legends and stories of the people who live here. Choose your own inspiration and follow the footsteps of time.",
         "A few details will make the visit both fuller and safer. Preparation: check the forecast, whether the paths are passable this season, and the current state of the routes along the river. Kit: choose sturdy, comfortable walking shoes, and carry enough drinking water and sun protection. Respect: travel with an open heart and with respect for the local community, the woods and the rock shelters that make this place what it is.",
@@ -794,7 +1072,13 @@ const authoredProse: Partial<Record<LandingPageId, Record<LanguageCode, Authored
       ],
     },
     de: {
-      intro: "Willkommen bei Ihrem Reiseführer in einen der verborgensten und schönsten Winkel des Vorbalkans. Er verbindet das, wonach Sie suchen — wilde Wanderpfade, Angeln am Fluss, geheimnisvolle Höhlen oder gemütliche Orte zum Ausruhen und guten Essen — mit dem wahren Zauber des Flusses Vit und seiner Schlucht.",
+      h1: "Auf nach Aglen: Finden Sie Ihren Weg",
+      intro: "Willkommen bei Ihrem interaktiven Reiseführer in einen der verborgensten und zauberhaftesten Winkel des Vorbalkans. Das Abenteuer beginnt schon bei der Planung — bei der Wahl des Verkehrsmittels, dem genauen Punkt auf der Karte und den schönsten Wanderungen entlang der Schlucht des Flusses Vit.",
+      headings: [
+        "🧭 Für wen ist dieser Führer?",
+        "🎒 So planen Sie den Besuch",
+        "🔗 Was Sie in der Nähe verbinden",
+      ],
       bodies: [
         "Dieser Führer verwebt die mächtige Schlucht, die Felsformationen, jahrhundertealte Erinnerung und die praktischen Hinweise, die jeder heutige Reisende braucht. Die Geschichte von Aglen entfaltet sich Schicht um Schicht — vom urzeitlichen Meeresboden, der die heutigen Kalkwände formte, über die ersten Siedler an den Ufern bis zu den lebendigen Legenden und Erzählungen der Menschen von hier. Wählen Sie Ihre Inspiration und folgen Sie den Spuren der Zeit.",
         "Ein paar Dinge machen den Besuch reicher und sicherer. Vorbereitung: Prüfen Sie die Wettervorhersage, ob die Pfade in dieser Jahreszeit begehbar sind, und den aktuellen Zustand der Wege am Fluss. Ausrüstung: feste, bequeme Wanderschuhe, genug Trinkwasser und Sonnenschutz. Respekt: Reisen Sie mit offenem Herzen und mit Achtung für die Menschen vor Ort, die Wälder und die einzigartigen Felsnischen.",
@@ -802,7 +1086,13 @@ const authoredProse: Partial<Record<LandingPageId, Record<LanguageCode, Authored
       ],
     },
     fr: {
-      intro: "Bienvenue dans votre guide vers l'un des coins les plus secrets et les plus beaux du Prébalkan. Il relie ce que vous cherchez — sentiers sauvages, pêche en rivière, grottes mystérieuses ou lieux chaleureux où se reposer et bien manger — à la véritable magie de la rivière Vit et de son canyon.",
+      h1: "En route vers Aglen : trouvez votre chemin",
+      intro: "Bienvenue dans votre guide interactif vers l'un des coins les plus secrets et les plus enchanteurs du Prébalkan. L'aventure commence dès la préparation : choisir son transport, situer le lieu exact sur la carte et repérer les plus belles marches le long du canyon de la Vit.",
+      headings: [
+        "🧭 À qui s'adresse ce guide ?",
+        "🎒 Comment préparer la visite",
+        "🔗 Que combiner à proximité",
+      ],
       bodies: [
         "Ce guide tisse ensemble le grand canyon, les formations rocheuses, une mémoire séculaire et les conseils pratiques dont a besoin tout voyageur d'aujourd'hui. L'histoire d'Aglen se déploie couche après couche — du fond marin primitif qui a sculpté les parois calcaires actuelles, aux premiers habitants des rives, jusqu'aux légendes vivantes racontées par les gens d'ici. Choisissez votre inspiration et suivez les pas du temps.",
         "Quelques détails rendront la visite plus riche et plus sûre. Préparation : consultez la météo, vérifiez si les sentiers sont praticables en cette saison et l'état actuel des itinéraires le long de la rivière. Équipement : des chaussures de marche solides et confortables, assez d'eau potable et une protection solaire. Respect : voyagez le cœur ouvert et avec égard pour la communauté locale, les forêts et les niches rocheuses uniques.",
@@ -810,7 +1100,13 @@ const authoredProse: Partial<Record<LandingPageId, Record<LanguageCode, Authored
       ],
     },
     es: {
-      intro: "Bienvenido a su guía hacia uno de los rincones más secretos y hermosos de los Prebalcanes. Conecta lo que busca — senderos salvajes, pesca fluvial, cuevas misteriosas o lugares acogedores donde descansar y comer bien — con la verdadera magia del río Vit y su cañón.",
+      h1: "Rumbo a Aglen: encuentre su camino",
+      intro: "Bienvenido a su guía interactiva hacia uno de los rincones más secretos y encantadores de los Prebalcanes. La aventura empieza en la planificación: elegir el transporte, situar el punto exacto en el mapa y escoger los paseos más hermosos por el cañón del río Vit.",
+      headings: [
+        "🧭 ¿Para quién es esta guía?",
+        "🎒 Cómo planear la visita",
+        "🔗 Qué combinar cerca",
+      ],
       bodies: [
         "Esta guía entreteje el gran cañón, las formaciones rocosas, la memoria de siglos y los consejos prácticos que necesita cualquier viajero de hoy. La historia de Aglen se despliega capa a capa — desde el fondo marino primigenio que esculpió las paredes calizas de hoy, pasando por los primeros pobladores de las orillas, hasta las leyendas vivas que cuentan sus habitantes. Elija su inspiración y siga las huellas del tiempo.",
         "Unos pocos detalles harán la visita más plena y más segura. Preparación: consulte el pronóstico, si los senderos son transitables en esta temporada y el estado actual de las rutas junto al río. Equipo: calzado de marcha resistente y cómodo, agua suficiente y protección solar. Respeto: viaje con el corazón abierto y con respeto por la comunidad local, los bosques y los singulares abrigos rocosos.",
@@ -818,7 +1114,13 @@ const authoredProse: Partial<Record<LandingPageId, Record<LanguageCode, Authored
       ],
     },
     it: {
-      intro: "Benvenuti nella vostra guida a uno degli angoli più segreti e belli dei Prebalcani. Collega ciò che cercate — sentieri selvaggi, pesca nel fiume, grotte misteriose o luoghi accoglienti dove riposare e mangiare bene — alla vera magia del fiume Vit e del suo canyon.",
+      h1: "In viaggio verso Aglen: trovate la strada",
+      intro: "Benvenuti nella vostra guida interattiva a uno degli angoli più segreti e incantevoli dei Prebalcani. L'avventura comincia dalla preparazione: scegliere il mezzo, trovare il punto esatto sulla mappa e individuare le passeggiate più belle lungo il canyon del fiume Vit.",
+      headings: [
+        "🧭 A chi si rivolge questa guida?",
+        "🎒 Come pianificare la visita",
+        "🔗 Che cosa abbinare nei dintorni",
+      ],
       bodies: [
         "Questa guida intreccia il grande canyon, le formazioni rocciose, la memoria dei secoli e i consigli pratici di cui ha bisogno ogni viaggiatore di oggi. La storia di Aglen si dispiega strato dopo strato — dal fondale marino primordiale che ha scolpito le odierne pareti calcaree, ai primi abitanti lungo le rive, fino alle leggende vive raccontate dalla gente del posto. Scegliete la vostra ispirazione e seguite le orme del tempo.",
         "Pochi accorgimenti renderanno la visita più piena e più sicura. Preparazione: controllate le previsioni, se i sentieri sono percorribili in questa stagione e lo stato attuale dei percorsi lungo il fiume. Attrezzatura: scarpe da trekking solide e comode, acqua a sufficienza e protezione solare. Rispetto: viaggiate a cuore aperto e con rispetto per la comunità locale, i boschi e le singolari nicchie di roccia.",
@@ -826,7 +1128,13 @@ const authoredProse: Partial<Record<LandingPageId, Record<LanguageCode, Authored
       ],
     },
     ro: {
-      intro: "Bine ați venit în ghidul dumneavoastră către unul dintre cele mai tainice și frumoase colțuri ale Prebalcanilor. Leagă ceea ce căutați — poteci sălbatice, pescuit la râu, peșteri misterioase sau locuri primitoare unde să vă odihniți și să mâncați bine — de magia adevărată a râului Vit și a canionului său.",
+      h1: "Pornește spre Aglen: găsește-ți drumul",
+      intro: "Bine ați venit în ghidul interactiv către unul dintre cele mai tainice și fermecătoare colțuri ale Prebalcanilor. Aventura începe încă de la planificare: alegerea transportului, punctul exact pe hartă și cele mai frumoase plimbări de-a lungul canionului râului Vit.",
+      headings: [
+        "🧭 Pentru cine este acest ghid?",
+        "🎒 Cum îți planifici vizita",
+        "🔗 Ce să combini în apropiere",
+      ],
       bodies: [
         "Acest ghid împletește marele canion, formele de stâncă, memoria secolelor și sfaturile practice de care are nevoie orice călător de azi. Povestea Aglenului se desfășoară strat cu strat — de la fundul de mare primordial care a sculptat pereții de calcar de astăzi, la primii locuitori de pe maluri, până la legendele vii povestite de oamenii de aici. Alegeți-vă inspirația și mergeți pe urmele timpului.",
         "Câteva detalii vor face vizita mai bogată și mai sigură. Pregătire: verificați prognoza, dacă potecile sunt practicabile în acest sezon și starea actuală a traseelor de pe malul râului. Echipament: încălțăminte de drumeție solidă și comodă, apă suficientă și protecție solară. Respect: călătoriți cu inima deschisă și cu respect pentru comunitatea locală, păduri și nișele de stâncă unice.",
@@ -834,7 +1142,13 @@ const authoredProse: Partial<Record<LandingPageId, Record<LanguageCode, Authored
       ],
     },
     tr: {
-      intro: "Ön Balkanlar'ın en gizli ve en güzel köşelerinden birine açılan rehberinize hoş geldiniz. Aradığınız her şeyi — vahşi yürüyüş patikaları, nehirde balık tutma, gizemli mağaralar ya da dinlenip güzel yemek yiyebileceğiniz sıcak mekânlar — Vit Nehri'nin ve kanyonunun gerçek büyüsüyle buluşturur.",
+      h1: "Aglen'e yola çıkın: yolunuzu bulun",
+      intro: "Ön Balkanlar'ın en gizli ve en büyülü köşelerinden birine açılan etkileşimli rehberinize hoş geldiniz. Macera daha planlamayla başlıyor: ulaşımı seçmek, haritada tam noktayı bulmak ve Vit Nehri kanyonu boyunca en güzel yürüyüşleri belirlemek.",
+      headings: [
+        "🧭 Bu rehber kimin için?",
+        "🎒 Ziyareti nasıl planlarsınız",
+        "🔗 Yakında neleri birleştirebilirsiniz",
+      ],
       bodies: [
         "Bu rehber görkemli kanyonu, kaya oluşumlarını, yüzyılların belleğini ve bugünün gezgininin ihtiyaç duyduğu pratik önerileri bir araya dokur. Aglen'in hikâyesi katman katman açılır — bugünkü kireçtaşı duvarları yontan ilkçağ deniz tabanından, kıyılardaki ilk yerleşimcilere, buranın insanlarının hâlâ anlattığı efsanelere kadar. İlhamınızı seçin ve zamanın izinden gidin.",
         "Birkaç ayrıntı ziyareti hem daha doyurucu hem de daha güvenli kılar. Hazırlık: hava durumunu, patikaların bu mevsimde geçilebilirliğini ve nehir kıyısındaki rotaların güncel durumunu kontrol edin. Donanım: sağlam ve rahat yürüyüş ayakkabıları seçin, yeterli içme suyu ve güneş koruması taşıyın. Saygı: açık bir yürekle ve yerel topluluğa, ormanlara ve eşsiz kaya nişlerine saygıyla yolculuk edin.",
@@ -842,7 +1156,13 @@ const authoredProse: Partial<Record<LandingPageId, Record<LanguageCode, Authored
       ],
     },
     el: {
-      intro: "Καλώς ήρθατε στον οδηγό σας για μια από τις πιο κρυφές και όμορφες γωνιές των Προβαλκανίων. Συνδέει αυτό που αναζητάτε — άγρια μονοπάτια, ψάρεμα στο ποτάμι, μυστηριώδη σπήλαια ή ζεστά μέρη για ξεκούραση και καλό φαγητό — με την αληθινή μαγεία του ποταμού Βιτ και του φαραγγιού του.",
+      h1: "Ξεκινήστε για το Άγκλεν: βρείτε τον δρόμο σας",
+      intro: "Καλώς ήρθατε στον διαδραστικό οδηγό σας για μια από τις πιο κρυφές και μαγευτικές γωνιές των Προβαλκανίων. Η περιπέτεια ξεκινά από τον σχεδιασμό: την επιλογή μεταφορικού μέσου, το ακριβές σημείο στον χάρτη και τις ωραιότερες διαδρομές κατά μήκος του φαραγγιού του ποταμού Βιτ.",
+      headings: [
+        "🧭 Για ποιον είναι αυτός ο οδηγός;",
+        "🎒 Πώς να σχεδιάσετε την επίσκεψη",
+        "🔗 Τι να συνδυάσετε κοντά",
+      ],
       bodies: [
         "Ο οδηγός αυτός υφαίνει μαζί το μεγαλειώδες φαράγγι, τους βραχώδεις σχηματισμούς, τη μνήμη των αιώνων και τις πρακτικές συμβουλές που χρειάζεται κάθε σημερινός ταξιδιώτης. Η ιστορία του Άγκλεν ξεδιπλώνεται στρώμα προς στρώμα — από τον αρχέγονο βυθό που λάξευσε τα σημερινά ασβεστολιθικά τοιχώματα, στους πρώτους κατοίκους των όχθεων, ως τους ζωντανούς θρύλους που αφηγούνται οι ντόπιοι. Διαλέξτε την έμπνευσή σας και ακολουθήστε τα βήματα του χρόνου.",
         "Λίγες λεπτομέρειες θα κάνουν την επίσκεψη πληρέστερη και ασφαλέστερη. Προετοιμασία: δείτε την πρόγνωση, αν τα μονοπάτια είναι βατά αυτή την εποχή και την τρέχουσα κατάσταση των διαδρομών κατά μήκος του ποταμού. Εξοπλισμός: στέρεα και άνετα παπούτσια πεζοπορίας, αρκετό πόσιμο νερό και αντηλιακή προστασία. Σεβασμός: ταξιδέψτε με ανοιχτή καρδιά και σεβασμό προς την τοπική κοινότητα, τα δάση και τις μοναδικές βραχώδεις κόγχες.",
@@ -850,7 +1170,13 @@ const authoredProse: Partial<Record<LandingPageId, Record<LanguageCode, Authored
       ],
     },
     ru: {
-      intro: "Добро пожаловать в ваш путеводитель по одному из самых сокровенных и красивых уголков Предбалкан. Он связывает то, что вы ищете — дикие тропы, рыбалку на реке, таинственные пещеры или уютные места для отдыха и вкусной еды, — с настоящей магией реки Вит и её каньона.",
+      h1: "В путь до Аглена: найдите свою дорогу",
+      intro: "Добро пожаловать в ваш интерактивный путеводитель по одному из самых сокровенных и волшебных уголков Предбалкан. Приключение начинается с планирования: выбрать транспорт, найти точную точку на карте и наметить самые красивые прогулки вдоль каньона реки Вит.",
+      headings: [
+        "🧭 Для кого этот путеводитель?",
+        "🎒 Как спланировать поездку",
+        "🔗 Что соединить поблизости",
+      ],
       bodies: [
         "Этот путеводитель сплетает воедино величественный каньон, скальные формы, память веков и практические советы, нужные современному путешественнику. История Аглена разворачивается слой за слоем — от древнего морского дна, вырезавшего нынешние известняковые стены, через первых поселенцев на берегах, до живых легенд и рассказов местных жителей. Выберите своё вдохновение и идите по следам времени.",
         "Несколько мелочей сделают поездку и полнее, и безопаснее. Подготовка: посмотрите прогноз, проходимы ли тропы в этот сезон и в каком состоянии маршруты вдоль реки. Снаряжение: крепкая и удобная обувь для ходьбы, достаточно питьевой воды и защита от солнца. Уважение: путешествуйте с открытым сердцем и уважением к местным жителям, лесам и неповторимым скальным нишам.",
@@ -858,7 +1184,13 @@ const authoredProse: Partial<Record<LandingPageId, Record<LanguageCode, Authored
       ],
     },
     ja: {
-      intro: "前バルカンでもっとも人知れず美しい一角への案内へようこそ。荒々しい山道、川釣り、神秘的な洞窟、あるいはくつろいで美味しい食事ができる居心地のよい場所——あなたが探しているものを、ヴィト川とその渓谷の本当の魅力へとつなぎます。",
+      h1: "アグレンへ——道をみつける",
+      intro: "前バルカンでもっとも人知れず、もっとも心惹かれる一角への、対話型の案内へようこそ。冒険は計画から始まります——どう行くかを選び、地図上の正確な場所を確かめ、ヴィト川の渓谷沿いのいちばん美しい道を選ぶところから。",
+      headings: [
+        "🧭 この案内は誰のためのものか",
+        "🎒 訪問の計画の立て方",
+        "🔗 近くで組み合わせたいもの",
+      ],
       bodies: [
         "この案内は、雄大な渓谷、奇岩、幾世紀もの記憶、そして現代の旅人に必要な実際的な助言を一つに織り上げます。アグレンの物語は層をなして開かれます——今日の石灰岩の壁を削り出した太古の海底から、岸辺に暮らした最初の人々、そして今も語り継がれる土地の伝説まで。心惹かれるものを選び、時の足跡をたどってください。",
         "いくつかの心づもりが、訪れる時間をより豊かに、より安全にします。準備——天気予報、その季節に道が通れるかどうか、川沿いのルートの現在の状態を確かめてください。装備——しっかりした歩きやすい靴、十分な飲み水、日よけを。敬意——地元の人々、森、そしてこの土地ならではの岩陰に敬意を持って旅をしてください。",
@@ -866,7 +1198,13 @@ const authoredProse: Partial<Record<LandingPageId, Record<LanguageCode, Authored
       ],
     },
     sr: {
-      intro: "Добро дошли у ваш водич ка једном од најскривенијих и најлепших кутака Предбалкана. Повезује оно што тражите — дивље пешачке стазе, риболов на реци, тајанствене пећине или топла места за одмор и добар оброк — са правом магијом реке Вит и њеног кањона.",
+      h1: "Крените ка Аглену: пронађите свој пут",
+      intro: "Добро дошли у ваш интерактивни водич ка једном од најскривенијих и најчаробнијих кутака Предбалкана. Авантура почиње већ од планирања — од избора превоза и тачне тачке на мапи до најлепших пешачких стаза уз кањон реке Вит.",
+      headings: [
+        "🧭 Коме је овај водич намењен?",
+        "🎒 Како испланирати посету",
+        "🔗 Шта повезати у близини",
+      ],
       bodies: [
         "Овај водич преплиће величанствени кањон, стеновите облике, памћење векова и практичне савете који су потребни сваком данашњем путнику. Прича Аглена отвара се слој по слој — од прадавног морског дна које је исклесало данашње кречњачке зидове, преко првих становника на обалама, до живих легенди које причају мештани. Изаберите своје надахнуће и пођите трагом времена.",
         "Неколико ситница учиниће посету и пунијом и безбеднијом. Припрема: проверите прогнозу, да ли су стазе проходне у овом годишњем добу и тренутно стање рута уз реку. Опрема: чврста и удобна обућа за ходање, довољно питке воде и заштита од сунца. Поштовање: путујте отвореног срца и с поштовањем према мештанима, шумама и јединственим стеновитим нишама.",
@@ -874,7 +1212,13 @@ const authoredProse: Partial<Record<LandingPageId, Record<LanguageCode, Authored
       ],
     },
     zh: {
-      intro: "欢迎来到这份指南，走进前巴尔干最幽秘、最美丽的一角。无论你在寻找野径徒步、河中垂钓、神秘洞穴，还是可以歇脚与好好吃一顿的温暖去处，它都会把你带向维特河与河谷的真正魅力。",
+      h1: "启程前往阿格伦：找到你的路",
+      intro: "欢迎来到这份互动指南，走进前巴尔干最幽秘、最迷人的一角。冒险从规划就开始了——选择交通方式，在地图上找到确切位置，挑出维特河谷沿线最美的步道。",
+      headings: [
+        "🧭 这份指南写给谁",
+        "🎒 如何规划你的行程",
+        "🔗 附近可以串联什么",
+      ],
       bodies: [
         "这份指南将壮阔的峡谷、奇特的岩形、数百年的记忆，与今天的旅人所需要的实用建议编织在一起。阿格伦的故事层层展开——从雕刻出今日石灰岩壁的远古海床，到最早定居河岸的先民，再到当地人至今口耳相传的活的传说。选择属于你的灵感，循着时间的足迹前行。",
         "几个细节会让这趟行程更充实，也更安全。准备：查看天气预报、本季步道是否通行，以及河边路线的当前状况。装备：结实舒适的徒步鞋，足量饮用水与防晒。尊重：怀着开放的心，尊重当地居民、林地，以及这里独有的岩壁凹龛。",
@@ -882,7 +1226,13 @@ const authoredProse: Partial<Record<LandingPageId, Record<LanguageCode, Authored
       ],
     },
     hu: {
-      intro: "Üdvözöljük az Előbalkán egyik legrejtettebb és legszebb zugába vezető kalauzában. Összeköti azt, amit keres — vadregényes ösvényeket, folyami horgászatot, titokzatos barlangokat vagy meghitt helyeket a pihenéshez és a jó ételhez — a Vit folyó és kanyonja igazi varázsával.",
+      h1: "Induljon Aglenbe: találja meg az utat",
+      intro: "Üdvözöljük az Előbalkán egyik legrejtettebb és legvarázslatosabb zugába vezető interaktív kalauzában. A kaland már a tervezéssel kezdődik: a közlekedés kiválasztásával, a pontos hely megkeresésével a térképen és a Vit folyó kanyonja menti legszebb séták kiszemelésével.",
+      headings: [
+        "🧭 Kinek szól ez a kalauz?",
+        "🎒 Hogyan tervezze meg a látogatást",
+        "🔗 Mit kapcsoljon össze a közelben",
+      ],
       bodies: [
         "Ez a kalauz egybeszövi a hatalmas kanyont, a sziklaalakzatokat, az évszázadok emlékezetét és azokat a gyakorlati tanácsokat, amelyekre a mai utazónak szüksége van. Aglen története rétegről rétegre tárul fel — az ősi tengerfenéktől, amely a mai mészkőfalakat formálta, a partok első lakóin át a helyiek máig élő legendáiig. Válassza ki a maga ihletét, és induljon az idő nyomában.",
         "Néhány apróság teljesebbé és biztonságosabbá teszi a látogatást. Felkészülés: nézze meg az időjárás-előrejelzést, hogy az ösvények járhatók-e ebben az évszakban, és milyen a folyó menti útvonalak jelenlegi állapota. Felszerelés: erős, kényelmes túracipő, elegendő ivóvíz és napvédelem. Tisztelet: nyitott szívvel utazzon, tisztelettel a helyi közösség, az erdők és az egyedülálló sziklafülkék iránt.",
@@ -905,7 +1255,14 @@ function buildLandingPage(lang: LanguageCode, page: LandingPageMaster): LandingP
   // written by hand still sits in the same three-part shape as the other twenty-six.
   const written = authoredProse[page.id]?.[lang];
   const authoredOverride: LandingPageOverride | undefined = written
-    ? { intro: written.intro, sections: written.bodies.map((body, index) => ({ heading: text.sectionHeadings[index], body })) }
+    ? {
+        h1: written.h1,
+        intro: written.intro,
+        sections: written.bodies.map((body, index) => ({
+          heading: written.headings?.[index] ?? text.sectionHeadings[index],
+          body,
+        })),
+      }
     : undefined;
   const override = guideOverrides[page.id]?.[lang] ?? authoredOverride ?? buildRegionalGuideOverride(page.id, lang);
 
@@ -936,6 +1293,7 @@ function buildLandingPage(lang: LanguageCode, page: LandingPageMaster): LandingP
       { question: text.faqWhen, answer: text.faqWhenAnswer },
     ],
     internalLinks: page.internalLinkRouteIds.map((routeId) => ({ label: routeLabel(lang, routeId), routeId })),
+    interactive: page.interactive,
   };
 
   if (!override) {

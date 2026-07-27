@@ -1159,7 +1159,10 @@ h3 {
 .seo-landing-hero h1 {
   max-width: 780px;
   font-size: clamp(2.6rem, 6vw, 5.8rem);
-  line-height: 0.92;
+  /* 0.92 with `margin: 0` from the shared rule above is what put the descenders
+     of a two-line Cyrillic heading on top of the paragraph beneath it. */
+  line-height: var(--leading-tight);
+  margin-bottom: 2rem;
 }
 
 .seo-faq h2,
@@ -1179,8 +1182,72 @@ h3 {
   max-width: 760px;
   color: rgba(7, 26, 20, 0.78);
   font-size: 1.1rem;
-  line-height: 1.75;
+  line-height: 1.6;
 }
+
+/* The three cards under the hero: a heading that touches its own paragraph reads
+   as one block of text rather than as a title over an answer. */
+.seo-section-card h2 { margin-bottom: 0.8rem; }
+.seo-section-card p { margin: 0; line-height: 1.65; }
+
+/* ── Map and transport (howToGet) ──────────────────────────
+   Native <details>, the same control the FAQ block already uses: no script, it
+   works before React hydrates, and a crawler reads the answer whether or not the
+   panel is open. */
+.seo-transport {
+  display: grid;
+  gap: var(--space-box-gap);
+  border: 1px solid rgba(15, 47, 36, 0.14);
+  border-radius: 20px;
+  padding: var(--space-box);
+  background: rgba(255, 255, 255, 0.55);
+}
+.seo-transport > h2 {
+  margin: 0;
+  color: var(--forest-deep);
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: var(--leading-tight);
+}
+.seo-transport-lede { margin: 0; color: rgba(7, 26, 20, 0.78); line-height: 1.65; }
+.seo-transport-map { justify-self: start; margin: 0.2rem 0 0.4rem; }
+.seo-transport details {
+  border: 1px solid rgba(15, 47, 36, 0.12);
+  border-radius: 14px;
+  background: rgba(247, 242, 231, 0.7);
+}
+.seo-transport summary {
+  cursor: pointer;
+  padding: 0.85rem 1.1rem;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--forest-deep);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+}
+.seo-transport summary::-webkit-details-marker { display: none; }
+.seo-transport summary::before {
+  content: "+";
+  width: 1.1rem;
+  color: var(--gold-dark);
+  font-weight: 800;
+}
+.seo-transport details[open] summary::before { content: "–"; }
+.seo-transport summary:focus-visible { outline: 2px solid var(--river); outline-offset: 2px; }
+.seo-transport-body { padding: 0 1.1rem 1.1rem; }
+.seo-transport-body p { margin: 0 0 var(--space-para); line-height: 1.65; }
+.seo-transport-body p:last-child { margin-bottom: 0; }
+.seo-transport-body ul {
+  margin: 0 0 var(--space-para);
+  padding-left: 1.25rem;
+  display: grid;
+  gap: var(--space-item);
+  line-height: 1.65;
+}
+.seo-transport-body a { color: var(--river); font-weight: 600; }
 
 .seo-landing-hero img {
   width: 100%;
