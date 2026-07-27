@@ -431,8 +431,13 @@ export const guides: TourismGuide[] = [
       bg: "Карстовият релеф около Ъглен и Карлуково — скални арки, пещери и варовикови образувания.",
       en: "The karst landscape around Aglen and Karlukovo — rock arches, caves and limestone formations.",
     },
-    heroImage: "/assets/aglen-cave-mystery.png",
-    heroImageAlt: { bg: "Пещерен вход във варовикова скала край Ъглен", en: "A cave entrance in limestone rock near Aglen" },
+    // The Eyes of God. Prohodna is the only entity that borrows this plate
+    // (contentRef.guideSlug), so this is also the hero of /place/prohodna/.
+    heroImage: "/assets/prohodna-cover.png",
+    heroImageAlt: {
+      bg: "Погледнато отвътре нагоре към свода на Проходна: два отвора с формата на очи, през които се вижда синьо небе с облаци, над набраздени варовикови стени.",
+      en: "Looking up at the roof of Prohodna from inside: two eye-shaped openings showing blue sky and cloud, above furrowed limestone walls.",
+    },
     status: "in-preparation",
     placeIds: ["dupkata", "sloncheto"],
     sections: [

@@ -31,6 +31,27 @@ function entryFor(src: string): ImageManifestEntry | undefined {
   return imageManifest[src];
 }
 
+/**
+ * Where the subject of a photograph sits, for the crop.
+ *
+ * A hero is `object-fit: cover` in a band far wider than any of these files, so
+ * the browser throws away the top and bottom and keeps the middle. That is right
+ * for a landscape and wrong for a picture whose subject is overhead: centring
+ * the Prohodna frame cuts the two openings it exists to show. A focal point is a
+ * property of the FILE, not of the page, which is why it lives beside the
+ * manifest and not in a component.
+ *
+ * Percentages, as `object-position` takes them. Anything unlisted stays centred.
+ */
+const FOCUS: Record<string, string> = {
+  "/assets/prohodna-cover.png": "center 34%",
+};
+
+/** The `object-position` a file wants, or undefined to leave the default alone. */
+export function imageFocus(src: string | undefined): string | undefined {
+  return src ? FOCUS[src] : undefined;
+}
+
 /** WebP path for a source image, or the source itself when none was derived. */
 export function webpSrc(src: string): string {
   return entryFor(src)?.webp ?? src;

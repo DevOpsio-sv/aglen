@@ -13,7 +13,7 @@ import {
 import { guidesUiByLanguage, type GuidesUiText } from "./guidesUi";
 import { localizeText, publishedBusinesses } from "./localBusinesses";
 import { buildBusinessPath, buildGuidePath, buildPlacePath, buildRoutePath } from "./routes";
-import { imageProps } from "./images";
+import { imageFocus, imageProps } from "./images";
 import { distanceFromAglenKm, regionName, regionNote, regionPlaceById } from "./region";
 import { entityById, entityForPlaceId, entityForRegionId, entityName, entityShortText } from "./graph";
 import { entityHeroPath } from "./seo";
@@ -281,6 +281,7 @@ function GuideDetail({
         <img
           className="guides-hero-bg"
           {...imageProps(guide.heroImage)}
+          style={{ objectPosition: imageFocus(guide.heroImage) }}
           alt=""
           aria-hidden="true"
           fetchPriority="high"

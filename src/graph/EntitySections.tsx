@@ -1,7 +1,7 @@
 import type { MouseEvent, SyntheticEvent } from "react";
 import type { LanguageCode, LocalizedText } from "../locales/types";
 import { buildAspectPath, buildRoutePath } from "../routes";
-import { imageProps } from "../images";
+import { imageFocus, imageProps } from "../images";
 import { entityHeroAlt, entityHeroPath } from "../seo";
 import { findGuide, localizeGuide } from "../guides";
 import {
@@ -135,6 +135,7 @@ export function EntityHero({
       <img
         className="guides-hero-bg"
         {...imageProps(entityHeroPath(language, entity))}
+        style={{ objectPosition: imageFocus(entityHeroPath(language, entity)) }}
         alt=""
         aria-hidden="true"
         fetchPriority="high"
