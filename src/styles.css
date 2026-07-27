@@ -1472,12 +1472,23 @@ h3 {
 }
 
 .map-layout .section-heading { max-width: 100%; }
+/* h1 included, and `h1.section-title` by name. On /location this heading is
+   PROMOTED to an h1, so a rule listing only h2 and h3 never touched it and it
+   kept the site-wide display size — 5.6rem at 0.93 — in half a column. Same
+   numbers as the landing-page hero, so the two pages read alike. */
+.map-layout .section-heading h1,
+.map-layout .section-heading h1.section-title,
 .map-layout .section-heading h2,
 .map-layout .section-heading h3 {
-  /* Capped below the global display size: this heading shares its row with a
-     card, so it cannot have the full width the hero headings are set for. */
-  font-size: clamp(2.1rem, 3.6vw, 3.4rem);
+  max-width: 100%;
+  font-size: clamp(2.1rem, 4.2vw, 3.6rem);
   line-height: var(--leading-display);
+  margin-bottom: 1.25rem;
+}
+.map-layout .section-heading p {
+  margin: 0;
+  font-size: 1.06rem;
+  line-height: 1.55;
 }
 
 .route-map {
