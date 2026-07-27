@@ -47,7 +47,7 @@
   "linkDensity": 4.89,
   "withSameAs": 11,
   "withOwnHero": 0,
-  "mediaAssets": 0,
+  "mediaAssets": 1,
   "renderableAssets": 0,
   "brokenAssets": 0,
   "sited": 18,
@@ -59,9 +59,9 @@
   "aliasResolved": 14,
   "withAliases": 6,
   "bundle": {
-    "js": 1303020,
+    "js": 1303725,
     "css": 92348,
-    "jsGzip": 409469
+    "jsGzip": 409672
   },
   "findings": 31,
   "high": 1,

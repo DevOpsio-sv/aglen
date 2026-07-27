@@ -165,6 +165,23 @@
       "schemaType": "TouristAttraction",
       "additionalType": "https://www.wikidata.org/wiki/Q35509",
       "contentRef": { "regionId": "prohodna", "guideSlug": "caves-and-rocks" },
+      "media": [
+        {
+          "id": "prohodna-cover",
+          "src": "/assets/prohodna-cover.png",
+          "role": "gallery",
+          "alt": {
+            "bg": "Погледнато отвътре нагоре към свода на Проходна: два отвора с формата на очи, през които се вижда синьо небе с облаци, над набраздени варовикови стени.",
+            "en": "Looking up at the roof of Prohodna from inside: two eye-shaped openings showing blue sky and cloud, above furrowed limestone walls."
+          },
+          "caption": {
+            "bg": "„Очите на Бога“ — двата отвора в свода на Проходна.",
+            "en": "The Eyes of God — the two openings in the roof of Prohodna."
+          },
+          "depicts": ["prohodna"],
+          "capturedIn": "prohodna"
+        }
+      ],
       "geo": { "lat": 43.1758, "lon": 24.0731 },
       "sameAs": { "wikidata": "Q3657889", "wikipedia": { "bg": "Проходна", "en": "Prohodna" } },
       "aliases": [

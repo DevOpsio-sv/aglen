@@ -64,6 +64,7 @@ _None._
 
 | Kind | Note |
 | --- | --- |
+| media | "prohodna" media[0] (/assets/prohodna-cover.png) is held but not rendered: it is missing a licence, a capture date, a credit (rule 45). |
 | discovery | "vit-river" has 2 inbound link(s); three is where a page stops depending on its index. |
 | discovery | "trifon-kunev" has 1 inbound link(s); three is where a page stops depending on its index. |
 | coordinates | "karst-lukovit" has no coordinates yet (needs a GPS fix). |
@@ -122,5 +123,5 @@ _None._
 
 ## Summary
 
-Gates: 0 · Warnings: 55
+Gates: 0 · Warnings: 56
 
