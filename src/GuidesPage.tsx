@@ -76,7 +76,7 @@ function GuideIndex({
         />
         <div className="guides-hero-overlay" aria-hidden="true" />
         <div className="guides-hero-inner section-shell">
-          <p className="eyebrow guides-hero-eyebrow">{ui.indexEyebrow}</p>
+          {/* No eyebrow: it said the same words as the <h1> below it. */}
           <h1 id="guides-hero-title">{ui.indexTitle}</h1>
           <p className="guides-hero-sub">{ui.indexSubtitle}</p>
         </div>
@@ -129,7 +129,7 @@ function KnowledgeGateway({ language, onNavigate }: { language: LanguageCode; on
   return (
     <section className="section-shell guides-list" aria-labelledby="knowledge-title">
       <div className="section-heading">
-        <p className="eyebrow">{kt("title", language).split(":")[0]}</p>
+        {/* No eyebrow: in Bulgarian it printed the heading verbatim above itself. */}
         <h2 id="knowledge-title">{kt("title", language)}</h2>
         <p>{kt("sub", language)}</p>
       </div>

@@ -4,7 +4,12 @@ import type { LanguageCode } from "./locales/types";
 // LocalizedText (bg required, en optional, falling back the same way events and
 // businesses do).
 export type GuidesUiText = {
-  indexEyebrow: string;
+  /**
+   * What this section is called — the index <h1>, the breadcrumb, the back link
+   * and the kicker over a single guide. There used to be a separate
+   * `indexEyebrow` printed above the <h1>; in Bulgarian the two said the same
+   * words, so the hero read its own title twice. One name, used everywhere.
+   */
   indexTitle: string;
   indexSubtitle: string;
   ctaExplore: string;
@@ -33,8 +38,7 @@ export type GuidesUiText = {
 };
 
 const bg: GuidesUiText = {
-  indexEyebrow: "Туристически справочник",
-  indexTitle: "Ръководства за Ъглен",
+  indexTitle: "Туристически справочник",
   indexSubtitle: "Практични ръководства за местата, реката, скалите и хората около селото.",
   ctaExplore: "Разгледай ръководството",
   ctaPlaces: "Виж местата",
@@ -64,8 +68,7 @@ const bg: GuidesUiText = {
 };
 
 const en: GuidesUiText = {
-  indexEyebrow: "Travel guide",
-  indexTitle: "Guides to Aglen",
+  indexTitle: "Travel guide",
   indexSubtitle: "Practical guides to the places, the river, the rocks and the people around the village.",
   ctaExplore: "Read the guide",
   ctaPlaces: "See the places",
@@ -95,8 +98,7 @@ const en: GuidesUiText = {
 };
 
 const de: GuidesUiText = {
-  indexEyebrow: "Reiseführer",
-  indexTitle: "Reiseführer für Aglen",
+  indexTitle: "Reiseführer",
   indexSubtitle: "Praktische Führer zu den Orten, dem Fluss, den Felsen und den Menschen rund um das Dorf.",
   ctaExplore: "Führer lesen",
   ctaPlaces: "Orte ansehen",
@@ -126,8 +128,7 @@ const de: GuidesUiText = {
 };
 
 const fr: GuidesUiText = {
-  indexEyebrow: "Guide touristique",
-  indexTitle: "Guides d’Aglen",
+  indexTitle: "Guide touristique",
   indexSubtitle: "Des guides pratiques sur les lieux, la rivière, les rochers et les gens du village.",
   ctaExplore: "Lire le guide",
   ctaPlaces: "Voir les lieux",
@@ -157,8 +158,7 @@ const fr: GuidesUiText = {
 };
 
 const es: GuidesUiText = {
-  indexEyebrow: "Guía turística",
-  indexTitle: "Guías de Aglen",
+  indexTitle: "Guía turística",
   indexSubtitle: "Guías prácticas sobre los lugares, el río, las rocas y la gente del pueblo.",
   ctaExplore: "Leer la guía",
   ctaPlaces: "Ver los lugares",
@@ -188,8 +188,7 @@ const es: GuidesUiText = {
 };
 
 const it: GuidesUiText = {
-  indexEyebrow: "Guida turistica",
-  indexTitle: "Guide di Aglen",
+  indexTitle: "Guida turistica",
   indexSubtitle: "Guide pratiche ai luoghi, al fiume, alle rocce e alle persone del villaggio.",
   ctaExplore: "Leggi la guida",
   ctaPlaces: "Vedi i luoghi",
@@ -219,8 +218,7 @@ const it: GuidesUiText = {
 };
 
 const ro: GuidesUiText = {
-  indexEyebrow: "Ghid turistic",
-  indexTitle: "Ghiduri pentru Aglen",
+  indexTitle: "Ghid turistic",
   indexSubtitle: "Ghiduri practice despre locuri, râu, stânci și oamenii din sat.",
   ctaExplore: "Citește ghidul",
   ctaPlaces: "Vezi locurile",
@@ -250,8 +248,7 @@ const ro: GuidesUiText = {
 };
 
 const tr: GuidesUiText = {
-  indexEyebrow: "Gezi rehberi",
-  indexTitle: "Aglen rehberleri",
+  indexTitle: "Gezi rehberi",
   indexSubtitle: "Köyün çevresindeki yerler, nehir, kayalar ve insanlar için pratik rehberler.",
   ctaExplore: "Rehberi oku",
   ctaPlaces: "Yerleri gör",
@@ -281,8 +278,7 @@ const tr: GuidesUiText = {
 };
 
 const el: GuidesUiText = {
-  indexEyebrow: "Ταξιδιωτικός οδηγός",
-  indexTitle: "Οδηγοί για το Άγκλεν",
+  indexTitle: "Ταξιδιωτικός οδηγός",
   indexSubtitle: "Πρακτικοί οδηγοί για τα μέρη, το ποτάμι, τους βράχους και τους ανθρώπους του χωριού.",
   ctaExplore: "Διαβάστε τον οδηγό",
   ctaPlaces: "Δείτε τα μέρη",
@@ -312,8 +308,7 @@ const el: GuidesUiText = {
 };
 
 const ru: GuidesUiText = {
-  indexEyebrow: "Путеводитель",
-  indexTitle: "Путеводители по Ъглену",
+  indexTitle: "Путеводитель",
   indexSubtitle: "Практические путеводители по местам, реке, скалам и людям села.",
   ctaExplore: "Читать путеводитель",
   ctaPlaces: "Смотреть места",
@@ -343,8 +338,7 @@ const ru: GuidesUiText = {
 };
 
 const ja: GuidesUiText = {
-  indexEyebrow: "旅のガイド",
-  indexTitle: "アグレンのガイド",
+  indexTitle: "旅のガイド",
   indexSubtitle: "村の周りの場所、川、岩、そして人々についての実用的なガイド。",
   ctaExplore: "ガイドを読む",
   ctaPlaces: "場所を見る",
@@ -374,8 +368,7 @@ const ja: GuidesUiText = {
 };
 
 const sr: GuidesUiText = {
-  indexEyebrow: "Туристички водич",
-  indexTitle: "Водичи за Аглен",
+  indexTitle: "Туристички водич",
   indexSubtitle: "Практични водичи кроз места, реку, стене и људе око села.",
   ctaExplore: "Прочитајте водич",
   ctaPlaces: "Погледајте места",
@@ -405,8 +398,7 @@ const sr: GuidesUiText = {
 };
 
 const zh: GuidesUiText = {
-  indexEyebrow: "旅行指南",
-  indexTitle: "阿格伦指南",
+  indexTitle: "旅行指南",
   indexSubtitle: "关于村庄周边的地点、河流、岩石与人们的实用指南。",
   ctaExplore: "阅读指南",
   ctaPlaces: "查看地点",
@@ -434,8 +426,7 @@ const zh: GuidesUiText = {
 };
 
 const hu: GuidesUiText = {
-  indexEyebrow: "Útikalauz",
-  indexTitle: "Aglen útikalauzai",
+  indexTitle: "Útikalauz",
   indexSubtitle: "Gyakorlati útmutatók a falu körüli helyekhez, a folyóhoz, a sziklákhoz és az emberekhez.",
   ctaExplore: "Olvasom az útmutatót",
   ctaPlaces: "Helyek megtekintése",

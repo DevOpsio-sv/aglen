@@ -731,7 +731,9 @@ function routeText(lang: LanguageCode, routeId: RouteId): { title: string; descr
     seasonal: { title: `${copy.guides.seasonal.label} | ${copy.brand.name}`, description: copy.guides.seasonal.text },
     events: { title: `${trust.events} | ${copy.brand.name}`, description: copy.hub.text },
     guides: {
-      title: `${guidesUiByLanguage[lang].indexTitle} | ${copy.hub.eyebrow}`,
+      // The suffix is the brand, not `hub.eyebrow`: the two now hold the same
+      // words in Bulgarian and the title would have repeated itself.
+      title: `${guidesUiByLanguage[lang].indexTitle} | ${copy.brand.name}`,
       description: guidesUiByLanguage[lang].indexSubtitle,
     },
     localBusinesses: (() => {
@@ -1926,7 +1928,7 @@ export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "hom
       <main id="static-seo-content" class="static-fallback" lang="${lang}">
         <article class="content-hub section-shell">
           <div class="section-heading">
-            <p class="eyebrow">${escapeHtml(gui.indexEyebrow)}</p>
+            <p class="eyebrow">${escapeHtml(gui.indexTitle)}</p>
             <h1>${escapeHtml(localizeGuide(guide.title, lang))}</h1>
             ${paragraph(localizeGuide(guide.summary, lang))}
             <a href="${buildRoutePath(lang, "guides")}">${escapeHtml(gui.backToGuides)}</a>
