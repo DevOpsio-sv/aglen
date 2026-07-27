@@ -54,17 +54,17 @@ function ExperiencePicker({
   const shown = mood === "all" ? all : all.filter((item) => item.moods.includes(mood));
 
   return (
-    <div className="experience-picker reveal">
-      <div className="experience-tabs" role="tablist" aria-label={ui.title}>
+    <div className="mood-picker reveal">
+      <div className="mood-tabs" role="tablist" aria-label={ui.title}>
         <button
           type="button"
           role="tab"
           aria-selected={mood === "all"}
-          className={`experience-tab${mood === "all" ? " is-on" : ""}`}
+          className={`mood-tab${mood === "all" ? " is-on" : ""}`}
           onClick={() => setMood("all")}
         >
           {ui.all}
-          <span className="experience-tab-count">{all.length}</span>
+          <span className="mood-tab-count">{all.length}</span>
         </button>
         {MOODS.map((definition) => {
           const count = all.filter((item) => item.moods.includes(definition.id)).length;
@@ -74,40 +74,40 @@ function ExperiencePicker({
               role="tab"
               key={definition.id}
               aria-selected={mood === definition.id}
-              className={`experience-tab${mood === definition.id ? " is-on" : ""}`}
+              className={`mood-tab${mood === definition.id ? " is-on" : ""}`}
               onClick={() => setMood(definition.id)}
             >
               <span aria-hidden="true">{definition.icon}</span> {definition.label[language]}
-              <span className="experience-tab-count">{count}</span>
+              <span className="mood-tab-count">{count}</span>
             </button>
           );
         })}
       </div>
 
-      <div className="experience-grid">
+      <div className="mood-grid">
         {shown.map((item) => (
-          <article className="experience-card" key={item.key}>
-            <span className="experience-icon" aria-hidden="true">
+          <article className="mood-card" key={item.key}>
+            <span className="mood-icon" aria-hidden="true">
               {item.icon}
             </span>
             <h3>{item.title}</h3>
             <p>{item.detail}</p>
             <details>
               <summary>{ui.open}</summary>
-              <div className="experience-more">
-                <p className="experience-meta">
-                  <span className="experience-chip">
+              <div className="mood-more">
+                <p className="mood-meta">
+                  <span className="mood-chip">
                     {ui.difficulty}: {DIFFICULTY_LABEL[item.difficulty][language]}
                   </span>
                   {MOODS.filter((definition) => item.moods.includes(definition.id)).map((definition) => (
-                    <span className="experience-chip" key={definition.id}>
+                    <span className="mood-chip" key={definition.id}>
                       <span aria-hidden="true">{definition.icon}</span> {definition.label[language]}
                     </span>
                   ))}
                 </p>
                 {item.slug && (
                   <a
-                    className="button ghost experience-cta"
+                    className="button ghost mood-cta"
                     href={buildPlacePath(language, item.slug)}
                     onClick={(event) => {
                       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
@@ -123,7 +123,7 @@ function ExperiencePicker({
           </article>
         ))}
       </div>
-      {shown.length === 0 && <p className="experience-empty">{ui.empty}</p>}
+      {shown.length === 0 && <p className="mood-empty">{ui.empty}</p>}
     </div>
   );
 }

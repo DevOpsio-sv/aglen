@@ -1484,10 +1484,10 @@ h3 {
    Filter by mood, then open a card for what it costs you. The tabs are React
    state and the card bodies are native <details>, so with no JavaScript every
    card shows and every body still opens. */
-.experience-picker { display: grid; gap: 1.5rem; }
+.mood-picker { display: grid; gap: 1.5rem; }
 
-.experience-tabs { display: flex; flex-wrap: wrap; gap: 0.6rem; }
-.experience-tab {
+.mood-tabs { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.mood-tab {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -1504,24 +1504,24 @@ h3 {
   cursor: pointer;
   transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
 }
-.experience-tab:hover { border-color: var(--gold); background: rgba(255, 255, 255, 0.92); }
-.experience-tab:focus-visible { outline: 2px solid var(--river); outline-offset: 2px; }
-.experience-tab.is-on { color: #fff; background: var(--forest); border-color: var(--forest); }
-.experience-tab-count {
+.mood-tab:hover { border-color: var(--gold); background: rgba(255, 255, 255, 0.92); }
+.mood-tab:focus-visible { outline: 2px solid var(--river); outline-offset: 2px; }
+.mood-tab.is-on { color: #fff; background: var(--forest); border-color: var(--forest); }
+.mood-tab-count {
   border-radius: 999px;
   padding: 0.05rem 0.45rem;
   background: rgba(15, 47, 36, 0.1);
   font-size: 0.78rem;
   font-weight: 800;
 }
-.experience-tab.is-on .experience-tab-count { background: rgba(255, 255, 255, 0.22); }
+.mood-tab.is-on .mood-tab-count { background: rgba(255, 255, 255, 0.22); }
 
-.experience-grid {
+.mood-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
   gap: 1rem;
 }
-.experience-card {
+.mood-card {
   display: grid;
   align-content: start;
   gap: 0.55rem;
@@ -1531,13 +1531,13 @@ h3 {
   background: rgba(255, 255, 255, 0.72);
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
-.experience-card:hover {
+.mood-card:hover {
   transform: translateY(-3px);
   border-color: rgba(197, 154, 69, 0.5);
   box-shadow: 0 18px 44px rgba(7, 26, 20, 0.12);
 }
-.experience-icon { font-size: 1.5rem; line-height: 1; }
-.experience-card h3 {
+.mood-icon { font-size: 1.5rem; line-height: 1; }
+.mood-card h3 {
   margin: 0;
   color: var(--forest-deep);
   font-family: var(--serif);
@@ -1545,10 +1545,10 @@ h3 {
   font-weight: 800;
   line-height: var(--leading-tight);
 }
-.experience-card > p { margin: 0; color: var(--ink); line-height: 1.6; }
+.mood-card > p { margin: 0; color: var(--ink); line-height: 1.6; }
 
-.experience-card details { margin-top: 0.2rem; }
-.experience-card summary {
+.mood-card details { margin-top: 0.2rem; }
+.mood-card summary {
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -1558,21 +1558,21 @@ h3 {
   font-size: 0.92rem;
   font-weight: 700;
 }
-.experience-card summary::-webkit-details-marker { display: none; }
-.experience-card summary::after { content: "▾"; transition: transform 0.2s ease; }
-.experience-card details[open] summary::after { transform: rotate(180deg); }
-.experience-card summary:focus-visible { outline: 2px solid var(--river); outline-offset: 2px; }
+.mood-card summary::-webkit-details-marker { display: none; }
+.mood-card summary::after { content: "▾"; transition: transform 0.2s ease; }
+.mood-card details[open] summary::after { transform: rotate(180deg); }
+.mood-card summary:focus-visible { outline: 2px solid var(--river); outline-offset: 2px; }
 
 /* The open animation. `grid-template-rows: 0fr -> 1fr` is the one way to
    transition to a height nobody has measured. */
-.experience-more { display: grid; grid-template-rows: 1fr; }
-.experience-card details[open] .experience-more { animation: experience-open 0.24s ease; }
-@keyframes experience-open {
+.mood-more { display: grid; grid-template-rows: 1fr; }
+.mood-card details[open] .mood-more { animation: mood-open 0.24s ease; }
+@keyframes mood-open {
   from { grid-template-rows: 0fr; opacity: 0; }
   to { grid-template-rows: 1fr; opacity: 1; }
 }
-.experience-meta { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0 0 0.8rem; }
-.experience-chip {
+.mood-meta { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0 0 0.8rem; }
+.mood-chip {
   border: 1px solid rgba(197, 154, 69, 0.34);
   border-radius: 999px;
   padding: 0.22rem 0.6rem;
@@ -1582,13 +1582,13 @@ h3 {
   font-weight: 700;
   line-height: 1.4;
 }
-.experience-cta { justify-self: start; }
-.experience-empty { margin: 0; color: var(--muted); line-height: 1.6; }
+.mood-cta { justify-self: start; }
+.mood-empty { margin: 0; color: var(--muted); line-height: 1.6; }
 
 @media (prefers-reduced-motion: reduce) {
-  .experience-card, .experience-card summary::after { transition: none; }
-  .experience-card:hover { transform: none; }
-  .experience-card details[open] .experience-more { animation: none; }
+  .mood-card, .mood-card summary::after { transition: none; }
+  .mood-card:hover { transform: none; }
+  .mood-card details[open] .mood-more { animation: none; }
 }
 /* h1 included, and `h1.section-title` by name. On /location this heading is
    PROMOTED to an h1, so a rule listing only h2 and h3 never touched it and it
