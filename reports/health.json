@@ -60,7 +60,7 @@
   "withAliases": 6,
   "bundle": {
     "js": 1333165,
-    "css": 93804,
+    "css": 93824,
     "jsGzip": 421476
   },
   "findings": 31,

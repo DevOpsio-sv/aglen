@@ -34,7 +34,11 @@
      larger than the gap between lines, or paragraphs stop being
      paragraphs. That relation is the whole reason these are tokens. */
   --leading-prose: 1.7;   /* body copy */
-  --leading-tight: 1.28;  /* headings inside prose */
+  --leading-tight: 1.28;  /* headings at text size — 1.2rem to ~2rem */
+  /* Display type, 3rem and up. Leading is a ratio, so the bigger the type the
+     bigger the gap it buys: 1.28 is right at 1.6rem and cavernous at 5.5rem,
+     where it adds thirty pixels between lines of one heading. */
+  --leading-display: 1.12;
   --space-para: 1.25rem;  /* between paragraphs */
   --space-list: 1.5rem;   /* around a list */
   --space-item: 0.6rem;   /* between list items */
@@ -1157,12 +1161,13 @@ h3 {
 }
 
 .seo-landing-hero h1 {
-  max-width: 780px;
-  font-size: clamp(2.6rem, 6vw, 5.8rem);
-  /* 0.92 with `margin: 0` from the shared rule above is what put the descenders
-     of a two-line Cyrillic heading on top of the paragraph beneath it. */
-  line-height: var(--leading-tight);
-  margin-bottom: 2rem;
+  max-width: 720px;
+  /* Was up to 5.8rem — 93px for a heading that shares its row with a photograph
+     and a paragraph. At that size no leading looks right: 0.92 collided with the
+     text below, 1.28 opened a canyon inside the heading itself. */
+  font-size: clamp(2.1rem, 4.2vw, 3.6rem);
+  line-height: var(--leading-display);
+  margin-bottom: 1.25rem;
 }
 
 .seo-faq h2,
@@ -1238,7 +1243,8 @@ h3 {
 .seo-transport details[open] summary::before { content: "–"; }
 .seo-transport summary:focus-visible { outline: 2px solid var(--river); outline-offset: 2px; }
 .seo-transport-body { padding: 0 1.1rem 1.1rem; }
-.seo-transport-body p { margin: 0 0 var(--space-para); line-height: 1.65; }
+/* Tighter than prose spacing: this is a compact panel, not an article. */
+.seo-transport-body p { margin: 0 0 0.9rem; line-height: 1.65; }
 .seo-transport-body p:last-child { margin-bottom: 0; }
 .seo-transport-body ul {
   margin: 0 0 var(--space-para);
@@ -1415,7 +1421,7 @@ h3 {
   /* Capped below the global display size: this heading shares its row with a
      card, so it cannot have the full width the hero headings are set for. */
   font-size: clamp(2.1rem, 3.6vw, 3.4rem);
-  line-height: var(--leading-tight);
+  line-height: var(--leading-display);
 }
 
 .route-map {
