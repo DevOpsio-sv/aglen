@@ -1,7 +1,7 @@
 import { contentByLanguage, languages } from "./content";
 import { localize, sortedEvents } from "./events";
 import { getLandingPage, isLandingPageId } from "./landingPages";
-import type { LanguageCode, PageCopy, PlaceId } from "./locales/types";
+import type { LanguageCode, LocalizedText, PageCopy, PlaceId } from "./locales/types";
 import { allLanguageCodes, buildBusinessPath, buildGuidePath, buildRoutePath, DEFAULT_LANGUAGE, type CoreRouteId, type RouteId } from "./routes";
 import { findBusiness, localizeText, mapUrl, publishedBusinesses } from "./localBusinesses";
 import { businessesUiByLanguage, categoryLabel as businessCategoryLabel } from "./localBusinessesUi";
@@ -25,7 +25,7 @@ import { localizeTrust, trustPageByRoute } from "./trustPages";
 import { buildAspectPath, buildPlacePath, buildSourcePath } from "./routes";
 import { aspectCrumb, aspectLede, aspectTitle, namespaceCrumb, namespacePrefix, namespaceTitle, NAMESPACE_CHROME, PROVENANCE_CHROME, SOURCE_CHROME, localizeChrome, type NamespaceKind } from "./graph/namespaces";
 import { KIND_HERO, NAMESPACES, REGIONS, namespaceForPath, type NamespaceId, type RegionRouteId } from "./graph/registry";
-import { isPublic, nameQuestion, narrateClaims } from "./graph/editorial";
+import { isPublic, nameQuestion, narrate, narrateClaims } from "./graph/editorial";
 import {
   breadcrumbTrail,
   derivedLinks,
@@ -1719,6 +1719,22 @@ export function buildJSONLD(lang: LanguageCode, routeId: RouteId = "home", detai
   };
 }
 
+/**
+ * How far this project went in checking a source, in the reader's language. The
+ * fallback used to print the raw enum in brackets — "[unverified]" — on pages
+ * served in fourteen languages. The vocabulary belongs on a source page (§2); the
+ * English identifier does not belong anywhere a visitor can read it.
+ */
+function sourceVerificationWord(verification: string, lang: LanguageCode): string {
+  const words: Record<string, LocalizedText> = {
+    verified: { bg: "проверен от нас", en: "checked by us" },
+    reported: { bg: "цитиран, но непроверен от нас", en: "cited, not checked by us" },
+    unverified: { bg: "с неустановен произход", en: "provenance not established" },
+  };
+  const word = words[verification];
+  return word ? word[lang] ?? word.en ?? word.bg : verification;
+}
+
 function escapeHtml(value: string): string {
   return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
@@ -1847,10 +1863,10 @@ export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "hom
   const flatSource = detailSlug && routeId === "source" ? sourceBySlug(detailSlug) : undefined;
   if (flatSource) {
     const lines = [
-      `${flatSource.citation} [${flatSource.verification}]`,
+      `${flatSource.citation} — ${sourceVerificationWord(flatSource.verification, lang)}`,
       ...(flatSource.url ? [flatSource.url] : []),
       ...(sourceNote(flatSource, lang) ? [sourceNote(flatSource, lang)!] : []),
-      ...liveClaimsFromSource(flatSource.id).map((claim) => `${claimStatement(claim, lang)} [${claim.confidence}]`),
+      ...liveClaimsFromSource(flatSource.id).map((claim) => narrate(claim, lang)),
     ];
     return `
       <main id="static-seo-content" class="static-fallback" lang="${lang}">
@@ -1873,7 +1889,7 @@ export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "hom
     const lines =
       routeId === "sources"
         ? ledgerSources.flatMap((source) => [
-            `${source.citation} [${source.verification}]`,
+            `${source.citation} — ${sourceVerificationWord(source.verification, lang)}`,
             ...(source.url ? [source.url] : []),
             ...(sourceHasPage(source.id) ? [`${SITE_URL}${buildSourcePath(lang, source.slug)}`] : []),
           ])
