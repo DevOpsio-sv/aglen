@@ -1,6 +1,6 @@
 # Multilingual Bulgarian-Source Audit
 
-Generated: 2026-07-27T10:24:32.594Z
+Generated: 2026-07-27T10:47:54.982Z
 Expected locales: `bg`, `en`, `de`, `fr`, `es`, `it`, `ro`, `tr`, `el`, `ru`, `ja`, `sr`, `zh`, `hu`
 
 ## Checks

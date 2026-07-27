@@ -72,15 +72,21 @@ type LandingPageMaster = {
   internalLinkRouteIds: Array<LandingPageId | string>;
 };
 
+/**
+ * Authored copy that replaces the generated copy for one page in one language.
+ * Every field is optional: a page that only needs its prose rewritten should not
+ * have to restate its title, its alt text and its three FAQs to say so. What is
+ * omitted falls through to the generated page.
+ */
 type LandingPageOverride = {
-  title: string;
-  metaDescription: string;
-  h1: string;
-  intro: string;
-  imageAlt: string;
-  ctaLabel: string;
-  sections: LandingPageSection[];
-  faqs: LandingPageFaq[];
+  title?: string;
+  metaDescription?: string;
+  h1?: string;
+  intro?: string;
+  imageAlt?: string;
+  ctaLabel?: string;
+  sections?: LandingPageSection[];
+  faqs?: LandingPageFaq[];
   keywords?: string[];
   secondaryKeywords?: string[];
 };
@@ -755,6 +761,137 @@ function routeLabel(lang: LanguageCode, routeId: LandingPageId | string): string
   return coreLabels[routeId] ?? copy.brand.name;
 }
 
+/**
+ * Hand-written prose for a landing page, in every language the site serves.
+ *
+ * The twenty-seven landing pages are generated from one template, which is why
+ * they read like one template. A page somebody has actually written belongs
+ * here: the intro and the three section bodies, in all fourteen languages. The
+ * headings, the FAQs, the title and the meta description stay generated — those
+ * are structure and SEO, and they are already right.
+ *
+ * This is UI copy, not a knowledge-tier claim: it makes no sourced assertion, so
+ * rule 43 does not apply and every language carries its own text.
+ */
+type AuthoredProse = { intro: string; bodies: [string, string, string] };
+
+const authoredProse: Partial<Record<LandingPageId, Record<LanguageCode, AuthoredProse>>> = {
+  howToGet: {
+    bg: {
+      intro: "Добре дошли във вашия пътеводител към едно от най-потайните и красиви кътчета на Предбалкана. Това ръководство е създадено, за да свърже вашите търсения — било то за диви туристически пътеки, речен риболов, мистериозни пещери или уютни места за отдих и вкусна храна — с истинската магия на река Вит и нейния каньон.",
+      bodies: [
+        "Този пътеводител преплита в съвършена симбиоза величествения каньон, скалните феномени, вековната памет и практичните съвети, от които се нуждае всеки съвременен пътешественик. Историята на Ъглен се разгръща пласт по пласт — от първозданното океанско дъно, изваяло днешните варовикови стени, през първите древни заселници по бреговете, до живите легенди и разкази на местните хора. Изберете своето вдъхновение и тръгнете по стъпките на времето.",
+        "За да бъде преживяването ви наистина пълноценно и безопасно, обърнете внимание на няколко важни детайла. Подготовка: проверете прогнозата за времето, сезонната проходимост на пътеките и актуалното състояние на маршрутите край реката. Екипировка: заложете на стабилни и удобни обувки за пешеходен туризъм, носете достатъчно питейна вода и слънцезащита. С уважение към природата: пътувайте с отворено сърце и уважение към местната общност, горите и уникалните скални ниши.",
+        "Направете своето пътуване още по-вълнуващо! Използвайте вътрешните връзки в сайта, за да съчетаете разходката си в Ъглен с близки живописни маршрути, скалните манастири около Карлуково, уютни къщи за гости и автентични места за хапване в района на Луковит.",
+      ],
+    },
+    en: {
+      intro: "Welcome to your guide to one of the most secretive and beautiful corners of the Fore-Balkan. It was made to connect what you are looking for — wild hiking trails, river fishing, mysterious caves, or a warm place to rest and eat well — with the real magic of the River Vit and its canyon.",
+      bodies: [
+        "This guide weaves together the great canyon, the rock formations, centuries of memory and the practical advice every modern traveller needs. The story of Aglen unfolds layer by layer — from the primeval sea floor that shaped today's limestone walls, through the first ancient settlers along the banks, to the living legends and stories of the people who live here. Choose your own inspiration and follow the footsteps of time.",
+        "A few details will make the visit both fuller and safer. Preparation: check the forecast, whether the paths are passable this season, and the current state of the routes along the river. Kit: choose sturdy, comfortable walking shoes, and carry enough drinking water and sun protection. Respect: travel with an open heart and with respect for the local community, the woods and the rock shelters that make this place what it is.",
+        "Make the journey richer still. Use the links across this site to combine a walk in Aglen with nearby scenic routes, the rock monasteries around Karlukovo, welcoming guest houses and honest places to eat around Lukovit.",
+      ],
+    },
+    de: {
+      intro: "Willkommen bei Ihrem Reiseführer in einen der verborgensten und schönsten Winkel des Vorbalkans. Er verbindet das, wonach Sie suchen — wilde Wanderpfade, Angeln am Fluss, geheimnisvolle Höhlen oder gemütliche Orte zum Ausruhen und guten Essen — mit dem wahren Zauber des Flusses Vit und seiner Schlucht.",
+      bodies: [
+        "Dieser Führer verwebt die mächtige Schlucht, die Felsformationen, jahrhundertealte Erinnerung und die praktischen Hinweise, die jeder heutige Reisende braucht. Die Geschichte von Aglen entfaltet sich Schicht um Schicht — vom urzeitlichen Meeresboden, der die heutigen Kalkwände formte, über die ersten Siedler an den Ufern bis zu den lebendigen Legenden und Erzählungen der Menschen von hier. Wählen Sie Ihre Inspiration und folgen Sie den Spuren der Zeit.",
+        "Ein paar Dinge machen den Besuch reicher und sicherer. Vorbereitung: Prüfen Sie die Wettervorhersage, ob die Pfade in dieser Jahreszeit begehbar sind, und den aktuellen Zustand der Wege am Fluss. Ausrüstung: feste, bequeme Wanderschuhe, genug Trinkwasser und Sonnenschutz. Respekt: Reisen Sie mit offenem Herzen und mit Achtung für die Menschen vor Ort, die Wälder und die einzigartigen Felsnischen.",
+        "Machen Sie die Reise noch reicher. Nutzen Sie die Verweise auf dieser Seite, um einen Spaziergang in Aglen mit nahen Panoramarouten, den Felsklöstern um Karlukovo, gastfreundlichen Pensionen und ehrlichen Lokalen rund um Lukovit zu verbinden.",
+      ],
+    },
+    fr: {
+      intro: "Bienvenue dans votre guide vers l'un des coins les plus secrets et les plus beaux du Prébalkan. Il relie ce que vous cherchez — sentiers sauvages, pêche en rivière, grottes mystérieuses ou lieux chaleureux où se reposer et bien manger — à la véritable magie de la rivière Vit et de son canyon.",
+      bodies: [
+        "Ce guide tisse ensemble le grand canyon, les formations rocheuses, une mémoire séculaire et les conseils pratiques dont a besoin tout voyageur d'aujourd'hui. L'histoire d'Aglen se déploie couche après couche — du fond marin primitif qui a sculpté les parois calcaires actuelles, aux premiers habitants des rives, jusqu'aux légendes vivantes racontées par les gens d'ici. Choisissez votre inspiration et suivez les pas du temps.",
+        "Quelques détails rendront la visite plus riche et plus sûre. Préparation : consultez la météo, vérifiez si les sentiers sont praticables en cette saison et l'état actuel des itinéraires le long de la rivière. Équipement : des chaussures de marche solides et confortables, assez d'eau potable et une protection solaire. Respect : voyagez le cœur ouvert et avec égard pour la communauté locale, les forêts et les niches rocheuses uniques.",
+        "Enrichissez encore le voyage. Utilisez les liens du site pour associer une promenade à Aglen aux itinéraires panoramiques voisins, aux monastères rupestres autour de Karlukovo, aux maisons d'hôtes accueillantes et aux bonnes tables de la région de Lukovit.",
+      ],
+    },
+    es: {
+      intro: "Bienvenido a su guía hacia uno de los rincones más secretos y hermosos de los Prebalcanes. Conecta lo que busca — senderos salvajes, pesca fluvial, cuevas misteriosas o lugares acogedores donde descansar y comer bien — con la verdadera magia del río Vit y su cañón.",
+      bodies: [
+        "Esta guía entreteje el gran cañón, las formaciones rocosas, la memoria de siglos y los consejos prácticos que necesita cualquier viajero de hoy. La historia de Aglen se despliega capa a capa — desde el fondo marino primigenio que esculpió las paredes calizas de hoy, pasando por los primeros pobladores de las orillas, hasta las leyendas vivas que cuentan sus habitantes. Elija su inspiración y siga las huellas del tiempo.",
+        "Unos pocos detalles harán la visita más plena y más segura. Preparación: consulte el pronóstico, si los senderos son transitables en esta temporada y el estado actual de las rutas junto al río. Equipo: calzado de marcha resistente y cómodo, agua suficiente y protección solar. Respeto: viaje con el corazón abierto y con respeto por la comunidad local, los bosques y los singulares abrigos rocosos.",
+        "Haga el viaje aún más rico. Use los enlaces del sitio para combinar un paseo por Aglen con rutas panorámicas cercanas, los monasterios rupestres de Karlukovo, casas de huéspedes acogedoras y lugares auténticos para comer en la zona de Lukovit.",
+      ],
+    },
+    it: {
+      intro: "Benvenuti nella vostra guida a uno degli angoli più segreti e belli dei Prebalcani. Collega ciò che cercate — sentieri selvaggi, pesca nel fiume, grotte misteriose o luoghi accoglienti dove riposare e mangiare bene — alla vera magia del fiume Vit e del suo canyon.",
+      bodies: [
+        "Questa guida intreccia il grande canyon, le formazioni rocciose, la memoria dei secoli e i consigli pratici di cui ha bisogno ogni viaggiatore di oggi. La storia di Aglen si dispiega strato dopo strato — dal fondale marino primordiale che ha scolpito le odierne pareti calcaree, ai primi abitanti lungo le rive, fino alle leggende vive raccontate dalla gente del posto. Scegliete la vostra ispirazione e seguite le orme del tempo.",
+        "Pochi accorgimenti renderanno la visita più piena e più sicura. Preparazione: controllate le previsioni, se i sentieri sono percorribili in questa stagione e lo stato attuale dei percorsi lungo il fiume. Attrezzatura: scarpe da trekking solide e comode, acqua a sufficienza e protezione solare. Rispetto: viaggiate a cuore aperto e con rispetto per la comunità locale, i boschi e le singolari nicchie di roccia.",
+        "Rendete il viaggio ancora più ricco. Usate i collegamenti del sito per unire una passeggiata ad Aglen a itinerari panoramici vicini, ai monasteri rupestri intorno a Karlukovo, ad accoglienti case per ospiti e a locali autentici nella zona di Lukovit.",
+      ],
+    },
+    ro: {
+      intro: "Bine ați venit în ghidul dumneavoastră către unul dintre cele mai tainice și frumoase colțuri ale Prebalcanilor. Leagă ceea ce căutați — poteci sălbatice, pescuit la râu, peșteri misterioase sau locuri primitoare unde să vă odihniți și să mâncați bine — de magia adevărată a râului Vit și a canionului său.",
+      bodies: [
+        "Acest ghid împletește marele canion, formele de stâncă, memoria secolelor și sfaturile practice de care are nevoie orice călător de azi. Povestea Aglenului se desfășoară strat cu strat — de la fundul de mare primordial care a sculptat pereții de calcar de astăzi, la primii locuitori de pe maluri, până la legendele vii povestite de oamenii de aici. Alegeți-vă inspirația și mergeți pe urmele timpului.",
+        "Câteva detalii vor face vizita mai bogată și mai sigură. Pregătire: verificați prognoza, dacă potecile sunt practicabile în acest sezon și starea actuală a traseelor de pe malul râului. Echipament: încălțăminte de drumeție solidă și comodă, apă suficientă și protecție solară. Respect: călătoriți cu inima deschisă și cu respect pentru comunitatea locală, păduri și nișele de stâncă unice.",
+        "Faceți călătoria și mai bogată. Folosiți legăturile din site pentru a îmbina o plimbare prin Aglen cu trasee panoramice din apropiere, mănăstirile rupestre din jurul Karlukovo, pensiuni primitoare și locuri autentice unde să mâncați în zona Lukovit.",
+      ],
+    },
+    tr: {
+      intro: "Ön Balkanlar'ın en gizli ve en güzel köşelerinden birine açılan rehberinize hoş geldiniz. Aradığınız her şeyi — vahşi yürüyüş patikaları, nehirde balık tutma, gizemli mağaralar ya da dinlenip güzel yemek yiyebileceğiniz sıcak mekânlar — Vit Nehri'nin ve kanyonunun gerçek büyüsüyle buluşturur.",
+      bodies: [
+        "Bu rehber görkemli kanyonu, kaya oluşumlarını, yüzyılların belleğini ve bugünün gezgininin ihtiyaç duyduğu pratik önerileri bir araya dokur. Aglen'in hikâyesi katman katman açılır — bugünkü kireçtaşı duvarları yontan ilkçağ deniz tabanından, kıyılardaki ilk yerleşimcilere, buranın insanlarının hâlâ anlattığı efsanelere kadar. İlhamınızı seçin ve zamanın izinden gidin.",
+        "Birkaç ayrıntı ziyareti hem daha doyurucu hem de daha güvenli kılar. Hazırlık: hava durumunu, patikaların bu mevsimde geçilebilirliğini ve nehir kıyısındaki rotaların güncel durumunu kontrol edin. Donanım: sağlam ve rahat yürüyüş ayakkabıları seçin, yeterli içme suyu ve güneş koruması taşıyın. Saygı: açık bir yürekle ve yerel topluluğa, ormanlara ve eşsiz kaya nişlerine saygıyla yolculuk edin.",
+        "Yolculuğu daha da zenginleştirin. Sitedeki bağlantıları kullanarak Aglen'deki bir yürüyüşü yakındaki manzaralı rotalarla, Karlukovo çevresindeki kaya manastırlarıyla, sıcak konukevleriyle ve Lukovit yöresinin özgün yemek mekânlarıyla birleştirin.",
+      ],
+    },
+    el: {
+      intro: "Καλώς ήρθατε στον οδηγό σας για μια από τις πιο κρυφές και όμορφες γωνιές των Προβαλκανίων. Συνδέει αυτό που αναζητάτε — άγρια μονοπάτια, ψάρεμα στο ποτάμι, μυστηριώδη σπήλαια ή ζεστά μέρη για ξεκούραση και καλό φαγητό — με την αληθινή μαγεία του ποταμού Βιτ και του φαραγγιού του.",
+      bodies: [
+        "Ο οδηγός αυτός υφαίνει μαζί το μεγαλειώδες φαράγγι, τους βραχώδεις σχηματισμούς, τη μνήμη των αιώνων και τις πρακτικές συμβουλές που χρειάζεται κάθε σημερινός ταξιδιώτης. Η ιστορία του Άγκλεν ξεδιπλώνεται στρώμα προς στρώμα — από τον αρχέγονο βυθό που λάξευσε τα σημερινά ασβεστολιθικά τοιχώματα, στους πρώτους κατοίκους των όχθεων, ως τους ζωντανούς θρύλους που αφηγούνται οι ντόπιοι. Διαλέξτε την έμπνευσή σας και ακολουθήστε τα βήματα του χρόνου.",
+        "Λίγες λεπτομέρειες θα κάνουν την επίσκεψη πληρέστερη και ασφαλέστερη. Προετοιμασία: δείτε την πρόγνωση, αν τα μονοπάτια είναι βατά αυτή την εποχή και την τρέχουσα κατάσταση των διαδρομών κατά μήκος του ποταμού. Εξοπλισμός: στέρεα και άνετα παπούτσια πεζοπορίας, αρκετό πόσιμο νερό και αντηλιακή προστασία. Σεβασμός: ταξιδέψτε με ανοιχτή καρδιά και σεβασμό προς την τοπική κοινότητα, τα δάση και τις μοναδικές βραχώδεις κόγχες.",
+        "Κάντε το ταξίδι ακόμη πιο πλούσιο. Χρησιμοποιήστε τους συνδέσμους του ιστότοπου για να συνδυάσετε μια βόλτα στο Άγκλεν με κοντινές πανοραμικές διαδρομές, τα βραχώδη μοναστήρια γύρω από το Καρλούκοβο, φιλόξενους ξενώνες και αυθεντικά μέρη για φαγητό στην περιοχή του Λούκοβιτ.",
+      ],
+    },
+    ru: {
+      intro: "Добро пожаловать в ваш путеводитель по одному из самых сокровенных и красивых уголков Предбалкан. Он связывает то, что вы ищете — дикие тропы, рыбалку на реке, таинственные пещеры или уютные места для отдыха и вкусной еды, — с настоящей магией реки Вит и её каньона.",
+      bodies: [
+        "Этот путеводитель сплетает воедино величественный каньон, скальные формы, память веков и практические советы, нужные современному путешественнику. История Аглена разворачивается слой за слоем — от древнего морского дна, вырезавшего нынешние известняковые стены, через первых поселенцев на берегах, до живых легенд и рассказов местных жителей. Выберите своё вдохновение и идите по следам времени.",
+        "Несколько мелочей сделают поездку и полнее, и безопаснее. Подготовка: посмотрите прогноз, проходимы ли тропы в этот сезон и в каком состоянии маршруты вдоль реки. Снаряжение: крепкая и удобная обувь для ходьбы, достаточно питьевой воды и защита от солнца. Уважение: путешествуйте с открытым сердцем и уважением к местным жителям, лесам и неповторимым скальным нишам.",
+        "Сделайте поездку ещё богаче. Пользуйтесь ссылками на сайте, чтобы соединить прогулку по Аглену с ближними живописными маршрутами, скальными монастырями вокруг Карлуково, уютными гостевыми домами и настоящими местами, где вкусно кормят, в районе Луковита.",
+      ],
+    },
+    ja: {
+      intro: "前バルカンでもっとも人知れず美しい一角への案内へようこそ。荒々しい山道、川釣り、神秘的な洞窟、あるいはくつろいで美味しい食事ができる居心地のよい場所——あなたが探しているものを、ヴィト川とその渓谷の本当の魅力へとつなぎます。",
+      bodies: [
+        "この案内は、雄大な渓谷、奇岩、幾世紀もの記憶、そして現代の旅人に必要な実際的な助言を一つに織り上げます。アグレンの物語は層をなして開かれます——今日の石灰岩の壁を削り出した太古の海底から、岸辺に暮らした最初の人々、そして今も語り継がれる土地の伝説まで。心惹かれるものを選び、時の足跡をたどってください。",
+        "いくつかの心づもりが、訪れる時間をより豊かに、より安全にします。準備——天気予報、その季節に道が通れるかどうか、川沿いのルートの現在の状態を確かめてください。装備——しっかりした歩きやすい靴、十分な飲み水、日よけを。敬意——地元の人々、森、そしてこの土地ならではの岩陰に敬意を持って旅をしてください。",
+        "旅をさらに豊かにしてください。サイト内のリンクをたどれば、アグレンの散策に、近隣の景勝ルート、カルルコヴォ周辺の岩窟修道院、居心地のよいゲストハウス、ルコヴィト界隈の素朴な食事どころを組み合わせられます。",
+      ],
+    },
+    sr: {
+      intro: "Добро дошли у ваш водич ка једном од најскривенијих и најлепших кутака Предбалкана. Повезује оно што тражите — дивље пешачке стазе, риболов на реци, тајанствене пећине или топла места за одмор и добар оброк — са правом магијом реке Вит и њеног кањона.",
+      bodies: [
+        "Овај водич преплиће величанствени кањон, стеновите облике, памћење векова и практичне савете који су потребни сваком данашњем путнику. Прича Аглена отвара се слој по слој — од прадавног морског дна које је исклесало данашње кречњачке зидове, преко првих становника на обалама, до живих легенди које причају мештани. Изаберите своје надахнуће и пођите трагом времена.",
+        "Неколико ситница учиниће посету и пунијом и безбеднијом. Припрема: проверите прогнозу, да ли су стазе проходне у овом годишњем добу и тренутно стање рута уз реку. Опрема: чврста и удобна обућа за ходање, довољно питке воде и заштита од сунца. Поштовање: путујте отвореног срца и с поштовањем према мештанима, шумама и јединственим стеновитим нишама.",
+        "Учините путовање још богатијим. Користите везе на сајту да шетњу кроз Аглен спојите с оближњим живописним рутама, стеновитим манастирима око Карлукова, гостољубивим кућама за госте и аутентичним местима за јело у околини Луковита.",
+      ],
+    },
+    zh: {
+      intro: "欢迎来到这份指南，走进前巴尔干最幽秘、最美丽的一角。无论你在寻找野径徒步、河中垂钓、神秘洞穴，还是可以歇脚与好好吃一顿的温暖去处，它都会把你带向维特河与河谷的真正魅力。",
+      bodies: [
+        "这份指南将壮阔的峡谷、奇特的岩形、数百年的记忆，与今天的旅人所需要的实用建议编织在一起。阿格伦的故事层层展开——从雕刻出今日石灰岩壁的远古海床，到最早定居河岸的先民，再到当地人至今口耳相传的活的传说。选择属于你的灵感，循着时间的足迹前行。",
+        "几个细节会让这趟行程更充实，也更安全。准备：查看天气预报、本季步道是否通行，以及河边路线的当前状况。装备：结实舒适的徒步鞋，足量饮用水与防晒。尊重：怀着开放的心，尊重当地居民、林地，以及这里独有的岩壁凹龛。",
+        "让旅程更加丰盛。借助站内的链接，把阿格伦的漫步与邻近的景致路线、卡尔卢科沃一带的岩窟修道院、温馨的家庭旅馆，以及卢科维特周边地道的餐馆串联起来。",
+      ],
+    },
+    hu: {
+      intro: "Üdvözöljük az Előbalkán egyik legrejtettebb és legszebb zugába vezető kalauzában. Összeköti azt, amit keres — vadregényes ösvényeket, folyami horgászatot, titokzatos barlangokat vagy meghitt helyeket a pihenéshez és a jó ételhez — a Vit folyó és kanyonja igazi varázsával.",
+      bodies: [
+        "Ez a kalauz egybeszövi a hatalmas kanyont, a sziklaalakzatokat, az évszázadok emlékezetét és azokat a gyakorlati tanácsokat, amelyekre a mai utazónak szüksége van. Aglen története rétegről rétegre tárul fel — az ősi tengerfenéktől, amely a mai mészkőfalakat formálta, a partok első lakóin át a helyiek máig élő legendáiig. Válassza ki a maga ihletét, és induljon az idő nyomában.",
+        "Néhány apróság teljesebbé és biztonságosabbá teszi a látogatást. Felkészülés: nézze meg az időjárás-előrejelzést, hogy az ösvények járhatók-e ebben az évszakban, és milyen a folyó menti útvonalak jelenlegi állapota. Felszerelés: erős, kényelmes túracipő, elegendő ivóvíz és napvédelem. Tisztelet: nyitott szívvel utazzon, tisztelettel a helyi közösség, az erdők és az egyedülálló sziklafülkék iránt.",
+        "Tegye még gazdagabbá az utat. Használja az oldal belső hivatkozásait, hogy egy agleni sétát a közeli panorámaútvonalakkal, a Karlukovo környéki sziklakolostorokkal, vendégszerető panziókkal és a Lukovit környéki autentikus étkezőhelyekkel kösse össze.",
+      ],
+    },
+  },
+};
+
 function buildLandingPage(lang: LanguageCode, page: LandingPageMaster): LandingPage {
   const copy = contentByLanguage[lang];
   const text = landingText[lang];
@@ -764,7 +901,13 @@ function buildLandingPage(lang: LanguageCode, page: LandingPageMaster): LandingP
   const title = `${h1}${text.titleSeparator}${copy.brand.name}`;
   const metaDescription = `${h1}: ${copy.landmarks.text}`;
   const intro = `${h1} — ${location}. ${copy.hub.text}`;
-  const override = guideOverrides[page.id]?.[lang] ?? buildRegionalGuideOverride(page.id, lang);
+  // Authored prose keeps the generated section headings, so a page that has been
+  // written by hand still sits in the same three-part shape as the other twenty-six.
+  const written = authoredProse[page.id]?.[lang];
+  const authoredOverride: LandingPageOverride | undefined = written
+    ? { intro: written.intro, sections: written.bodies.map((body, index) => ({ heading: text.sectionHeadings[index], body })) }
+    : undefined;
+  const override = guideOverrides[page.id]?.[lang] ?? authoredOverride ?? buildRegionalGuideOverride(page.id, lang);
 
   const generated: LandingPage = {
     id: page.id,
@@ -799,9 +942,18 @@ function buildLandingPage(lang: LanguageCode, page: LandingPageMaster): LandingP
     return generated;
   }
 
+  // Field by field rather than a spread: an override that omits a field must
+  // fall through to the generated value, not overwrite it with `undefined`.
   return {
     ...generated,
-    ...override,
+    title: override.title ?? generated.title,
+    metaDescription: override.metaDescription ?? generated.metaDescription,
+    h1: override.h1 ?? generated.h1,
+    intro: override.intro ?? generated.intro,
+    imageAlt: override.imageAlt ?? generated.imageAlt,
+    ctaLabel: override.ctaLabel ?? generated.ctaLabel,
+    sections: override.sections ?? generated.sections,
+    faqs: override.faqs ?? generated.faqs,
     keywords: override.keywords ?? generated.keywords,
     secondaryKeywords: override.secondaryKeywords ?? generated.secondaryKeywords,
     bulgarianKeywords: lang === "bg" ? [...generated.bulgarianKeywords, ...(override.keywords ?? [])] : generated.bulgarianKeywords,
