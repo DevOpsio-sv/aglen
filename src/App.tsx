@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type MouseEvent, type ReactNode, type SyntheticEvent } from "react";
 import { contentByLanguage, languages, type Accommodation, type LanguageCode, type PlaceId, type TimelineItem } from "./content";
-import { getLandingPage, getLandingPages, isLandingPageId, transportCopy, transportLinks } from "./landingPages";
+import { getLandingPage, getLandingPages, isLandingPageId, routesCopy, transportCopy, transportLinks } from "./landingPages";
 import { placeExperienceLinks, type PlaceExperienceLink } from "./placeLinks";
 import { buildAspectPath, buildBusinessPath, buildGuidePath, buildPlacePath, buildRoutePath, buildSourcePath, getStaticRoute, resolveRoute, type RouteId, type ResolvedRoute } from "./routes";
 import { guideByLegacyRoute, guides, localizeGuide } from "./guides";
@@ -31,6 +31,42 @@ const fallbackImage = "/assets/aglen-hero-river-canyon.webp";
 // place you could not click. Linked here rather than in the locale strings:
 // `sourceNotes` is also read by the AI export and the trust pages, where a bare
 // domain is what those surfaces want. The render decides how to show it.
+/**
+ * The three walks, for a landing page that declares `interactive: "routes"`.
+ *
+ * A list, not a filter. Three options do not need filtering — a control that
+ * hides two of three items costs a click and a piece of state to save nobody any
+ * reading. The colour dot, the time and the difficulty are the filter: a visitor
+ * finds their row in a glance and the other two stay available.
+ */
+function RoutePicker({ language }: { language: LanguageCode }) {
+  const copy = routesCopy[language];
+  return (
+    <section className="seo-routes" id="routes" aria-labelledby="routes-title">
+      <h2 id="routes-title">{copy.title}</h2>
+      <p className="seo-routes-lede">{copy.lede}</p>
+      <ol className="seo-routes-list">
+        {copy.routes.map((route) => (
+          <li className="seo-route" key={route.name}>
+            <span className="seo-route-dot" aria-hidden="true">
+              {route.dot}
+            </span>
+            <div>
+              <h3>{route.name}</h3>
+              <p className="seo-route-meta">{route.meta}</p>
+              <ol className="seo-route-stops">
+                {route.stops.map((stop) => (
+                  <li key={stop}>{stop}</li>
+                ))}
+              </ol>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
 /**
  * Map and transport, for a landing page that declares `interactive: "transport"`.
  *
@@ -916,9 +952,18 @@ export function App() {
                   <a className="button primary" href={routeHref("contact")} onClick={(event) => handleRouteClick(event, "contact")}>
                     {currentLandingPage.ctaLabel}
                   </a>
-                  <a className="button ghost" href={routeHref("routeMap")} onClick={(event) => handleRouteClick(event, "routeMap")}>
-                    {localizedUi.landing.routeMap}
-                  </a>
+                  {/* On the route map itself the button that says "see the route
+                      map" pointed at the page you were already on. Here it takes
+                      you down to the routes instead. */}
+                  {currentLandingPage.interactive === "routes" ? (
+                    <a className="button ghost" href="#routes">
+                      {routesCopy[language].seeRoutes} ↓
+                    </a>
+                  ) : (
+                    <a className="button ghost" href={routeHref("routeMap")} onClick={(event) => handleRouteClick(event, "routeMap")}>
+                      {localizedUi.landing.routeMap}
+                    </a>
+                  )}
                 </div>
               </div>
               <img
@@ -932,6 +977,7 @@ export function App() {
             </div>
 
             {currentLandingPage.interactive === "transport" && <TransportPanel language={language} />}
+            {currentLandingPage.interactive === "routes" && <RoutePicker language={language} />}
 
             <div className="seo-section-grid">
               {currentLandingPage.sections.map((section) => (

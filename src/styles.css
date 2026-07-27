@@ -1186,14 +1186,68 @@ h3 {
 .seo-landing-hero p {
   max-width: 760px;
   color: rgba(7, 26, 20, 0.78);
-  font-size: 1.1rem;
-  line-height: 1.6;
+  font-size: 1.06rem;
+  line-height: 1.55;
 }
 
 /* The three cards under the hero: a heading that touches its own paragraph reads
    as one block of text rather than as a title over an answer. */
 .seo-section-card h2 { margin-bottom: 0.8rem; }
-.seo-section-card p { margin: 0; line-height: 1.65; }
+.seo-section-card p { margin: 0; }
+
+/* ── The three walks (routeMap) ────────────────────────────
+   An ordered list of routes, each an ordered list of stops. The markup is the
+   meaning: a walk IS a sequence, so <ol> is what it is, and a screen reader
+   announces the stops in order without a single aria attribute. */
+.seo-routes {
+  display: grid;
+  gap: var(--space-box-gap);
+  border: 1px solid rgba(15, 47, 36, 0.14);
+  border-radius: 20px;
+  padding: var(--space-box);
+  background: rgba(255, 255, 255, 0.55);
+  scroll-margin-top: 7.5rem; /* clears the fixed header when #routes is jumped to */
+}
+.seo-routes > h2 {
+  margin: 0;
+  color: var(--forest-deep);
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: var(--leading-tight);
+}
+.seo-routes-lede { margin: 0; color: rgba(7, 26, 20, 0.72); line-height: 1.55; }
+.seo-routes-list { list-style: none; margin: 0.4rem 0 0; padding: 0; display: grid; gap: 0.8rem; }
+.seo-route {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  gap: 0.9rem;
+  align-items: start;
+  border: 1px solid rgba(15, 47, 36, 0.12);
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+  background: rgba(247, 242, 231, 0.7);
+}
+.seo-route-dot { font-size: 1.15rem; line-height: 1.4; }
+.seo-route h3 {
+  margin: 0 0 0.3rem;
+  color: var(--forest-deep);
+  font-family: var(--serif);
+  font-size: 1.12rem;
+  font-weight: 800;
+  line-height: var(--leading-tight);
+}
+.seo-route-meta {
+  margin: 0 0 0.6rem;
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+/* The stops read as a route, so they are joined by arrows rather than numbered. */
+.seo-route-stops { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.3rem 0.5rem; line-height: 1.5; }
+.seo-route-stops li { color: var(--ink); }
+.seo-route-stops li + li::before { content: "➔ "; color: var(--gold-dark); }
 
 /* ── Map and transport (howToGet) ──────────────────────────
    Native <details>, the same control the FAQ block already uses: no script, it
@@ -1215,7 +1269,7 @@ h3 {
   font-weight: 800;
   line-height: var(--leading-tight);
 }
-.seo-transport-lede { margin: 0; color: rgba(7, 26, 20, 0.78); line-height: 1.65; }
+.seo-transport-lede { margin: 0; color: rgba(7, 26, 20, 0.78); line-height: 1.55; }
 .seo-transport-map { justify-self: start; margin: 0.2rem 0 0.4rem; }
 .seo-transport details {
   border: 1px solid rgba(15, 47, 36, 0.12);
@@ -1244,14 +1298,14 @@ h3 {
 .seo-transport summary:focus-visible { outline: 2px solid var(--river); outline-offset: 2px; }
 .seo-transport-body { padding: 0 1.1rem 1.1rem; }
 /* Tighter than prose spacing: this is a compact panel, not an article. */
-.seo-transport-body p { margin: 0 0 0.9rem; line-height: 1.65; }
+.seo-transport-body p { margin: 0 0 0.9rem; line-height: 1.55; }
 .seo-transport-body p:last-child { margin-bottom: 0; }
 .seo-transport-body ul {
   margin: 0 0 var(--space-para);
   padding-left: 1.25rem;
   display: grid;
   gap: var(--space-item);
-  line-height: 1.65;
+  line-height: 1.55;
 }
 .seo-transport-body a { color: var(--river); font-weight: 600; }
 
@@ -1325,7 +1379,9 @@ h3 {
 .seo-section-card p,
 .seo-faq p {
   color: rgba(7, 26, 20, 0.72);
-  line-height: 1.7;
+  /* 1.7 is article leading. These are dense practical cards read in a glance,
+     and at that width the wide gaps made four sentences look like a wall. */
+  line-height: 1.55;
 }
 
 .seo-faq-links {
@@ -2992,7 +3048,7 @@ h3 {
   padding: 0.4rem var(--details-pad) clamp(1.4rem, 4vw, 2.2rem);
   color: var(--ink);
 }
-.event-details-body p { margin: 0.7rem 0; line-height: 1.65; }
+.event-details-body p { margin: 0.7rem 0; line-height: 1.55; }
 .event-details-lead { font-size: 1.12rem; font-weight: 600; color: var(--forest); }
 .event-details-section.is-level-1 { margin-top: 1.9rem; }
 .event-details-section.is-level-1 > h3 {
@@ -3736,7 +3792,7 @@ h3 {
   background: #fff;
 }
 .dispute-reading h3 { margin: 0 0 0.45rem; font-family: var(--serif); font-size: 1.1rem; color: var(--ink); }
-.dispute-reading p { margin: 0; line-height: 1.65; }
+.dispute-reading p { margin: 0; line-height: 1.55; }
 /* How well one reading is itself held. Identical treatment on every card — the
    difference between the readings must come from the words, never the styling. */
 .dispute-strength { margin: 0.45rem 0 0 !important; }
@@ -3750,7 +3806,7 @@ h3 {
 .source-entry--verified { border-left-color: var(--river); }
 .source-entry--reported { border-left-color: var(--gold); }
 .source-entry--unverified { border-left-color: var(--earth); }
-.source-citation { margin: 0; line-height: 1.65; }
+.source-citation { margin: 0; line-height: 1.55; }
 .source-citation a { color: var(--river); font-weight: 600; }
 .source-verification { font-size: 0.82rem; font-weight: 700; color: var(--muted); white-space: nowrap; }
 .source-verification[data-verification="unverified"] { color: var(--earth); }
@@ -3790,7 +3846,7 @@ h3 {
 .provenance-ctas { margin: 1.2rem 0 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.4rem; }
 
 .aspect-link-list { list-style: none; margin: 0.4rem 0 0; padding: 0; display: grid; gap: 0.6rem; }
-.aspect-link-list li { line-height: 1.65; }
+.aspect-link-list li { line-height: 1.55; }
 .aspect-link-list span { color: var(--muted); }
 
 .ledger-entry { border-top: 1px solid var(--border); padding-top: 1.3rem; }

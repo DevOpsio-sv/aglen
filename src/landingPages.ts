@@ -61,7 +61,7 @@ export type LandingPage = {
   sections: LandingPageSection[];
   faqs: LandingPageFaq[];
   internalLinks: Array<{ label: string; routeId: LandingPageId | string }>;
-  interactive?: "transport";
+  interactive?: "transport" | "routes";
 };
 
 type LandingPageMaster = {
@@ -72,7 +72,7 @@ type LandingPageMaster = {
   schemaType: "Article" | "TravelGuide";
   internalLinkRouteIds: Array<LandingPageId | string>;
   /** An interactive block this page carries — declared in data, not by id in JSX. */
-  interactive?: "transport";
+  interactive?: "transport" | "routes";
 };
 
 /**
@@ -82,6 +82,7 @@ type LandingPageMaster = {
  * omitted falls through to the generated page.
  */
 type LandingPageOverride = {
+  category?: string;
   title?: string;
   metaDescription?: string;
   h1?: string;
@@ -108,7 +109,7 @@ export const landingPageMaster: LandingPageMaster[] = [
   { id: "familyTrip", slug: "family-trip-aglen", image: images.pool, imageAltKey: "pool", schemaType: "TravelGuide", internalLinkRouteIds: ["thingsToDo", "weekendInAglen", "accommodationNearAglen"] },
   { id: "campingNearAglen", slug: "camping-near-aglen", image: images.aerial, imageAltKey: "aerial", schemaType: "Article", internalLinkRouteIds: ["accommodationNearAglen", "natureTourism", "vitRiver"] },
   { id: "weekendInAglen", slug: "weekend-in-aglen", image: images.hero, imageAltKey: "hero", schemaType: "TravelGuide", internalLinkRouteIds: ["aglenFromSofia", "howToGet", "nearby"] },
-  { id: "routeMap", slug: "aglen-route-map", image: images.aerial, imageAltKey: "aerial", schemaType: "TravelGuide", internalLinkRouteIds: ["visitAglen", "attractions", "nearby"] },
+  { id: "routeMap", slug: "aglen-route-map", image: images.aerial, imageAltKey: "aerial", schemaType: "TravelGuide", internalLinkRouteIds: ["visitAglen", "attractions", "nearby"], interactive: "routes" },
   { id: "bestTime", slug: "best-time-to-visit-aglen", image: images.aerial, imageAltKey: "aerial", schemaType: "Article", internalLinkRouteIds: ["seasonal", "weekendInAglen", "natureTourism"] },
   { id: "howToGet", slug: "how-to-get-to-aglen", image: images.aerial, imageAltKey: "aerial", schemaType: "Article", internalLinkRouteIds: ["aglenFromSofia", "lukovitGuide", "routeMap"], interactive: "transport" },
   { id: "aglenFromSofia", slug: "aglen-from-sofia", image: images.hero, imageAltKey: "hero", schemaType: "TravelGuide", internalLinkRouteIds: ["weekendInAglen", "howToGet", "nearby"] },
@@ -777,12 +778,17 @@ function routeLabel(lang: LanguageCode, routeId: LandingPageId | string): string
  * rule 43 does not apply and every language carries its own text.
  */
 type AuthoredProse = {
+  /** Replaces the shared category kicker over the <h1>. */
+  kicker?: string;
   /** Replaces the generated <h1>. Omit to keep the page's routine name. */
   h1?: string;
   intro: string;
   /** Replaces the shared section headings. Omit to keep the locale's own three. */
   headings?: [string, string, string];
-  bodies: [string, string, string];
+  /** Replaces the generated CTA label. */
+  cta?: string;
+  /** Omit to leave the three generated cards alone and rewrite only the hero. */
+  bodies?: [string, string, string];
 };
 
 /**
@@ -1038,10 +1044,621 @@ export const transportCopy: Record<LanguageCode, TransportCopy> = {
   }
 };
 
+export type RouteChoice = { dot: string; name: string; meta: string; stops: string[] };
+export type RoutesCopy = { title: string; lede: string; seeRoutes: string; routes: RouteChoice[] };
+
+/** The three walks, per language. Times are stated as approximate, and are. */
+export const routesCopy: Record<LanguageCode, RoutesCopy> = {
+  bg: {
+    title: "Трите маршрута",
+    lede: "Времената са ориентировъчни и са за спокойно ходене със спирания за снимки. Проходимостта се мени със сезона — питайте в селото, преди да тръгнете към по-отдалечените скали.",
+    seeRoutes: "Виж маршрутите",
+    routes: [
+      {
+        dot: "🟢",
+        name: "Кратък разходков маршрут",
+        meta: "Около 1 час · Лесен · Подходящ за деца и възрастни",
+        stops: [
+          "Центърът на селото",
+          "Църквата „Св. Архангел Михаил“",
+          "Брегът на река Вит"
+        ]
+      },
+      {
+        dot: "🟡",
+        name: "Каньонът и скалните феномени",
+        meta: "Около 2,5 часа · Умерен · С денивелация",
+        stops: [
+          "Речният бряг",
+          "Скалната арка „Дупката“",
+          "Панорамните скални венци"
+        ]
+      },
+      {
+        dot: "🔵",
+        name: "Фотографски и приключенски маршрут",
+        meta: "Около 3–4 часа · Разширен",
+        stops: [
+          "Каньонът на Вит",
+          "Пещерите над Ъглен",
+          "Преход към съседните карстови плата"
+        ]
+      }
+    ]
+  },
+  en: {
+    title: "The three routes",
+    lede: "Times are approximate and assume an unhurried pace with stops for photographs. How passable the paths are changes with the season — ask in the village before setting off for the more distant rocks.",
+    seeRoutes: "See the routes",
+    routes: [
+      {
+        dot: "🟢",
+        name: "The short village walk",
+        meta: "About 1 hour · Easy · Suits children and older walkers",
+        stops: [
+          "The village centre",
+          "The church of St Archangel Michael",
+          "The bank of the Vit"
+        ]
+      },
+      {
+        dot: "🟡",
+        name: "The canyon and the rock formations",
+        meta: "About 2.5 hours · Moderate · Some climbing",
+        stops: [
+          "The riverbank",
+          "The rock arch Dupkata",
+          "The panoramic cliffs"
+        ]
+      },
+      {
+        dot: "🔵",
+        name: "The photography and adventure route",
+        meta: "About 3–4 hours · Demanding",
+        stops: [
+          "The canyon of the Vit",
+          "The caves above Aglen",
+          "Onward to the neighbouring karst plateaus"
+        ]
+      }
+    ]
+  },
+  de: {
+    title: "Die drei Routen",
+    lede: "Die Zeiten sind Richtwerte und gehen von gemächlichem Gehen mit Fotopausen aus. Wie begehbar die Pfade sind, ändert sich mit der Jahreszeit — fragen Sie im Dorf, bevor Sie zu den entlegeneren Felsen aufbrechen.",
+    seeRoutes: "Routen ansehen",
+    routes: [
+      {
+        dot: "🟢",
+        name: "Der kurze Dorfspaziergang",
+        meta: "Etwa 1 Stunde · Leicht · Für Kinder und ältere Gäste",
+        stops: [
+          "Der Ortskern",
+          "Die Kirche St. Erzengel Michael",
+          "Das Ufer des Vit"
+        ]
+      },
+      {
+        dot: "🟡",
+        name: "Die Schlucht und die Felsformationen",
+        meta: "Etwa 2,5 Stunden · Mittel · Mit Steigungen",
+        stops: [
+          "Das Flussufer",
+          "Der Felsbogen Dupkata",
+          "Die Aussichtsfelsen"
+        ]
+      },
+      {
+        dot: "🔵",
+        name: "Foto- und Abenteuerroute",
+        meta: "Etwa 3–4 Stunden · Anspruchsvoll",
+        stops: [
+          "Die Schlucht des Vit",
+          "Die Höhlen über Aglen",
+          "Weiter zu den benachbarten Karstplateaus"
+        ]
+      }
+    ]
+  },
+  fr: {
+    title: "Les trois itinéraires",
+    lede: "Les durées sont indicatives, pour une marche tranquille avec des arrêts photo. La praticabilité des sentiers varie selon la saison : renseignez-vous au village avant de partir vers les rochers les plus éloignés.",
+    seeRoutes: "Voir les itinéraires",
+    routes: [
+      {
+        dot: "🟢",
+        name: "La courte promenade du village",
+        meta: "Environ 1 heure · Facile · Convient aux enfants et aux aînés",
+        stops: [
+          "Le centre du village",
+          "L'église Saint-Archange-Michel",
+          "La berge de la Vit"
+        ]
+      },
+      {
+        dot: "🟡",
+        name: "Le canyon et les formations rocheuses",
+        meta: "Environ 2 h 30 · Moyen · Avec dénivelé",
+        stops: [
+          "La berge",
+          "L'arche rocheuse Dupkata",
+          "Les corniches panoramiques"
+        ]
+      },
+      {
+        dot: "🔵",
+        name: "Itinéraire photo et aventure",
+        meta: "Environ 3 à 4 heures · Exigeant",
+        stops: [
+          "Le canyon de la Vit",
+          "Les grottes au-dessus d'Aglen",
+          "Vers les plateaux karstiques voisins"
+        ]
+      }
+    ]
+  },
+  es: {
+    title: "Las tres rutas",
+    lede: "Los tiempos son orientativos y suponen un paso tranquilo con paradas para fotografiar. La transitabilidad cambia con la estación: pregunte en el pueblo antes de ir hacia las rocas más lejanas.",
+    seeRoutes: "Ver las rutas",
+    routes: [
+      {
+        dot: "🟢",
+        name: "El paseo corto por el pueblo",
+        meta: "Alrededor de 1 hora · Fácil · Apto para niños y mayores",
+        stops: [
+          "El centro del pueblo",
+          "La iglesia de San Arcángel Miguel",
+          "La orilla del Vit"
+        ]
+      },
+      {
+        dot: "🟡",
+        name: "El cañón y las formaciones rocosas",
+        meta: "Alrededor de 2,5 horas · Moderada · Con desnivel",
+        stops: [
+          "La ribera",
+          "El arco de roca Dupkata",
+          "Los cortados panorámicos"
+        ]
+      },
+      {
+        dot: "🔵",
+        name: "Ruta fotográfica y de aventura",
+        meta: "Alrededor de 3–4 horas · Exigente",
+        stops: [
+          "El cañón del Vit",
+          "Las cuevas sobre Aglen",
+          "Hacia las mesetas kársticas vecinas"
+        ]
+      }
+    ]
+  },
+  it: {
+    title: "I tre percorsi",
+    lede: "I tempi sono indicativi e presuppongono un passo tranquillo con soste per le fotografie. La percorribilità cambia con la stagione: chiedete in paese prima di dirigervi verso le rocce più lontane.",
+    seeRoutes: "Vedi i percorsi",
+    routes: [
+      {
+        dot: "🟢",
+        name: "La breve passeggiata nel villaggio",
+        meta: "Circa 1 ora · Facile · Adatta a bambini e anziani",
+        stops: [
+          "Il centro del villaggio",
+          "La chiesa di San Michele Arcangelo",
+          "La riva del Vit"
+        ]
+      },
+      {
+        dot: "🟡",
+        name: "Il canyon e le formazioni rocciose",
+        meta: "Circa 2,5 ore · Media · Con dislivello",
+        stops: [
+          "La riva del fiume",
+          "L'arco di roccia Dupkata",
+          "Le pareti panoramiche"
+        ]
+      },
+      {
+        dot: "🔵",
+        name: "Percorso fotografico e d'avventura",
+        meta: "Circa 3–4 ore · Impegnativo",
+        stops: [
+          "Il canyon del Vit",
+          "Le grotte sopra Aglen",
+          "Verso gli altipiani carsici vicini"
+        ]
+      }
+    ]
+  },
+  ro: {
+    title: "Cele trei trasee",
+    lede: "Timpii sunt orientativi și presupun un mers lejer, cu opriri pentru fotografii. Practicabilitatea se schimbă cu sezonul — întrebați în sat înainte de a porni spre stâncile mai îndepărtate.",
+    seeRoutes: "Vezi traseele",
+    routes: [
+      {
+        dot: "🟢",
+        name: "Plimbarea scurtă prin sat",
+        meta: "Circa 1 oră · Ușor · Potrivit pentru copii și vârstnici",
+        stops: [
+          "Centrul satului",
+          "Biserica Sfântul Arhanghel Mihail",
+          "Malul Vitului"
+        ]
+      },
+      {
+        dot: "🟡",
+        name: "Canionul și formele de stâncă",
+        meta: "Circa 2,5 ore · Moderat · Cu diferență de nivel",
+        stops: [
+          "Malul râului",
+          "Arcada de stâncă Dupkata",
+          "Brâiele panoramice"
+        ]
+      },
+      {
+        dot: "🔵",
+        name: "Traseu foto și de aventură",
+        meta: "Circa 3–4 ore · Solicitant",
+        stops: [
+          "Canionul Vitului",
+          "Peșterile de deasupra Aglenului",
+          "Spre platourile carstice vecine"
+        ]
+      }
+    ]
+  },
+  tr: {
+    title: "Üç rota",
+    lede: "Süreler yaklaşıktır; fotoğraf molalarıyla sakin bir tempoya göredir. Patikaların geçilebilirliği mevsime göre değişir — uzaktaki kayalara yönelmeden önce köyde sorun.",
+    seeRoutes: "Rotaları gör",
+    routes: [
+      {
+        dot: "🟢",
+        name: "Kısa köy yürüyüşü",
+        meta: "Yaklaşık 1 saat · Kolay · Çocuklara ve yaşlılara uygun",
+        stops: [
+          "Köy merkezi",
+          "Baş Melek Mihail Kilisesi",
+          "Vit'in kıyısı"
+        ]
+      },
+      {
+        dot: "🟡",
+        name: "Kanyon ve kaya oluşumları",
+        meta: "Yaklaşık 2,5 saat · Orta · Yükselti farkı var",
+        stops: [
+          "Nehir kıyısı",
+          "Dupkata kaya kemeri",
+          "Manzaralı kaya kuşakları"
+        ]
+      },
+      {
+        dot: "🔵",
+        name: "Fotoğraf ve macera rotası",
+        meta: "Yaklaşık 3–4 saat · Zorlu",
+        stops: [
+          "Vit kanyonu",
+          "Aglen üzerindeki mağaralar",
+          "Komşu karst platolarına geçiş"
+        ]
+      }
+    ]
+  },
+  el: {
+    title: "Οι τρεις διαδρομές",
+    lede: "Οι χρόνοι είναι ενδεικτικοί και υπολογίζουν ήρεμο βάδισμα με στάσεις για φωτογραφίες. Το πόσο βατά είναι τα μονοπάτια αλλάζει με την εποχή — ρωτήστε στο χωριό πριν ξεκινήσετε για τους πιο απόμακρους βράχους.",
+    seeRoutes: "Δείτε τις διαδρομές",
+    routes: [
+      {
+        dot: "🟢",
+        name: "Ο σύντομος περίπατος στο χωριό",
+        meta: "Περίπου 1 ώρα · Εύκολη · Κατάλληλη για παιδιά και ηλικιωμένους",
+        stops: [
+          "Το κέντρο του χωριού",
+          "Ο ναός του Αρχαγγέλου Μιχαήλ",
+          "Η όχθη του Βιτ"
+        ]
+      },
+      {
+        dot: "🟡",
+        name: "Το φαράγγι και οι βραχώδεις σχηματισμοί",
+        meta: "Περίπου 2,5 ώρες · Μέτρια · Με υψομετρική διαφορά",
+        stops: [
+          "Η όχθη του ποταμού",
+          "Η βραχώδης αψίδα Ντούπκατα",
+          "Τα πανοραμικά βραχώδη στεφάνια"
+        ]
+      },
+      {
+        dot: "🔵",
+        name: "Διαδρομή φωτογραφίας και περιπέτειας",
+        meta: "Περίπου 3–4 ώρες · Απαιτητική",
+        stops: [
+          "Το φαράγγι του Βιτ",
+          "Οι σπηλιές πάνω από το Άγκλεν",
+          "Προς τα γειτονικά καρστικά πλατώματα"
+        ]
+      }
+    ]
+  },
+  ru: {
+    title: "Три маршрута",
+    lede: "Время указано ориентировочно, из расчёта спокойного шага с остановками на съёмку. Проходимость троп меняется по сезонам — спросите в селе, прежде чем идти к дальним скалам.",
+    seeRoutes: "Смотреть маршруты",
+    routes: [
+      {
+        dot: "🟢",
+        name: "Короткая прогулка по селу",
+        meta: "Около 1 часа · Легко · Подходит детям и пожилым",
+        stops: [
+          "Центр села",
+          "Церковь Святого Архангела Михаила",
+          "Берег Вита"
+        ]
+      },
+      {
+        dot: "🟡",
+        name: "Каньон и скальные формы",
+        meta: "Около 2,5 часов · Средне · С перепадом высот",
+        stops: [
+          "Берег реки",
+          "Скальная арка Дупката",
+          "Панорамные скальные гряды"
+        ]
+      },
+      {
+        dot: "🔵",
+        name: "Фотографический и приключенческий маршрут",
+        meta: "Около 3–4 часов · Сложно",
+        stops: [
+          "Каньон Вита",
+          "Пещеры над Агленом",
+          "Переход к соседним карстовым плато"
+        ]
+      }
+    ]
+  },
+  ja: {
+    title: "三つのルート",
+    lede: "所要時間は目安で、写真を撮りながらのゆっくりした歩みを想定しています。道の通りやすさは季節で変わります。遠くの岩場へ向かう前に村で尋ねてください。",
+    seeRoutes: "ルートを見る",
+    routes: [
+      {
+        dot: "🟢",
+        name: "村を歩く短いコース",
+        meta: "約1時間・やさしい・子どもや年配の方にも",
+        stops: [
+          "村の中心",
+          "聖大天使ミカエル教会",
+          "ヴィト川の岸辺"
+        ]
+      },
+      {
+        dot: "🟡",
+        name: "渓谷と奇岩のコース",
+        meta: "約2.5時間・ふつう・登り下りあり",
+        stops: [
+          "川岸",
+          "岩のアーチ「ドゥプカタ」",
+          "見晴らしの岩壁"
+        ]
+      },
+      {
+        dot: "🔵",
+        name: "撮影と冒険のコース",
+        meta: "約3〜4時間・健脚向き",
+        stops: [
+          "ヴィト川の渓谷",
+          "アグレン上方の洞窟",
+          "隣接するカルスト台地へ"
+        ]
+      }
+    ]
+  },
+  sr: {
+    title: "Три руте",
+    lede: "Времена су оквирна и рачунају на лаган ход са паузама за фотографисање. Проходност стаза мења се са годишњим добом — питајте у селу пре него што кренете ка удаљенијим стенама.",
+    seeRoutes: "Погледај руте",
+    routes: [
+      {
+        dot: "🟢",
+        name: "Кратка шетња кроз село",
+        meta: "Око 1 сат · Лако · Погодно за децу и старије",
+        stops: [
+          "Центар села",
+          "Црква Светог Арханђела Михаила",
+          "Обала Вита"
+        ]
+      },
+      {
+        dot: "🟡",
+        name: "Кањон и стеновити облици",
+        meta: "Око 2,5 сата · Умерено · Са успоном",
+        stops: [
+          "Обала реке",
+          "Стеновити лук Дупката",
+          "Панорамски стеновити венци"
+        ]
+      },
+      {
+        dot: "🔵",
+        name: "Фотографска и авантуристичка рута",
+        meta: "Око 3–4 сата · Захтевно",
+        stops: [
+          "Кањон Вита",
+          "Пећине изнад Аглена",
+          "Прелаз ка суседним крашким заравнима"
+        ]
+      }
+    ]
+  },
+  zh: {
+    title: "三条路线",
+    lede: "时间为大致估算，按从容步行、途中停下拍照计算。步道是否好走随季节变化——前往较远的岩区前请先在村中打听。",
+    seeRoutes: "查看路线",
+    routes: [
+      {
+        dot: "🟢",
+        name: "村中短程漫步",
+        meta: "约 1 小时 · 轻松 · 适合老人与孩子",
+        stops: [
+          "村庄中心",
+          "圣天使长米迦勒教堂",
+          "维特河岸"
+        ]
+      },
+      {
+        dot: "🟡",
+        name: "峡谷与岩形",
+        meta: "约 2.5 小时 · 中等 · 有起伏",
+        stops: [
+          "河岸",
+          "杜普卡塔岩拱",
+          "观景岩壁"
+        ]
+      },
+      {
+        dot: "🔵",
+        name: "摄影与探险路线",
+        meta: "约 3–4 小时 · 进阶",
+        stops: [
+          "维特河峡谷",
+          "阿格伦上方的洞穴",
+          "前往邻近的喀斯特台地"
+        ]
+      }
+    ]
+  },
+  hu: {
+    title: "A három útvonal",
+    lede: "Az időtartamok tájékoztatók, kényelmes tempóval és fotószünetekkel számolva. Az ösvények járhatósága évszakonként változik — kérdezzen a faluban, mielőtt a távolabbi sziklák felé indulna.",
+    seeRoutes: "Útvonalak megtekintése",
+    routes: [
+      {
+        dot: "🟢",
+        name: "Rövid falusi séta",
+        meta: "Nagyjából 1 óra · Könnyű · Gyerekeknek és időseknek is",
+        stops: [
+          "A falu központja",
+          "Szent Mihály arkangyal temploma",
+          "A Vit partja"
+        ]
+      },
+      {
+        dot: "🟡",
+        name: "A kanyon és a sziklaalakzatok",
+        meta: "Nagyjából 2,5 óra · Közepes · Szintkülönbséggel",
+        stops: [
+          "A folyópart",
+          "A Dupkata sziklaboltív",
+          "A panorámás sziklafalak"
+        ]
+      },
+      {
+        dot: "🔵",
+        name: "Fotós és kalandútvonal",
+        meta: "Nagyjából 3–4 óra · Igényes",
+        stops: [
+          "A Vit kanyonja",
+          "Az Aglen fölötti barlangok",
+          "Tovább a szomszédos karsztfennsíkokra"
+        ]
+      }
+    ]
+  }
+};
+
 export const transportLinks = { map: AGLEN_MAP_URL, rail: BDZ_URL };
 
 
 const authoredProse: Partial<Record<LandingPageId, Record<LanguageCode, AuthoredProse>>> = {
+  routeMap: {
+    bg: {
+      kicker: "Интерактивен пътеводител",
+      h1: "Маршрутна карта на Ъглен",
+      cta: "Питай за воден маршрут",
+      intro: "Открийте тайнствените пътеки, скалните феномени и тихите вирове на река Вит. Независимо дали търсите лека следобедна разходка край брега, фотографска точка за залез над каньона или приключение сред дивите карстови арки — изберете своя маршрут и тръгнете по стъпките на природата.",
+    },
+    en: {
+      kicker: "Interactive guide",
+      h1: "The Aglen route map",
+      cta: "Ask about a guided walk",
+      intro: "Find the hidden paths, the rock formations and the quiet pools of the River Vit. Whether you want an easy afternoon walk by the bank, a sunset vantage over the canyon, or an adventure among the wild karst arches — choose your route and follow the footsteps of the country itself.",
+    },
+    de: {
+      kicker: "Interaktiver Führer",
+      h1: "Die Routenkarte von Aglen",
+      cta: "Nach einer geführten Wanderung fragen",
+      intro: "Entdecken Sie die verborgenen Pfade, die Felsformationen und die stillen Gumpen des Flusses Vit. Ob leichter Nachmittagsspaziergang am Ufer, Fotostandpunkt für den Sonnenuntergang über der Schlucht oder Abenteuer zwischen den wilden Karstbögen — wählen Sie Ihre Route und folgen Sie den Spuren der Natur.",
+    },
+    fr: {
+      kicker: "Guide interactif",
+      h1: "La carte des itinéraires d'Aglen",
+      cta: "Demander une sortie accompagnée",
+      intro: "Découvrez les sentiers cachés, les formations rocheuses et les vasques tranquilles de la Vit. Promenade facile en bord de rivière, point de vue au coucher du soleil sur le canyon ou aventure parmi les arches karstiques — choisissez votre itinéraire et suivez les pas de la nature.",
+    },
+    es: {
+      kicker: "Guía interactiva",
+      h1: "El mapa de rutas de Aglen",
+      cta: "Preguntar por una salida guiada",
+      intro: "Descubra los senderos escondidos, las formaciones rocosas y las pozas tranquilas del río Vit. Un paseo fácil junto a la orilla, un mirador para el atardecer sobre el cañón o una aventura entre los arcos kársticos: elija su ruta y siga los pasos de la naturaleza.",
+    },
+    it: {
+      kicker: "Guida interattiva",
+      h1: "La mappa dei percorsi di Aglen",
+      cta: "Chiedere di un'escursione guidata",
+      intro: "Scoprite i sentieri nascosti, le formazioni rocciose e le pozze tranquille del fiume Vit. Una passeggiata facile lungo la riva, un punto panoramico per il tramonto sul canyon o un'avventura tra gli archi carsici: scegliete il vostro percorso e seguite le orme della natura.",
+    },
+    ro: {
+      kicker: "Ghid interactiv",
+      h1: "Harta traseelor din Aglen",
+      cta: "Întreabă despre un traseu cu ghid",
+      intro: "Descoperiți potecile ascunse, formele de stâncă și bulboanele liniștite ale râului Vit. Fie că vreți o plimbare ușoară pe mal, un punct de belvedere pentru apus deasupra canionului sau o aventură printre arcadele carstice — alegeți-vă traseul și mergeți pe urmele naturii.",
+    },
+    tr: {
+      kicker: "Etkileşimli rehber",
+      h1: "Aglen rota haritası",
+      cta: "Rehberli yürüyüş için sorun",
+      intro: "Vit Nehri'nin gizli patikalarını, kaya oluşumlarını ve sakin göletlerini keşfedin. Kıyıda kolay bir öğleden sonra yürüyüşü, kanyon üzerinde gün batımı için bir bakı noktası ya da yabani karst kemerleri arasında bir macera — rotanızı seçin ve doğanın izinden gidin.",
+    },
+    el: {
+      kicker: "Διαδραστικός οδηγός",
+      h1: "Ο χάρτης διαδρομών του Άγκλεν",
+      cta: "Ρωτήστε για πεζοπορία με οδηγό",
+      intro: "Ανακαλύψτε τα κρυφά μονοπάτια, τους βραχώδεις σχηματισμούς και τις ήσυχες γούρνες του ποταμού Βιτ. Είτε ψάχνετε έναν εύκολο απογευματινό περίπατο στην όχθη, ένα σημείο για το ηλιοβασίλεμα πάνω από το φαράγγι ή μια περιπέτεια ανάμεσα στις άγριες καρστικές αψίδες — διαλέξτε τη διαδρομή σας και ακολουθήστε τα βήματα της φύσης.",
+    },
+    ru: {
+      kicker: "Интерактивный путеводитель",
+      h1: "Карта маршрутов Аглена",
+      cta: "Спросить о походе с проводником",
+      intro: "Откройте скрытые тропы, скальные формы и тихие омуты реки Вит. Лёгкая послеобеденная прогулка вдоль берега, точка для съёмки заката над каньоном или приключение среди диких карстовых арок — выберите свой маршрут и идите по следам самой природы.",
+    },
+    ja: {
+      kicker: "対話型ガイド",
+      h1: "アグレンのルートマップ",
+      cta: "ガイド付きの散策について問い合わせる",
+      intro: "ヴィト川の隠れた小径、奇岩、静かな淵を見つけてください。岸辺の気軽な午後の散歩、渓谷に沈む夕日の撮影地点、あるいは荒々しいカルストのアーチをめぐる冒険——自分の道を選び、自然の足跡をたどってください。",
+    },
+    sr: {
+      kicker: "Интерактивни водич",
+      h1: "Мапа рута Аглена",
+      cta: "Питај за вођени поход",
+      intro: "Откријте скривене стазе, стеновите облике и мирне вирове реке Вит. Било да тражите лагану поподневну шетњу уз обалу, тачку за залазак сунца изнад кањона или авантуру међу дивљим крашким луковима — изаберите своју руту и пођите трагом природе.",
+    },
+    zh: {
+      kicker: "互动指南",
+      h1: "阿格伦路线地图",
+      cta: "咨询向导带路",
+      intro: "去发现维特河隐秘的小径、奇特的岩形与静谧的深潭。无论你想要一段河畔轻松的午后漫步、一处俯瞰峡谷的落日机位，还是在野性喀斯特岩拱间的一场冒险——选一条属于你的路线，循着自然的足迹前行。",
+    },
+    hu: {
+      kicker: "Interaktív kalauz",
+      h1: "Aglen útvonaltérképe",
+      cta: "Érdeklődés vezetett túráról",
+      intro: "Fedezze fel a Vit folyó rejtett ösvényeit, sziklaalakzatait és csendes medencéit. Akár könnyű délutáni sétát keres a parton, akár naplementés fotópontot a kanyon fölött, akár kalandot a vad karsztboltívek között — válassza ki az útvonalát, és induljon a természet nyomában.",
+    },
+  },
   howToGet: {
     bg: {
       h1: "Поеми към Ъглен: Открий пътя",
@@ -1256,9 +1873,11 @@ function buildLandingPage(lang: LanguageCode, page: LandingPageMaster): LandingP
   const written = authoredProse[page.id]?.[lang];
   const authoredOverride: LandingPageOverride | undefined = written
     ? {
+        category: written.kicker,
         h1: written.h1,
         intro: written.intro,
-        sections: written.bodies.map((body, index) => ({
+        ctaLabel: written.cta,
+        sections: written.bodies?.map((body, index) => ({
           heading: written.headings?.[index] ?? text.sectionHeadings[index],
           body,
         })),
@@ -1304,6 +1923,7 @@ function buildLandingPage(lang: LanguageCode, page: LandingPageMaster): LandingP
   // fall through to the generated value, not overwrite it with `undefined`.
   return {
     ...generated,
+    category: override.category ?? generated.category,
     title: override.title ?? generated.title,
     metaDescription: override.metaDescription ?? generated.metaDescription,
     h1: override.h1 ?? generated.h1,
