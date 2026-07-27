@@ -1467,21 +1467,19 @@ h3 {
     url("/assets/aglen-aerial-river.png") center / cover;
 }
 
+/* Stacked, like the landing pages: a heading block, then the stops beneath it.
+   Two columns put three lines of text beside four cards, so half the screen was
+   permanently empty and the heading had to be huge to justify the space. */
 .map-layout {
   display: grid;
-  /* Two equal columns. It used to be 0.8fr / 1.2fr, which gave the display
-     heading the NARROWER half — a 5.6rem type size in the smaller column is
-     what broke "най-красивите" across two lines at its hyphen. `minmax(0, …)`
-     on both keeps a long word inside its track instead of pushing into the
-     card beside it. */
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 3rem;
-  /* Not `center`: the route card is much taller than the heading, so centring
-     pushed the heading half a card down the page and left a hole above it. */
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2.25rem;
   align-items: start;
 }
 
-.map-layout .section-heading { max-width: 100%; }
+.map-layout .section-heading { max-width: 62ch; }
+.map-lede { margin: 0 0 1rem; color: #42584e; font-size: 1.06rem; line-height: 1.55; }
+.map-links { display: flex; flex-wrap: wrap; gap: 0.6rem 1.6rem; margin: 0; }
 /* h1 included, and `h1.section-title` by name. On /location this heading is
    PROMOTED to an h1, so a rule listing only h2 and h3 never touched it and it
    kept the site-wide display size — 5.6rem at 0.93 — in half a column. Same
@@ -1501,24 +1499,16 @@ h3 {
   line-height: 1.55;
 }
 
+/* Two columns of stops across the full width. The vertical timeline rule that
+   used to run down the left edge is gone with the single column it belonged to:
+   a line through the middle of a two-column grid connects nothing. The numbered
+   discs already carry the order. */
 .route-map {
-  position: relative;
   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1rem;
-  overflow: hidden;
-  border-radius: 8px;
-  padding: 1.2rem;
-}
-
-.route-map::before {
-  position: absolute;
-  top: 12%;
-  bottom: 12%;
-  left: 2.4rem;
-  width: 3px;
-  content: "";
-  background: linear-gradient(var(--river), var(--gold));
-  opacity: 0.5;
+  border-radius: 18px;
+  padding: 1.25rem;
 }
 
 .map-stop {

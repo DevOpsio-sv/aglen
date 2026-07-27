@@ -1250,9 +1250,16 @@ export function App() {
           <div className="section-heading reveal">
             <p className="eyebrow">{copy.landmarks.aria}</p>
             <SectionTitle level={headingLevel("map")}>{copy.landmarks.title}</SectionTitle>
-            <p>
+            {/* The lede existed in the locale and was never rendered here — the
+                heading stood alone over a link, and the column beside four cards
+                was mostly empty because there was nothing in it to fill. */}
+            <p className="map-lede">{copy.landmarks.text}</p>
+            <p className="map-links">
               <a className="entity-inline-link" href={buildPlacePath(language, "vit-river")} onClick={(event) => { event.preventDefault(); navigateToPath(buildPlacePath(language, "vit-river")); }}>
                 {homeEntityLink("river", language)} →
+              </a>
+              <a className="entity-inline-link" href={buildRoutePath(language, "attractions")} onClick={(event) => handleRouteClick(event, "attractions")}>
+                {copy.landmarks.eyebrow} →
               </a>
             </p>
           </div>
