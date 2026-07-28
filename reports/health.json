@@ -37,15 +37,15 @@
       "base": "aglen"
     }
   ],
-  "claims": 109,
+  "claims": 110,
   "liveClaims": 109,
   "sources": 15,
   "evidence": 1,
   "uncertainClaims": 44,
   "openDisputes": 1,
-  "corrections": 0,
+  "corrections": 1,
   "linkDensity": 4.89,
-  "withSameAs": 11,
+  "withSameAs": 12,
   "withOwnHero": 0,
   "mediaAssets": 1,
   "renderableAssets": 0,
@@ -59,12 +59,12 @@
   "aliasResolved": 14,
   "withAliases": 6,
   "bundle": {
-    "js": 1472011,
+    "js": 1473575,
     "css": 102628,
-    "jsGzip": 477021
+    "jsGzip": 477414
   },
-  "findings": 31,
+  "findings": 30,
   "high": 1,
-  "medium": 21,
+  "medium": 20,
   "low": 9
 }

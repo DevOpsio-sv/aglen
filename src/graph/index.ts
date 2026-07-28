@@ -377,7 +377,9 @@ export function entitySameAs(entity: Entity): string[] {
   if (s.wikidata) urls.push(`https://www.wikidata.org/wiki/${s.wikidata}`);
   if (s.wikipedia?.bg) urls.push(`https://bg.wikipedia.org/wiki/${encodeURIComponent(s.wikipedia.bg.replace(/ /g, "_"))}`);
   if (s.wikipedia?.en) urls.push(`https://en.wikipedia.org/wiki/${encodeURIComponent(s.wikipedia.en.replace(/ /g, "_"))}`);
-  if (s.commons) urls.push(`https://commons.wikimedia.org/wiki/${encodeURIComponent(s.commons)}`);
+  // Underscored like the Wikipedia titles above: Commons resolves
+  // `Category%3AAglen%2C_Bulgaria` but answers a redirect for the spaced form.
+  if (s.commons) urls.push(`https://commons.wikimedia.org/wiki/${encodeURIComponent(s.commons.replace(/ /g, "_"))}`);
   if (s.osm) urls.push(`https://www.openstreetmap.org/${s.osm}`);
   if (s.geonames) urls.push(`https://www.geonames.org/${s.geonames}`);
   return urls;

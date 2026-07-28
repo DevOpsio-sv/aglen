@@ -60,6 +60,7 @@
         { "name": { "bg": "Ловешка област", "en": "Lovech region" }, "kind": "variant" }
       ],
       "confidence": "E4",
+      "sameAs": { "wikidata": "Q6587068", "wikipedia": { "bg": "Област Ловеч", "en": "Lovech Province" } },
       "relations": [],
       "page": { "path": "/place/lovech-province/", "priority": 4, "status": "published", "breadcrumbRoot": true }
     },
@@ -69,6 +70,7 @@
       "slug": "lukovit-municipality",
       "schemaType": "AdministrativeArea",
       "name": { "bg": "Община Луковит", "en": "Lukovit Municipality" },
+      "sameAs": { "wikidata": "Q2719438", "wikipedia": { "bg": "Община Луковит", "en": "Lukovit Municipality" } },
       "confidence": "E3",
       "parent": "lovech-province",
       "relations": []
@@ -84,7 +86,7 @@
         "en": "A village in Lukovit municipality, Lovech Province — the only settlement in Bulgaria whose name begins with the letter “Ъ”. It sits in the Vit River valley among the limestone rocks of the Lukovit Karst."
       },
       "geo": { "lat": 43.201151, "lon": 24.314943 },
-      "sameAs": { "wikidata": "Q550547", "wikipedia": { "bg": "Ъглен", "en": "Aglen, Bulgaria" } },
+      "sameAs": { "wikidata": "Q550547", "wikipedia": { "bg": "Ъглен", "en": "Aglen, Bulgaria" }, "osm": "node/273878714", "commons": "Category:Aglen, Bulgaria" },
       "aliases": [
         {
           "name": { "bg": "Иглен", "en": "Iglen" },
@@ -331,6 +333,7 @@
       "schemaType": "Landform",
       "contentRef": { "placeId": "sloncheto" },
       "confidence": "E1",
+      "sameAs": { "osm": "node/7782682505" },
       "parent": "vit-valley-aglen",
       "relations": [],
       "page": { "path": "/place/sloncheto/", "priority": 2, "status": "published" }

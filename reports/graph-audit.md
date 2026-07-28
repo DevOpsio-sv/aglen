@@ -7,13 +7,13 @@ Entities: 32 · published pages: 28 · aspect pages: 2 · nodes: 4
 | Measure | Count |
 | --- | --- |
 | Sources | 15 |
-| Claims | 109 |
-| — verified | 39 |
+| Claims | 110 |
+| — verified | 40 |
 | — reported | 24 |
 | — uncertain (stated unknowns) | 44 |
 | — disputed | 2 |
 | Open questions (disputes) | 1 |
-| Corrections published | 0 |
+| Corrections published | 1 |
 | Retractions | 0 |
 | Entities carrying claims | 28 |
 
@@ -21,13 +21,13 @@ Entities: 32 · published pages: 28 · aspect pages: 2 · nodes: 4
 
 | Measure | Count |
 | --- | --- |
-| Claims published | 109 |
+| Claims published | 110 |
 | Claims held as draft | 0 |
 | Claims internal only | 0 |
 | Live claims (published, not superseded, not retracted) | 109 |
-| Claims carrying a review date | 109 |
+| Claims carrying a review date | 110 |
 | Earliest review | 2026-07-26 |
-| Latest review | 2026-07-26 |
+| Latest review | 2026-07-28 |
 
 ## Sources and evidence (M4B)
 
@@ -52,9 +52,9 @@ Entities: 32 · published pages: 28 · aspect pages: 2 · nodes: 4
 | openRecords | 12 |
 | coordinatesVerified | 8 |
 | openQuestion | 1 |
+| corrected | 1 |
 | primarySources | 0 |
 | fieldChecked | 0 |
-| corrected | 0 |
 
 ## Gates (build fails on any)
 
@@ -87,7 +87,6 @@ _None._
 | sameAs | "dupkata" has no external identifier (Wikidata/OSM/Commons). |
 | media | "dupkata" has no photograph of its own; the page borrows a plate for its kind. |
 | coordinates | "sloncheto" has no coordinates yet (needs a GPS fix). |
-| sameAs | "sloncheto" has no external identifier (Wikidata/OSM/Commons). |
 | media | "sloncheto" has no photograph of its own; the page borrows a plate for its kind. |
 | coordinates | "chervena-stena" has no coordinates yet (needs a GPS fix). |
 | sameAs | "chervena-stena" has no external identifier (Wikidata/OSM/Commons). |
@@ -123,5 +122,5 @@ _None._
 
 ## Summary
 
-Gates: 0 · Warnings: 56
+Gates: 0 · Warnings: 55
 

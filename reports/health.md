@@ -4,7 +4,7 @@ Generated 2026-07-28. **This report never fails a build** — correctness is gat
 `graph-audit.mjs` and `site-audit.mjs`; everything here is work, not breakage
 (ADR-017).
 
-**31 findings** — 1 high · 21 medium · 9 low.
+**30 findings** — 1 high · 20 medium · 9 low.
 
 ## Coverage
 
@@ -12,12 +12,12 @@ Generated 2026-07-28. **This report never fails a build** — correctness is gat
 | --- | --- |
 | Entities | 32 (28 published, 4 nodes) |
 | Regions | 1 |
-| Sourced claims (live) | 109 of 109 |
+| Sourced claims (live) | 109 of 110 |
 | Sources | 15 · evidence records 1 |
 | Stated unknowns | 44 |
 | Open questions | 1 |
-| Corrections published | 0 |
-| Pages with an external identifier | 11/28 (39%) |
+| Corrections published | 1 |
+| Pages with an external identifier | 12/28 (43%) |
 | Sited things with a GPS fix | 10/18 (56%) |
 | Pages with a photograph of their own | 0/28 (0%) |
 | Pages carrying other names | 6/28 (21%) |
@@ -26,7 +26,7 @@ Generated 2026-07-28. **This report never fails a build** — correctness is gat
 | Redirect rules | 32 |
 | Guides · businesses | 6 · 12 |
 | Languages served · knowledge tier | 14 · 2 |
-| Bundle (gzipped JS) | 465.8 kB (+0.0% since last record) |
+| Bundle (gzipped JS) | 466.2 kB (+0.0% since last record) |
 
 ## By namespace
 
@@ -83,14 +83,13 @@ _Empty — every live statement has been checked against its sources within 365 
 | --- | --- | --- |
 | high | trifon-kunev | 1 outbound link(s) — a reader arriving here has nowhere to go next (rule 23). |
 
-### schema (17)
+### schema (16)
 
 | Severity | Subject | Note |
 | --- | --- | --- |
 | medium | karst-lukovit | no external identifier (Wikidata / OSM / Commons) — nothing reconciles this page to the wider graph. |
 | medium | iskar-panega | no external identifier (Wikidata / OSM / Commons) — nothing reconciles this page to the wider graph. |
 | medium | dupkata | no external identifier (Wikidata / OSM / Commons) — nothing reconciles this page to the wider graph. |
-| medium | sloncheto | no external identifier (Wikidata / OSM / Commons) — nothing reconciles this page to the wider graph. |
 | medium | chervena-stena | no external identifier (Wikidata / OSM / Commons) — nothing reconciles this page to the wider graph. |
 | medium | rachkov-vir | no external identifier (Wikidata / OSM / Commons) — nothing reconciles this page to the wider graph. |
 | medium | kaleto | no external identifier (Wikidata / OSM / Commons) — nothing reconciles this page to the wider graph. |
