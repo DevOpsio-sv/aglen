@@ -1306,6 +1306,41 @@ into a number on a dashboard.
 
 ---
 
+### ADR-020 — Fourteen languages are served; two are offered to search engines
+**Decision.** `INDEXED_LANGUAGES` (`seo.ts`) holds `bg` and `en`. `isIndexableIn()`
+returns false for every other language before it considers the route, so the other
+twelve carry `noindex, follow`, are named by no hreflang, and get no sitemap — the
+sitemap index lists two files, not fourteen. Nothing else changes: all fourteen trees
+are still built, still served, still reachable from the language picker, and every
+link into them still resolves. This widens Constitution rule 43, which already gave
+the knowledge tier exactly this shape, from one tier to the site, and inverts its
+default: a language is not indexed unless it is listed.
+
+**Why now.** The domain is two months old with no inbound links. Google discovered
+790 URLs and indexed 9. Fourteen near-identical trees divide a crawl budget that is
+already the binding constraint, and thirteen of them compete for queries in languages
+that will not bring a visitor to a village of 601 people this year. Search engines
+are not the audience being served by the other twelve; visitors are, and they keep
+them.
+
+**Rejected.** (a) 301-ing the twelve to their English equivalents, which consolidates
+best but is the hardest thing to undo — Google holds a 301 long after it is removed,
+and a Russian reader is sent to a language they did not ask for. (b) Deleting the
+trees, which throws ~660 URLs at Google as 404s and destroys the work. (c) Leaving
+them in the sitemaps while marking them noindex, which tells a crawler two
+contradictory things about the same URL.
+
+**Trade-off.** A visitor who searches in German will not find the German page. That
+is the point, and it is the cost. It is accepted because the German page is not
+currently found either — it is one of the 781 not indexed.
+
+**Consequence.** Reversal is one line: put the code back in `INDEXED_LANGUAGES`,
+rebuild, resubmit the sitemap. Nothing has to be un-deleted or un-redirected, which
+is why this shape was chosen over the two that rank better. Re-indexing after a
+reversal still takes weeks — the switch is cheap, the recovery is not.
+
+---
+
 ## 19. Non-functional requirements
 
 | Attribute | Requirement | How it is met |

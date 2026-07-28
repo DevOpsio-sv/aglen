@@ -351,8 +351,19 @@ function validateRuntimeData(routes, seo, landing) {
       if (meta.locale !== expectedLocaleCodes[lang]) {
         addIssue("metadata", `${lang}.${route.id} locale ${meta.locale} does not match ${expectedLocaleCodes[lang]}.`);
       }
-      if (!meta.alternates.some((alternate) => alternate.lang === "zh") || !meta.alternates.some((alternate) => alternate.lang === "hu")) {
-        addIssue("metadata", `${lang}.${route.id} alternates missing zh or hu.`);
+      // ADR-020: hreflang names the indexed languages and only those. The old
+      // check asserted zh and hu were present, which guarded against dropping a
+      // late-added locale; the invariant it was protecting now lives one level
+      // up — the alternate set must equal INDEXED_LANGUAGES exactly, so neither
+      // a missing indexed language nor a stray noindex one passes.
+      const named = new Set(meta.alternates.filter((alternate) => alternate.lang !== "x-default").map((alternate) => alternate.lang));
+      for (const code of seo.indexedLanguageCodes) {
+        if (!named.has(code)) addIssue("metadata", `${lang}.${route.id} alternates missing indexed language ${code}.`);
+      }
+      for (const code of named) {
+        if (!seo.indexedLanguageCodes.includes(code)) {
+          addIssue("metadata", `${lang}.${route.id} alternates name ${code}, which is not indexed (ADR-020).`);
+        }
       }
       if (meta.alternates.some((alternate) => alternate.lang === "pl") || meta.ogLocaleAlternates.includes("pl_PL")) {
         addIssue("metadata", `${lang}.${route.id} metadata still includes Polish alternate.`);
@@ -380,8 +391,15 @@ function validateGeneratedHtml(routes) {
   for (const lang of expectedLanguages) {
     const langDir = path.join(distDir, lang);
     if (!fs.existsSync(langDir)) addIssue("generated HTML", `Missing generated locale folder dist/${lang}.`);
+    // ADR-020: every language still ships a folder — links must resolve — but
+    // only an indexed language is advertised. A sitemap for a noindex tree would
+    // contradict the pages it lists, so its absence is the invariant here.
     const sitemapPath = path.join(distDir, `sitemap-${lang}.xml`);
-    if (!fs.existsSync(sitemapPath)) addIssue("generated HTML", `Missing sitemap-${lang}.xml.`);
+    const shouldHaveSitemap = seo.indexedLanguageCodes.includes(lang);
+    if (shouldHaveSitemap && !fs.existsSync(sitemapPath)) addIssue("generated HTML", `Missing sitemap-${lang}.xml.`);
+    if (!shouldHaveSitemap && fs.existsSync(sitemapPath)) {
+      addIssue("generated HTML", `sitemap-${lang}.xml exists for a language that is not indexed (ADR-020).`);
+    }
   }
   if (fs.existsSync(path.join(distDir, "pl"))) addIssue("generated HTML", "Generated dist/pl folder exists.");
   if (fs.existsSync(path.join(distDir, "sitemap-pl.xml"))) addIssue("generated HTML", "Generated sitemap-pl.xml exists.");

@@ -209,11 +209,14 @@ function renderLanguageSitemap(language) {
   ].join("\n");
 }
 
-for (const language of routes.allLanguageCodes) {
+// One sitemap per INDEXED language (ADR-020), not per built language. The other
+// twelve trees are still generated and served; they are simply not advertised,
+// and a sitemap listing noindex URLs would contradict the pages it points at.
+for (const language of seo.indexedLanguageCodes) {
   fs.writeFileSync(path.join(distDir, `sitemap-${language}.xml`), renderLanguageSitemap(language));
 }
 
-const sitemapIndexEntries = routes.allLanguageCodes
+const sitemapIndexEntries = seo.indexedLanguageCodes
   .map((language) => [
     "  <sitemap>",
     `    <loc>${escapeXml(`${seo.SITE_URL}/sitemap-${language}.xml`)}</loc>`,

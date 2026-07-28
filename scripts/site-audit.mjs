@@ -126,7 +126,14 @@ for (const routePath of routePaths) {
     if (seen.has(code)) gate("i18n", `${routePath} declares hreflang "${code}" twice.`);
     seen.add(code);
   }
-  for (const code of languages) {
+  // ADR-020: the set is the indexed languages, not every built one. An alternate
+  // pointing at a noindex tree tells a crawler two opposite things about one URL.
+  for (const code of seen) {
+    if (code !== "x-default" && !seo.indexedLanguageCodes.includes(code)) {
+      gate("i18n", `${routePath} declares hreflang "${code}", which is not an indexed language (ADR-020).`);
+    }
+  }
+  for (const code of seo.indexedLanguageCodes) {
     if (!seen.has(code)) gate("i18n", `${routePath} is missing the hreflang for "${code}".`);
   }
 
@@ -198,7 +205,9 @@ for (const [file, check] of [
 }
 
 // ── 11. Sitemaps advertise only pages that exist ─────────────
-for (const language of languages) {
+// One sitemap per indexed language (ADR-020). The other twelve trees are built
+// and served; a sitemap for them would advertise pages that say noindex.
+for (const language of seo.indexedLanguageCodes) {
   const sitemapPath = path.join(distDir, `sitemap-${language}.xml`);
   if (!fs.existsSync(sitemapPath)) {
     gate("sitemap", `sitemap-${language}.xml was not generated.`);

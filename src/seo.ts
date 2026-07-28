@@ -188,6 +188,28 @@ const noindexUntilPlanRouteIds = new Set<RouteId>([
 const KNOWLEDGE_TIER_ROUTES = new Set<RouteId>(["history", "legend", "person", "sources", "corrections", "source"]);
 const KNOWLEDGE_TIER_LANGUAGES = new Set<LanguageCode>(["bg", "en"]);
 
+/**
+ * The languages this site offers to search engines (ADR-020). The other twelve
+ * are built and served exactly as before — a link to /ru/ resolves, the language
+ * picker works, a visitor reads the page — but they carry `noindex`, appear in no
+ * sitemap and are named by no hreflang, because a two-month-old domain spends its
+ * crawl budget on fourteen near-identical trees instead of the one that can rank.
+ *
+ * This is the whole switch. Putting a code back here and rebuilding restores that
+ * language to the index; nothing else has to be undone, because nothing was
+ * deleted. Rule 43 already applied this shape to the knowledge tier — ADR-020
+ * widens it to the site and inverts the default.
+ */
+const INDEXED_LANGUAGES = new Set<LanguageCode>(["bg", "en"]);
+
+/** Whether a language is offered to search engines at all (ADR-020). */
+export function isIndexedLanguage(lang: LanguageCode): boolean {
+  return INDEXED_LANGUAGES.has(lang);
+}
+
+/** The languages an hreflang set and the sitemap index may name (ADR-020). */
+export const indexedLanguageCodes: LanguageCode[] = allLanguageCodes.filter((code) => INDEXED_LANGUAGES.has(code));
+
 export function isKnowledgeTierRoute(routeId: RouteId, detailSlug?: string): boolean {
   if (KNOWLEDGE_TIER_ROUTES.has(routeId)) return true;
   // An aspect page beneath /place/ is nothing but claims, so it belongs to the
@@ -197,6 +219,9 @@ export function isKnowledgeTierRoute(routeId: RouteId, detailSlug?: string): boo
 
 /** Whether this route may be indexed in this language (rule 43). */
 export function isIndexableIn(lang: LanguageCode, routeId: RouteId, detailSlug?: string): boolean {
+  // ADR-020 first: a language that is not offered to search engines indexes
+  // nothing, whatever the route would otherwise allow.
+  if (!INDEXED_LANGUAGES.has(lang)) return false;
   // A source page exists only where the ledger has earned it: three live claims
   // must rest on the source, exactly as an entity needs three to earn a page
   // (rule 15). A slug that names no such source is not a page and is never
@@ -836,9 +861,11 @@ export function getSEOConfig(lang: LanguageCode, routeId: RouteId = "home", deta
         ? "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
         : "noindex, follow",
     canonicalUrl: urlFor(lang),
+    // hreflang names only the indexed languages (ADR-020). Pointing an alternate
+    // at a noindex page states two contradictory things about the same URL.
     alternates: [
       { lang: "x-default", href: urlFor(DEFAULT_LANGUAGE) },
-      ...allLanguageCodes.map((code) => ({ lang: code, href: urlFor(code) })),
+      ...indexedLanguageCodes.map((code) => ({ lang: code, href: urlFor(code) })),
     ],
     ogLocaleAlternates: allLanguageCodes.filter((code) => code !== lang).map((code) => localeCodes[code]),
     dateModified: business?.lastUpdated ?? guide?.lastUpdated ?? SITE_CONTENT_UPDATED,
