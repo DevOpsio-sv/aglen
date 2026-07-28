@@ -21,6 +21,13 @@ export const images = {
   hero: "/assets/aglen-hero-river-canyon.png",
   arch: "/assets/aglen-rock-arch.png",
   cave: "/assets/aglen-cave-window-gallery.jpg",
+  // The valley in each of the four seasons, for the seasonal guide. The only
+  // set the site holds where the SAME subject is shot four times — which is
+  // what lets the season tabs change the landscape rather than the topic.
+  spring: "/assets/aglen-spring.png",
+  summer: "/assets/aglen-summer.png",
+  autumn: "/assets/aglen-autumn.png",
+  winter: "/assets/aglen-winter.png",
   caveCard: "/assets/aglen-cave-window-card.jpg",
   aerial: "/assets/aglen-aerial-river.png",
   pool: "/assets/aglen-river-pool.png",

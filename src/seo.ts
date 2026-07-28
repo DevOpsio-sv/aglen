@@ -1,6 +1,6 @@
 import { contentByLanguage, languages } from "./content";
 import { localize, sortedEvents } from "./events";
-import { getLandingPage, isLandingPageId } from "./landingPages";
+import { forecastLink, getLandingPage, isLandingPageId, seasonImages, seasonsCopy, sectionParagraphs } from "./landingPages";
 import type { LanguageCode, LocalizedText, PageCopy, PlaceId } from "./locales/types";
 import { allLanguageCodes, buildBusinessPath, buildGuidePath, buildRoutePath, DEFAULT_LANGUAGE, type CoreRouteId, type RouteId } from "./routes";
 import { findBusiness, localizeText, mapUrl, publishedBusinesses } from "./localBusinesses";
@@ -1752,6 +1752,42 @@ function staticFallbackLink(lang: LanguageCode, label: string, routeId: RouteId)
   return `<a href="${buildRoutePath(lang, routeId)}">${escapeHtml(label)}</a>`;
 }
 
+/**
+ * The four seasons for a crawler that runs no JavaScript.
+ *
+ * The React tablist keeps all four panels in the DOM for exactly this reason,
+ * and this renders the same four in the same order from the same copy — a
+ * seasonal guide whose no-JavaScript version discussed one season would be the
+ * page disagreeing with itself about its own subject (rule 33).
+ */
+function renderSeasonsFallback(lang: LanguageCode): string {
+  const copy = seasonsCopy[lang];
+  const panels = copy.seasons
+    .map((season, index) => {
+      const image = seasonImages[index];
+      return `
+              <section class="seo-season-panel">
+                <h3>${escapeHtml(`${season.icon} ${season.name} · ${season.months} — ${season.title}`)}</h3>
+                ${paragraph(season.body)}
+                <p class="seo-season-tags">${season.tags.map((tag) => `<span class="seo-season-tag">${escapeHtml(tag)}</span>`).join("")}</p>
+                ${image ? `<img class="seo-season-photo" ${imageAttributes(image, { sizes: "(max-width: 900px) 92vw, 44rem" })} alt="${escapeHtml(season.imageAlt ?? "")}" loading="lazy" />` : ""}
+              </section>`;
+    })
+    .join("");
+
+  return `
+            <section class="seo-seasons" id="seasons">
+              <h2>${escapeHtml(copy.title)}</h2>
+              ${paragraph(copy.lede)}
+              ${panels}
+              <aside class="seo-forecast">
+                <p class="seo-forecast-title">${escapeHtml(copy.weatherTitle)}</p>
+                <p class="seo-forecast-body">${escapeHtml(copy.weatherBody)}</p>
+                <a class="button ghost" href="${forecastLink}" target="_blank" rel="noopener noreferrer">${escapeHtml(copy.weatherCta)}</a>
+              </aside>
+            </section>`;
+}
+
 export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "home", detailSlug?: string): string {
   const copy = contentByLanguage[lang];
   const meta = getSEOConfig(lang, routeId, detailSlug);
@@ -2034,8 +2070,9 @@ export function renderStaticFallback(lang: LanguageCode, routeId: RouteId = "hom
               </div>
               <img ${imageAttributes(landing.image, { sizes: "(max-width: 900px) 92vw, 42vw" })} alt="${escapeHtml(landing.imageAlt)}" loading="eager" fetchpriority="high" />
             </div>
+            ${landing.interactive === "seasons" ? renderSeasonsFallback(lang) : ""}
             <div class="seo-section-grid">
-              ${landing.sections.map((section) => `<section class="seo-section-card"><h2>${escapeHtml(section.heading)}</h2>${paragraph(section.body)}</section>`).join("")}
+              ${landing.sections.map((section) => `<section class="seo-section-card"><h2>${escapeHtml(section.heading)}</h2>${sectionParagraphs(section.body).map(paragraph).join("")}</section>`).join("")}
             </div>
             <div class="seo-faq-links">
               <div class="seo-faq">

@@ -37,6 +37,24 @@ export type LandingPageSection = {
   body: string;
 };
 
+/**
+ * A section body split into the paragraphs it should render as.
+ *
+ * A card whose body is a list — all year / spring and autumn / summer / winter —
+ * set as one block of prose makes the reader do the un-listing themselves, and
+ * at four sentences it stops being read at all. An authored body may therefore
+ * break its lines with `\n`; a generated body never contains one, so the pages
+ * nobody has written by hand come back as the single paragraph they already are.
+ *
+ * Exported and used by BOTH the React card and the no-JavaScript fallback, for
+ * the same reason `storyBlocks` is: two copies of a split eventually disagree
+ * about where the paragraphs are.
+ */
+export function sectionParagraphs(body: string): string[] {
+  const lines = body.split("\n").map((line) => line.trim()).filter(Boolean);
+  return lines.length > 0 ? lines : [body];
+}
+
 export type LandingPageFaq = {
   question: string;
   answer: string;
@@ -61,8 +79,11 @@ export type LandingPage = {
   sections: LandingPageSection[];
   faqs: LandingPageFaq[];
   internalLinks: Array<{ label: string; routeId: LandingPageId | string }>;
-  interactive?: "transport" | "routes" | "checklist";
+  interactive?: LandingInteractive;
 };
+
+/** The interactive blocks a landing page can carry. */
+export type LandingInteractive = "transport" | "routes" | "checklist" | "seasons";
 
 type LandingPageMaster = {
   id: LandingPageId;
@@ -72,7 +93,7 @@ type LandingPageMaster = {
   schemaType: "Article" | "TravelGuide";
   internalLinkRouteIds: Array<LandingPageId | string>;
   /** An interactive block this page carries — declared in data, not by id in JSX. */
-  interactive?: "transport" | "routes" | "checklist";
+  interactive?: LandingInteractive;
 };
 
 /**
@@ -110,7 +131,7 @@ export const landingPageMaster: LandingPageMaster[] = [
   { id: "campingNearAglen", slug: "camping-near-aglen", image: images.aerial, imageAltKey: "aerial", schemaType: "Article", internalLinkRouteIds: ["accommodationNearAglen", "natureTourism", "vitRiver"] },
   { id: "weekendInAglen", slug: "weekend-in-aglen", image: images.hero, imageAltKey: "hero", schemaType: "TravelGuide", internalLinkRouteIds: ["aglenFromSofia", "howToGet", "nearby"] },
   { id: "routeMap", slug: "aglen-route-map", image: images.aerial, imageAltKey: "aerial", schemaType: "TravelGuide", internalLinkRouteIds: ["visitAglen", "attractions", "nearby"], interactive: "routes" },
-  { id: "bestTime", slug: "best-time-to-visit-aglen", image: images.aerial, imageAltKey: "aerial", schemaType: "Article", internalLinkRouteIds: ["seasonal", "weekendInAglen", "natureTourism"] },
+  { id: "bestTime", slug: "best-time-to-visit-aglen", image: images.aerial, imageAltKey: "aerial", schemaType: "Article", internalLinkRouteIds: ["seasonal", "weekendInAglen", "natureTourism"], interactive: "seasons" },
   { id: "howToGet", slug: "how-to-get-to-aglen", image: images.aerial, imageAltKey: "aerial", schemaType: "Article", internalLinkRouteIds: ["aglenFromSofia", "lukovitGuide", "routeMap"], interactive: "transport" },
   { id: "aglenFromSofia", slug: "aglen-from-sofia", image: images.hero, imageAltKey: "hero", schemaType: "TravelGuide", internalLinkRouteIds: ["weekendInAglen", "howToGet", "nearby"] },
   { id: "lovechRegionGuide", slug: "lovech-region-travel-guide", image: images.aerial, imageAltKey: "aerial", schemaType: "TravelGuide", internalLinkRouteIds: ["lukovitGuide", "krushunaGuide", "devetashkaCaveGuide", "visitAglen"] },
@@ -1745,8 +1766,507 @@ export const checklistCopy: Record<LanguageCode, ChecklistCopy> = {
 
 export const transportLinks = { map: AGLEN_MAP_URL, rail: BDZ_URL };
 
+/**
+ * One season of the year as the page shows it: a tab, a promise and two badges.
+ *
+ * `months` is on the tab rather than inside the panel because it is what a
+ * visitor is matching against — they arrive knowing when they can travel, not
+ * which season they want, and a tab row that only says "Spring / Summer" makes
+ * them open all four to find out which one covers August.
+ */
+export type SeasonPanel = {
+  icon: string;
+  /** The season's name, on the tab. */
+  name: string;
+  /** The months it covers, under the name — "April – June". */
+  months: string;
+  /** What the season is, as a heading inside the panel. */
+  title: string;
+  body: string;
+  /** One or two badges: what this season is good for. */
+  tags: string[];
+  /**
+   * Alt text for that season's photograph — describing THIS file, in this
+   * language. Absent where `seasonImages` has no photograph to describe.
+   */
+  imageAlt?: string;
+};
+
+export type SeasonsCopy = {
+  title: string;
+  lede: string;
+  seasons: [SeasonPanel, SeasonPanel, SeasonPanel, SeasonPanel];
+  /** The forecast panel under the tabs. */
+  weatherTitle: string;
+  weatherBody: string;
+  weatherCta: string;
+};
+
+/**
+ * A forecast for Aglen's own coordinates — the ones the graph and the JSON-LD
+ * already publish — rather than for Lukovit, the nearest place a weather service
+ * has a name for. The valley floor and the town above it are not the same
+ * afternoon, which is the whole argument of the page this panel sits on.
+ *
+ * The site states plainly that it has no weather source and does not track path
+ * conditions (`src/guides.ts`). This link does not change that: it hands the
+ * question to a meteorological service and says so, rather than printing a
+ * number the site would have no way of keeping true.
+ */
+export const forecastLink = "https://www.meteoblue.com/en/weather/week/43.201N24.315E";
+
+/**
+ * Which of the four panels a visitor should land on, from a month index (0–11).
+ *
+ * Lives beside the copy because it IS the copy: the boundaries here are the
+ * month ranges printed on the tabs, and a component that hard-coded its own
+ * would eventually open "Spring" on a page whose tab says April.
+ */
+export function seasonForMonth(month: number): 0 | 1 | 2 | 3 {
+  if (month >= 3 && month <= 5) return 0; // April – June
+  if (month >= 6 && month <= 7) return 1; // July – August
+  if (month >= 8 && month <= 10) return 2; // September – November
+  return 3; // December – March
+}
+
+/**
+ * The photograph each season shows, in the order the tabs run.
+ *
+ * One table rather than a path repeated inside all fourteen locales: a
+ * photograph is not translated, and fourteen copies of a filename is fourteen
+ * chances for one language to end up showing a different valley.
+ *
+ * Four photographs of the one valley, each taken in the season it is filed
+ * under — so the tabs change the landscape and not merely the subject. All four
+ * are 16:9, which is what lets the slot below them hold a fixed height without
+ * cropping one season harder than the next.
+ */
+export const seasonImages: Array<string | undefined> = [
+  images.spring,
+  images.summer,
+  images.autumn,
+  images.winter,
+];
+
+/** The seasonal selector's words, per language. */
+export const seasonsCopy: Record<LanguageCode, SeasonsCopy> = {
+  bg: {
+    title: "🗓️ Изберете своя сезон",
+    lede: "Четири различни Ъглена. Изберете сезона, за да видите какво ви чака.",
+    seasons: [
+      { icon: "🌸", name: "Пролет", months: "Април – Юни", title: "Буйна зеленина и пълноводие", body: "Най-доброто време за фотография и преходи. Река Вит е пълноводна, а температурите са идеални за ходене без жега.", tags: ["📸 Фотография", "🥾 Преходи"], imageAlt: "Пролетен изглед отвисоко към каньона на река Вит и Ъглен: тюркоазена вода, свежа зеленина по склоновете, бели варовикови скали и цъфнали храсти на преден план" },
+      { icon: "☀️", name: "Лято", months: "Юли – Август", title: "Прохлада и сянка край реката", body: "Идеално за бягство от жегите. Сенчестите брегове и скалните стени предлагат естествен климатик за пикник.", tags: ["🌊 Речен релакс", "🧺 Пикник"], imageAlt: "Лятна гледка от брега на река Вит край Ъглен: бистра тюркоазена вода над каменистото дъно, гъста сянка от дърветата и варовикова стена вдясно" },
+      { icon: "🍁", name: "Есен", months: "Септември – Ноември", title: "Златни нюанси и тишина", body: "Скалните венци контрастират с огнения цвят на дърветата. Време за тихи разходки и фотография.", tags: ["🍁 Спокойствие", "📷 Златен час"], imageAlt: "Есенна пътека край река Вит при Ъглен, покрита с окапали листа, между варовикови камъни и склонове в оранжево и златно" },
+      { icon: "❄️", name: "Зима", months: "Декември – Март", title: "Сурова и драматична красота", body: "Каньонът придобива епичен вид. Перфектно за любители на зимния минимализъм и уединението.", tags: ["❄️ Зимна тишина"], imageAlt: "Заснежен Ъглен и каньонът на река Вит отвисоко: скреж по дърветата, частично замръзнала река и дим от комините на къщите" },
+    ],
+    weatherTitle: "🌤️ Прогноза и съвет за днес",
+    weatherBody: "Проверете текущите температури в Луковит и Ъглен преди отпътуване. Сайтът не следи времето — прогнозата е на метеорологичната служба.",
+    weatherCta: "Виж прогнозата за времето",
+  },
+  en: {
+    title: "🗓️ Choose your season",
+    lede: "Four different Aglens. Pick a season to see what waits for you.",
+    seasons: [
+      { icon: "🌸", name: "Spring", months: "April – June", title: "Deep green and high water", body: "The best time for photography and walking. The Vit runs full, and the temperature suits a long walk without the heat.", tags: ["📸 Photography", "🥾 Walking"], imageAlt: "A spring view over the Vit River canyon at Aglen: turquoise water, fresh green slopes, white limestone crags and blossoming shrubs in the foreground" },
+      { icon: "☀️", name: "Summer", months: "July – August", title: "Shade and cool by the river", body: "The place to escape the heat. Shaded banks and rock walls make a natural air conditioner for a picnic.", tags: ["🌊 River time", "🧺 Picnic"], imageAlt: "A summer view from the bank of the River Vit near Aglen: clear turquoise water over a stony bed, deep shade from the trees and a limestone wall to the right" },
+      { icon: "🍁", name: "Autumn", months: "September – November", title: "Golden light and quiet", body: "The rock crowns stand against the fire in the trees. A season for slow walks and photographs.", tags: ["🍁 Calm", "📷 Golden hour"], imageAlt: "An autumn path beside the River Vit at Aglen, covered in fallen leaves, between limestone boulders and slopes turned orange and gold" },
+      { icon: "❄️", name: "Winter", months: "December – March", title: "Stark and dramatic", body: "The canyon turns epic. Made for anyone who loves winter minimalism and having a place to themselves.", tags: ["❄️ Winter quiet"], imageAlt: "Aglen and the Vit River canyon under snow from above: frost on the trees, the river part frozen and smoke rising from the chimneys" },
+    ],
+    weatherTitle: "🌤️ Today's forecast and advice",
+    weatherBody: "Check the current temperature in Lukovit and Aglen before you set off. The site does not track the weather — the forecast is the meteorological service's own.",
+    weatherCta: "Open the weather forecast",
+  },
+  de: {
+    title: "🗓️ Wählen Sie Ihre Jahreszeit",
+    lede: "Vier verschiedene Aglen. Wählen Sie eine Jahreszeit und sehen Sie, was Sie erwartet.",
+    seasons: [
+      { icon: "🌸", name: "Frühling", months: "April – Juni", title: "Sattes Grün und hoher Wasserstand", body: "Die beste Zeit für Fotografie und Wanderungen. Der Vit führt viel Wasser, und die Temperaturen eignen sich zum Gehen ohne Hitze.", tags: ["📸 Fotografie", "🥾 Wandern"], imageAlt: "Frühlingsblick über den Canyon des Vit bei Aglen: türkisfarbenes Wasser, frisches Grün an den Hängen, weiße Kalksteinfelsen und blühende Sträucher im Vordergrund" },
+      { icon: "☀️", name: "Sommer", months: "Juli – August", title: "Kühle und Schatten am Fluss", body: "Ideal, um der Hitze zu entkommen. Schattige Ufer und Felswände sind die natürliche Klimaanlage für ein Picknick.", tags: ["🌊 Flusszeit", "🧺 Picknick"], imageAlt: "Sommerblick vom Ufer des Vit nahe Aglen: klares türkisfarbenes Wasser über steinigem Grund, tiefer Schatten der Bäume und rechts eine Kalksteinwand" },
+      { icon: "🍁", name: "Herbst", months: "September – November", title: "Goldene Töne und Stille", body: "Die Felskronen stehen gegen das Feuer der Bäume. Eine Zeit für stille Spaziergänge und Fotografie.", tags: ["🍁 Ruhe", "📷 Goldene Stunde"], imageAlt: "Ein herbstlicher Pfad am Vit bei Aglen, mit Laub bedeckt, zwischen Kalksteinblöcken und orange-golden verfärbten Hängen" },
+      { icon: "❄️", name: "Winter", months: "Dezember – März", title: "Rau und dramatisch", body: "Der Canyon wird episch. Perfekt für alle, die winterlichen Minimalismus und Abgeschiedenheit lieben.", tags: ["❄️ Winterstille"], imageAlt: "Aglen und der Canyon des Vit unter Schnee von oben: Raureif auf den Bäumen, der Fluss teilweise gefroren und Rauch aus den Schornsteinen" },
+    ],
+    weatherTitle: "🌤️ Vorhersage und Tipp für heute",
+    weatherBody: "Prüfen Sie vor der Abfahrt die aktuellen Temperaturen in Lukovit und Aglen. Die Seite verfolgt das Wetter nicht — die Vorhersage stammt vom Wetterdienst.",
+    weatherCta: "Wettervorhersage öffnen",
+  },
+  fr: {
+    title: "🗓️ Choisissez votre saison",
+    lede: "Quatre Aglen différents. Choisissez une saison pour voir ce qui vous attend.",
+    seasons: [
+      { icon: "🌸", name: "Printemps", months: "Avril – juin", title: "Verdure dense et hautes eaux", body: "Le meilleur moment pour la photographie et la marche. La Vit est haute et les températures conviennent à la marche sans la chaleur.", tags: ["📸 Photographie", "🥾 Randonnée"], imageAlt: "Vue de printemps sur le canyon de la Vit à Aglen : eau turquoise, versants d'un vert tendre, falaises calcaires blanches et arbustes en fleurs au premier plan" },
+      { icon: "☀️", name: "Été", months: "Juillet – août", title: "Fraîcheur et ombre au bord de l'eau", body: "Idéal pour échapper à la chaleur. Les berges ombragées et les parois rocheuses forment une climatisation naturelle pour un pique-nique.", tags: ["🌊 Détente au bord de l'eau", "🧺 Pique-nique"], imageAlt: "Vue d'été depuis la berge de la Vit près d'Aglen : eau turquoise limpide sur un fond de galets, ombre dense des arbres et paroi calcaire à droite" },
+      { icon: "🍁", name: "Automne", months: "Septembre – novembre", title: "Nuances dorées et silence", body: "Les couronnes rocheuses contrastent avec le feu des arbres. La saison des promenades tranquilles et de la photographie.", tags: ["🍁 Sérénité", "📷 Heure dorée"], imageAlt: "Un sentier d'automne au bord de la Vit à Aglen, couvert de feuilles mortes, entre des blocs calcaires et des versants passés à l'orange et à l'or" },
+      { icon: "❄️", name: "Hiver", months: "Décembre – mars", title: "Une beauté rude et dramatique", body: "Le canyon devient épique. Parfait pour qui aime le minimalisme hivernal et la solitude.", tags: ["❄️ Silence d'hiver"], imageAlt: "Aglen et le canyon de la Vit sous la neige, vus d'en haut : givre sur les arbres, rivière en partie gelée et fumée sortant des cheminées" },
+    ],
+    weatherTitle: "🌤️ Prévisions et conseil du jour",
+    weatherBody: "Vérifiez les températures actuelles à Lukovit et Aglen avant de partir. Le site ne suit pas la météo — les prévisions sont celles du service météorologique.",
+    weatherCta: "Voir les prévisions météo",
+  },
+  es: {
+    title: "🗓️ Elija su estación",
+    lede: "Cuatro Aglen distintos. Elija una estación para ver qué le espera.",
+    seasons: [
+      { icon: "🌸", name: "Primavera", months: "Abril – junio", title: "Verde intenso y río crecido", body: "El mejor momento para la fotografía y las caminatas. El Vit baja lleno y las temperaturas permiten andar sin calor.", tags: ["📸 Fotografía", "🥾 Senderismo"], imageAlt: "Vista primaveral del cañón del río Vit en Aglen: agua turquesa, laderas de verde nuevo, riscos calizos blancos y arbustos en flor en primer plano" },
+      { icon: "☀️", name: "Verano", months: "Julio – agosto", title: "Frescor y sombra junto al río", body: "Ideal para escapar del calor. Las orillas sombreadas y las paredes de roca son un aire acondicionado natural para un picnic.", tags: ["🌊 Río y descanso", "🧺 Picnic"], imageAlt: "Vista veraniega desde la orilla del Vit cerca de Aglen: agua turquesa transparente sobre un lecho de piedras, sombra densa de los árboles y pared caliza a la derecha" },
+      { icon: "🍁", name: "Otoño", months: "Septiembre – noviembre", title: "Tonos dorados y silencio", body: "Las cornisas de roca contrastan con el fuego de los árboles. Tiempo de paseos tranquilos y fotografía.", tags: ["🍁 Calma", "📷 Hora dorada"], imageAlt: "Un sendero otoñal junto al río Vit en Aglen, cubierto de hojas caídas, entre bloques calizos y laderas teñidas de naranja y oro" },
+      { icon: "❄️", name: "Invierno", months: "Diciembre – marzo", title: "Belleza áspera y dramática", body: "El cañón se vuelve épico. Perfecto para quien ama el minimalismo invernal y la soledad.", tags: ["❄️ Silencio invernal"], imageAlt: "Aglen y el cañón del Vit bajo la nieve, desde arriba: escarcha en los árboles, el río parcialmente helado y humo saliendo de las chimeneas" },
+    ],
+    weatherTitle: "🌤️ Pronóstico y consejo de hoy",
+    weatherBody: "Consulte las temperaturas actuales en Lukovit y Aglen antes de salir. El sitio no sigue el tiempo: el pronóstico es del servicio meteorológico.",
+    weatherCta: "Ver el pronóstico del tiempo",
+  },
+  it: {
+    title: "🗓️ Scegli la tua stagione",
+    lede: "Quattro Aglen diversi. Scegli una stagione per vedere che cosa ti aspetta.",
+    seasons: [
+      { icon: "🌸", name: "Primavera", months: "Aprile – giugno", title: "Verde folto e fiume in piena", body: "Il momento migliore per la fotografia e le camminate. Il Vit è in piena e le temperature permettono di camminare senza afa.", tags: ["📸 Fotografia", "🥾 Escursioni"], imageAlt: "Veduta primaverile sul canyon del fiume Vit ad Aglen: acqua turchese, versanti di verde nuovo, rupi calcaree bianche e arbusti in fiore in primo piano" },
+      { icon: "☀️", name: "Estate", months: "Luglio – agosto", title: "Fresco e ombra lungo il fiume", body: "Ideale per sfuggire alla calura. Le rive ombrose e le pareti di roccia sono il condizionatore naturale per un picnic.", tags: ["🌊 Relax sul fiume", "🧺 Picnic"], imageAlt: "Veduta estiva dalla riva del Vit vicino ad Aglen: acqua turchese limpida su un fondo di sassi, ombra fitta degli alberi e parete calcarea a destra" },
+      { icon: "🍁", name: "Autunno", months: "Settembre – novembre", title: "Toni dorati e silenzio", body: "Le corone di roccia contrastano con il fuoco degli alberi. Tempo di passeggiate quiete e fotografia.", tags: ["🍁 Quiete", "📷 Ora d'oro"], imageAlt: "Un sentiero autunnale lungo il fiume Vit ad Aglen, coperto di foglie cadute, tra massi calcarei e versanti virati all'arancio e all'oro" },
+      { icon: "❄️", name: "Inverno", months: "Dicembre – marzo", title: "Bellezza aspra e drammatica", body: "Il canyon diventa epico. Perfetto per chi ama il minimalismo invernale e la solitudine.", tags: ["❄️ Silenzio invernale"], imageAlt: "Aglen e il canyon del Vit sotto la neve, dall'alto: brina sugli alberi, il fiume in parte ghiacciato e fumo dai camini" },
+    ],
+    weatherTitle: "🌤️ Previsioni e consiglio per oggi",
+    weatherBody: "Controlla le temperature attuali a Lukovit e Aglen prima di partire. Il sito non segue il meteo: le previsioni sono del servizio meteorologico.",
+    weatherCta: "Apri le previsioni del tempo",
+  },
+  ro: {
+    title: "🗓️ Alegeți-vă anotimpul",
+    lede: "Patru Aglen diferite. Alegeți un anotimp ca să vedeți ce vă așteaptă.",
+    seasons: [
+      { icon: "🌸", name: "Primăvara", months: "Aprilie – iunie", title: "Verde bogat și apă mare", body: "Cel mai bun moment pentru fotografie și drumeții. Vitul curge plin, iar temperaturile sunt potrivite pentru mers fără caniculă.", tags: ["📸 Fotografie", "🥾 Drumeții"], imageAlt: "Priveliște de primăvară peste canionul râului Vit la Aglen: apă turcoaz, versanți de verde crud, stânci albe de calcar și tufe înflorite în prim-plan" },
+      { icon: "☀️", name: "Vara", months: "Iulie – august", title: "Răcoare și umbră lângă râu", body: "Ideal pentru a scăpa de caniculă. Malurile umbrite și pereții de stâncă sunt aerul condiționat natural pentru un picnic.", tags: ["🌊 Relaxare la râu", "🧺 Picnic"], imageAlt: "Priveliște de vară de pe malul Vitului lângă Aglen: apă turcoaz limpede peste un fund pietros, umbră deasă de la copaci și un perete de calcar în dreapta" },
+      { icon: "🍁", name: "Toamna", months: "Septembrie – noiembrie", title: "Nuanțe aurii și liniște", body: "Cununile de stâncă contrastează cu focul din copaci. Vremea plimbărilor liniștite și a fotografiei.", tags: ["🍁 Liniște", "📷 Ora aurie"], imageAlt: "O potecă de toamnă lângă râul Vit la Aglen, acoperită de frunze căzute, între bolovani de calcar și versanți trecuți în portocaliu și auriu" },
+      { icon: "❄️", name: "Iarna", months: "Decembrie – martie", title: "Frumusețe aspră și dramatică", body: "Canionul devine epic. Perfect pentru cei care iubesc minimalismul de iarnă și singurătatea.", tags: ["❄️ Liniște de iarnă"], imageAlt: "Aglen și canionul Vitului sub zăpadă, văzute de sus: chiciură pe copaci, râul parțial înghețat și fum ieșind din hornuri" },
+    ],
+    weatherTitle: "🌤️ Prognoza și sfatul zilei",
+    weatherBody: "Verificați temperaturile actuale la Lukovit și Aglen înainte de plecare. Site-ul nu urmărește vremea — prognoza aparține serviciului meteorologic.",
+    weatherCta: "Vezi prognoza meteo",
+  },
+  tr: {
+    title: "🗓️ Mevsiminizi seçin",
+    lede: "Dört farklı Aglen. Sizi neyin beklediğini görmek için bir mevsim seçin.",
+    seasons: [
+      { icon: "🌸", name: "İlkbahar", months: "Nisan – Haziran", title: "Gür yeşillik ve yüksek su", body: "Fotoğraf ve yürüyüş için en iyi zaman. Vit gürül gürül akar, sıcaklıklar sıcak basmadan yürümeye uygundur.", tags: ["📸 Fotoğraf", "🥾 Yürüyüş"], imageAlt: "Aglen'de Vit Nehri kanyonuna ilkbahar manzarası: turkuaz su, taze yeşil yamaçlar, beyaz kireçtaşı kayalıklar ve önde çiçek açmış çalılar" },
+      { icon: "☀️", name: "Yaz", months: "Temmuz – Ağustos", title: "Nehir kıyısında serinlik ve gölge", body: "Sıcaktan kaçmak için ideal. Gölgeli kıyılar ve kaya duvarları piknik için doğal bir klima sunar.", tags: ["🌊 Nehir molası", "🧺 Piknik"], imageAlt: "Aglen yakınında Vit kıyısından yaz manzarası: taşlı zemin üzerinde berrak turkuaz su, ağaçların koyu gölgesi ve sağda kireçtaşı duvar" },
+      { icon: "🍁", name: "Sonbahar", months: "Eylül – Kasım", title: "Altın tonlar ve sessizlik", body: "Kaya taçları ağaçların ateş rengiyle karşıtlık kurar. Sessiz yürüyüşlerin ve fotoğrafın zamanı.", tags: ["🍁 Huzur", "📷 Altın saat"], imageAlt: "Aglen'de Vit Nehri kıyısında, dökülmüş yapraklarla kaplı sonbahar patikası; kireçtaşı bloklar ve turuncuyla altın rengine dönmüş yamaçlar arasında" },
+      { icon: "❄️", name: "Kış", months: "Aralık – Mart", title: "Sert ve dramatik bir güzellik", body: "Kanyon destansı bir hâl alır. Kış sadeliğini ve yalnızlığı sevenler için birebir.", tags: ["❄️ Kış sessizliği"], imageAlt: "Kar altındaki Aglen ve Vit kanyonu, yukarıdan: ağaçlarda kırağı, kısmen donmuş nehir ve bacalardan yükselen duman" },
+    ],
+    weatherTitle: "🌤️ Bugünün tahmini ve tavsiyesi",
+    weatherBody: "Yola çıkmadan önce Lukovit ve Aglen'deki güncel sıcaklıkları kontrol edin. Site havayı takip etmez — tahmin meteoroloji servisinindir.",
+    weatherCta: "Hava tahminini aç",
+  },
+  el: {
+    title: "🗓️ Διαλέξτε την εποχή σας",
+    lede: "Τέσσερα διαφορετικά Aglen. Διαλέξτε εποχή για να δείτε τι σας περιμένει.",
+    seasons: [
+      { icon: "🌸", name: "Άνοιξη", months: "Απρίλιος – Ιούνιος", title: "Πυκνό πράσινο και ορμητικό ποτάμι", body: "Η καλύτερη εποχή για φωτογραφία και πεζοπορία. Ο Vit είναι γεμάτος και οι θερμοκρασίες επιτρέπουν περπάτημα χωρίς ζέστη.", tags: ["📸 Φωτογραφία", "🥾 Πεζοπορία"], imageAlt: "Ανοιξιάτικη θέα στο φαράγγι του ποταμού Vit στο Aglen: τιρκουάζ νερό, φρέσκο πράσινο στις πλαγιές, λευκοί ασβεστολιθικοί βράχοι και ανθισμένοι θάμνοι στο πρώτο πλάνο" },
+      { icon: "☀️", name: "Καλοκαίρι", months: "Ιούλιος – Αύγουστος", title: "Δροσιά και σκιά στο ποτάμι", body: "Ιδανικό για να ξεφύγετε από τον καύσωνα. Οι σκιερές όχθες και τα βραχώδη τοιχώματα είναι ένα φυσικό κλιματιστικό για πικνίκ.", tags: ["🌊 Χαλάρωση στο ποτάμι", "🧺 Πικνίκ"], imageAlt: "Καλοκαιρινή θέα από την όχθη του Vit κοντά στο Aglen: καθαρό τιρκουάζ νερό πάνω από πετρώδη πυθμένα, πυκνή σκιά από τα δέντρα και ασβεστολιθικό τοίχωμα δεξιά" },
+      { icon: "🍁", name: "Φθινόπωρο", months: "Σεπτέμβριος – Νοέμβριος", title: "Χρυσές αποχρώσεις και ησυχία", body: "Τα βραχώδη στέφανα αντιπαρατίθενται στη φωτιά των δέντρων. Εποχή για ήσυχους περιπάτους και φωτογραφία.", tags: ["🍁 Γαλήνη", "📷 Χρυσή ώρα"], imageAlt: "Φθινοπωρινό μονοπάτι δίπλα στον Vit στο Aglen, στρωμένο με πεσμένα φύλλα, ανάμεσα σε ασβεστολιθικούς ογκόλιθους και πλαγιές στο πορτοκαλί και το χρυσό" },
+      { icon: "❄️", name: "Χειμώνας", months: "Δεκέμβριος – Μάρτιος", title: "Τραχιά και δραματική ομορφιά", body: "Το φαράγγι γίνεται επικό. Ιδανικό για όσους αγαπούν τον χειμερινό μινιμαλισμό και τη μοναξιά.", tags: ["❄️ Χειμερινή σιωπή"], imageAlt: "Το Aglen και το φαράγγι του Vit κάτω από το χιόνι, από ψηλά: πάχνη στα δέντρα, ποτάμι εν μέρει παγωμένο και καπνός από τις καμινάδες" },
+    ],
+    weatherTitle: "🌤️ Πρόγνωση και συμβουλή για σήμερα",
+    weatherBody: "Ελέγξτε τις τρέχουσες θερμοκρασίες σε Lukovit και Aglen πριν ξεκινήσετε. Ο ιστότοπος δεν παρακολουθεί τον καιρό — η πρόγνωση ανήκει στη μετεωρολογική υπηρεσία.",
+    weatherCta: "Δείτε την πρόγνωση καιρού",
+  },
+  ru: {
+    title: "🗓️ Выберите свой сезон",
+    lede: "Четыре разных Аглена. Выберите сезон, чтобы увидеть, что вас ждёт.",
+    seasons: [
+      { icon: "🌸", name: "Весна", months: "Апрель – июнь", title: "Густая зелень и полная вода", body: "Лучшее время для фотографии и походов. Вит полноводен, а температура позволяет идти без жары.", tags: ["📸 Фотография", "🥾 Походы"], imageAlt: "Весенний вид на каньон реки Вит у Аглена: бирюзовая вода, свежая зелень на склонах, белые известняковые скалы и цветущие кусты на переднем плане" },
+      { icon: "☀️", name: "Лето", months: "Июль – август", title: "Прохлада и тень у реки", body: "Идеально, чтобы уйти от жары. Тенистые берега и скальные стены работают как естественный кондиционер для пикника.", tags: ["🌊 Отдых у реки", "🧺 Пикник"], imageAlt: "Летний вид с берега Вита рядом с Агленом: прозрачная бирюзовая вода над каменистым дном, густая тень деревьев и известняковая стена справа" },
+      { icon: "🍁", name: "Осень", months: "Сентябрь – ноябрь", title: "Золотые оттенки и тишина", body: "Скальные венцы контрастируют с огнём деревьев. Время тихих прогулок и фотографии.", tags: ["🍁 Спокойствие", "📷 Золотой час"], imageAlt: "Осенняя тропа вдоль реки Вит в Аглене, засыпанная опавшими листьями, между известняковыми валунами и склонами в оранжевом и золотом" },
+      { icon: "❄️", name: "Зима", months: "Декабрь – март", title: "Суровая и драматичная красота", body: "Каньон становится эпическим. Для тех, кто любит зимний минимализм и уединение.", tags: ["❄️ Зимняя тишина"], imageAlt: "Аглен и каньон Вита под снегом с высоты: иней на деревьях, частично замёрзшая река и дым из печных труб" },
+    ],
+    weatherTitle: "🌤️ Прогноз и совет на сегодня",
+    weatherBody: "Проверьте текущую температуру в Луковите и Аглене перед выездом. Сайт не следит за погодой — прогноз принадлежит метеослужбе.",
+    weatherCta: "Открыть прогноз погоды",
+  },
+  ja: {
+    title: "🗓️ 季節を選ぶ",
+    lede: "アグレンは季節ごとに別の顔を見せます。季節を選んで、待っているものをご覧ください。",
+    seasons: [
+      { icon: "🌸", name: "春", months: "4月～6月", title: "深い緑と豊かな水", body: "写真と歩きに最適な季節です。ヴィト川は水量が多く、暑さのない気温で長く歩けます。", tags: ["📸 写真", "🥾 ハイキング"], imageAlt: "アグレンのヴィト川峡谷を見下ろす春の眺め。ターコイズ色の水、芽吹いた斜面の緑、白い石灰岩の岩峰、手前には花をつけた低木" },
+      { icon: "☀️", name: "夏", months: "7月～8月", title: "川辺の涼しさと日陰", body: "暑さを逃れるのに最適です。日陰の岸辺と岩壁が、ピクニックのための天然の冷房になります。", tags: ["🌊 川辺で休む", "🧺 ピクニック"], imageAlt: "アグレン近くのヴィト川岸からの夏の眺め。石の川底が透けるターコイズ色の水、木々の濃い日陰、右手に石灰岩の壁" },
+      { icon: "🍁", name: "秋", months: "9月～11月", title: "黄金の色合いと静けさ", body: "岩の稜線が木々の燃えるような色と対をなします。静かな散歩と写真の季節です。", tags: ["🍁 静けさ", "📷 ゴールデンアワー"], imageAlt: "アグレンのヴィト川沿い、落ち葉に覆われた秋の小道。石灰岩の岩塊と、橙と金に変わった斜面のあいだを抜ける" },
+      { icon: "❄️", name: "冬", months: "12月～3月", title: "荒々しく劇的な美しさ", body: "峡谷は壮大な姿になります。冬のミニマリズムと静寂を好む人に。", tags: ["❄️ 冬の静寂"], imageAlt: "雪に覆われたアグレンとヴィト川峡谷を見下ろす。樹氷、部分的に凍った川、家々の煙突から立ちのぼる煙" },
+    ],
+    weatherTitle: "🌤️ 今日の予報とひとこと",
+    weatherBody: "出発前にルコヴィトとアグレンの現在の気温をご確認ください。当サイトは天候を追跡していません — 予報は気象サービスのものです。",
+    weatherCta: "天気予報を開く",
+  },
+  sr: {
+    title: "🗓️ Изаберите своје годишње доба",
+    lede: "Четири различита Аглена. Изаберите годишње доба да видите шта вас чека.",
+    seasons: [
+      { icon: "🌸", name: "Пролеће", months: "Април – јун", title: "Бујно зеленило и висок водостај", body: "Најбоље време за фотографију и пешачење. Вит је пун водом, а температуре су таман за ходање без врућине.", tags: ["📸 Фотографија", "🥾 Пешачење"], imageAlt: "Пролећни поглед на кањон реке Вит код Аглена: тиркизна вода, свеже зеленило на падинама, беле кречњачке стене и процветали жбунови у првом плану" },
+      { icon: "☀️", name: "Лето", months: "Јул – август", title: "Хладовина и сенка крај реке", body: "Идеално за бег од врућина. Сеновите обале и стеновити зидови су природни клима-уређај за пикник.", tags: ["🌊 Одмор на реци", "🧺 Пикник"], imageAlt: "Летњи поглед са обале Вита близу Аглена: бистра тиркизна вода над каменитим дном, густа сенка дрвећа и кречњачки зид са десне стране" },
+      { icon: "🍁", name: "Јесен", months: "Септембар – новембар", title: "Златни тонови и тишина", body: "Стеновити венци контрастирају ватреној боји дрвећа. Време за тихе шетње и фотографију.", tags: ["🍁 Спокој", "📷 Златни сат"], imageAlt: "Јесења стаза уз реку Вит у Аглену, прекривена опалим лишћем, између кречњачких громада и падина у наранџастом и златном" },
+      { icon: "❄️", name: "Зима", months: "Децембар – март", title: "Сурова и драматична лепота", body: "Кањон добија епски изглед. За оне који воле зимски минимализам и осаму.", tags: ["❄️ Зимска тишина"], imageAlt: "Аглен и кањон Вита под снегом, из ваздуха: иње на дрвећу, делимично залеђена река и дим из димњака" },
+    ],
+    weatherTitle: "🌤️ Прогноза и савет за данас",
+    weatherBody: "Проверите тренутне температуре у Луковиту и Аглену пре поласка. Сајт не прати време — прогноза припада метеоролошкој служби.",
+    weatherCta: "Погледајте прогнозу времена",
+  },
+  zh: {
+    title: "🗓️ 选择你的季节",
+    lede: "四个不同的阿格伦。选一个季节，看看等着你的是什么。",
+    seasons: [
+      { icon: "🌸", name: "春", months: "四月—六月", title: "浓密的绿意与丰沛的河水", body: "拍照与徒步的最佳时节。维特河水量充沛，气温适合长时间行走而不觉炎热。", tags: ["📸 摄影", "🥾 徒步"], imageAlt: "俯瞰阿格伦维特河峡谷的春景：绿松石色的河水、初绿的山坡、白色石灰岩峭壁，前景是开花的灌木" },
+      { icon: "☀️", name: "夏", months: "七月—八月", title: "河畔的清凉与树荫", body: "避暑的好去处。绿荫覆盖的河岸与岩壁，是野餐时的天然空调。", tags: ["🌊 河边休憩", "🧺 野餐"], imageAlt: "阿格伦附近维特河岸边的夏景：清澈的绿松石色河水下可见石底，树木投下浓荫，右侧是石灰岩崖壁" },
+      { icon: "🍁", name: "秋", months: "九月—十一月", title: "金色的层次与安静", body: "岩冠与树木的火色相映成趣。适合安静散步与摄影的季节。", tags: ["🍁 静谧", "📷 黄金时刻"], imageAlt: "阿格伦维特河畔铺满落叶的秋日小径，穿行于石灰岩巨石与转为橙金色的山坡之间" },
+      { icon: "❄️", name: "冬", months: "十二月—三月", title: "粗粝而壮阔的美", body: "峡谷显出史诗般的气象。适合喜欢冬日极简与独处的人。", tags: ["❄️ 冬日静默"], imageAlt: "俯瞰积雪覆盖的阿格伦与维特河峡谷：树挂雾凇、部分封冻的河面，屋顶烟囱升起炊烟" },
+    ],
+    weatherTitle: "🌤️ 今日预报与建议",
+    weatherBody: "出发前请查看卢科维特与阿格伦的当前气温。本站不追踪天气——预报来自气象服务机构。",
+    weatherCta: "查看天气预报",
+  },
+  hu: {
+    title: "🗓️ Válassza ki az évszakát",
+    lede: "Négy különböző Aglen. Válasszon évszakot, és nézze meg, mi várja.",
+    seasons: [
+      { icon: "🌸", name: "Tavasz", months: "Április – június", title: "Dús zöld és magas víz", body: "A legjobb idő a fotózásra és a túrázásra. A Vit bővizű, a hőmérséklet pedig hőség nélküli gyaloglásra való.", tags: ["📸 Fotózás", "🥾 Túrázás"], imageAlt: "Tavaszi kilátás a Vit folyó kanyonjára Aglennél: türkiz víz, frissen kizöldült lejtők, fehér mészkősziklák és virágzó bokrok az előtérben" },
+      { icon: "☀️", name: "Nyár", months: "Július – augusztus", title: "Hűvös és árnyék a folyónál", body: "Ideális a hőség elől. Az árnyas partok és a sziklafalak természetes légkondicionálót adnak egy piknikhez.", tags: ["🌊 Pihenés a folyónál", "🧺 Piknik"], imageAlt: "Nyári kilátás a Vit partjáról Aglen közelében: tiszta türkiz víz a köves meder fölött, sűrű árnyék a fák alatt és jobbra egy mészkőfal" },
+      { icon: "🍁", name: "Ősz", months: "Szeptember – november", title: "Aranyló árnyalatok és csend", body: "A sziklakoronák a fák tüzes színével feleselnek. A csendes séták és a fotózás ideje.", tags: ["🍁 Nyugalom", "📷 Aranyóra"], imageAlt: "Őszi ösvény a Vit folyó mellett Aglenben, lehullott levelekkel borítva, mészkőtömbök és narancsba-aranyba fordult lejtők között" },
+      { icon: "❄️", name: "Tél", months: "December – március", title: "Zord és drámai szépség", body: "A kanyon epikussá válik. Azoknak való, akik szeretik a téli minimalizmust és a magányt.", tags: ["❄️ Téli csend"], imageAlt: "Aglen és a Vit kanyonja hó alatt, felülről: zúzmara a fákon, részben befagyott folyó és füst a kéményekből" },
+    ],
+    weatherTitle: "🌤️ Mai előrejelzés és tanács",
+    weatherBody: "Indulás előtt nézze meg az aktuális hőmérsékletet Lukovitban és Aglenben. Az oldal nem követi az időjárást — az előrejelzés a meteorológiai szolgálaté.",
+    weatherCta: "Időjárás-előrejelzés megnyitása",
+  },
+};
+
 
 const authoredProse: Partial<Record<LandingPageId, Record<LanguageCode, AuthoredProse>>> = {
+  // The seasonal guide. The tabs above answer "what is each season like"; these
+  // three cards answer what the tabs cannot — why the valley is not the forecast,
+  // how to pick between four good answers, and what goes in the bag either way.
+  // Nothing here states a temperature or an elevation: this is UI copy, and a
+  // number would be a knowledge-tier claim in a file that carries no sources.
+  bestTime: {
+    bg: {
+      kicker: "🍂 Сезонен пътеводител",
+      h1: "Кога да посетиш Ъглен?",
+      cta: "Питай за посещение по сезон",
+      intro: "Всеки сезон в Ъглен разкрива различна страна от магията на река Вит и каньона. От буйната пролетна зеленина и пълноводните речни вирове до златните есенни отражения върху скалите — открийте кога е най-подходящият момент за вашето перфектно бягство сред природата.",
+      headings: [
+        "🌡️ Какво да очаквате от времето",
+        "🧭 Как да изберете своя сезон",
+        "🎒 Какво да носите през годината",
+      ],
+      bodies: [
+        "Долината има свой собствен характер, затова сезонът тук значи повече от цифрата в прогнозата.\nДъното край водата остава по-хладно от откритото поле над него.\nСкалните стени задържат сянка до късен предиобед.\nЕдин и същи ден може да е горещ на пътя и приятен на брега.",
+        "Цвят и пълноводие — елате през пролетта.\nБягство от жегата — лятото край реката е по-прохладно от всяко кафене.\nТишина и мека светлина — есента е вашият сезон.\nДраматични кадри и празни пътеки — зимата няма конкуренция.\nНяма грешен сезон, има различни пътувания.",
+        "Целогодишно: обувки с грайфер и повече вода, отколкото ви се струва нужна. Речните камъни са хлъзгави във всеки сезон.\nПролет и есен: непромокаемо яке и още един слой за ранната сутрин.\nЛято: шапка, слънцезащита и ранен старт.\nЗима: топли слоеве, ръкавици и проверка на пътя от Луковит — светлината свършва рано.",
+      ],
+    },
+    en: {
+      kicker: "🍂 A seasonal guide",
+      h1: "When should you visit Aglen?",
+      cta: "Ask about a visit by season",
+      intro: "Every season in Aglen shows a different side of the River Vit and its canyon. From the deep green of spring and the full river pools to the golden autumn light on the rock — find the right moment for your own escape into the quiet.",
+      headings: [
+        "🌡️ What to expect from the weather",
+        "🧭 How to choose your season",
+        "🎒 What to carry through the year",
+      ],
+      bodies: [
+        "The valley has a character of its own, so the season here means more than the number in the forecast.\nThe floor by the water stays cooler than the open field above it.\nThe rock walls hold their shade until late in the morning.\nThe same day can be hot on the road and pleasant on the bank.",
+        "Colour and high water — come in spring.\nEscaping the heat — the river in summer is cooler than any café.\nQuiet and soft light — autumn is your season.\nDramatic frames and empty paths — winter has no competition.\nThere is no wrong season, only different trips.",
+        "All year: shoes with grip and more water than you think you need. River stone is slippery in every season.\nSpring and autumn: a waterproof layer and something warm for the early morning.\nSummer: a hat, sun cream and an early start.\nWinter: warm layers, gloves and a look at the road from Lukovit — the daylight ends early.",
+      ],
+    },
+    de: {
+      kicker: "🍂 Ein Führer durch die Jahreszeiten",
+      h1: "Wann sollten Sie Aglen besuchen?",
+      cta: "Nach einem Besuch je Jahreszeit fragen",
+      intro: "Jede Jahreszeit zeigt in Aglen eine andere Seite des Vit und seines Canyons. Vom satten Grün des Frühlings und den vollen Flussbecken bis zum goldenen Herbstlicht auf dem Fels — finden Sie den richtigen Moment für Ihre eigene Auszeit in der Natur.",
+      headings: [
+        "🌡️ Was Sie vom Wetter erwarten können",
+        "🧭 So wählen Sie Ihre Jahreszeit",
+        "🎒 Was Sie durchs Jahr mitnehmen",
+      ],
+      bodies: [
+        "Das Tal hat seinen eigenen Charakter, deshalb bedeutet die Jahreszeit hier mehr als die Zahl in der Vorhersage.\nDie Sohle am Wasser bleibt kühler als das offene Feld darüber.\nDie Felswände halten den Schatten bis in den späten Vormittag.\nDerselbe Tag kann auf der Straße heiß und am Ufer angenehm sein.",
+        "Farbe und viel Wasser — kommen Sie im Frühling.\nFlucht vor der Hitze — der Fluss im Sommer ist kühler als jedes Café.\nStille und weiches Licht — der Herbst ist Ihre Jahreszeit.\nDramatische Bilder und leere Wege — im Winter gibt es keine Konkurrenz.\nEs gibt keine falsche Jahreszeit, nur verschiedene Reisen.",
+        "Ganzjährig: Schuhe mit Profil und mehr Wasser, als Sie zu brauchen glauben. Flusssteine sind in jeder Jahreszeit rutschig.\nFrühling und Herbst: eine wasserdichte Schicht und etwas Warmes für den frühen Morgen.\nSommer: Hut, Sonnencreme und ein früher Start.\nWinter: warme Schichten, Handschuhe und ein Blick auf die Straße von Lukovit — das Tageslicht endet früh.",
+      ],
+    },
+    fr: {
+      kicker: "🍂 Un guide des saisons",
+      h1: "Quand visiter Aglen ?",
+      cta: "Demander une visite selon la saison",
+      intro: "Chaque saison révèle à Aglen une autre face de la Vit et de son canyon. De la verdure dense du printemps et des vasques pleines aux reflets dorés de l'automne sur la roche — trouvez le moment juste pour votre échappée au calme.",
+      headings: [
+        "🌡️ Ce qu'il faut attendre de la météo",
+        "🧭 Comment choisir votre saison",
+        "🎒 Quoi emporter au fil de l'année",
+      ],
+      bodies: [
+        "La vallée a son caractère propre, et la saison compte ici plus que le chiffre des prévisions.\nLe fond, au bord de l'eau, reste plus frais que le plateau ouvert au-dessus.\nLes parois gardent l'ombre jusqu'en fin de matinée.\nLa même journée peut être chaude sur la route et agréable sur la berge.",
+        "La couleur et les hautes eaux — venez au printemps.\nFuir la chaleur — en été, la rivière est plus fraîche que n'importe quel café.\nLe calme et la lumière douce — l'automne est votre saison.\nDes images fortes et des sentiers vides — l'hiver est sans concurrence.\nIl n'y a pas de mauvaise saison, seulement des voyages différents.",
+        "Toute l'année : des chaussures qui accrochent et plus d'eau que vous ne le pensez. Les galets sont glissants en toute saison.\nPrintemps et automne : une couche imperméable et de quoi se couvrir au petit matin.\nÉté : chapeau, crème solaire et départ tôt.\nHiver : des couches chaudes, des gants et un coup d'œil à la route depuis Lukovit — le jour tombe vite.",
+      ],
+    },
+    es: {
+      kicker: "🍂 Una guía de las estaciones",
+      h1: "¿Cuándo visitar Aglen?",
+      cta: "Preguntar por una visita según la estación",
+      intro: "Cada estación muestra en Aglen una cara distinta del río Vit y su cañón. Del verde intenso de la primavera y las pozas llenas a los reflejos dorados del otoño sobre la roca: encuentre el momento justo para su escapada tranquila.",
+      headings: [
+        "🌡️ Qué esperar del tiempo",
+        "🧭 Cómo elegir su estación",
+        "🎒 Qué llevar a lo largo del año",
+      ],
+      bodies: [
+        "El valle tiene un carácter propio, y por eso aquí la estación dice más que la cifra del pronóstico.\nEl fondo, junto al agua, se mantiene más fresco que el campo abierto de arriba.\nLas paredes de roca guardan la sombra hasta bien entrada la mañana.\nEl mismo día puede ser caluroso en la carretera y agradable en la orilla.",
+        "Color y río crecido: venga en primavera.\nHuir del calor: en verano el río es más fresco que cualquier café.\nSilencio y luz suave: el otoño es su estación.\nImágenes dramáticas y senderos vacíos: el invierno no tiene rival.\nNo hay una estación equivocada, solo viajes distintos.",
+        "Todo el año: calzado con agarre y más agua de la que cree necesitar. El canto rodado resbala en cualquier estación.\nPrimavera y otoño: una capa impermeable y algo de abrigo para primera hora.\nVerano: gorra, protección solar y salida temprana.\nInvierno: capas de abrigo, guantes y una mirada a la carretera desde Lukovit, porque la luz se acaba pronto.",
+      ],
+    },
+    it: {
+      kicker: "🍂 Una guida alle stagioni",
+      h1: "Quando visitare Aglen?",
+      cta: "Chiedere di una visita per stagione",
+      intro: "Ogni stagione ad Aglen mostra un lato diverso del fiume Vit e del suo canyon. Dal verde folto della primavera e dalle pozze piene ai riflessi dorati dell'autunno sulla roccia: trovate il momento giusto per la vostra fuga nel silenzio.",
+      headings: [
+        "🌡️ Che tempo aspettarsi",
+        "🧭 Come scegliere la stagione",
+        "🎒 Che cosa portare durante l'anno",
+      ],
+      bodies: [
+        "La valle ha un carattere proprio, e per questo qui la stagione conta più del numero nelle previsioni.\nIl fondovalle, vicino all'acqua, resta più fresco del campo aperto sopra.\nLe pareti di roccia trattengono l'ombra fino a tarda mattina.\nLo stesso giorno può essere caldo sulla strada e piacevole sulla riva.",
+        "Colore e fiume in piena: venite in primavera.\nSfuggire alla calura: d'estate il fiume è più fresco di qualsiasi caffè.\nQuiete e luce morbida: l'autunno è la vostra stagione.\nImmagini drammatiche e sentieri vuoti: l'inverno non ha rivali.\nNon esiste una stagione sbagliata, solo viaggi diversi.",
+        "Tutto l'anno: scarpe con buona presa e più acqua di quanta pensiate di berne. I sassi del fiume scivolano in ogni stagione.\nPrimavera e autunno: uno strato impermeabile e qualcosa di caldo per la mattina presto.\nEstate: cappello, protezione solare e partenza presto.\nInverno: strati caldi, guanti e un controllo della strada da Lukovit, perché la luce finisce presto.",
+      ],
+    },
+    ro: {
+      kicker: "🍂 Un ghid al anotimpurilor",
+      h1: "Când să vizitați Aglen?",
+      cta: "Întreabă despre o vizită în funcție de anotimp",
+      intro: "Fiecare anotimp arată la Aglen o altă față a râului Vit și a canionului. De la verdele bogat al primăverii și bulboanele pline până la reflexele aurii ale toamnei pe stâncă — găsiți momentul potrivit pentru evadarea dumneavoastră în liniște.",
+      headings: [
+        "🌡️ La ce vreme să vă așteptați",
+        "🧭 Cum să vă alegeți anotimpul",
+        "🎒 Ce să luați cu voi de-a lungul anului",
+      ],
+      bodies: [
+        "Valea are un caracter al ei, iar de aceea anotimpul spune aici mai mult decât cifra din prognoză.\nFundul văii, lângă apă, rămâne mai răcoros decât câmpul deschis de deasupra.\nPereții de stâncă țin umbra până târziu dimineața.\nAceeași zi poate fi caldă pe drum și plăcută pe mal.",
+        "Culoare și apă mare: veniți primăvara.\nScăpare de caniculă: vara râul e mai răcoros decât orice cafenea.\nLiniște și lumină blândă: toamna e anotimpul vostru.\nCadre dramatice și poteci goale: iarna nu are concurență.\nNu există anotimp greșit, doar călătorii diferite.",
+        "Tot anul: încălțăminte cu aderență și mai multă apă decât credeți că vă trebuie. Pietrele de râu alunecă în orice anotimp.\nPrimăvara și toamna: un strat impermeabil și ceva călduros pentru dimineața devreme.\nVara: pălărie, protecție solară și plecare devreme.\nIarna: straturi calde, mănuși și o verificare a drumului dinspre Lukovit, pentru că lumina zilei se termină repede.",
+      ],
+    },
+    tr: {
+      kicker: "🍂 Mevsimler rehberi",
+      h1: "Aglen'i ne zaman ziyaret etmeli?",
+      cta: "Mevsime göre ziyaret için sorun",
+      intro: "Aglen'de her mevsim, Vit Nehri'nin ve kanyonun başka bir yüzünü gösterir. İlkbaharın gür yeşilinden ve dolu nehir havuzlarından, sonbaharın kayalara vuran altın yansımalarına kadar — doğaya kaçışınız için doğru anı bulun.",
+      headings: [
+        "🌡️ Havadan ne beklemeli",
+        "🧭 Mevsiminizi nasıl seçersiniz",
+        "🎒 Yıl boyunca yanınıza ne almalı",
+      ],
+      bodies: [
+        "Vadinin kendine ait bir karakteri var; bu yüzden mevsim burada tahmindeki sayıdan fazlasını anlatır.\nSuyun kenarındaki taban, yukarıdaki açık araziden serin kalır.\nKaya duvarları gölgeyi öğleye yakın saatlere kadar tutar.\nAynı gün yolda sıcak, kıyıda ise serin olabilir.",
+        "Renk ve bol su: ilkbaharda gelin.\nSıcaktan kaçış: yazın nehir her kafeden serindir.\nSessizlik ve yumuşak ışık: mevsiminiz sonbahar.\nDramatik kareler ve boş patikalar: kışın rakibi yok.\nYanlış mevsim yoktur, yalnızca farklı yolculuklar vardır.",
+        "Yıl boyunca: tutuşu iyi ayakkabılar ve sandığınızdan fazla su. Nehir taşları her mevsim kaygandır.\nİlkbahar ve sonbahar: su geçirmez bir kat ve sabahın erken saatleri için kalın bir şey.\nYaz: şapka, güneş kremi ve erken çıkış.\nKış: kalın katmanlar, eldiven ve Lukovit'ten gelen yolun durumuna bir bakış — gün ışığı erken biter.",
+      ],
+    },
+    el: {
+      kicker: "🍂 Ένας οδηγός των εποχών",
+      h1: "Πότε να επισκεφθείτε το Aglen;",
+      cta: "Ρωτήστε για επίσκεψη ανά εποχή",
+      intro: "Κάθε εποχή δείχνει στο Aglen μια άλλη πλευρά του ποταμού Vit και του φαραγγιού. Από το πυκνό πράσινο της άνοιξης και τις γεμάτες γούρνες μέχρι τις χρυσές αντανακλάσεις του φθινοπώρου στον βράχο — βρείτε τη σωστή στιγμή για τη δική σας απόδραση στην ησυχία.",
+      headings: [
+        "🌡️ Τι να περιμένετε από τον καιρό",
+        "🧭 Πώς να διαλέξετε εποχή",
+        "🎒 Τι να έχετε μαζί σας όλο τον χρόνο",
+      ],
+      bodies: [
+        "Η κοιλάδα έχει τον δικό της χαρακτήρα, γι' αυτό η εποχή εδώ λέει περισσότερα από τον αριθμό της πρόγνωσης.\nΟ πάτος, δίπλα στο νερό, μένει πιο δροσερός από το ανοιχτό χωράφι από πάνω.\nΤα βραχώδη τοιχώματα κρατούν τη σκιά ως αργά το πρωί.\nΗ ίδια μέρα μπορεί να είναι ζεστή στον δρόμο και ευχάριστη στην όχθη.",
+        "Χρώμα και ορμητικό νερό: ελάτε την άνοιξη.\nΔιαφυγή από τη ζέστη: το καλοκαίρι το ποτάμι είναι πιο δροσερό από κάθε καφενείο.\nΗσυχία και απαλό φως: η εποχή σας είναι το φθινόπωρο.\nΔραματικά καρέ και άδεια μονοπάτια: ο χειμώνας δεν έχει ανταγωνισμό.\nΔεν υπάρχει λάθος εποχή, μόνο διαφορετικά ταξίδια.",
+        "Όλο τον χρόνο: παπούτσια με καλό πάτημα και περισσότερο νερό απ' όσο νομίζετε. Οι πέτρες του ποταμού γλιστρούν σε κάθε εποχή.\nΆνοιξη και φθινόπωρο: ένα αδιάβροχο στρώμα και κάτι ζεστό για νωρίς το πρωί.\nΚαλοκαίρι: καπέλο, αντηλιακό και πρωινή εκκίνηση.\nΧειμώνας: ζεστά στρώματα, γάντια και έλεγχος του δρόμου από το Lukovit, γιατί το φως τελειώνει νωρίς.",
+      ],
+    },
+    ru: {
+      kicker: "🍂 Путеводитель по сезонам",
+      h1: "Когда приехать в Аглен?",
+      cta: "Спросить о поездке по сезону",
+      intro: "Каждый сезон открывает в Аглене другую сторону реки Вит и её каньона. От густой весенней зелени и полных речных омутов до золотых осенних отражений на скалах — найдите свой момент для тихого побега на природу.",
+      headings: [
+        "🌡️ Чего ждать от погоды",
+        "🧭 Как выбрать свой сезон",
+        "🎒 Что брать с собой в течение года",
+      ],
+      bodies: [
+        "У долины свой характер, поэтому сезон здесь значит больше, чем цифра в прогнозе.\nДно у воды остаётся прохладнее открытого поля наверху.\nСкальные стены держат тень до позднего утра.\nОдин и тот же день может быть жарким на дороге и приятным на берегу.",
+        "Цвет и полная вода: приезжайте весной.\nСпасение от жары: летом у реки прохладнее, чем в любом кафе.\nТишина и мягкий свет: ваш сезон — осень.\nДраматичные кадры и пустые тропы: зимой у вас не будет конкурентов.\nНеправильного сезона нет, есть разные поездки.",
+        "Круглый год: обувь с хорошим протектором и больше воды, чем кажется нужным. Речные камни скользкие в любой сезон.\nВесна и осень: непромокаемый слой и что-то тёплое на раннее утро.\nЛето: шляпа, солнцезащита и ранний выход.\nЗима: тёплые слои, перчатки и проверка дороги от Луковита — светлое время заканчивается рано.",
+      ],
+    },
+    ja: {
+      kicker: "🍂 季節のガイド",
+      h1: "アグレンを訪れるなら、いつ？",
+      cta: "季節に合わせた訪問について問い合わせる",
+      intro: "アグレンでは季節ごとにヴィト川と峡谷が別の表情を見せます。春の深い緑と水をたたえた淵から、秋に岩肌を照らす黄金の反射まで — 静かな自然への、あなたにとって最良の逃避の時を見つけてください。",
+      headings: [
+        "🌡️ 天気について知っておくこと",
+        "🧭 季節の選び方",
+        "🎒 一年を通じて持っていくもの",
+      ],
+      bodies: [
+        "谷には谷の性格があり、だからこそここでは季節が予報の数字以上の意味を持ちます。\n水辺の谷底は、上の開けた野原より涼しく保たれます。\n岩壁は午前の遅い時間まで日陰を保ちます。\n同じ日でも、道の上は暑く川岸は快適ということが起こります。",
+        "色と水を求めるなら春。\n暑さを避けたいなら夏 — 川辺はどんなカフェよりも涼しい場所です。\n静けさと柔らかい光を求めるなら秋。\n劇的な絵と誰もいない道を選ぶなら冬。\n間違った季節はなく、違う旅があるだけです。",
+        "通年：滑りにくい靴と、必要と思う以上の水。川の石はどの季節でも滑ります。\n春と秋：防水の一枚と、早朝用の暖かいもの。\n夏：帽子、日焼け止め、早めの出発。\n冬：重ね着、手袋、そしてルコヴィトからの道路状況の確認 — 日暮れが早いためです。",
+      ],
+    },
+    sr: {
+      kicker: "🍂 Водич кроз годишња доба",
+      h1: "Када посетити Аглен?",
+      cta: "Питај за посету по годишњем добу",
+      intro: "Свако годишње доба открива у Аглену другу страну реке Вит и кањона. Од бујног пролећног зеленила и пуних речних вирова до златних јесењих одсјаја на стенама — пронађите прави тренутак за свој тихи бег у природу.",
+      headings: [
+        "🌡️ Шта очекивати од времена",
+        "🧭 Како изабрати своје годишње доба",
+        "🎒 Шта носити током године",
+      ],
+      bodies: [
+        "Долина има свој карактер, и зато овде годишње доба значи више од броја у прогнози.\nДно поред воде остаје хладније од отвореног поља изнад.\nСтеновити зидови држе сенку до касног преподнева.\nИсти дан може бити врућ на путу и пријатан на обали.",
+        "Боја и висок водостај: дођите у пролеће.\nБег од врућине: лети је река хладнија од сваког кафића.\nТишина и меко светло: ваша сезона је јесен.\nДраматични кадрови и празне стазе: зима нема конкуренцију.\nПогрешног годишњег доба нема, постоје само различита путовања.",
+        "Целе године: обућа која добро пријања и више воде него што мислите да вам треба. Речно камење клизи у свако доба.\nПролеће и јесен: непромочиви слој и нешто топло за рано јутро.\nЛето: шешир, заштита од сунца и ран полазак.\nЗима: топли слојеви, рукавице и провера пута из Луковита — дневно светло брзо нестаје.",
+      ],
+    },
+    zh: {
+      kicker: "🍂 一份四季指南",
+      h1: "什么时候来阿格伦？",
+      cta: "按季节咨询行程",
+      intro: "在阿格伦，每个季节都展现维特河与峡谷的另一面。从春天浓密的绿意和涨满的河潭，到秋天洒在岩壁上的金色反光——找到属于你的那个安静出逃的时刻。",
+      headings: [
+        "🌡️ 天气会是什么样",
+        "🧭 如何挑选你的季节",
+        "🎒 全年该带些什么",
+      ],
+      bodies: [
+        "河谷有自己的性格，所以在这里，季节比预报上的数字说得更多。\n靠水的谷底比上方开阔的田野凉爽。\n岩壁把阴影留到上午很晚。\n同一天里，路上可能酷热，河岸却很舒服。",
+        "想要色彩与丰沛的河水：春天来。\n想躲开暑气：夏天的河边比任何一间咖啡馆都凉快。\n想要安静与柔和的光线：秋天是你的季节。\n偏爱戏剧性的画面和空无一人的小径：冬天无可匹敌。\n这里没有错的季节，只有不同的旅程。",
+        "全年：防滑的鞋，以及比你以为需要的更多的水。河石在任何季节都很滑。\n春秋：一件防水外层，加一件清晨保暖的衣物。\n夏天：帽子、防晒和早点出发。\n冬天：多层保暖、手套，并查看从卢科维特过来的路况——天黑得很早。",
+      ],
+    },
+    hu: {
+      kicker: "🍂 Évszakos kalauz",
+      h1: "Mikor érdemes Aglenbe menni?",
+      cta: "Kérdezz évszak szerinti látogatásról",
+      intro: "Aglenben minden évszak a Vit folyó és a kanyon más arcát mutatja. A tavasz dús zöldjétől és a teli folyómedencéktől az ősz aranyló visszfényéig a sziklán — találja meg a maga pillanatát a csendbe való kiszakadásra.",
+      headings: [
+        "🌡️ Mire számítson az időjárástól",
+        "🧭 Hogyan válassza ki az évszakot",
+        "🎒 Mit vigyen magával az év során",
+      ],
+      bodies: [
+        "A völgynek saját jellege van, ezért itt az évszak többet jelent az előrejelzés számánál.\nA víz melletti völgytalp hűvösebb marad, mint a fölötte nyíló mező.\nA sziklafalak késő délelőttig tartják az árnyékot.\nUgyanaz a nap lehet forró az úton és kellemes a parton.",
+        "Szín és bővizű folyó: jöjjön tavasszal.\nMenekülés a hőség elől: nyáron a folyó hűvösebb bármelyik kávézónál.\nCsend és lágy fény: az ősz a maga évszaka.\nDrámai képek és üres ösvények: a télnek nincs versenytársa.\nNincs rossz évszak, csak különböző utazások vannak.",
+        "Egész évben: jó tapadású cipő és több víz, mint amennyit szükségesnek gondol. A folyami kő minden évszakban csúszik.\nTavasszal és ősszel: egy vízálló réteg és valami meleg a kora reggelre.\nNyáron: kalap, fényvédő és korai indulás.\nTélen: meleg rétegek, kesztyű és egy pillantás a Lukovit felőli út állapotára — a nappali fény korán elfogy.",
+      ],
+    },
+  },
   familyTrip: {
     bg: {
       kicker: "👨‍👩‍👧‍👦 Пътеводител за родители и деца",

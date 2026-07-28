@@ -1,9 +1,11 @@
-import { useEffect, useMemo, useRef, useState, type MouseEvent, type ReactNode, type SyntheticEvent } from "react";
+// Aliased: an unqualified `KeyboardEvent` import shadows the DOM one for the
+// whole module, and the document-level key handlers further down need that one.
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type MouseEvent, type ReactNode, type SyntheticEvent } from "react";
 import { contentByLanguage, languages, type Accommodation, type LanguageCode, type PlaceId, type TimelineItem } from "./content";
 import { DIFFICULTY_LABEL, MOODS, PICKER_UI, experiences, type Mood } from "./experiences";
 import { checklistCopy } from "./landingPages";
 import { INSTALL_COPY, useInstallPrompt } from "./installPrompt";
-import { getLandingPage, getLandingPages, isLandingPageId, routesCopy, transportCopy, transportLinks } from "./landingPages";
+import { forecastLink, getLandingPage, getLandingPages, isLandingPageId, routesCopy, seasonForMonth, seasonImages, seasonsCopy, sectionParagraphs, transportCopy, transportLinks } from "./landingPages";
 import { placeExperienceLinks, type PlaceExperienceLink } from "./placeLinks";
 import { buildAspectPath, buildBusinessPath, buildGuidePath, buildPlacePath, buildRoutePath, buildSourcePath, getStaticRoute, resolveRoute, type RouteId, type ResolvedRoute } from "./routes";
 import { guideByLegacyRoute, guides, localizeGuide } from "./guides";
@@ -234,6 +236,129 @@ function RoutePicker({ language }: { language: LanguageCode }) {
           </li>
         ))}
       </ol>
+    </section>
+  );
+}
+
+/**
+ * The four seasons, for a landing page that declares `interactive: "seasons"`.
+ *
+ * A tablist rather than four stacked cards, because the question the page asks
+ * — *when* should you come — has exactly one answer per visitor, and four
+ * paragraphs of equal weight is the layout that refuses to answer it.
+ *
+ * Two decisions worth keeping:
+ *
+ * All four panels are in the DOM; the three that are not selected carry the
+ * `hidden` attribute. Rendering only the active one would have hidden three
+ * quarters of a seasonal guide from a crawler, on the one page whose entire
+ * subject is the difference between the seasons.
+ *
+ * The tab that opens is the season the visitor is standing in, not spring. The
+ * page is rendered in the browser (`main.tsx` drops the static fallback before
+ * React mounts), so reading the clock here cannot desynchronise a prerendered
+ * HTML file from the hydrated one — there is no hydration.
+ */
+function SeasonPicker({ language }: { language: LanguageCode }) {
+  const copy = seasonsCopy[language];
+  const [active, setActive] = useState<number>(() => seasonForMonth(new Date().getMonth()));
+  const tabsRef = useRef<HTMLDivElement>(null);
+
+  // Arrow keys move BETWEEN tabs; Tab moves PAST them. That is the difference
+  // between a tablist and a row of buttons, and it is why only the selected tab
+  // is in the tab order.
+  const move = (to: number) => {
+    const index = (to + copy.seasons.length) % copy.seasons.length;
+    setActive(index);
+    tabsRef.current?.querySelectorAll<HTMLButtonElement>('[role="tab"]')[index]?.focus();
+  };
+
+  const onKeyDown = (event: ReactKeyboardEvent<HTMLDivElement>) => {
+    const keys: Record<string, number> = {
+      ArrowRight: active + 1,
+      ArrowLeft: active - 1,
+      Home: 0,
+      End: copy.seasons.length - 1,
+    };
+    if (!(event.key in keys)) return;
+    event.preventDefault();
+    move(keys[event.key]);
+  };
+
+  return (
+    <section className="seo-seasons" id="seasons" aria-labelledby="seasons-title">
+      <h2 id="seasons-title">{copy.title}</h2>
+      <p className="seo-seasons-lede">{copy.lede}</p>
+
+      <div className="seo-season-tabs" role="tablist" aria-label={copy.title} ref={tabsRef} onKeyDown={onKeyDown}>
+        {copy.seasons.map((season, index) => (
+          <button
+            type="button"
+            role="tab"
+            key={season.name}
+            id={`season-tab-${index}`}
+            className={`seo-season-tab${index === active ? " is-on" : ""}`}
+            aria-selected={index === active}
+            aria-controls={`season-panel-${index}`}
+            tabIndex={index === active ? 0 : -1}
+            onClick={() => setActive(index)}
+          >
+            <span className="seo-season-icon" aria-hidden="true">
+              {season.icon}
+            </span>
+            <span className="seo-season-label">
+              <strong>{season.name}</strong>
+              <small>{season.months}</small>
+            </span>
+          </button>
+        ))}
+      </div>
+
+      {copy.seasons.map((season, index) => (
+        <div
+          key={season.title}
+          role="tabpanel"
+          id={`season-panel-${index}`}
+          aria-labelledby={`season-tab-${index}`}
+          className="seo-season-panel"
+          hidden={index !== active}
+        >
+          <h3>{season.title}</h3>
+          <p>{season.body}</p>
+          <p className="seo-season-tags">
+            {season.tags.map((tag) => (
+              <span className="seo-season-tag" key={tag}>
+                {tag}
+              </span>
+            ))}
+          </p>
+          {/* `loading="lazy"` and the `hidden` panel work together: a lazy image
+              inside a `display: none` panel is not fetched at all, so the other
+              three seasons cost nothing until their tab is opened. Rendered only
+              where a photograph of THAT season actually exists — see
+              `seasonImages` for why winter has none. */}
+          {seasonImages[index] && (
+            <img
+              className="seo-season-photo"
+              {...imageProps(seasonImages[index]!, { sizes: "(max-width: 900px) 92vw, 44rem" })}
+              alt={season.imageAlt ?? ""}
+              loading="lazy"
+              decoding="async"
+            />
+          )}
+        </div>
+      ))}
+
+      {/* Not a live widget. The site has no weather source and says so on the
+          seasonal guide already — this hands the question to a service that
+          does, rather than printing a temperature nobody here can keep true. */}
+      <aside className="seo-forecast">
+        <p className="seo-forecast-title">{copy.weatherTitle}</p>
+        <p className="seo-forecast-body">{copy.weatherBody}</p>
+        <a className="button ghost seo-forecast-cta" href={forecastLink} target="_blank" rel="noopener noreferrer">
+          {copy.weatherCta} →
+        </a>
+      </aside>
     </section>
   );
 }
@@ -1126,10 +1251,15 @@ export function App() {
                   </a>
                   {/* On the route map itself the button that says "see the route
                       map" pointed at the page you were already on. Here it takes
-                      you down to the routes instead. */}
+                      you down to the routes instead — and on the seasonal guide,
+                      down to the season the visitor came to choose. */}
                   {currentLandingPage.interactive === "routes" ? (
                     <a className="button ghost" href="#routes">
                       {routesCopy[language].seeRoutes} ↓
+                    </a>
+                  ) : currentLandingPage.interactive === "seasons" ? (
+                    <a className="button ghost" href="#seasons">
+                      {seasonsCopy[language].title} ↓
                     </a>
                   ) : (
                     <a className="button ghost" href={routeHref("routeMap")} onClick={(event) => handleRouteClick(event, "routeMap")}>
@@ -1151,12 +1281,15 @@ export function App() {
             {currentLandingPage.interactive === "transport" && <TransportPanel language={language} />}
             {currentLandingPage.interactive === "routes" && <RoutePicker language={language} />}
             {currentLandingPage.interactive === "checklist" && <PackingChecklist language={language} />}
+            {currentLandingPage.interactive === "seasons" && <SeasonPicker language={language} />}
 
             <div className="seo-section-grid">
               {currentLandingPage.sections.map((section) => (
                 <section className="seo-section-card" key={section.heading}>
                   <h2>{section.heading}</h2>
-                  <p>{section.body}</p>
+                  {sectionParagraphs(section.body).map((paragraph) => (
+                    <p key={paragraph}>{paragraph}</p>
+                  ))}
                 </section>
               ))}
             </div>
