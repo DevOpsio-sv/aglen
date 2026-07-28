@@ -197,8 +197,8 @@ export const trustPages: TrustPage[] = [
         heading: { bg: "Административни данни", en: "Administrative details" },
         body: [
           {
-            bg: "Ъглен е село в община Луковит, област Ловеч, Северна България, с пощенски код 5562. Селото е единственото населено място в България, чието име започва с буквата „Ъ“.",
-            en: "Aglen is a village in Lukovit municipality, Lovech Province, northern Bulgaria, postcode 5562. It is the only settlement in Bulgaria whose name begins with the letter “Ъ”.",
+            bg: "Ъглен е село в община Луковит, област Ловеч, Северна България, с пощенски код 5791. Селото е единственото населено място в България, чието име започва с буквата „Ъ“.",
+            en: "Aglen is a village in Lukovit municipality, Lovech Province, northern Bulgaria, postcode 5791. It is the only settlement in Bulgaria whose name begins with the letter “Ъ”.",
           },
           {
             bg: "Координатите и външните идентификатори по-долу идват от Wikidata (Q550547), затова могат да се сверят независимо от този сайт.",

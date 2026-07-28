@@ -405,7 +405,7 @@ const llmsLines = [
   "> Lovech Province, northern Bulgaria, and to the Lukovit karst around it:",
   "> Prohodna cave, Karlukovo, Lukovit, the Iskar–Panega geopark and the Vit River.",
   "",
-  `Coordinates: ${region.AGLEN.latitude}, ${region.AGLEN.longitude} (Wikidata ${region.AGLEN.wikidata}). Postcode 5562.`,
+  `Coordinates: ${region.AGLEN.latitude}, ${region.AGLEN.longitude} (Wikidata ${region.AGLEN.wikidata}). Postcode ${region.AGLEN.postalCode}.`,
   "Published in 14 languages under /<language>/ with self-referencing canonicals.",
   "",
   "## Entry points",

@@ -317,6 +317,30 @@
       "reviewedAt": "2026-07-26"
     },
     {
+      "id": "clm-aglen-0013",
+      "entityId": "aglen",
+      "aspect": "identity",
+      "statement": {
+        "bg": "Публикуваните координати на селото са 43.201151° с. ш., 24.314943° и. д.; пощенският код е 5791.",
+        "en": "The village's published coordinates are 43.201151° N, 24.314943° E; the postcode is 5791."
+      },
+      "sources": [
+        "src-reference-0001"
+      ],
+      "confidence": "verified",
+      "status": "published",
+      "method": "official",
+      "created": "2026-07-28",
+      "reviewedAt": "2026-07-28",
+      "observedAt": "2026-07-28",
+      "supersedes": "clm-aglen-0004",
+      "correctedAt": "2026-07-28",
+      "correctionNote": {
+        "bg": "По-ранната версия на този запис даваше пощенски код 5562. Вярната стойност е 5791. Цитираният източник — Wikidata Q550547, свойство P281 — през цялото време е съдържал 5791; грешката е допусната при преписването, не в източника. Координатите остават непроменени.",
+        "en": "An earlier version of this record gave the postcode as 5562. The correct value is 5791. The cited source — Wikidata Q550547, property P281 — carried 5791 throughout; the error was made in transcription, not in the source. The coordinates are unchanged."
+      }
+    },
+    {
       "id": "clm-lovech-province-0001",
       "entityId": "lovech-province",
       "aspect": "identity",

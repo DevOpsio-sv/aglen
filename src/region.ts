@@ -50,7 +50,7 @@ export const AGLEN = {
   longitude: 24.314943,
   wikidata: "Q550547",
   wikipedia: { bg: "Ъглен", en: "Aglen, Bulgaria" },
-  postalCode: "5562",
+  postalCode: "5791",
 } as const;
 
 export const LOVECH_PROVINCE: RegionPlace = {
