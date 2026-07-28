@@ -708,7 +708,7 @@ function routeText(lang: LanguageCode, routeId: RouteId): { title: string; descr
     // added to the registry is titled here without touching this file.
     ...namespaceRouteText(lang),
     ...regionRouteText(lang),
-    home: { title: `${copy.hero.subtitle} | ${copy.brand.name}`, description: copy.hero.lede },
+    home: { title: copy.hero.homeTitle ?? `${copy.hero.subtitle} | ${copy.brand.name}`, description: copy.hero.lede },
     pillars: { title: `${copy.about.title} | ${copy.brand.name}`, description: `${copy.about.text} ${copy.legends.text}` },
     attractions: { title: `${copy.landmarks.title} | ${copy.brand.name}`, description: copy.landmarks.text },
     activities: { title: `${copy.experiences.title} | ${copy.brand.name}`, description: copy.experiences.text },
@@ -1394,8 +1394,10 @@ function identityNodes(lang: LanguageCode): object[] {
         availableLanguage: languages.map((language) => language.label),
       },
       address: {
+        // No streetAddress: the village has no street names, and repeating
+        // "село Ъглен" there only duplicated addressLocality in a field
+        // consumers read as a street.
         "@type": "PostalAddress",
-        streetAddress: "село Ъглен",
         addressLocality: "Ъглен",
         addressRegion: "Lovech",
         postalCode: AGLEN.postalCode,

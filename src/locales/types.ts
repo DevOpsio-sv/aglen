@@ -228,6 +228,13 @@ export type PageCopy = {
     meta: string;
     title: string;
     subtitle: string;
+    /**
+     * The home page's <title> and <h1>, when the hero subtitle is a brand line
+     * rather than something anyone searches for. Optional: without it the title
+     * falls back to `subtitle | brand.name`, which is what every language used
+     * before Bulgarian needed to answer the query "село Ъглен".
+     */
+    homeTitle?: string;
     lede: string;
     primary: string;
     secondary: string;

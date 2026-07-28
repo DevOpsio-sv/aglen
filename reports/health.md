@@ -26,7 +26,7 @@ Generated 2026-07-28. **This report never fails a build** — correctness is gat
 | Redirect rules | 32 |
 | Guides · businesses | 6 · 12 |
 | Languages served · knowledge tier | 14 · 2 |
-| Bundle (gzipped JS) | 465.8 kB (+0.3% since last record) |
+| Bundle (gzipped JS) | 465.8 kB (+0.0% since last record) |
 
 ## By namespace
 
