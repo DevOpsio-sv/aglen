@@ -99,6 +99,10 @@ export type EventItem = {
   startTime?: string; // e.g. "18:00" (local)
   dateLabel: string; // human-readable label shown to visitors, e.g. "6 май 2026"
   location: string;
+  // What it costs to attend. Drives the schema.org Offer on /events, so it is a
+  // claim about the world: only set it when the price is actually known.
+  // "free" → a 0 BGN offer; a string → that price in BGN.
+  admission?: "free" | string;
   category?: EventCategory;
   season?: EventSeason; // for recurring events on the seasonal timeline
   title: LocalizedText;
